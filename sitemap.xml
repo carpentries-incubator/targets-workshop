@@ -16,6 +16,9 @@
     <loc>https://carpentries.github.io/workbench-template-rmd/aio.html</loc>
   </url>
   <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/basic-targets.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/images.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/instructor/aio.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/instructor/basic-targets.html</loc>
   </url>
   <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/instructor/images.html</loc>

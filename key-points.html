@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<title>Lesson Title: Key Points</title>
+<title>Introduction to targets: Key Points</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="assets/styles.css">
 <script src="assets/scripts.js" type="text/javascript"></script><!-- mathjax --><script type="text/x-mathjax-config">
@@ -65,7 +65,7 @@
       <img class="small-logo" alt="Carpentries Incubator" src="assets/images/incubator-logo-sm.svg">
 </div>
     <div class="lesson-title-md">
-      Lesson Title
+      Introduction to targets
     </div>
     <div class="search-icon-sm">
       <!-- TODO: do not show until we have search
@@ -76,7 +76,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 <li class="nav-item">
           <span class="lesson-title">
-            Lesson Title
+            Introduction to targets
           </span>
         </li>
         <li class="nav-item">
@@ -108,7 +108,7 @@
   </div>
 <!--/div.container-fluid -->
 </nav><div class="col-md-12 mobile-title">
-  Lesson Title
+  Introduction to targets
 </div>
 
 <aside class="col-md-12 lesson-progress"><div style="width: %" class="percentage">
@@ -179,7 +179,19 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="introduction.html">1. Using RMarkdown</a>
+        <a href="introduction.html">1. Introduction</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush3">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading3">
+        <a href="basic-targets.html">2. basic-targets</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -241,17 +253,30 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         
         
-<section id="introduction"><h2 class="section-heading"><a href="introduction.html">Using RMarkdown</a></h2>
+<section id="introduction"><h2 class="section-heading"><a href="introduction.html">Introduction</a></h2>
 <hr class="half-width">
 <ul>
-<li>Use <code>.md</code> files for episodes when you want static
-content</li>
-<li>Use <code>.Rmd</code> files for episodes when you need to generate
-output</li>
-<li>Run <code>sandpaper::check_lesson()</code> to identify any issues
-with your lesson</li>
-<li>Run <code>sandpaper::build_lesson()</code> to preview your lesson
-locally</li>
+<li>We can only have confidence in the results of analyses if they can
+be reproduced by others</li>
+<li>“Others” includes your future self</li>
+<li>
+<code>targets</code> helps achieve reproducibility by automating
+workflow</li>
+<li>
+<code>targests</code> is designed for use with the R programming
+language</li>
+</ul></section><section id="basic-targets"><h2 class="section-heading"><a href="basic-targets.html">basic-targets</a></h2>
+<hr class="half-width">
+<ul>
+<li>Projects help keep our analyses organized so we can easily re-run
+them later</li>
+<li>Use the RStudio Project Wizard to create projects</li>
+<li>The <code>_targets.R</code> file is a special file that must be
+included in all <code>targets</code> projects, and defines the
+worklow</li>
+<li>Use <code>tar_script()</code> to create a default
+<code>_targets.R</code> file</li>
+<li>Use <code>tar_make()</code> to execute the workflow</li>
 </ul></section>
 </div>
     </main>
@@ -270,7 +295,7 @@ locally</li>
 	
         | <a href="https://github.com/carpentries/workbench-template-rmd/blob/main/CONTRIBUTING.md" class="external-link">Contributing</a> 
         | <a href="https://github.com/carpentries/workbench-template-rmd/" class="external-link">Source</a></p>
-				<p><a href="https://github.com/carpentries/workbench-template-rmd/blob/main/CITATION" class="external-link">Cite</a> | <a href="mailto:team@carpentries.org">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
+				<p><a href="https://github.com/carpentries/workbench-template-rmd/blob/main/CITATION" class="external-link">Cite</a> | <a href="mailto:joelnitta@gmail.com">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
 			</div>
 			<div class="col-md-6">
         
@@ -295,12 +320,12 @@ locally</li>
   "@id": "https://carpentries.github.io/workbench-template-rmd/key-points.html",
   "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
   "description": "A Carpentries Lesson teaching foundational data and coding skills to researchers worldwide",
-  "keywords": "software, data, lesson, The Carpentries",
+  "keywords": "reproducibility, data, targets, R",
   "name": "Key Points",
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-rmd/key-points.html",
   "identifier": "https://carpentries.github.io/workbench-template-rmd/key-points.html",
-  "dateCreated": "2023-04-09",
+  "dateCreated": "2023-04-11",
   "dateModified": "2023-04-11",
   "datePublished": "2023-04-11"
 }
