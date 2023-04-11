@@ -1,119 +1,67 @@
 ---
-title: "Using RMarkdown"
+title: "Introduction"
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How do you write a lesson using R Markdown and `{sandpaper}`?
+- Why should we care about reproducibility?
+- How can `targets` help us achieve reproducibility?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain how to use markdown with the new lesson template
-- Demonstrate how to include pieces of code, figures, and nested challenge blocks
+- Explain why reproducibility is important for science
+- Describe the features of `targets` that enhance reproducibility
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Introduction
+## What is reproducibility?
 
-This is a lesson created via The Carpentries Workbench. It is written in
-[Pandoc-flavored Markdown](https://pandoc.org/MANUAL.txt) for static files and
-[R Markdown][r-markdown] for dynamic files that can render code into output. 
-Please refer to the [Introduction to The Carpentries 
-Workbench](https://carpentries.github.io/sandpaper-docs/) for full documentation.
+Reproducibility is the ability for others (including your future self) to reproduce your analysis.
 
-What you need to know is that there are three sections required for a valid
-Carpentries lesson template:
+We can only have confidence in the results of scientific analyses if they can be reproduced.
 
- 1. `questions` are displayed at the beginning of the episode to prime the
-    learner for the content.
- 2. `objectives` are the learning objectives for an episode displayed with
-    the questions.
- 3. `keypoints` are displayed at the end of the episode to reinforce the
-    objectives.
+However, reproducibility is not a binary concept (not reproducible vs. reproducible); rather, there is a scale from **less** reproducible to **more** reproducible.
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
+`targets` goes a long ways towards making your analyses **more reproducible**.
 
-Inline instructor notes can help inform instructors of timing challenges
-associated with the lessons. They appear in the "Instructor View"
+Other practices you can use to further enhance reproducibility include controlling your computing environment with tools like Docker, conda, or renv, but we don't have time to cover those in this workshop.
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+## What is `targets`?
 
-::::::::::::::::::::::::::::::::::::: challenge 
+`targets` is a workflow management package for the R programming language developed and maintained by Will Landau.
 
-## Challenge 1: Can you do it?
+The major features of `targets` include:
+- **Automation** of workflow
+- **Caching** of workflow steps
+- **Batch creation** of workflow steps
+- **Parallelization** at the level of the workflow
 
-What is the output of this command?
+This allows you to do the following:
+- return to a project after working on something else and immediately pick up where you left off without confusion or trying to remember what you were doing
+- change the workflow, then only re-run the parts that that are affected by the change
+- massively scale up the workflow without changing individual functions
 
-```r
-paste("This", "new", "lesson", "looks", "good")
-```
+... and of course, it will help others reproduce your analysis.
 
-:::::::::::::::::::::::: solution 
+## Who should use `targets`?
 
-## Output
- 
-```output
-[1] "This new lesson looks good"
-```
+`targets` is by no means the only workflow management software.
+There is a large number of similar tools, each with varying features and use-cases.
+For example, snakemake is a popular workflow tool for python, and `make` is a tool that has been around for a very long time for automating bash scripts.
+`targets` is designed to work specifically with R, so it makes the most sense to use it if you primarily use R, or intend to.
+If you mostly code with other tools, you may want to consider an alternative.
 
-:::::::::::::::::::::::::::::::::
-
-
-## Challenge 2: how do you nest solutions within challenge blocks?
-
-:::::::::::::::::::::::: solution 
-
-You can add a line with at least three colons and a `solution` tag.
-
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-## Figures
-
-You can also include figures generated from R Markdown:
-
-
-```r
-pie(
-  c(Sky = 78, "Sunny side of pyramid" = 17, "Shady side of pyramid" = 5), 
-  init.angle = 315, 
-  col = c("deepskyblue", "yellow", "yellow3"), 
-  border = FALSE
-)
-```
-
-<div class="figure" style="text-align: center">
-<img src="fig/introduction-rendered-pyramid-1.png" alt="pie chart illusion of a pyramid"  />
-<p class="caption">Sun arise each and every morning</p>
-</div>
-
-Or you can use standard markdown for static figures with the following syntax:
-
-`![optional caption that appears below the figure](figure url){alt='alt text for
-accessibility purposes'}`
-
-![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
-
-## Math
-
-One of our episodes contains $\LaTeX$ equations when describing how to create
-dynamic reports with {knitr}, so we now use mathjax to describe this:
-
-`$\alpha = \dfrac{1}{(1 - \beta)^2}$` becomes: $\alpha = \dfrac{1}{(1 - \beta)^2}$
-
-Cool, right?
+The goal of this workshop is to learn how to use `targets` to reproducible data analysis in R.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Use `.md` files for episodes when you want static content
-- Use `.Rmd` files for episodes when you need to generate output
-- Run `sandpaper::check_lesson()` to identify any issues with your lesson
-- Run `sandpaper::build_lesson()` to preview your lesson locally
+- We can only have confidence in the results of analyses if they can be reproduced by others
+- "Others" includes your future self
+- `targets` helps achieve reproducibility by automating workflow
+- `targests` is designed for use with the R programming language
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
-[r-markdown]: https://rmarkdown.rstudio.com/
