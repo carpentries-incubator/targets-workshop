@@ -14,7 +14,7 @@ carpentry: 'incubator'
 title: 'Introduction to targets'
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
-created: 
+created: ~
 
 # Comma-separated list of keywords for the lesson
 keywords: 'reproducibility, data, targets, R'
@@ -23,7 +23,7 @@ keywords: 'reproducibility, data, targets, R'
 # possible values: pre-alpha, alpha, beta, stable
 life_cycle: 'pre-alpha'
 
-# License of the lesson materials (recommended CC-BY 4.0)
+# License of the lesson
 license: 'CC-BY 4.0'
 
 # Link to the source repository for this lesson
@@ -61,6 +61,12 @@ contact: 'joelnitta@gmail.com'
 episodes: 
 - introduction.Rmd
 - basic-targets.Rmd
+- cache.Rmd
+- lifecycle.Rmd
+- organization.Rmd
+- files.Rmd
+- quarto.Rmd
+- batch.Rmd
 
 # Information for Learners
 learners: 

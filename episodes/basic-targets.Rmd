@@ -1,5 +1,5 @@
 ---
-title: 'basic-targets'
+title: 'First targets Workflow'
 teaching: 10
 exercises: 2
 ---
@@ -31,12 +31,12 @@ The project folder has additional subfolders for organization, such as folders f
 
 By using projects, it makes it straightforward to re-orient yourself if you return to an analysis after time spent elsewhere.
 This wouldn't be a problem if we only ever work on one thing at a time until completion, but that is almost never the case.
-It is hard to remember what you were doing when you come back to a project (a phenomenon called "context switching").
+It is hard to remember what you were doing when you come back to a project after working on something else (a phenomenon called "context switching").
 By using a standardized organization system, you will reduce confusion and lost time... in other words, you are increasing reproducibility!
 
 This workshop will use RStudio, since it also works well with the project organization concept.
 
-## Create a project in RStudio
+### Create a project in RStudio
 
 Let's start a new project using RStudio.
 
@@ -71,9 +71,23 @@ We will now start to write a `_targets.R` file. Fortunately, `targets` comes wit
 
 In the R console, first load the `targets` package with `library(targets)`, then run the command `tar_script()`.
 
+```{r}
+#| label: start-targets-show
+#| eval: FALSE
+library(targets)
+tar_script()
+```
+
+```{r}
+#| label: start-targets-hide
+#| echo: FALSE
+library(targets)
+```
+
 Nothing will happen in the console, but in the file viewer, you should see a new file, `_targets.R` appear. Open it using the File menu or by clicking on it.
 
 We can see this default `_targets.R` file includes three main parts:
+
 - Loading packages with `library()`
 - Defining a custom function with `function()`
 - Defining a list with `list()`.
@@ -86,15 +100,75 @@ Furthermore, each item in the list is a call of the `tar_target()` function.
 The first argument of `tar_target()` is name of the target to build, and the second argument is the command used to build it.
 Note that the name of the target is **unquoted**, that is, it is written without any surrounding quotation marks.
 
+::::::::::::::::::::::::::::::::::::: callout
+
+Let's modify the default workflow: rename the names of the targets from `data` to `my_data` and `summary` to `my_summary`.
+This is to avoid confusion with base R functions `data()` and `summary()`.
+It is generally a good idea to avoid naming objects in R with the names of existing functions.
+
+Make sure to rename `data` to `my_data` **each time it appears** (twice).
+The names of the targets are very important: this is how `targets` knows how workflow steps depend on each other.
+
+:::::::::::::::::::::::::::::::::::::
+
+Your final `_targets.R` file should look like this:
+
+```{r}
+#| label: targets-show-workflow
+#| eval: FALSE
+library(targets)
+# This is an example _targets.R file. Every
+# {targets} pipeline needs one.
+# Use tar_script() to create _targets.R and tar_edit()
+# to open it again for editing.
+# Then, run tar_make() to run the pipeline
+# and tar_read(summary) to view the results.
+
+# Define custom functions and other global objects.
+# This is where you write source(\"R/functions.R\")
+# if you keep your functions in external scripts.
+summ <- function(dataset) {
+  summarize(dataset, mean_x = mean(x))
+}
+
+# Set target-specific options such as packages.
+tar_option_set(packages = "dplyr")
+
+# End this file with a list of target objects.
+list(
+  tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
+  tar_target(my_summary, summ(my_data)) # Call your custom functions as needed.
+)
+```
+
 ## Run the workflow
 
-Now that we have a workflow, we can run it with `targets`.
+Now that we have a workflow, we can run it with the `tar_make()` function.
+Try running it, and you should see something like this:
 
-The command to do that is `tar_make()`.
+```{r}
+#| label: targets-run-show
+#| eval: FALSE
+tar_make()
+```
 
-Try it and see what happens!
-
-You should see some messages that R has built the steps of the workflow.
+```{r}
+#| label: targets-run-hide
+#| echo: FALSE
+tar_dir({
+  tar_script({
+  summ <- function(dataset) {
+    summarize(dataset, mean_x = mean(x))
+  }
+  tar_option_set(packages = "dplyr")
+  list(
+    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
+    tar_target(my_summary, summ(my_data))
+  )
+  })
+  tar_make()
+})
+```
 
 Congratulations, you've run your first workflow with `targets`!
 
@@ -104,16 +178,15 @@ Congratulations, you've run your first workflow with `targets`!
 
 Inspect the list at the end of `_targets.R`. Can you describe the steps of the workflow?
 
-::::::::::::::::::::::::::::::::::::: solution
+:::::::::::::::::::::::::::::::::: solution
 
+The first step of the workflow built a target called `my_data` that includes two variables, `x` and `y`.
 
+The second step of the workflow built a target called `my_summ` that includes the mean of `x` calculated with a custom function called `summ()`.
+
+::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::::
-
-
-:::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
@@ -121,7 +194,7 @@ Inspect the list at the end of `_targets.R`. Can you describe the steps of the w
 - Use the RStudio Project Wizard to create projects
 - The `_targets.R` file is a special file that must be included in all `targets` projects, and defines the worklow
 - Use `tar_script()` to create a default `_targets.R` file
-- Use `tar_make()` to execute the workflow
+- Use `tar_make()` to run the workflow
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
