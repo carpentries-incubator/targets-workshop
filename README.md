@@ -1,10 +1,9 @@
-# The Carpentries Workbench Template R Markdown Lesson
+# Using the "targets" package for Reproducible Data Analysis in R
 
-This lesson is a template lesson that uses [The Carpentries Workbench][workbench].
+This is a pre-alpha lesson about the [targets](https://github.com/ropensci/targets) R package built using [The Carpentries Workbench][workbench].
 
-To get started using this template, make sure you're logged into Github and visit https://github.com/carpentries/workbench-template-rmd/generate
-and follow the instructions.
-
-If you have any questions, contact [@zkamvar](https://github.com/zkamvar)
+The lesson website is here: https://joelnitta.github.io/targets-workshop/
 
 [workbench]: https://carpentries.github.io/sandpaper-docs/
+
+Materials licensed under [CC-BY 4.0](LICENSE.md) by the authors
