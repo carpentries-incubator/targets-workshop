@@ -157,7 +157,61 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="basic-targets.html">2. basic-targets</a>
+        <a href="basic-targets.html">2. First targets Workflow</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="cache.html">3. Loading Workflow Objects</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="lifecycle.html">4. The Workflow Lifecycle</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="organization.html">5. Best Practices for targets Project Organization</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="files.html">6. Working With External Files</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush8">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading8">
+        <a href="quarto.html">7. Reproducible Reports with Quarto</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush9">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading9">
+        <a href="batch.html">8. Batch and Parallel Processing</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -236,7 +290,7 @@ Why should we care about reproducibility?<br>How can
 <span class="visually-hidden">Duration: </span>00h 12m
 </td>
 <td>
- 2. <a href="basic-targets.html">basic-targets</a>
+ 2. <a href="basic-targets.html">First targets Workflow</a>
 </td>
 <td>
 What are best practices for organizing analyses?<br>What is a
@@ -245,6 +299,64 @@ What are best practices for organizing analyses?<br>What is a
 </td>
 </tr><tr><td>
 <span class="visually-hidden">Duration: </span>00h 24m
+</td>
+<td>
+ 3. <a href="cache.html">Loading Workflow Objects</a>
+</td>
+<td>
+Where does the workflow happen?<br>How can we inspect the objects built
+by the workflow?
+</td>
+</tr><tr><td>
+<span class="visually-hidden">Duration: </span>00h 36m
+</td>
+<td>
+ 4. <a href="lifecycle.html">The Workflow Lifecycle</a>
+</td>
+<td>
+What happens if we re-run a workflow?<br>How does <code>targets</code>
+know what steps to re-run?<br>How can I override default settings?
+</td>
+</tr><tr><td>
+<span class="visually-hidden">Duration: </span>00h 48m
+</td>
+<td>
+ 5. <a href="organization.html">Best Practices for targets Project
+Organization</a>
+</td>
+<td>
+What are best practices for organizing <code>targets</code> projects?
+</td>
+</tr><tr><td>
+<span class="visually-hidden">Duration: </span>01h 00m
+</td>
+<td>
+ 6. <a href="files.html">Working With External Files</a>
+</td>
+<td>
+How can we load external data?
+</td>
+</tr><tr><td>
+<span class="visually-hidden">Duration: </span>01h 12m
+</td>
+<td>
+ 7. <a href="quarto.html">Reproducible Reports with Quarto</a>
+</td>
+<td>
+How can we create reproducible reports?
+</td>
+</tr><tr><td>
+<span class="visually-hidden">Duration: </span>01h 24m
+</td>
+<td>
+ 8. <a href="batch.html">Batch and Parallel Processing</a>
+</td>
+<td>
+How can we specify many targets without typing everything out?<br>How
+can we build targets in parallel?
+</td>
+</tr><tr><td>
+<span class="visually-hidden">Duration: </span>01h 36m
 </td>
 <td>
 Finish
@@ -257,81 +369,23 @@ any links that you are not going to use.
  --></tbody></table><p>
       The actual schedule may vary slightly depending on the topics and exercises chosen by the instructor.
       </p>
-      </section><section id="setup"><p>FIXME: Setup instructions live in this document. Please specify the
-tools and the data sets the Learner needs to have installed.</p>
-<section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
-</h2>
-<hr class="half-width"><!--
-FIXME: place any data you want learners to use in `episodes/data` and then use
-       a relative link ( [data zip file](data/lesson-data.zip) ) to provide a
-       link to it, replacing the example.com link.
---><p>Download the <a href="https://example.com/FIXME" class="external-link">data zip file</a>
-and unzip it to your Desktop</p>
-</section><section id="software-setup"><h2 class="section-heading">Software Setup<a class="anchor" aria-label="anchor" href="#software-setup"></a>
-</h2>
-<hr class="half-width"><div id="discussion1" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<div id="details" class="callout-inner">
-<h3 class="callout-title">Details<a class="anchor" aria-label="anchor" href="#discussion1"></a>
-</h3>
-<div class="callout-content">
-<p>Setup for different systems can be presented in dropdown menus via a
-<code>solution</code> tag. They will join to this discussion block, so
-you can give a general overview of the software used in this lesson here
-and fill out the individual operating systems (and potentially add more,
-e.g. online setup) in the solutions blocks.</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1">
-  Windows
-  </h4>
-</button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
-<div class="accordion-body">
-<p>Use PuTTY</p>
-</div>
-</div>
-</div>
-</div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2">
-  MacOS
-  </h4>
-</button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
-<div class="accordion-body">
-<p>Use Terminal.app</p>
-</div>
-</div>
-</div>
-</div>
-<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
-  <h4 class="accordion-header" id="headingSolution3">
-  Linux
-  </h4>
-</button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
-<div class="accordion-body">
-<p>Use Terminal</p>
-</div>
-</div>
-</div>
-</div>
-<!-- 
+      </section><section id="setup"><p>This lesson assumes you have R, RStudio, and the <code>targets</code>
+R package installed on your computer.</p>
+<ul><li>
+<a href="https://www.r-project.org/" class="external-link">Download and install the latest
+version of R</a>.</li>
+<li>
+<a href="https://www.rstudio.com/products/rstudio/download/#download" class="external-link">Download
+and install RStudio</a>. RStudio is an application (an integrated
+development environment or IDE) that facilitates the use of R and offers
+a number of nice additional features. You will need the free Desktop
+version for your computer.</li>
+<li>Install the <code>targets</code> package by running the command
+<code>install.packages("targets")</code> in R.</li>
+</ul><!-- 
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
- -->
-</section></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
+ --></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link float-end" href="../instructor/introduction.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
@@ -380,9 +434,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-rmd/instructor/index.html",
   "identifier": "https://carpentries.github.io/workbench-template-rmd/instructor/index.html",
-  "dateCreated": "2023-04-11",
-  "dateModified": "2023-04-11",
-  "datePublished": "2023-04-11"
+  "dateCreated": "2023-04-13",
+  "dateModified": "2023-04-13",
+  "datePublished": "2023-04-13"
 }
 
   </script><script>

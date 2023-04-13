@@ -19,6 +19,15 @@
     <loc>https://carpentries.github.io/workbench-template-rmd/basic-targets.html</loc>
   </url>
   <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/batch.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/cache.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/files.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/images.html</loc>
   </url>
   <url>
@@ -43,6 +52,15 @@
     <loc>https://carpentries.github.io/workbench-template-rmd/instructor/basic-targets.html</loc>
   </url>
   <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/instructor/batch.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/instructor/cache.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/instructor/files.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/instructor/images.html</loc>
   </url>
   <url>
@@ -61,7 +79,16 @@
     <loc>https://carpentries.github.io/workbench-template-rmd/instructor/keypoints.html</loc>
   </url>
   <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/instructor/lifecycle.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/instructor/organization.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/instructor/profiles.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/instructor/quarto.html</loc>
   </url>
   <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/instructor/reference.html</loc>
@@ -79,7 +106,16 @@
     <loc>https://carpentries.github.io/workbench-template-rmd/keypoints.html</loc>
   </url>
   <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/lifecycle.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/organization.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/profiles.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-rmd/quarto.html</loc>
   </url>
   <url>
     <loc>https://carpentries.github.io/workbench-template-rmd/reference.html</loc>

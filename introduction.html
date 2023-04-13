@@ -167,7 +167,61 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="basic-targets.html">2. basic-targets</a>
+        <a href="basic-targets.html">2. First targets Workflow</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="cache.html">3. Loading Workflow Objects</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="lifecycle.html">4. The Workflow Lifecycle</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="organization.html">5. Best Practices for targets Project Organization</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="files.html">6. Working With External Files</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush8">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading8">
+        <a href="quarto.html">7. Reproducible Reports with Quarto</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush9">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading9">
+        <a href="batch.html">8. Batch and Parallel Processing</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -220,11 +274,11 @@
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="index.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="basic-targets.html" rel="next">Next: basic-targets... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="basic-targets.html" rel="next">Next: First targets... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Introduction</h1>
-        <p> Last updated on 2023-04-11 | 
+        <p> Last updated on 2023-04-13 | 
         
         <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -279,17 +333,24 @@ workshop.</p>
 </h2>
 <hr class="half-width"><p><code>targets</code> is a workflow management package for the R
 programming language developed and maintained by Will Landau.</p>
-<p>The major features of <code>targets</code> include: -
-<strong>Automation</strong> of workflow - <strong>Caching</strong> of
-workflow steps - <strong>Batch creation</strong> of workflow steps -
-<strong>Parallelization</strong> at the level of the workflow</p>
-<p>This allows you to do the following: - return to a project after
-working on something else and immediately pick up where you left off
-without confusion or trying to remember what you were doing - change the
-workflow, then only re-run the parts that that are affected by the
-change - massively scale up the workflow without changing individual
-functions</p>
-<p>… and of course, it will help others reproduce your analysis.</p>
+<p>The major features of <code>targets</code> include:</p>
+<ul><li>
+<strong>Automation</strong> of workflow</li>
+<li>
+<strong>Caching</strong> of workflow steps</li>
+<li>
+<strong>Batch creation</strong> of workflow steps</li>
+<li>
+<strong>Parallelization</strong> at the level of the workflow</li>
+</ul><p>This allows you to do the following:</p>
+<ul><li>return to a project after working on something else and immediately
+pick up where you left off without confusion or trying to remember what
+you were doing</li>
+<li>change the workflow, then only re-run the parts that that are
+affected by the change</li>
+<li>massively scale up the workflow without changing individual
+functions</li>
+</ul><p>… and of course, it will help others reproduce your analysis.</p>
 </section><section id="who-should-use-targets"><h2 class="section-heading">Who should use <code>targets</code>?<a class="anchor" aria-label="anchor" href="#who-should-use-targets"></a>
 </h2>
 <hr class="half-width"><p><code>targets</code> is by no means the only workflow management
@@ -300,8 +361,9 @@ for a very long time for automating bash scripts. <code>targets</code>
 is designed to work specifically with R, so it makes the most sense to
 use it if you primarily use R, or intend to. If you mostly code with
 other tools, you may want to consider an alternative.</p>
-<p>The goal of this workshop is to learn how to use <code>targets</code>
-to reproducible data analysis in R.</p>
+<p>The <strong>goal</strong> of this workshop is to <strong>learn how to
+use <code>targets</code> to reproducible data analysis in
+R</strong>.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -310,8 +372,8 @@ to reproducible data analysis in R.</p>
 <h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
 </h3>
 <div class="callout-content">
-<ul><li>We can only have confidence in the results of analyses if they can
-be reproduced by others</li>
+<ul><li>We can only have confidence in the results of scientific analyses if
+they can be reproduced by others</li>
 <li>“Others” includes your future self</li>
 <li>
 <code>targets</code> helps achieve reproducibility by automating
@@ -334,7 +396,7 @@ any links that you are not going to use.
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="index.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="basic-targets.html" rel="next">Next: basic-targets... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="basic-targets.html" rel="next">Next: First targets... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
     </nav></div> <!-- / div.primary-content.col-xs-12 -->
 <!-- END:   inst/pkgdown/templates/content-instructor.html-->
@@ -378,9 +440,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-rmd/introduction.html",
   "identifier": "https://carpentries.github.io/workbench-template-rmd/introduction.html",
-  "dateCreated": "2023-04-11",
-  "dateModified": "2023-04-11",
-  "datePublished": "2023-04-11"
+  "dateCreated": "2023-04-13",
+  "dateModified": "2023-04-13",
+  "datePublished": "2023-04-13"
 }
 
   </script><script>

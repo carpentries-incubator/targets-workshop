@@ -191,7 +191,79 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="basic-targets.html">2. basic-targets</a>
+        <a href="basic-targets.html">2. First targets Workflow</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="cache.html">3. Loading Workflow Objects</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="lifecycle.html">4. The Workflow Lifecycle</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="organization.html">5. Best Practices for targets Project Organization</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="files.html">6. Working With External Files</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush8">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading8">
+        <a href="quarto.html">7. Reproducible Reports with Quarto</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush9">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading9">
+        <a href="batch.html">8. Batch and Parallel Processing</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -255,7 +327,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p> Last updated on 2023-04-11 | 
+<p> Last updated on 2023-04-13 | 
         
         <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -310,16 +382,27 @@ workshop.</p>
 <hr class="half-width">
 <p><code>targets</code> is a workflow management package for the R
 programming language developed and maintained by Will Landau.</p>
-<p>The major features of <code>targets</code> include: -
-<strong>Automation</strong> of workflow - <strong>Caching</strong> of
-workflow steps - <strong>Batch creation</strong> of workflow steps -
-<strong>Parallelization</strong> at the level of the workflow</p>
-<p>This allows you to do the following: - return to a project after
-working on something else and immediately pick up where you left off
-without confusion or trying to remember what you were doing - change the
-workflow, then only re-run the parts that that are affected by the
-change - massively scale up the workflow without changing individual
-functions</p>
+<p>The major features of <code>targets</code> include:</p>
+<ul>
+<li>
+<strong>Automation</strong> of workflow</li>
+<li>
+<strong>Caching</strong> of workflow steps</li>
+<li>
+<strong>Batch creation</strong> of workflow steps</li>
+<li>
+<strong>Parallelization</strong> at the level of the workflow</li>
+</ul>
+<p>This allows you to do the following:</p>
+<ul>
+<li>return to a project after working on something else and immediately
+pick up where you left off without confusion or trying to remember what
+you were doing</li>
+<li>change the workflow, then only re-run the parts that that are
+affected by the change</li>
+<li>massively scale up the workflow without changing individual
+functions</li>
+</ul>
 <p>… and of course, it will help others reproduce your analysis.</p>
 </section><section id="who-should-use-targets"><h2 class="section-heading">Who should use <code>targets</code>?<a class="anchor" aria-label="anchor" href="#who-should-use-targets"></a>
 </h2>
@@ -332,8 +415,9 @@ for a very long time for automating bash scripts. <code>targets</code>
 is designed to work specifically with R, so it makes the most sense to
 use it if you primarily use R, or intend to. If you mostly code with
 other tools, you may want to consider an alternative.</p>
-<p>The goal of this workshop is to learn how to use <code>targets</code>
-to reproducible data analysis in R.</p>
+<p>The <strong>goal</strong> of this workshop is to <strong>learn how to
+use <code>targets</code> to reproducible data analysis in
+R</strong>.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -343,8 +427,8 @@ to reproducible data analysis in R.</p>
 </h3>
 <div class="callout-content">
 <ul>
-<li>We can only have confidence in the results of analyses if they can
-be reproduced by others</li>
+<li>We can only have confidence in the results of scientific analyses if
+they can be reproduced by others</li>
 <li>“Others” includes your future self</li>
 <li>
 <code>targets</code> helps achieve reproducibility by automating
@@ -360,9 +444,9 @@ language</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
-</section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">basic-targets</a></p>
+</section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p> Last updated on 2023-04-11 | 
+<p> Last updated on 2023-04-13 | 
         
         <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -414,16 +498,16 @@ results.</p>
 if you return to an analysis after time spent elsewhere. This wouldn’t
 be a problem if we only ever work on one thing at a time until
 completion, but that is almost never the case. It is hard to remember
-what you were doing when you come back to a project (a phenomenon called
-“context switching”). By using a standardized organization system, you
-will reduce confusion and lost time… in other words, you are increasing
-reproducibility!</p>
+what you were doing when you come back to a project after working on
+something else (a phenomenon called “context switching”). By using a
+standardized organization system, you will reduce confusion and lost
+time… in other words, you are increasing reproducibility!</p>
 <p>This workshop will use RStudio, since it also works well with the
 project organization concept.</p>
 </div>
-</section><section id="create-a-project-in-rstudio"><h2 class="section-heading">Create a project in RStudio<a class="anchor" aria-label="anchor" href="#create-a-project-in-rstudio"></a>
-</h2>
-<hr class="half-width">
+<div class="section level3">
+<h3 id="create-a-project-in-rstudio">Create a project in RStudio<a class="anchor" aria-label="anchor" href="#create-a-project-in-rstudio"></a>
+</h3>
 <p>Let’s start a new project using RStudio.</p>
 <p>Click “File”, then select “New Project”.</p>
 <p>This will open the New Project Wizard, a set of menus to help you set
@@ -452,6 +536,7 @@ RStudio then navigating in your file browser to your Desktop, opening
 the “targets-demo” folder, and double clicking <code>.Rproj</code>).</p>
 <p>OK, now that our project is set up, we are ready to start using
 <code>targets</code>!</p>
+</div>
 </section><section id="create-a-_targets.r-file"><h2 class="section-heading">Create a <code>_targets.R</code> file<a class="anchor" aria-label="anchor" href="#create-a-_targets.r-file"></a>
 </h2>
 <hr class="half-width">
@@ -471,13 +556,25 @@ this.</p>
 <p>In the R console, first load the <code>targets</code> package with
 <code><a href="https://docs.ropensci.org/targets/" class="external-link">library(targets)</a></code>, then run the command
 <code>tar_script()</code>.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="fu">tar_script</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
 <p>Nothing will happen in the console, but in the file viewer, you
 should see a new file, <code>_targets.R</code> appear. Open it using the
 File menu or by clicking on it.</p>
 <p>We can see this default <code>_targets.R</code> file includes three
-main parts: - Loading packages with <code>library()</code> - Defining a
-custom function with <code>function()</code> - Defining a list with
-<code>list()</code>.</p>
+main parts:</p>
+<ul>
+<li>Loading packages with <code>library()</code>
+</li>
+<li>Defining a custom function with <code>function()</code>
+</li>
+<li>Defining a list with <code>list()</code>.</li>
+</ul>
 <p>The last part, the list, is the most important part of the
 <code>_targets.R</code> file. It defines the steps in the workflow. The
 <code>_targets.R</code> file must always end with this list.</p>
@@ -487,16 +584,78 @@ custom function with <code>function()</code> - Defining a list with
 argument is the command used to build it. Note that the name of the
 target is <strong>unquoted</strong>, that is, it is written without any
 surrounding quotation marks.</p>
+<div id="callout1" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout<a class="anchor" aria-label="anchor" href="#callout1"></a>
+</h3>
+<div class="callout-content">
+<p>Let’s modify the default workflow: rename the names of the targets
+from <code>data</code> to <code>my_data</code> and <code>summary</code>
+to <code>my_summary</code>. This is to avoid confusion with base R
+functions <code>data()</code> and <code>summary()</code>. It is
+generally a good idea to avoid naming objects in R with the names of
+existing functions.</p>
+<p>Make sure to rename <code>data</code> to <code>my_data</code>
+<strong>each time it appears</strong> (twice). The names of the targets
+are very important: this is how <code>targets</code> knows how workflow
+steps depend on each other.</p>
+</div>
+</div>
+</div>
+<p>Your final <code>_targets.R</code> file should look like this:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="co"># This is an example _targets.R file. Every</span></span>
+<span><span class="co"># {targets} pipeline needs one.</span></span>
+<span><span class="co"># Use tar_script() to create _targets.R and tar_edit()</span></span>
+<span><span class="co"># to open it again for editing.</span></span>
+<span><span class="co"># Then, run tar_make() to run the pipeline</span></span>
+<span><span class="co"># and tar_read(summary) to view the results.</span></span>
+<span></span>
+<span><span class="co"># Define custom functions and other global objects.</span></span>
+<span><span class="co"># This is where you write source(\"R/functions.R\")</span></span>
+<span><span class="co"># if you keep your functions in external scripts.</span></span>
+<span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">summarize</span><span class="op">(</span><span class="va">dataset</span>, mean_x <span class="op">=</span> <span class="fu">mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Set target-specific options such as packages.</span></span>
+<span><span class="fu">tar_option_set</span><span class="op">(</span>packages <span class="op">=</span> <span class="st">"dplyr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># End this file with a list of target objects.</span></span>
+<span><span class="fu">list</span><span class="op">(</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">my_data</span>, <span class="fu">data.frame</span><span class="op">(</span>x <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">my_summary</span>, <span class="fu">summ</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span><span class="op">)</span> <span class="co"># Call your custom functions as needed.</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
 </div>
 </section><section id="run-the-workflow"><h2 class="section-heading">Run the workflow<a class="anchor" aria-label="anchor" href="#run-the-workflow"></a>
 </h2>
 <hr class="half-width">
-<p>Now that we have a workflow, we can run it with
-<code>targets</code>.</p>
-<p>The command to do that is <code>tar_make()</code>.</p>
-<p>Try it and see what happens!</p>
-<p>You should see some messages that R has built the steps of the
-workflow.</p>
+<p>Now that we have a workflow, we can run it with the
+<code>tar_make()</code> function. Try running it, and you should see
+something like this:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_make</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target my_data
+• built target my_data [0.098 seconds]
+• start target my_summary
+• built target my_summary [0.02 seconds]
+• end pipeline [0.208 seconds]</code></pre>
+</div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
 <div id="challenge1" class="callout challenge">
@@ -522,7 +681,12 @@ describe the steps of the workflow?</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-
+<p>The first step of the workflow built a target called
+<code>my_data</code> that includes two variables, <code>x</code> and
+<code>y</code>.</p>
+<p>The second step of the workflow built a target called
+<code>my_summ</code> that includes the mean of <code>x</code> calculated
+with a custom function called <code>summ()</code>.</p>
 </div>
 </div>
 </div>
@@ -544,7 +708,7 @@ included in all <code>targets</code> projects, and defines the
 worklow</li>
 <li>Use <code>tar_script()</code> to create a default
 <code>_targets.R</code> file</li>
-<li>Use <code>tar_make()</code> to execute the workflow</li>
+<li>Use <code>tar_make()</code> to run the workflow</li>
 </ul>
 </div>
 </div>
@@ -553,7 +717,462 @@ worklow</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
-</section></section>
+</section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
+<hr>
+<p> Last updated on 2023-04-13 | 
+        
+        <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>Where does the workflow happen?</li>
+<li>How can we inspect the objects built by the workflow?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain where <code>targets</code> runs the workflow and why</li>
+<li>Be able to load objects built by the workflow into your R
+session</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section id="where-does-the-workflow-happen"><h2 class="section-heading">Where does the workflow happen?<a class="anchor" aria-label="anchor" href="#where-does-the-workflow-happen"></a>
+</h2>
+<hr class="half-width">
+<p>So we just finished running our first workflow. Now you probably want
+to look at its output. But, if we just call the name of the object
+(<code>my_data</code> or <code>my_summary</code>), we get an error.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'my_data' not found</code></pre>
+</div>
+<p>Where are the results of our workflow?</p>
+
+<p>We don’t see the workflow results because <code>targets</code>
+<strong>runs the workflow in a separate R session</strong> that we can’t
+interact with. This is for reproducibility—the objects built by the
+workflow should only depend on the code in your project, not any
+commands you may have interactively given to R.</p>
+<p>Fortunately, <code>targets</code> has two functions that can be used
+to load objects built by the workflow into our current session,
+<code>tar_load()</code> and <code>tar_read()</code>. Let’s see how these
+work.</p>
+</section><section id="tar_load"><h2 class="section-heading">tar_load()<a class="anchor" aria-label="anchor" href="#tar_load"></a>
+</h2>
+<hr class="half-width">
+<p><code>tar_load()</code> loads an object built by the workflow into
+the current session. Its first argument is the name of the object you
+want to load. Let’s use this to load <code>my_data</code> and inspect
+the first several rows with <code>head()</code>.</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span>
+<span><span class="fu">head</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>   x  y
+1 65 88
+2  4  9
+3 14 71
+4 26 11
+5 69 85
+6 76 26</code></pre>
+</div>
+<p>Note that <code>tar_load()</code> is used for its
+<strong>side-effect</strong>—loading the desired object into the current
+R session. It doesn’t actually return a value.</p>
+</section><section id="tar_read"><h2 class="section-heading">tar_read()<a class="anchor" aria-label="anchor" href="#tar_read"></a>
+</h2>
+<hr class="half-width">
+<p><code>tar_read()</code> is similar to <code>tar_load()</code> in that
+it is used to retrieve objects built by the workflow, but unlike
+<code>tar_load()</code>, it returns them directly as output.</p>
+<p>Let’s try it with <code>my_summary</code>.</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">my_summary</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>  mean_x
+1   50.5</code></pre>
+</div>
+<p>We immediately see the contents of <code>my_summary</code>. But it
+has not been loaded into the enviroment. If you try to run
+<code>my_summary</code> now, you will get an error:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_summary</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'my_summary' not found</code></pre>
+</div>
+</section><section id="when-to-use-which-function"><h2 class="section-heading">When to use which function<a class="anchor" aria-label="anchor" href="#when-to-use-which-function"></a>
+</h2>
+<hr class="half-width">
+<p><code>tar_load()</code> tends to be more useful when you want to load
+objects and do things with them. <code>tar_read()</code> is more useful
+when you just want to immediately inspect an object.</p>
+</section><section id="the-targets-cache"><h2 class="section-heading">The targets cache<a class="anchor" aria-label="anchor" href="#the-targets-cache"></a>
+</h2>
+<hr class="half-width">
+<p>If you close your R session, then re-start it and use
+<code>tar_load()</code> or <code>tar_read()</code>, you will notice that
+it can still load the workflow objects. In other words, the workflow
+output is <strong>saved across R sessions</strong>. How is this
+possible?</p>
+<p>You may have noticed a new folder has appeared in your project,
+called <code>_targets</code>. This is the <strong>targets
+cache</strong>. It contains all of the workflow output; that is how we
+can load the targets built by the workflow even after quitting then
+restarting R.</p>
+<p><strong>You should not edit the contents of the cache by
+hand</strong> (with one exception). Doing so would make your analysis
+non-reproducible.</p>
+<p>The one exception to this rule is a special subfolder called
+<code>_targets/user</code>. This folder does not exist by default. You
+can create it if you want, and put whatever you want inside.</p>
+<p>Generally, <code>_targets/user</code> is a good place to store files
+that are not code, like data and output.</p>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>
+<code>targets</code> workflows are run in a separate,
+non-interactive R session</li>
+<li>
+<code>tar_load()</code> loads a workflow object into the current R
+session</li>
+<li>
+<code>tar_read()</code> reads a workflow object and returns its
+value</li>
+<li>The <code>_targets</code> folder is the cache and generally should
+not be edited by hand</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- 
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use. 
+ -->
+</section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
+<hr>
+<p> Last updated on 2023-04-13 | 
+        
+        <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What happens if we re-run a workflow?</li>
+<li>How does <code>targets</code> know what steps to re-run?</li>
+<li>How can I override default settings?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain how <code>targets</code> helps increase efficiency</li>
+<li>Be able to inspect a workflow to see what parts are outdated</li>
+<li>Be able to run only a specific part of the workflow</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>
+<code>targets</code> only runs the steps that have been affected by
+a change to the code</li>
+<li>
+<code>tar_visnetwork()</code> shows the current state of the
+workflow as a network</li>
+<li>
+<code>tar_progress()</code> shows the current state of the workflow
+as a data frame</li>
+<li>
+<code>tar_outdated()</code> lists outdated targets that will be
+built in the next <code>tar_make()</code>
+</li>
+</ul>
+</div>
+</div>
+</div></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
+<hr>
+<p> Last updated on 2023-04-13 | 
+        
+        <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What are best practices for organizing <code>targets</code>
+projects?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain how to organize <code>targets</code> projects for maximal
+reproducibility</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Put code in the <code>R/</code> folder</li>
+<li>Put functions in <code>R/functions.R</code>
+</li>
+<li>Specify packages in <code>R/packages.R</code>
+</li>
+<li>Put other miscellaneous files in <code>_targets/user</code>
+</li>
+<li>Use the <code>conflicted</code> package to manage namespace
+conflicts</li>
+</ul>
+</div>
+</div>
+</div></section><section id="aio-files"><p>Content from <a href="files.html">Working With External Files</a></p>
+<hr>
+<p> Last updated on 2023-04-13 | 
+        
+        <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>How can we load external data?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Be able to load external data into a workflow</li>
+<li>Configure the workflow to rerun if the contents of the external data
+change</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>
+<code>tarchetypes::tar_file_read()</code> is used to load external
+data</li>
+<li>A target defined by <code>tarchetypes::tar_file_read()</code> will
+become outdated if the external data changes</li>
+</ul>
+</div>
+</div>
+</div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
+<hr>
+<p> Last updated on 2023-04-13 | 
+        
+        <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>How can we create reproducible reports?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Be able to generate a report using <code>targets</code>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>
+<code>tarchetypes::tar_quarto()</code> is used to render Quarto
+documents</li>
+<li>You should load targets within the Quarto document using
+<code>tar_load()</code> and <code>tar_read()</code>
+</li>
+<li>It is recommended to do heavy computations in the main targets
+workflow, and lighter formatting and plot generation in the Quarto
+document</li>
+</ul>
+</div>
+</div>
+</div></section><section id="aio-batch"><p>Content from <a href="batch.html">Batch and Parallel Processing</a></p>
+<hr>
+<p> Last updated on 2023-04-13 | 
+        
+        <a href="https://github.com/carpentries/workbench-template-rmd/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>How can we specify many targets without typing everything out?</li>
+<li>How can we build targets in parallel?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Be able to specify targets using branching</li>
+<li>Be able to build targets in parallel</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Dynamic branching is easier to use, but the names of the targets it
+creates are arbitrary</li>
+<li>There are many parallel backends available</li>
+</ul>
+</div>
+</div>
+</div></section>
 </div>
     </main>
 </div>
@@ -601,9 +1220,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-rmd/aio.html",
   "identifier": "https://carpentries.github.io/workbench-template-rmd/aio.html",
-  "dateCreated": "2023-04-11",
-  "dateModified": "2023-04-11",
-  "datePublished": "2023-04-11"
+  "dateCreated": "2023-04-13",
+  "dateModified": "2023-04-13",
+  "datePublished": "2023-04-13"
 }
 
   </script><script>

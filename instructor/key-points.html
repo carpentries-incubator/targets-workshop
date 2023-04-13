@@ -189,7 +189,79 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="basic-targets.html">2. basic-targets</a>
+        <a href="basic-targets.html">2. First targets Workflow</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="cache.html">3. Loading Workflow Objects</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="lifecycle.html">4. The Workflow Lifecycle</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="organization.html">5. Best Practices for targets Project Organization</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="files.html">6. Working With External Files</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush8">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading8">
+        <a href="quarto.html">7. Reproducible Reports with Quarto</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush9">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading9">
+        <a href="batch.html">8. Batch and Parallel Processing</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -254,8 +326,8 @@
 <section id="introduction"><h2 class="section-heading"><a href="introduction.html">Introduction</a></h2>
 <hr class="half-width">
 <ul>
-<li>We can only have confidence in the results of analyses if they can
-be reproduced by others</li>
+<li>We can only have confidence in the results of scientific analyses if
+they can be reproduced by others</li>
 <li>“Others” includes your future self</li>
 <li>
 <code>targets</code> helps achieve reproducibility by automating
@@ -263,7 +335,7 @@ workflow</li>
 <li>
 <code>targests</code> is designed for use with the R programming
 language</li>
-</ul></section><section id="basic-targets"><h2 class="section-heading"><a href="basic-targets.html">basic-targets</a></h2>
+</ul></section><section id="basic-targets"><h2 class="section-heading"><a href="basic-targets.html">First targets Workflow</a></h2>
 <hr class="half-width">
 <ul>
 <li>Projects help keep our analyses organized so we can easily re-run
@@ -274,7 +346,75 @@ included in all <code>targets</code> projects, and defines the
 worklow</li>
 <li>Use <code>tar_script()</code> to create a default
 <code>_targets.R</code> file</li>
-<li>Use <code>tar_make()</code> to execute the workflow</li>
+<li>Use <code>tar_make()</code> to run the workflow</li>
+</ul></section><section id="cache"><h2 class="section-heading"><a href="cache.html">Loading Workflow Objects</a></h2>
+<hr class="half-width">
+<ul>
+<li>
+<code>targets</code> workflows are run in a separate,
+non-interactive R session</li>
+<li>
+<code>tar_load()</code> loads a workflow object into the current R
+session</li>
+<li>
+<code>tar_read()</code> reads a workflow object and returns its
+value</li>
+<li>The <code>_targets</code> folder is the cache and generally should
+not be edited by hand</li>
+</ul></section><section id="lifecycle"><h2 class="section-heading"><a href="lifecycle.html">The Workflow Lifecycle</a></h2>
+<hr class="half-width">
+<ul>
+<li>
+<code>targets</code> only runs the steps that have been affected by
+a change to the code</li>
+<li>
+<code>tar_visnetwork()</code> shows the current state of the
+workflow as a network</li>
+<li>
+<code>tar_progress()</code> shows the current state of the workflow
+as a data frame</li>
+<li>
+<code>tar_outdated()</code> lists outdated targets that will be
+built in the next <code>tar_make()</code>
+</li>
+</ul></section><section id="organization"><h2 class="section-heading"><a href="organization.html">Best Practices for targets Project Organization</a></h2>
+<hr class="half-width">
+<ul>
+<li>Put code in the <code>R/</code> folder</li>
+<li>Put functions in <code>R/functions.R</code>
+</li>
+<li>Specify packages in <code>R/packages.R</code>
+</li>
+<li>Put other miscellaneous files in <code>_targets/user</code>
+</li>
+<li>Use the <code>conflicted</code> package to manage namespace
+conflicts</li>
+</ul></section><section id="files"><h2 class="section-heading"><a href="files.html">Working With External Files</a></h2>
+<hr class="half-width">
+<ul>
+<li>
+<code>tarchetypes::tar_file_read()</code> is used to load external
+data</li>
+<li>A target defined by <code>tarchetypes::tar_file_read()</code> will
+become outdated if the external data changes</li>
+</ul></section><section id="quarto"><h2 class="section-heading"><a href="quarto.html">Reproducible Reports with Quarto</a></h2>
+<hr class="half-width">
+<ul>
+<li>
+<code>tarchetypes::tar_quarto()</code> is used to render Quarto
+documents</li>
+<li>You should load targets within the Quarto document using
+<code>tar_load()</code> and <code>tar_read()</code>
+</li>
+<li>It is recommended to do heavy computations in the main targets
+workflow, and lighter formatting and plot generation in the Quarto
+document</li>
+</ul></section><section id="batch"><h2 class="section-heading"><a href="batch.html">Batch and Parallel Processing</a></h2>
+<hr class="half-width">
+<ul>
+<li>Dynamic branching is easier to use, but the names of the targets it
+creates are arbitrary</li>
+<li>There are many parallel backends available</li>
 </ul></section>
 </div>
     </main>
@@ -323,9 +463,9 @@ worklow</li>
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-rmd/instructor/key-points.html",
   "identifier": "https://carpentries.github.io/workbench-template-rmd/instructor/key-points.html",
-  "dateCreated": "2023-04-11",
-  "dateModified": "2023-04-11",
-  "datePublished": "2023-04-11"
+  "dateCreated": "2023-04-13",
+  "dateModified": "2023-04-13",
+  "datePublished": "2023-04-13"
 }
 
   </script><script>
