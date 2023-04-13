@@ -1,5 +1,5 @@
 ---
-title: 'Working With External Files'
+title: 'Working with External Files'
 teaching: 10
 exercises: 2
 ---
