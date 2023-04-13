@@ -1,5 +1,5 @@
 ---
-title: 'Best Practices for targets Project Organization'
+title: 'Best Practices for `targets` Project Organization'
 teaching: 10
 exercises: 2
 ---

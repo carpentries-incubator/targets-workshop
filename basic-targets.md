@@ -1,5 +1,5 @@
 ---
-title: 'First targets Workflow'
+title: 'First `targets` Workflow'
 teaching: 10
 exercises: 2
 ---
@@ -148,10 +148,10 @@ tar_make()
 
 ```{.output}
 • start target my_data
-• built target my_data [0.098 seconds]
+• built target my_data [0.078 seconds]
 • start target my_summary
 • built target my_summary [0.02 seconds]
-• end pipeline [0.208 seconds]
+• end pipeline [0.174 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
