@@ -35,12 +35,14 @@ Other practices you can use to further enhance reproducibility include controlli
 `targets` is a workflow management package for the R programming language developed and maintained by Will Landau.
 
 The major features of `targets` include:
+
 - **Automation** of workflow
 - **Caching** of workflow steps
 - **Batch creation** of workflow steps
 - **Parallelization** at the level of the workflow
 
 This allows you to do the following:
+
 - return to a project after working on something else and immediately pick up where you left off without confusion or trying to remember what you were doing
 - change the workflow, then only re-run the parts that that are affected by the change
 - massively scale up the workflow without changing individual functions
@@ -55,11 +57,11 @@ For example, snakemake is a popular workflow tool for python, and `make` is a to
 `targets` is designed to work specifically with R, so it makes the most sense to use it if you primarily use R, or intend to.
 If you mostly code with other tools, you may want to consider an alternative.
 
-The goal of this workshop is to learn how to use `targets` to reproducible data analysis in R.
+The **goal** of this workshop is to **learn how to use `targets` to reproducible data analysis in R**.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- We can only have confidence in the results of analyses if they can be reproduced by others
+- We can only have confidence in the results of scientific analyses if they can be reproduced by others
 - "Others" includes your future self
 - `targets` helps achieve reproducibility by automating workflow
 - `targests` is designed for use with the R programming language
