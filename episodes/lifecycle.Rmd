@@ -20,6 +20,159 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+```{r}
+#| label: setup
+#| echo: FALSE
+#| message: FALSE
+#| warning: FALSE
+library(targets)
+library(visNetwork)
+```
+
+## Re-running the workflow
+
+One of the features of `targets` is that it maximizes efficiency by only running the parts of the workflow that need to be run.
+
+This is easiest to understand by trying it yourself. Let's try running the workflow again:
+
+```{r}
+#| label: targets-run-show
+#| eval: FALSE
+tar_make()
+```
+
+```{r}
+#| label: targets-run-hide
+#| echo: FALSE
+tar_dir({
+  tar_script({
+  summ <- function(dataset) {
+    summarize(dataset, mean_x = mean(x))
+  }
+  tar_option_set(packages = "dplyr")
+  list(
+    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
+    tar_target(my_summary, summ(my_data))
+  )
+  })
+  tar_make(reporter = "silent")
+  tar_make()
+})
+```
+
+Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
+
+This time, it tells us it is skipping those targets; they have already been built, so there's no need to run that code again.
+
+Remember, the fastest code is the code you don't have to run!
+
+## Re-running the workflow after modification
+
+What happens when we change one part of the workflow then run it again?
+
+Let's modify the workflow to calculate the mean of both `x` and `y`.
+
+Edit `_targets.R` so that the `summ()` function looks like this:
+
+```{r}
+#| label: new-func
+#| eval: FALSE
+summ <- function(dataset) {
+    summarize(dataset, mean_x = mean(x), mean_y = mean(y))
+  }
+```
+
+Then run it again.
+
+```{r}
+#| label: targets-run-show-2
+#| eval: FALSE
+tar_make()
+```
+
+```{r}
+#| label: targets-run-hide-2
+#| echo: FALSE
+tar_dir({
+  # Original workflow
+  tar_script({
+  summ <- function(dataset) {
+    summarize(dataset, mean_x = mean(x))
+  }
+  tar_option_set(packages = "dplyr")
+  list(
+    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
+    tar_target(my_summary, summ(my_data))
+  )
+  })
+  # Run it silently
+  tar_make(reporter = "silent")
+  # New workflow
+  tar_script({
+  summ <- function(dataset) {
+    summarize(dataset, mean_x = mean(x), mean_y = mean(y))
+  }
+  tar_option_set(packages = "dplyr")
+  list(
+    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
+    tar_target(my_summary, summ(my_data))
+  )
+  })
+  # Run it again
+  tar_make()
+})
+```
+
+What happened?
+
+This time, it skipped `my_data` and only ran `my_summary`.
+
+Of course, since our example workflow is so short we don't even notice the amount of time saved.
+But imagine using this in a series of computationally intensive analysis steps.
+The ability to automatically skip steps results in a massive increase in efficiency.
+
+## Visualizing the workflow
+
+Typically, you will be making edits to various places in your code, adding new targets, and running the workflow periodically.
+It is good to be able to visualize the state of the workflow.
+
+This can be done with `tar_visnetwork()`
+
+```{r}
+#| label: targets-run-show-3
+#| eval: FALSE
+tar_visnetwork()
+```
+
+```{r}
+#| label: targets-run-hide-3
+#| echo: FALSE
+tar_dir({
+  # New workflow
+  tar_script({
+  summ <- function(dataset) {
+    summarize(dataset, mean_x = mean(x), mean_y = mean(y))
+  }
+  tar_option_set(packages = "dplyr")
+  list(
+    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
+    tar_target(my_summary, summ(my_data))
+  )
+  })
+  # Run it again
+  tar_make(reporter = "silent")
+  tar_visnetwork()
+})
+```
+
+::::::::::::::::::::::::::::::::::::: caution 
+
+You may encounter an error message `The package "visNetwork" is required.`
+
+In this case, install it first with `install.packages("visNetwork")`.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `targets` only runs the steps that have been affected by a change to the code
