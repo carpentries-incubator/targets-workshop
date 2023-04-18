@@ -148,10 +148,10 @@ tar_make()
 
 ```{.output}
 • start target my_data
-• built target my_data [0.078 seconds]
+• built target my_data [0.069 seconds]
 • start target my_summary
-• built target my_summary [0.02 seconds]
-• end pipeline [0.174 seconds]
+• built target my_summary [0.018 seconds]
+• end pipeline [0.157 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
