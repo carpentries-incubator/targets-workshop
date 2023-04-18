@@ -327,7 +327,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -446,7 +446,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -651,10 +651,10 @@ something like this:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target my_data
-• built target my_data [0.078 seconds]
+• built target my_data [0.069 seconds]
 • start target my_summary
-• built target my_summary [0.02 seconds]
-• end pipeline [0.174 seconds]</code></pre>
+• built target my_summary [0.018 seconds]
+• end pipeline [0.157 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
@@ -679,7 +679,7 @@ describe the steps of the workflow?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>The first step of the workflow built a target called
 <code>my_data</code> that includes two variables, <code>x</code> and
@@ -719,7 +719,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -899,7 +899,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -934,6 +934,94 @@ any links that you are not going to use.
 </div>
 </div>
 </div>
+<section id="re-running-the-workflow"><h2 class="section-heading">Re-running the workflow<a class="anchor" aria-label="anchor" href="#re-running-the-workflow"></a>
+</h2>
+<hr class="half-width">
+<p>One of the features of <code>targets</code> is that it maximizes
+efficiency by only running the parts of the workflow that need to be
+run.</p>
+<p>This is easiest to understand by trying it yourself. Let’s try
+running the workflow again:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_make</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>✔ skip target my_data
+✔ skip target my_summary
+✔ skip pipeline [0.059 seconds]</code></pre>
+</div>
+<p>Remember how the first time we ran the pipeline, <code>targets</code>
+printed out a list of each target as it was being built?</p>
+<p>This time, it tells us it is skipping those targets; they have
+already been built, so there’s no need to run that code again.</p>
+<p>Remember, the fastest code is the code you don’t have to run!</p>
+</section><section id="re-running-the-workflow-after-modification"><h2 class="section-heading">Re-running the workflow after modification<a class="anchor" aria-label="anchor" href="#re-running-the-workflow-after-modification"></a>
+</h2>
+<hr class="half-width">
+<p>What happens when we change one part of the workflow then run it
+again?</p>
+<p>Let’s modify the workflow to calculate the mean of both
+<code>x</code> and <code>y</code>.</p>
+<p>Edit <code>_targets.R</code> so that the <code>summ()</code> function
+looks like this:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">summarize</span><span class="op">(</span><span class="va">dataset</span>, mean_x <span class="op">=</span> <span class="fu">mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, mean_y <span class="op">=</span> <span class="fu">mean</span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span></code></pre>
+</div>
+<p>Then run it again.</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_make</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>✔ skip target my_data
+• start target my_summary
+• built target my_summary [0.014 seconds]
+• end pipeline [0.157 seconds]</code></pre>
+</div>
+<p>What happened?</p>
+<p>This time, it skipped <code>my_data</code> and only ran
+<code>my_summary</code>.</p>
+<p>Of course, since our example workflow is so short we don’t even
+notice the amount of time saved. But imagine using this in a series of
+computationally intensive analysis steps. The ability to automatically
+skip steps results in a massive increase in efficiency.</p>
+</section><section id="visualizing-the-workflow"><h2 class="section-heading">Visualizing the workflow<a class="anchor" aria-label="anchor" href="#visualizing-the-workflow"></a>
+</h2>
+<hr class="half-width">
+<p>Typically, you will be making edits to various places in your code,
+adding new targets, and running the workflow periodically. It is good to
+be able to visualize the state of the workflow.</p>
+<p>This can be done with <code>tar_visnetwork()</code></p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_visnetwork</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<!--html_preserve-->
+<div id="htmlwidget-fa6bfd20bed6c6f5cac5" class="visNetwork html-widget html-fill-item-overflow-hidden html-fill-item" style="width:504px;height:504px;">
+
+</div>
+<script type="application/json" data-for="htmlwidget-fa6bfd20bed6c6f5cac5">{"x":{"nodes":{"name":["my_data","my_summary","summ"],"type":["stem","stem","function"],"status":["uptodate","uptodate","uptodate"],"seconds":[0.069,0.018,null],"bytes":[452,132,null],"branches":[null,null,null],"label":["my_data","my_summary","summ"],"color":["#354823","#354823","#354823"],"id":["my_data","my_summary","summ"],"level":[1,2,1],"shape":["dot","dot","triangle"]},"edges":{"from":["my_data","summ"],"to":["my_summary","my_summary"],"arrows":["to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":{"type":"cubicBezier","forceDirection":"horizontal"}},"physics":{"stabilization":false},"interaction":{"zoomSpeed":1},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":{"text":"","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":1,"to":1},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"legend":{"width":0.2,"useGroups":false,"position":"right","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Stem","Function"],"color":["#354823","#899DA4","#899DA4"],"shape":["dot","dot","triangle"]},"nodesToDataframe":true},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script><!--/html_preserve--><div class="caution">
+<p>You may encounter an error message
+<code>The package "visNetwork" is required.</code></p>
+<p>In this case, install it first with
+<code>install.packages("visNetwork")</code>.</p>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -959,9 +1047,14 @@ built in the next <code>tar_make()</code>
 </ul>
 </div>
 </div>
-</div></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
+</div>
+<!-- 
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use. 
+ -->
+</section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1017,7 +1110,7 @@ conflicts</li>
 </div>
 </div></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1069,7 +1162,7 @@ become outdated if the external data changes</li>
 </div>
 </div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1124,7 +1217,7 @@ document</li>
 </div>
 </div></section><section id="aio-batch"><p>Content from <a href="batch.html">Batch and Parallel Processing</a></p>
 <hr>
-<p> Last updated on 2023-04-13 | 
+<p> Last updated on 2023-04-18 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1220,7 +1313,7 @@ creates are arbitrary</li>
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/aio.html",
-  "dateCreated": "2023-04-13",
+  "dateCreated": "2023-04-18",
   "dateModified": "2023-04-18",
   "datePublished": "2023-04-18"
 }
