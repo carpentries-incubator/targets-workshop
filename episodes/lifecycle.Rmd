@@ -26,7 +26,7 @@ exercises: 2
 #| warning: FALSE
 library(targets)
 library(visNetwork)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/jnfix1/episodes/files/functions.R") # nolint
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
 ```
 
 ## Re-running the workflow

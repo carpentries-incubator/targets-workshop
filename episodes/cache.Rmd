@@ -10,7 +10,7 @@ exercises: 2
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/jnfix1/episodes/files/functions.R") # nolint
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
 ```
 
 :::::::::::::::::::::::::::::::::::::: questions 
