@@ -28,7 +28,7 @@ exercises: 2
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-plan_02 <- here::here("episodes/files/_targets-02.R")
+source(here::here("episodes/files/functions.R"))
 ```
 
 ## Create a project
@@ -159,7 +159,7 @@ tar_make()
 #| label: targets-run-hide
 #| echo: FALSE
 tar_dir({
-  fs::file_copy(plan_02, "_targets.R")
+  write_example_plan(2)
   tar_make()
 })
 ```

@@ -27,9 +27,7 @@ exercises: 2
 #| warning: FALSE
 library(targets)
 library(visNetwork)
-plan_01 <- here::here("episodes/files/_targets-01.R")
-plan_02 <- here::here("episodes/files/_targets-02.R")
-plan_03 <- here::here("episodes/files/_targets-03.R")
+source(here::here("episodes/files/functions.R"))
 ```
 
 ## Re-running the workflow
@@ -47,9 +45,9 @@ tar_make()
 ```{r}
 #| label: targets-run-hide
 #| echo: FALSE
+# Each tar_script is fresh, so need to run once to catch up to learners
 tar_dir({
-  fs::file_copy(plan_02, "_targets.R")
-  # Each tar_script is fresh, so need to run once to catch up to learners
+  write_example_plan(2)
   tar_make(reporter = "silent")
   tar_make()
 })
@@ -90,11 +88,11 @@ tar_make()
 #| echo: FALSE
 tar_dir({
   # Original workflow
-  fs::file_copy(plan_02, "_targets.R")
+  write_example_plan(2)
   # Run it silently
   tar_make(reporter = "silent")
   # New workflow
-  fs::file_copy(plan_03, "_targets.R", overwrite = TRUE)
+  write_example_plan(3)
   # Run it again
   tar_make()
 })
@@ -126,7 +124,7 @@ tar_visnetwork()
 #| echo: FALSE
 tar_dir({
   # New workflow
-  fs::file_copy(plan_03, "_targets.R")
+  write_example_plan(3)
   # Run it
   tar_make(reporter = "silent")
   # Run it again
@@ -172,25 +170,46 @@ If everything is up to date, it will return a zero-length character vector (`cha
 You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
 
 ```{r}
-#| label: targets-run-show-4
+#| label: targets-outdated-show
 #| eval: FALSE
-tar_visnetwork()
+tar_outdated()
 ```
 
 ```{r}
-#| label: targets-run-hide-4
+#| label: targets-outdated-hide
 #| echo: FALSE
-tar_file <- here::here("episodes/example_targets.R")
 tar_dir({
-  fs::file_copy(tar_file, "_targets.R")
+  # New workflow
+  write_example_plan(3)
+  # Run it
+  tar_make(reporter = "silent")
   # Run it again
-  tar_make()
-  tar_visnetwork()
+  tar_make(reporter = "silent")
+  tar_outdated()
 })
 ```
 
+```{r}
+#| label: targets-progress-show
+#| eval: FALSE
+tar_progress()
+```
 
-::::::::::::::::::::::::::::::::::::: caution 
+```{r}
+#| label: targets-progress-hide
+#| echo: FALSE
+tar_dir({
+  # New workflow
+  write_example_plan(3)
+  # Run it
+  tar_make(reporter = "silent")
+  # Run it again
+  tar_make(reporter = "silent")
+  tar_progress()
+})
+```
+
+::::::::::::::::::::::::::::::::::::: callout 
 
 You may encounter an error message `The package "visNetwork" is required.`
 

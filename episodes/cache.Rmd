@@ -10,7 +10,7 @@ exercises: 2
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-plan_02 <- here::here("episodes/files/_targets-02.R")
+source(here::here("episodes/files/functions.R"))
 ```
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -62,8 +62,10 @@ Let's use this to load `my_data` and inspect the first several rows with `head()
 ```{r}
 #| label: targets-run-hide
 #| echo: FALSE
+# When building the Rmd, each instance of the workflow is isolated, so need
+# to re-run
 tar_dir({
-  fs::file_copy(plan_02, "_targets.R")
+  write_example_plan(2)
   tar_make(reporter = "silent")
   my_summary_hide <- tar_read(my_summary)
   my_data_hide <- tar_read(my_data)
@@ -145,4 +147,3 @@ Generally, `_targets/user` is a good place to store files that are not code, lik
 - The `_targets` folder is the cache and generally should not be edited by hand
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
