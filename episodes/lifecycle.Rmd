@@ -27,7 +27,7 @@ exercises: 2
 #| warning: FALSE
 library(targets)
 library(visNetwork)
-source(here::here("episodes/files/functions.R"))
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/jnfix1/episodes/files/functions.R") # nolint
 ```
 
 ## Re-running the workflow

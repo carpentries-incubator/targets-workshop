@@ -10,7 +10,7 @@ exercises: 2
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-source(here::here("episodes/files/functions.R"))
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/jnfix1/episodes/files/functions.R") # nolint
 ```
 
 :::::::::::::::::::::::::::::::::::::: questions 
