@@ -22,6 +22,15 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+```{r}
+#| label: setup
+#| echo: FALSE
+#| message: FALSE
+#| warning: FALSE
+library(targets)
+plan_02 <- here::here("episodes/files/_targets-02.R")
+```
+
 ## Create a project
 
 ### About projects
@@ -78,12 +87,6 @@ library(targets)
 tar_script()
 ```
 
-```{r}
-#| label: start-targets-hide
-#| echo: FALSE
-library(targets)
-```
-
 Nothing will happen in the console, but in the file viewer, you should see a new file, `_targets.R` appear. Open it using the File menu or by clicking on it.
 
 We can see this default `_targets.R` file includes three main parts:
@@ -128,11 +131,11 @@ library(targets)
 # This is where you write source(\"R/functions.R\")
 # if you keep your functions in external scripts.
 summ <- function(dataset) {
-  summarize(dataset, mean_x = mean(x))
+  colMeans(dataset)
 }
 
-# Set target-specific options such as packages.
-tar_option_set(packages = "dplyr")
+# Set target-specific options such as packages:
+# tar_option_set(packages = "utils") # nolint
 
 # End this file with a list of target objects.
 list(
@@ -156,16 +159,7 @@ tar_make()
 #| label: targets-run-hide
 #| echo: FALSE
 tar_dir({
-  tar_script({
-  summ <- function(dataset) {
-    summarize(dataset, mean_x = mean(x))
-  }
-  tar_option_set(packages = "dplyr")
-  list(
-    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-    tar_target(my_summary, summ(my_data))
-  )
-  })
+  fs::file_copy(plan_02, "_targets.R")
   tar_make()
 })
 ```
@@ -182,7 +176,7 @@ Inspect the list at the end of `_targets.R`. Can you describe the steps of the w
 
 The first step of the workflow built a target called `my_data` that includes two variables, `x` and `y`.
 
-The second step of the workflow built a target called `my_summ` that includes the mean of `x` calculated with a custom function called `summ()`.
+The second step of the workflow built a target called `my_summ` that includes the mean of `x` and `y` calculated with a custom function called `summ()`.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -197,4 +191,3 @@ The second step of the workflow built a target called `my_summ` that includes th
 - Use `tar_make()` to run the workflow
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-

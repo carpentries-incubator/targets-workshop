@@ -27,6 +27,9 @@ exercises: 2
 #| warning: FALSE
 library(targets)
 library(visNetwork)
+plan_01 <- here::here("episodes/files/_targets-01.R")
+plan_02 <- here::here("episodes/files/_targets-02.R")
+plan_03 <- here::here("episodes/files/_targets-03.R")
 ```
 
 ## Re-running the workflow
@@ -45,16 +48,8 @@ tar_make()
 #| label: targets-run-hide
 #| echo: FALSE
 tar_dir({
-  tar_script({
-  summ <- function(dataset) {
-    summarize(dataset, mean_x = mean(x))
-  }
-  tar_option_set(packages = "dplyr")
-  list(
-    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-    tar_target(my_summary, summ(my_data))
-  )
-  })
+  fs::file_copy(plan_02, "_targets.R")
+  # Each tar_script is fresh, so need to run once to catch up to learners
   tar_make(reporter = "silent")
   tar_make()
 })
@@ -70,7 +65,7 @@ Remember, the fastest code is the code you don't have to run!
 
 What happens when we change one part of the workflow then run it again?
 
-Let's modify the workflow to calculate the mean of both `x` and `y`.
+Let's modify the workflow to calculate the **sum** of the columns instead of the mean.
 
 Edit `_targets.R` so that the `summ()` function looks like this:
 
@@ -78,8 +73,8 @@ Edit `_targets.R` so that the `summ()` function looks like this:
 #| label: new-func
 #| eval: FALSE
 summ <- function(dataset) {
-    summarize(dataset, mean_x = mean(x), mean_y = mean(y))
-  }
+  colSums(dataset)
+}
 ```
 
 Then run it again.
@@ -95,29 +90,11 @@ tar_make()
 #| echo: FALSE
 tar_dir({
   # Original workflow
-  tar_script({
-  summ <- function(dataset) {
-    summarize(dataset, mean_x = mean(x))
-  }
-  tar_option_set(packages = "dplyr")
-  list(
-    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-    tar_target(my_summary, summ(my_data))
-  )
-  })
+  fs::file_copy(plan_02, "_targets.R")
   # Run it silently
   tar_make(reporter = "silent")
   # New workflow
-  tar_script({
-  summ <- function(dataset) {
-    summarize(dataset, mean_x = mean(x), mean_y = mean(y))
-  }
-  tar_option_set(packages = "dplyr")
-  list(
-    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-    tar_target(my_summary, summ(my_data))
-  )
-  })
+  fs::file_copy(plan_03, "_targets.R", overwrite = TRUE)
   # Run it again
   tar_make()
 })
@@ -149,21 +126,69 @@ tar_visnetwork()
 #| echo: FALSE
 tar_dir({
   # New workflow
-  tar_script({
-  summ <- function(dataset) {
-    summarize(dataset, mean_x = mean(x), mean_y = mean(y))
-  }
-  tar_option_set(packages = "dplyr")
-  list(
-    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-    tar_target(my_summary, summ(my_data))
-  )
-  })
+  fs::file_copy(plan_03, "_targets.R")
+  # Run it
+  tar_make(reporter = "silent")
   # Run it again
   tar_make(reporter = "silent")
   tar_visnetwork()
 })
 ```
+
+Here, we see that all of the targets are dark green, indicating that they are up-to-date and would be skipped if we were to run the workflow again.
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge 1: What else can the visualization tell us?
+
+Modify the workflow in `_targets.R`, then run `tar_visnetwork()` again **without** running `tar_make()`.
+What color indicates that a target is out of date?
+
+:::::::::::::::::::::::::::::::::: solution
+
+Light blue indicates the target is out of date.
+
+Depending on how you modified the code, any or all of the targets may now be blue.
+
+::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: caution
+
+When a target is out of date, that does not mean it will absolutely be built during the next run.
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+## Other ways to check workflow status
+
+The visualization is very useful, but sometimes you may be working on a server that doesn't provide graphical output, or you just want a quick textual summary of the workflow.
+There are some other useful functions that can do that.
+
+`tar_outdated()` lists only the **outdated** targets; that is, targets that will be built during the next workflow run.
+If everything is up to date, it will return a zero-length character vector (`character(0)`).
+
+`tar_progress()` shows the current status of the workflow as a dataframe.
+You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
+
+```{r}
+#| label: targets-run-show-4
+#| eval: FALSE
+tar_visnetwork()
+```
+
+```{r}
+#| label: targets-run-hide-4
+#| echo: FALSE
+tar_file <- here::here("episodes/example_targets.R")
+tar_dir({
+  fs::file_copy(tar_file, "_targets.R")
+  # Run it again
+  tar_make()
+  tar_visnetwork()
+})
+```
+
 
 ::::::::::::::::::::::::::::::::::::: caution 
 

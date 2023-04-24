@@ -10,6 +10,7 @@ exercises: 2
 #| message: FALSE
 #| warning: FALSE
 library(targets)
+plan_02 <- here::here("episodes/files/_targets-02.R")
 ```
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -62,16 +63,7 @@ Let's use this to load `my_data` and inspect the first several rows with `head()
 #| label: targets-run-hide
 #| echo: FALSE
 tar_dir({
-  tar_script({
-  summ <- function(dataset) {
-    summarize(dataset, mean_x = mean(x))
-  }
-  tar_option_set(packages = "dplyr")
-  list(
-    tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-    tar_target(my_summary, summ(my_data))
-  )
-  })
+  fs::file_copy(plan_02, "_targets.R")
   tar_make(reporter = "silent")
   my_summary_hide <- tar_read(my_summary)
   my_data_hide <- tar_read(my_data)
