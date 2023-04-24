@@ -270,6 +270,18 @@
 </div>
 <!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush10">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading10">
+        <a href="advanced.html">9. Advanced topics</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -374,9 +386,7 @@ workflow as a network</li>
 <code>tar_progress()</code> shows the current state of the workflow
 as a data frame</li>
 <li>
-<code>tar_outdated()</code> lists outdated targets that will be
-built in the next <code>tar_make()</code>
-</li>
+<code>tar_outdated()</code> lists outdated targets</li>
 </ul></section><section id="organization"><h2 class="section-heading"><a href="organization.html">Best Practices for <code>targets</code> Project Organization</a></h2>
 <hr class="half-width">
 <ul>
@@ -415,6 +425,22 @@ document</li>
 <li>Dynamic branching is easier to use, but the names of the targets it
 creates are arbitrary</li>
 <li>There are many parallel backends available</li>
+</ul></section><section id="advanced"><h2 class="section-heading"><a href="advanced.html">Advanced topics</a></h2>
+<hr class="half-width">
+<ul>
+<li>You can provide names of specific targets to build to
+<code>tar_make()</code>
+</li>
+<li>You can delete targets with <code>tar_delete()</code> and manually
+invalidate them with <code>tar_invalidate()</code>
+</li>
+<li>The settings for each targets project are contained in the
+<code>_targets.yaml</code> file</li>
+<li>
+<code>targets</code> does not track the content of R packages by
+default</li>
+<li>
+<code>renv</code> should be used for tracking package versions</li>
 </ul></section>
 </div>
     </main>
@@ -441,7 +467,7 @@ creates are arbitrary</li>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
         <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.11.15" class="external-link">sandpaper (0.11.15)</a>,
-        <a href="https://github.com/carpentries/pegboard/tree/0.5.2" class="external-link">pegboard (0.5.2)</a>,
+        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
 		</footer>
@@ -463,9 +489,9 @@ creates are arbitrary</li>
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/key-points.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/key-points.html",
-  "dateCreated": "2023-04-18",
-  "dateModified": "2023-04-18",
-  "datePublished": "2023-04-18"
+  "dateCreated": "2023-04-24",
+  "dateModified": "2023-04-24",
+  "datePublished": "2023-04-24"
 }
 
   </script><script>

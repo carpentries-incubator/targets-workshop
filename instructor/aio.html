@@ -270,6 +270,18 @@
 </div>
 <!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush10">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading10">
+        <a href="advanced.html">9. Advanced topics</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -325,7 +337,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -445,7 +457,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -511,29 +523,31 @@ project organization concept.</p>
 <p>Let’s start a new project using RStudio.</p>
 <p>Click “File”, then select “New Project”.</p>
 <p>This will open the New Project Wizard, a set of menus to help you set
-up the project. In the Wizard, click the first option, “New Directory”,
-since we are making a brand-new project from scratch. Click “New
-Project” in the next menu. In “Directory name”, enter a name that helps
-you remember the purpose of the project, such as “targets-demo” (follow
-best practices for naming files and folders). Under “Create project as a
-subdirectory of…”, click the “Browse” button to select a directory to
-put the project. We recommend putting it on your Desktop so you can
-easily find it.</p>
+up the project.</p>
+<figure><img src="../fig/basic-rstudio-wizard.png" alt="Screenshot of RStudio New Project Wizard menu" class="figure mx-auto d-block"><figcaption>The New Project Wizard</figcaption></figure><p>In the Wizard, click the first option, “New Directory”, since we are
+making a brand-new project from scratch. Click “New Project” in the next
+menu. In “Directory name”, enter a name that helps you remember the
+purpose of the project, such as “targets-demo” (follow best practices
+for naming files and folders). Under “Create project as a subdirectory
+of…”, click the “Browse” button to select a directory to put the
+project. We recommend putting it on your Desktop so you can easily find
+it.</p>
 <p>You can leave “Create a git repository” and “Use renv with this
 project” unchecked, but these are both excellent tools to improve
 reproducibility, and you should consider learning them and using them in
 the future, if you don’t already. They can be enabled at any later time,
 so you don’t need to worry about trying to use them immediately.</p>
 <p>Once you work through these steps, your RStudio session should look
-like this (notice “targets-demo” in the title):</p>
-<p>Our project now contains a single file, created by RStudio:
-<code>.Rproj</code>. You should not edit this file by hand. Its purpose
-is to tell RStudio that this is a project folder and to store some
-RStudio settings (if you use version-control software, it is OK to
-commit this file). Also, you can open the project by double clicking on
-the <code>.Rproj</code> file in your file explorer (try it by quitting
-RStudio then navigating in your file browser to your Desktop, opening
-the “targets-demo” folder, and double clicking <code>.Rproj</code>).</p>
+like this:</p>
+<figure><img src="../fig/basic-rstudio-project.png" alt="Screenshot of RStudio with a newly created project called 'targets-demo' open containing a single file, 'targets-demo.Rproj'" class="figure mx-auto d-block"><figcaption>Your newly created project</figcaption></figure><p>Our project now contains a single file, created by RStudio:
+<code>targets-demo.Rproj</code>. You should not edit this file by hand.
+Its purpose is to tell RStudio that this is a project folder and to
+store some RStudio settings (if you use version-control software, it is
+OK to commit this file). Also, you can open the project by double
+clicking on the <code>.Rproj</code> file in your file explorer (try it
+by quitting RStudio then navigating in your file browser to your
+Desktop, opening the “targets-demo” folder, and double clicking
+<code>targets-demo.Rproj</code>).</p>
 <p>OK, now that our project is set up, we are ready to start using
 <code>targets</code>!</p>
 </div>
@@ -588,8 +602,8 @@ surrounding quotation marks.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="callout-inner">
-<h3 class="callout-title">Callout<a class="anchor" aria-label="anchor" href="#callout1"></a>
+<div id="edit-_targets.r" class="callout-inner">
+<h3 class="callout-title">Edit <code>_targets.R</code><a class="anchor" aria-label="anchor" href="#callout1"></a>
 </h3>
 <div class="callout-content">
 <p>Let’s modify the default workflow: rename the names of the targets
@@ -622,11 +636,11 @@ steps depend on each other.</p>
 <span><span class="co"># This is where you write source(\"R/functions.R\")</span></span>
 <span><span class="co"># if you keep your functions in external scripts.</span></span>
 <span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">summarize</span><span class="op">(</span><span class="va">dataset</span>, mean_x <span class="op">=</span> <span class="fu">mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">colMeans</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Set target-specific options such as packages.</span></span>
-<span><span class="fu">tar_option_set</span><span class="op">(</span>packages <span class="op">=</span> <span class="st">"dplyr"</span><span class="op">)</span></span>
+<span><span class="co"># Set target-specific options such as packages:</span></span>
+<span><span class="co"># tar_option_set(packages = "utils") # nolint</span></span>
 <span></span>
 <span><span class="co"># End this file with a list of target objects.</span></span>
 <span><span class="fu">list</span><span class="op">(</span></span>
@@ -651,10 +665,10 @@ something like this:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target my_data
-• built target my_data [0.069 seconds]
+• built target my_data [0.002 seconds]
 • start target my_summary
-• built target my_summary [0.018 seconds]
-• end pipeline [0.157 seconds]</code></pre>
+• built target my_summary [0 seconds]
+• end pipeline [0.083 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
@@ -662,8 +676,8 @@ something like this:</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="challenge-1-what-happened-during-the-workflow" class="callout-inner">
-<h3 class="callout-title">Challenge 1: What happened during the
+<div id="challenge-what-happened-during-the-workflow" class="callout-inner">
+<h3 class="callout-title">Challenge: What happened during the
 workflow?<a class="anchor" aria-label="anchor" href="#challenge1"></a>
 </h3>
 <div class="callout-content">
@@ -685,8 +699,9 @@ describe the steps of the workflow?</p>
 <code>my_data</code> that includes two variables, <code>x</code> and
 <code>y</code>.</p>
 <p>The second step of the workflow built a target called
-<code>my_summ</code> that includes the mean of <code>x</code> calculated
-with a custom function called <code>summ()</code>.</p>
+<code>my_summ</code> that includes the mean of <code>x</code> and
+<code>y</code> calculated with a custom function called
+<code>summ()</code>.</p>
 </div>
 </div>
 </div>
@@ -719,7 +734,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -780,7 +795,7 @@ to look at its output. But, if we just call the name of the object
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>You may want to pretend trying to run <code>my_data</code> or
 <code>my_summary</code>, then feigning surprise when it doesn’t work and
@@ -845,8 +860,8 @@ it is used to retrieve objects built by the workflow, but unlike
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>  mean_x
-1   50.5</code></pre>
+<pre class="output" tabindex="0"><code>   x    y 
+50.5 50.5 </code></pre>
 </div>
 <p>We immediately see the contents of <code>my_summary</code>. But it
 has not been loaded into the enviroment. If you try to run
@@ -919,7 +934,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -936,7 +951,7 @@ any links that you are not going to use.
 <ul>
 <li>What happens if we re-run a workflow?</li>
 <li>How does <code>targets</code> know what steps to re-run?</li>
-<li>How can I override default settings?</li>
+<li>How can we inspect the state of the workflow?</li>
 </ul>
 </div>
 </div>
@@ -948,7 +963,6 @@ any links that you are not going to use.
 <ul>
 <li>Explain how <code>targets</code> helps increase efficiency</li>
 <li>Be able to inspect a workflow to see what parts are outdated</li>
-<li>Be able to run only a specific part of the workflow</li>
 </ul>
 </div>
 </div>
@@ -974,7 +988,7 @@ running the workflow again:</p>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target my_data
 ✔ skip target my_summary
-✔ skip pipeline [0.059 seconds]</code></pre>
+✔ skip pipeline [0.061 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -986,8 +1000,8 @@ already been built, so there’s no need to run that code again.</p>
 <hr class="half-width">
 <p>What happens when we change one part of the workflow then run it
 again?</p>
-<p>Let’s modify the workflow to calculate the mean of both
-<code>x</code> and <code>y</code>.</p>
+<p>Let’s modify the workflow to calculate the <strong>sum</strong> of
+the columns instead of the mean.</p>
 <p>Edit <code>_targets.R</code> so that the <code>summ()</code> function
 looks like this:</p>
 <div class="codewrapper sourceCode" id="cb3">
@@ -995,8 +1009,8 @@ looks like this:</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">summarize</span><span class="op">(</span><span class="va">dataset</span>, mean_x <span class="op">=</span> <span class="fu">mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, mean_y <span class="op">=</span> <span class="fu">mean</span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span></code></pre>
+<span>  <span class="fu">colSums</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
 <p>Then run it again.</p>
 <div class="codewrapper sourceCode" id="cb4">
@@ -1010,8 +1024,8 @@ looks like this:</p>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target my_data
 • start target my_summary
-• built target my_summary [0.014 seconds]
-• end pipeline [0.157 seconds]</code></pre>
+• built target my_summary [0.001 seconds]
+• end pipeline [0.074 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>my_data</code> and only ran
@@ -1020,6 +1034,71 @@ looks like this:</p>
 notice the amount of time saved. But imagine using this in a series of
 computationally intensive analysis steps. The ability to automatically
 skip steps results in a massive increase in efficiency.</p>
+<div id="challenge1" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-1-inspect-the-output" class="callout-inner">
+<h3 class="callout-title">Challenge 1: Inspect the output<a class="anchor" aria-label="anchor" href="#challenge1"></a>
+</h3>
+<div class="callout-content">
+<p>How can you inspect the contents of <code>my_summary</code>?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1">
+  Show me the solution
+  </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<p>With <code>tar_read(my_summary</code>) or by running
+<code>tar_load(my_summary)</code> followed by
+<code>my_summary</code>.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section id="under-the-hood"><h2 class="section-heading">Under the hood<a class="anchor" aria-label="anchor" href="#under-the-hood"></a>
+</h2>
+<hr class="half-width">
+<p>How does <code>targets</code> keep track of which targets are
+up-to-date vs. outdated?</p>
+<p>For each target in the workflow (items in the list at the end of the
+<code>_targets.R</code> file) and any custom functions used in the
+workflow, <code>targets</code> calculates a <strong>hash value</strong>,
+or unique combination of letters and digits that represents an object in
+the computer’s memory. You can think of the hash value (or “hash” for
+short) as <strong>a unique fingerprint</strong> for a target or
+function.</p>
+<p>The first time your run <code>tar_make()</code>, <code>targets</code>
+calculates the hashes for each target and function as it runs the code
+and stores them in the targets cache (the <code>_targets</code> folder).
+Then, for each subsequent call of <code>tar_make()</code>, it calculates
+the hashes again and compares them to the stored values. It detects
+which have changed, and this is how it knows which targets are out of
+date.</p>
+<div id="callout1" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="where-the-hashes-live" class="callout-inner">
+<h3 class="callout-title">Where the hashes live<a class="anchor" aria-label="anchor" href="#callout1"></a>
+</h3>
+<div class="callout-content">
+<p>If you are curious about what the hashes look like, you can see them
+in the file <code>_targets/meta/meta</code>, but <strong>do not edit
+this file by hand</strong>—that would ruin your workflow!</p>
+</div>
+</div>
+</div>
+<p>This information is used in combination with the dependency
+relationships (in other words, how each target depends on the others) to
+re-run the workflow in the most efficient way possible: code is only run
+for targets that need to be re-built, and others are skipped.</p>
 </section><section id="visualizing-the-workflow"><h2 class="section-heading">Visualizing the workflow<a class="anchor" aria-label="anchor" href="#visualizing-the-workflow"></a>
 </h2>
 <hr class="half-width">
@@ -1033,15 +1112,131 @@ be able to visualize the state of the workflow.</p>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tar_visnetwork</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<!--html_preserve-->
-<div id="htmlwidget-fa6bfd20bed6c6f5cac5" class="visNetwork html-widget html-fill-item-overflow-hidden html-fill-item" style="width:504px;height:504px;">
-
+<figure><img src="../fig/lifecycle-visnetwork.png" alt="Visualization of the targets worklow, showing 'my_summary' connected by lines to 'my_data' and 'summ'" class="figure mx-auto d-block"></figure><p>You should see the network show up in the plot area of RStudio.</p>
+<p>It is an HTML widget, so you can zoom in and out (this isn’t
+important for the current example since it is so small, but is useful
+for larger, “real-life” workflows).</p>
+<p>Here, we see that all of the targets are dark green, indicating that
+they are up-to-date and would be skipped if we were to run the workflow
+again.</p>
+<div id="callout2" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
 </div>
-<script type="application/json" data-for="htmlwidget-fa6bfd20bed6c6f5cac5">{"x":{"nodes":{"name":["my_data","my_summary","summ"],"type":["stem","stem","function"],"status":["uptodate","uptodate","uptodate"],"seconds":[0.069,0.018,null],"bytes":[452,132,null],"branches":[null,null,null],"label":["my_data","my_summary","summ"],"color":["#354823","#354823","#354823"],"id":["my_data","my_summary","summ"],"level":[1,2,1],"shape":["dot","dot","triangle"]},"edges":{"from":["my_data","summ"],"to":["my_summary","my_summary"],"arrows":["to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":{"type":"cubicBezier","forceDirection":"horizontal"}},"physics":{"stabilization":false},"interaction":{"zoomSpeed":1},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":{"text":"","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":1,"to":1},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"legend":{"width":0.2,"useGroups":false,"position":"right","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Stem","Function"],"color":["#354823","#899DA4","#899DA4"],"shape":["dot","dot","triangle"]},"nodesToDataframe":true},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script><!--/html_preserve--><div class="caution">
+<div id="installing-visnetwork" class="callout-inner">
+<h3 class="callout-title">Installing visNetwork<a class="anchor" aria-label="anchor" href="#callout2"></a>
+</h3>
+<div class="callout-content">
 <p>You may encounter an error message
 <code>The package "visNetwork" is required.</code></p>
 <p>In this case, install it first with
 <code>install.packages("visNetwork")</code>.</p>
+</div>
+</div>
+</div>
+<div id="challenge2" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-2-what-else-can-the-visualization-tell-us" class="callout-inner">
+<h3 class="callout-title">Challenge 2: What else can the visualization
+tell us?<a class="anchor" aria-label="anchor" href="#challenge2"></a>
+</h3>
+<div class="callout-content">
+<p>Modify the workflow in <code>_targets.R</code>, then run
+<code>tar_visnetwork()</code> again <strong>without</strong> running
+<code>tar_make()</code>. What color indicates that a target is out of
+date?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2">
+  Show me the solution
+  </h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div class="accordion-body">
+<p>Light blue indicates the target is out of date.</p>
+<p>Depending on how you modified the code, any or all of the targets may
+now be light blue.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="callout3" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="outdated-does-not-always-mean-will-be-run" class="callout-inner">
+<h3 class="callout-title">‘Outdated’ does not always mean ‘will be
+run’<a class="anchor" aria-label="anchor" href="#callout3"></a>
+</h3>
+<div class="callout-content">
+<p>Just because a target appears as light blue (is “outdated”) in the
+network visualization, this does not guarantee that it will be re-built
+during the next run. Rather, it means that <strong>at least of one the
+targets that it depends on has changed</strong>.</p>
+<p>For example, if the workflow state looked like this:</p>
+<p><code>A -&gt; B* -&gt; C -&gt; D</code></p>
+<p>where the <code>*</code> indicates that <code>B</code> has changed
+compared to the last time the workflow was run, the network
+visualization will show <code>B</code>, <code>C</code>, and
+<code>D</code> all as light blue.</p>
+<p>But if re-running the workflow results in the exact same value for
+<code>C</code> as before, <code>D</code> will not be re-run (will be
+“skipped”).</p>
+<p>Most of the time, a single change will cascade to the rest of the
+downstream targets and cause them to be re-built, but this is not always
+the case. <code>targets</code> has no way of knowing ahead of time what
+the actual output will be, so it cannot provide a network visualization
+that completely predicts the future!</p>
+</div>
+</div>
+</div>
+</section><section id="other-ways-to-check-workflow-status"><h2 class="section-heading">Other ways to check workflow status<a class="anchor" aria-label="anchor" href="#other-ways-to-check-workflow-status"></a>
+</h2>
+<hr class="half-width">
+<p>The visualization is very useful, but sometimes you may be working on
+a server that doesn’t provide graphical output, or you just want a quick
+textual summary of the workflow. There are some other useful functions
+that can do that.</p>
+<p><code>tar_outdated()</code> lists only the outdated targets; that is,
+targets that will be built during the next run, or depend on such a
+target. If everything is up to date, it will return a zero-length
+character vector (<code>character(0)</code>).</p>
+<p><code>tar_progress()</code> shows the current status of the workflow
+as a dataframe. You may find it helpful to further manipulate the
+dataframe to obtain useful summaries of the workflow, for example using
+<code>dplyr</code> (such data manipulation is beyond the scope of this
+lesson but the instructor may demonstrate its use).</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_outdated</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="fu">character</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_progress</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 2 × 2
+  name       progress
+  &lt;chr&gt;      &lt;chr&gt;   
+1 my_data    skipped 
+2 my_summary skipped </code></pre>
 </div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
@@ -1062,9 +1257,7 @@ workflow as a network</li>
 <code>tar_progress()</code> shows the current state of the workflow
 as a data frame</li>
 <li>
-<code>tar_outdated()</code> lists outdated targets that will be
-built in the next <code>tar_make()</code>
-</li>
+<code>tar_outdated()</code> lists outdated targets</li>
 </ul>
 </div>
 </div>
@@ -1075,7 +1268,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -1132,7 +1325,7 @@ conflicts</li>
 </div>
 </div></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -1185,7 +1378,7 @@ become outdated if the external data changes</li>
 </div>
 </div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -1241,7 +1434,7 @@ document</li>
 </div>
 </div></section><section id="aio-batch"><p>Content from <a href="batch.html">Batch and Parallel Processing</a></p>
 <hr>
-<p> Last updated on 2023-04-18 | 
+<p> Last updated on 2023-04-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -1290,6 +1483,70 @@ creates are arbitrary</li>
 </ul>
 </div>
 </div>
+</div></section><section id="aio-advanced"><p>Content from <a href="advanced.html">Advanced topics</a></p>
+<hr>
+<p> Last updated on 2023-04-24 | 
+        
+        <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/advanced.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>How can I control the building of each target?</li>
+<li>How can I maintain multiple workflows within a single project?</li>
+<li>How can I make sure the workflow is in sync with the R packages it
+uses?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Be able to run only a specific part of the workflow</li>
+<li>Understand how to control project settings with a YAML file</li>
+<li>Adhere to best practices for maintaining package versions</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>You can provide names of specific targets to build to
+<code>tar_make()</code>
+</li>
+<li>You can delete targets with <code>tar_delete()</code> and manually
+invalidate them with <code>tar_invalidate()</code>
+</li>
+<li>The settings for each targets project are contained in the
+<code>_targets.yaml</code> file</li>
+<li>
+<code>targets</code> does not track the content of R packages by
+default</li>
+<li>
+<code>renv</code> should be used for tracking package versions</li>
+</ul>
+</div>
+</div>
 </div></section>
 </div>
     </main>
@@ -1316,7 +1573,7 @@ creates are arbitrary</li>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
         <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.11.15" class="external-link">sandpaper (0.11.15)</a>,
-        <a href="https://github.com/carpentries/pegboard/tree/0.5.2" class="external-link">pegboard (0.5.2)</a>,
+        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
 		</footer>
@@ -1338,9 +1595,9 @@ creates are arbitrary</li>
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/aio.html",
-  "dateCreated": "2023-04-18",
-  "dateModified": "2023-04-18",
-  "datePublished": "2023-04-18"
+  "dateCreated": "2023-04-24",
+  "dateModified": "2023-04-24",
+  "datePublished": "2023-04-24"
 }
 
   </script><script>
