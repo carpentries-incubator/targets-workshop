@@ -22,6 +22,8 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+
+
 ## Create a project
 
 ### About projects
@@ -43,6 +45,9 @@ Let's start a new project using RStudio.
 Click "File", then select "New Project".
 
 This will open the New Project Wizard, a set of menus to help you set up the project.
+
+![The New Project Wizard](fig/basic-rstudio-wizard.png){alt="Screenshot of RStudio New Project Wizard menu"}
+
 In the Wizard, click the first option, "New Directory", since we are making a brand-new project from scratch.
 Click "New Project" in the next menu.
 In "Directory name", enter a name that helps you remember the purpose of the project, such as "targets-demo" (follow best practices for naming files and folders).
@@ -52,9 +57,11 @@ We recommend putting it on your Desktop so you can easily find it.
 You can leave "Create a git repository" and "Use renv with this project" unchecked, but these are both excellent tools to improve reproducibility, and you should consider learning them and using them in the future, if you don't already.
 They can be enabled at any later time, so you don't need to worry about trying to use them immediately.
 
-Once you work through these steps, your RStudio session should look like this (notice "targets-demo" in the title):
+Once you work through these steps, your RStudio session should look like this:
 
-Our project now contains a single file, created by RStudio: `.Rproj`. You should not edit this file by hand. Its purpose is to tell RStudio that this is a project folder and to store some RStudio settings (if you use version-control software, it is OK to commit this file). Also, you can open the project by double clicking on the `.Rproj` file in your file explorer (try it by quitting RStudio then navigating in your file browser to your Desktop, opening the "targets-demo" folder, and double clicking `.Rproj`).
+![Your newly created project](fig/basic-rstudio-project.png){alt="Screenshot of RStudio with a newly created project called 'targets-demo' open containing a single file, 'targets-demo.Rproj'"}
+
+Our project now contains a single file, created by RStudio: `targets-demo.Rproj`. You should not edit this file by hand. Its purpose is to tell RStudio that this is a project folder and to store some RStudio settings (if you use version-control software, it is OK to commit this file). Also, you can open the project by double clicking on the `.Rproj` file in your file explorer (try it by quitting RStudio then navigating in your file browser to your Desktop, opening the "targets-demo" folder, and double clicking `targets-demo.Rproj`).
 
 OK, now that our project is set up, we are ready to start using `targets`!
 
@@ -77,8 +84,6 @@ library(targets)
 tar_script()
 ```
 
-
-
 Nothing will happen in the console, but in the file viewer, you should see a new file, `_targets.R` appear. Open it using the File menu or by clicking on it.
 
 We can see this default `_targets.R` file includes three main parts:
@@ -96,6 +101,8 @@ The first argument of `tar_target()` is name of the target to build, and the sec
 Note that the name of the target is **unquoted**, that is, it is written without any surrounding quotation marks.
 
 ::::::::::::::::::::::::::::::::::::: callout
+
+## Edit `_targets.R`
 
 Let's modify the default workflow: rename the names of the targets from `data` to `my_data` and `summary` to `my_summary`.
 This is to avoid confusion with base R functions `data()` and `summary()`.
@@ -122,11 +129,11 @@ library(targets)
 # This is where you write source(\"R/functions.R\")
 # if you keep your functions in external scripts.
 summ <- function(dataset) {
-  summarize(dataset, mean_x = mean(x))
+  colMeans(dataset)
 }
 
-# Set target-specific options such as packages.
-tar_option_set(packages = "dplyr")
+# Set target-specific options such as packages:
+# tar_option_set(packages = "utils") # nolint
 
 # End this file with a list of target objects.
 list(
@@ -148,17 +155,17 @@ tar_make()
 
 ```{.output}
 • start target my_data
-• built target my_data [0.069 seconds]
+• built target my_data [0.002 seconds]
 • start target my_summary
-• built target my_summary [0.018 seconds]
-• end pipeline [0.157 seconds]
+• built target my_summary [0 seconds]
+• end pipeline [0.083 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-## Challenge 1: What happened during the workflow?
+## Challenge: What happened during the workflow?
 
 Inspect the list at the end of `_targets.R`. Can you describe the steps of the workflow?
 
@@ -166,7 +173,7 @@ Inspect the list at the end of `_targets.R`. Can you describe the steps of the w
 
 The first step of the workflow built a target called `my_data` that includes two variables, `x` and `y`.
 
-The second step of the workflow built a target called `my_summ` that includes the mean of `x` calculated with a custom function called `summ()`.
+The second step of the workflow built a target called `my_summ` that includes the mean of `x` and `y` calculated with a custom function called `summ()`.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -181,4 +188,3 @@ The second step of the workflow built a target called `my_summ` that includes th
 - Use `tar_make()` to run the workflow
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-

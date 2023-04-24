@@ -91,8 +91,8 @@ tar_read(my_summary)
 
 
 ```{.output}
-  mean_x
-1   50.5
+   x    y 
+50.5 50.5 
 ```
 
 We immediately see the contents of `my_summary`.
@@ -140,4 +140,3 @@ Generally, `_targets/user` is a good place to store files that are not code, lik
 - The `_targets` folder is the cache and generally should not be edited by hand
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
