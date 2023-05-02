@@ -339,7 +339,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -458,7 +458,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -665,10 +665,10 @@ something like this:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target my_data
-• built target my_data [0.002 seconds]
+• built target my_data [0.008 seconds]
 • start target my_summary
 • built target my_summary [0.001 seconds]
-• end pipeline [0.078 seconds]</code></pre>
+• end pipeline [0.077 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
@@ -734,7 +734,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -914,7 +914,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -967,7 +967,7 @@ running the workflow again:</p>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target my_data
 ✔ skip target my_summary
-✔ skip pipeline [0.066 seconds]</code></pre>
+✔ skip pipeline [0.064 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -1003,8 +1003,8 @@ looks like this:</p>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target my_data
 • start target my_summary
-• built target my_summary [0.001 seconds]
-• end pipeline [0.081 seconds]</code></pre>
+• built target my_summary [0.002 seconds]
+• end pipeline [0.078 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>my_data</code> and only ran
@@ -1247,7 +1247,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1303,7 +1303,7 @@ conflicts</li>
 </div>
 </div></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1355,7 +1355,7 @@ become outdated if the external data changes</li>
 </div>
 </div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1410,7 +1410,7 @@ document</li>
 </div>
 </div></section><section id="aio-batch"><p>Content from <a href="batch.html">Batch and Parallel Processing</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1460,7 +1460,7 @@ creates are arbitrary</li>
 </div>
 </div></section><section id="aio-advanced"><p>Content from <a href="advanced.html">Advanced topics</a></p>
 <hr>
-<p> Last updated on 2023-04-24 | 
+<p> Last updated on 2023-05-02 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/advanced.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1570,8 +1570,8 @@ default</li>
   "url": "https://joelnitta.github.io/targets-workshop/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/aio.html",
   "dateCreated": "2023-04-24",
-  "dateModified": "2023-04-24",
-  "datePublished": "2023-04-24"
+  "dateModified": "2023-05-02",
+  "datePublished": "2023-05-02"
 }
 
   </script><script>
