@@ -36,7 +36,7 @@ tar_make()
 ```{.output}
 ✔ skip target my_data
 ✔ skip target my_summary
-✔ skip pipeline [0.066 seconds]
+✔ skip pipeline [0.064 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -71,8 +71,8 @@ tar_make()
 ```{.output}
 ✔ skip target my_data
 • start target my_summary
-• built target my_summary [0.001 seconds]
-• end pipeline [0.081 seconds]
+• built target my_summary [0.002 seconds]
+• end pipeline [0.078 seconds]
 ```
 
 What happened?
