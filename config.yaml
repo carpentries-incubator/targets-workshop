@@ -64,6 +64,7 @@ episodes:
 - cache.Rmd
 - lifecycle.Rmd
 - organization.Rmd
+- packages.Rmd
 - files.Rmd
 - quarto.Rmd
 - batch.Rmd
