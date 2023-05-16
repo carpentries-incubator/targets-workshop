@@ -1,5 +1,5 @@
 ---
-title: 'packages'
+title: 'Managing packages'
 teaching: 10
 exercises: 2
 ---
