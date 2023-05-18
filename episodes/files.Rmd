@@ -17,6 +17,125 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+```{r}
+#| label: setup
+#| echo: FALSE
+#| message: FALSE
+#| warning: FALSE
+library(targets)
+library(tarchetypes)
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
+```
+
+
+## Treating external files as a dependency
+
+Almost all workflows will start by importing data, which is typically stored as an external file.
+
+As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in `_targets/user/data/`.
+
+We will read in the contents of this file and store it as `hello` in the workflow by writing the following plan and running `tar_make()`:
+
+```{r}
+#| label: example-file-show-1
+#| eval: FALSE
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  hello = readLines("_targets/user/data/hello.txt")
+)
+```
+
+```{r}
+#| label: example-file-hide-1
+#| echo: FALSE
+tar_dir({
+  fs::dir_create("_targets/user/data")
+  writeLines("Hello World", "_targets/user/data/hello.txt")
+  tar_script({
+     library(targets)
+     library(tarchetypes)
+     tar_plan(
+       hello = readLines("_targets/user/data/hello.txt")
+      )
+  })
+  tar_make()
+})
+```
+
+If we inspect the contents of `hello` with `tar_read(hello)`, it will contain the string `"Hello World"` as expected.
+
+Now say we edit "hello.txt", perhaps changing it to say "Hola" instead. Edit this in the RStudio text editor and save it. Now run the pipeline again.
+
+```{r}
+#| label: example-file-show-2
+#| eval: FALSE
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  hello = readLines("_targets/user/data/hello.txt")
+)
+```
+
+```{r}
+#| label: example-file-hide-2
+#| echo: FALSE
+tar_dir({
+  fs::dir_create("_targets/user/data")
+  writeLines("Hello World", "_targets/user/data/hello.txt")
+  tar_script({
+     library(targets)
+     library(tarchetypes)
+     tar_plan(
+       hello = readLines("_targets/user/data/hello.txt")
+      )
+  })
+  tar_make(reporter = "silent")
+  writeLines("Hola", "_targets/user/data/hello.txt")
+  tar_make()
+})
+```
+
+The target `hello` was skipped, even though the contents of the file changed.
+
+That is because right now, targets is only tracking the **name** of the file, not its contents. We need to use a special function for that, `tar_file()` from the `tarchetypes` package. `tar_file` will calculate the "hash" of a file - basically a unique digital signature that is determined by the file's contents. If the contents change, the hash will change, and this will be detected by `targets`.
+
+```{r}
+#| label: example-file-show-2
+#| eval: FALSE
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  tar_file(hello_file, "_targets/user/data/hello.txt"),
+  hello = readLines(hello_file)
+)
+```
+
+```{r}
+#| label: example-file-hide-2
+#| echo: FALSE
+tar_dir({
+  fs::dir_create("_targets/user/data")
+  writeLines("Hello World", "_targets/user/data/hello.txt")
+  tar_script({
+     library(targets)
+     library(tarchetypes)
+     tar_plan(
+       tar_file(hello_file, "_targets/user/data/hello.txt"),
+       hello = readLines(hello_file)
+     )
+  })
+  tar_make(reporter = "silent")
+  writeLines("Hola", "_targets/user/data/hello.txt")
+  tar_make()
+})
+```
+
+This time we see that `targets` does successfully re-build `hello` as expected.
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `tarchetypes::tar_file_read()` is used to load external data

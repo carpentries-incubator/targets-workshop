@@ -176,6 +176,30 @@ On the other hand, they should not be so big that each has large numbers of inpu
 
 Striking this balance is more of art than science, and only comes with practice. I find a good rule of thumb is no more than three inputs per target.
 
+## A more realistic workflow
+
+So far, we have only used a very simple targets workflow to demonstrate basic usage of `targets`.
+However, this is not very realistic.
+
+For the rest of the lesson, we will practice on Palmer's Penguins, a real dataset of measurements taken on penguins in Antarctica.
+This is probably closer to something you may encounter in your own research.
+
+Since a given project can only have one `_targets.R` file in it, we will start from a completely fresh project.
+
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge 2: Set up the project
+
+Set up a new R project called "penguins_analysis" using the recommended file and folder structure for `targets`. It is recommended to create the project on the desktop so you can find it easily.
+
+:::::::::::::::::::::::::::::::::: {.solution}
+You should have created a folder called "penguins_analysis" on your desktop containing a file called "_targets.R" in the main directory and two files, "functions.R" and "packages.R" in the "R" subdirectory.
+
+You could have also created a folder called "_targets" containing subfolders "user/data" and "user/results".
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - Put code in the `R/` folder

@@ -66,8 +66,8 @@ episodes:
 - organization.Rmd
 - packages.Rmd
 - files.Rmd
-- quarto.Rmd
 - batch.Rmd
+- quarto.Rmd
 - advanced.Rmd
 
 # Information for Learners
