@@ -27,14 +27,13 @@ library(tarchetypes)
 source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
 ```
 
-
 ## Treating external files as a dependency
 
 Almost all workflows will start by importing data, which is typically stored as an external file.
 
 As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in `_targets/user/data/`.
 
-We will read in the contents of this file and store it as `hello` in the workflow by writing the following plan and running `tar_make()`:
+We will read in the contents of this file and store it as `some_data` in the workflow by writing the following plan and running `tar_make()`:
 
 ```{r}
 #| label: example-file-show-1
@@ -43,7 +42,7 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  hello = readLines("_targets/user/data/hello.txt")
+  some_data = readLines("_targets/user/data/hello.txt")
 )
 ```
 
@@ -57,16 +56,16 @@ tar_dir({
      library(targets)
      library(tarchetypes)
      tar_plan(
-       hello = readLines("_targets/user/data/hello.txt")
+       some_data = readLines("_targets/user/data/hello.txt")
       )
   })
   tar_make()
 })
 ```
 
-If we inspect the contents of `hello` with `tar_read(hello)`, it will contain the string `"Hello World"` as expected.
+If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
 
-Now say we edit "hello.txt", perhaps changing it to say "Hola" instead. Edit this in the RStudio text editor and save it. Now run the pipeline again.
+Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?". Edit this in the RStudio text editor and save it. Now run the pipeline again.
 
 ```{r}
 #| label: example-file-show-2
@@ -75,7 +74,7 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  hello = readLines("_targets/user/data/hello.txt")
+  some_data = readLines("_targets/user/data/hello.txt")
 )
 ```
 
@@ -89,33 +88,33 @@ tar_dir({
      library(targets)
      library(tarchetypes)
      tar_plan(
-       hello = readLines("_targets/user/data/hello.txt")
+       some_data = readLines("_targets/user/data/hello.txt")
       )
   })
   tar_make(reporter = "silent")
-  writeLines("Hola", "_targets/user/data/hello.txt")
+  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
   tar_make()
 })
 ```
 
-The target `hello` was skipped, even though the contents of the file changed.
+The target `some_data` was skipped, even though the contents of the file changed.
 
-That is because right now, targets is only tracking the **name** of the file, not its contents. We need to use a special function for that, `tar_file()` from the `tarchetypes` package. `tar_file` will calculate the "hash" of a file - basically a unique digital signature that is determined by the file's contents. If the contents change, the hash will change, and this will be detected by `targets`.
+That is because right now, targets is only tracking the **name** of the file, not its contents. We need to use a special function for that, `tar_file()` from the `tarchetypes` package. `tar_file()` will calculate the "hash" of a file---a unique digital signature that is determined by the file's contents. If the contents change, the hash will change, and this will be detected by `targets`.
 
 ```{r}
-#| label: example-file-show-2
+#| label: example-file-show-3
 #| eval: FALSE
 library(targets)
 library(tarchetypes)
 
 tar_plan(
-  tar_file(hello_file, "_targets/user/data/hello.txt"),
-  hello = readLines(hello_file)
+  tar_file(data_file, "_targets/user/data/hello.txt"),
+  some_data = readLines(data_file)
 )
 ```
 
 ```{r}
-#| label: example-file-hide-2
+#| label: example-file-hide-3
 #| echo: FALSE
 tar_dir({
   fs::dir_create("_targets/user/data")
@@ -124,21 +123,210 @@ tar_dir({
      library(targets)
      library(tarchetypes)
      tar_plan(
-       tar_file(hello_file, "_targets/user/data/hello.txt"),
-       hello = readLines(hello_file)
+       tar_file(data_file, "_targets/user/data/hello.txt"),
+       some_data = readLines(data_file)
      )
   })
   tar_make(reporter = "silent")
-  writeLines("Hola", "_targets/user/data/hello.txt")
+  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
   tar_make()
 })
 ```
 
-This time we see that `targets` does successfully re-build `hello` as expected.
+This time we see that `targets` does successfully re-build `some_data` as expected.
+
+## A shortcut (or, About target factories)
+
+However, also notice that this means we need to write two targets instead of one: one target to track the contents of the file (`data_file`), and one target to store what we load from the file (`some_data`).
+
+It turns out that this is a common pattern in `targets` workflows, so `tarchetypes` provides a shortcut to express this more concisely, `tar_file_read()`.
+
+```{r}
+#| label: example-file-show-4
+#| eval: FALSE
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  tar_file_read(
+    hello,
+    "_targets/user/data/hello.txt",
+    readLines(!!.x)
+  )
+)
+```
+
+Let's inspect this pipeline with `tar_manifest()`:
+
+```{r}
+#| label: example-file-show-5
+#| eval: FALSE
+tar_manifest()
+```
+
+```{r}
+#| label: example-file-hide-5
+#| echo: FALSE
+tar_dir({
+  # Emulate what the learner is doing
+  fs::dir_create("_targets/user/data")
+  # Old (longer) version:
+  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
+  # Make it again with the shorter version
+  tar_script({
+     library(targets)
+     library(tarchetypes)
+     tar_file_read(
+        hello,
+        "_targets/user/data/hello.txt",
+        readLines(!!.x)
+  )
+  })
+  tar_manifest()
+})
+```
+
+Notice that even though we only specified one target in the pipeline (`hello`, with `tar_file_read()`), the pipeline actually includes **two** targets, `hello_file` and `hello`.
+
+That is because `tar_file_read()` is a special function called a **target factory**, so-called because it makes **multiple** targets at once. One of the main purposes of the `tarchetypes` package is to provide target factories to make writing pipelines easier and less error-prone.
+
+## Non-standard evaluation
+
+What is the deal with the `!!.x`? That may look unfamiliar even if you are used to using R. It is known as "non-standard evaluation," and gets used in some special contexts. We don't have time to go into the details now, but just remember that you will need to use this special notation with `tar_file_read()`. If you forget how to write it (this happens frequently!) look at the examples in the help file by running `?tar_file_read`.
+
+## Other data loading functions
+
+Although we used `readLines()` as an example here, you can use the same pattern for other functions that load data from external files, such as `readr::read_csv()`, `xlsx::read_excel()`, and others (for example, `read_csv(!!.x)`, `read_excel(!!.x)`, etc.).
+
+This is generally recommended so that your pipeline stays up to date with your input data.
+
+## Writing out data
+
+Writing to files is similar to loading in files: we will use the `tar_file()` function. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return nothing; these treat the output file is a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
+
+Let's do this for `writeLines()`, the R function that writes character data to a file. Normally, its output would be `NULL` (nothing), as we can see here:
+
+```{r}
+#| label: write-data-show-1
+#| eval: false
+x <- writeLines("some text", "test.txt")
+x
+```
+
+```{r}
+#| label: write-data-hide-1
+#| echo: false
+x <- writeLines("some text", "test.txt")
+x
+fs::file_delete("test.txt")
+```
+
+Here is our modified function that writes character data to a file and returns the name of the file (the `...` means "pass the rest of these arguments to `writeLines()`"):
+
+```{r}
+#| label: write-data-func
+write_lines_file <- function(text, file, ...) {
+  writeLines(text = text, con = file, ...)
+  file
+}
+```
+
+Let's try it out:
+
+```{r}
+#| label: write-data-show-2
+#| eval: false
+x <- write_lines_file("some text", "test.txt")
+x
+```
+
+```{r}
+#| label: write-data-hide-2
+#| echo: false
+x <- write_lines_file("some text", "test.txt")
+x
+fs::file_delete("test.txt")
+```
+
+We can now use this in a pipeline. For example let's change the text to upper case then write it out again:
+
+```{r}
+#| label: example-file-show-6
+#| eval: false
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  tar_file_read(
+    hello,
+    "_targets/user/data/hello.txt",
+    readLines(!!.x)
+  ),
+  hello_caps = toupper(hello),
+  tar_file(
+    hello_caps_out,
+    write_lines_file(hello_caps, "_targets/user/results/hello_caps.txt")
+  )
+)
+```
+
+```{r}
+#| label: example-file-hide-6
+#| echo: false
+tar_dir({
+  
+  fs::dir_create("_targets/user/data")
+  fs::dir_create("_targets/user/results")
+  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
+  
+  tar_script({
+    library(targets)
+    library(tarchetypes)
+    write_lines_file <- function(text, file, ...) {
+      writeLines(text = text, con = file, ...)
+      file
+    }
+    tar_plan(
+      tar_file_read(
+        hello,
+        "_targets/user/data/hello.txt",
+        readLines(!!.x)
+      ),
+      hello_caps = toupper(hello),
+      tar_file(
+        hello_caps_out,
+        write_lines_file(hello_caps, "_targets/user/results/hello_caps.txt")
+      )
+    )
+  })
+  tar_make()
+})
+```
+
+Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
+
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge: What happens to file output if its modified?
+
+Delete or change the contents of `hello_caps.txt` in the `results` folder.
+What do you think will happen when you run `tar_make()` again?
+Try it and see.
+
+:::::::::::::::::::::::::::::::::: {.solution}
+
+`targets` detects that `hello_caps_out` has changed (is "invalidated"), and re-runs the code to make it, thus writing out `hello_caps.txt` to `results` again.
+
+So this way of writing out results makes your pipeline more robust: we have a guarantee that the contents of the file in `results` are generated solely by the code in your plan.
+
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- `tarchetypes::tar_file_read()` is used to load external data
-- A target defined by `tarchetypes::tar_file_read()` will become outdated if the external data changes
+- `tarchetypes::tar_file()` tracks the contents of a file
+- Use `tarchetypes::tar_file_read()` in combination with data loading functions like `read_csv()` to keep the pipeline in sync with your input data
+- Use `tarchetypes::tar_file()` in combination with a function that writes to a file and returns its path to write out data
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
