@@ -193,6 +193,7 @@
         <ul><li><a href="#a-simpler-way-to-write-workflow-plans">A simpler way to write workflow plans</a></li>
 <li><a href="#organizing-files-and-folders">Organizing files and folders</a></li>
 <li><a href="#a-word-about-functions">A word about functions</a></li>
+<li><a href="#a-more-realistic-workflow">A more realistic workflow</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
         
@@ -202,7 +203,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="packages.html">6. Managing packages</a>
+        <a href="packages.html">6. Managing Packages</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -220,7 +221,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="quarto.html">8. Reproducible Reports with Quarto</a>
+        <a href="batch.html">8. Batch and Parallel Processing</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -229,7 +230,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="batch.html">9. Batch and Parallel Processing</a>
+        <a href="quarto.html">9. Reproducible Reports with Quarto</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -291,11 +292,11 @@
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="../instructor/lifecycle.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: The Workflow</a>
-        <a class="chapter-link float-end" href="../instructor/packages.html" rel="next">Next: Managing packages... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/packages.html" rel="next">Next: Managing Packages... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Best Practices for <code>targets</code> Project Organization</h1>
-        <p> Last updated on 2023-05-16 | 
+        <p> Last updated on 2023-05-19 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -373,7 +374,7 @@ a syntax like this: <code>target_name = target_command</code>.</p>
 • built target height_cm [0.001 seconds]
 • start target height_in
 • built target height_in [0 seconds]
-• end pipeline [0.065 seconds]</code></pre>
+• end pipeline [0.064 seconds]</code></pre>
 </div>
 <p>Notice that <code>tar_plan()</code> does not mean you have to write
 <em>all</em> targets this way; you can still use the
@@ -402,7 +403,7 @@ start to create more advanced <code>targets</code> workflows.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -497,6 +498,49 @@ large numbers of inputs and is thus overly sensitive to changes.</p>
 <p>Striking this balance is more of art than science, and only comes
 with practice. I find a good rule of thumb is no more than three inputs
 per target.</p>
+</section><section id="a-more-realistic-workflow"><h2 class="section-heading">A more realistic workflow<a class="anchor" aria-label="anchor" href="#a-more-realistic-workflow"></a>
+</h2>
+<hr class="half-width"><p>So far, we have only used a very simple targets workflow to
+demonstrate basic usage of <code>targets</code>. However, this is not
+very realistic.</p>
+<p>For the rest of the lesson, we will practice on Palmer’s Penguins, a
+real dataset of measurements taken on penguins in Antarctica. This is
+probably closer to something you may encounter in your own research.</p>
+<p>Since a given project can only have one <code>_targets.R</code> file
+in it, we will start from a completely fresh project.</p>
+<div id="challenge2" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-2-set-up-the-project" class="callout-inner">
+<h3 class="callout-title">Challenge 2: Set up the project<a class="anchor" aria-label="anchor" href="#challenge2"></a>
+</h3>
+<div class="callout-content">
+<p>Set up a new R project called “penguins_analysis” using the
+recommended file and folder structure for <code>targets</code>. It is
+recommended to create the project on the desktop so you can find it
+easily.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2">
+  Show me the solution
+  </h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div class="accordion-body">
+<p>You should have created a folder called “penguins_analysis” on your
+desktop containing a file called “_targets.R” in the main directory and
+two files, “functions.R” and “packages.R” in the “R” subdirectory.</p>
+<p>You could have also created a folder called “_targets” containing
+subfolders “user/data” and “user/results”.</p>
+</div>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -527,7 +571,7 @@ any links that you are not going to use.
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="../instructor/lifecycle.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: The Workflow</a>
-        <a class="chapter-link float-end" href="../instructor/packages.html" rel="next">Next: Managing packages... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/packages.html" rel="next">Next: Managing Packages... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
     </nav></div> <!-- / div.primary-content.col-xs-12 -->
 <!-- END:   inst/pkgdown/templates/content-instructor.html-->
@@ -549,7 +593,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.11.16" class="external-link">sandpaper (0.11.16)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.11.18)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
@@ -571,9 +615,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/organization.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/organization.html",
-  "dateCreated": "2023-05-16",
-  "dateModified": "2023-05-16",
-  "datePublished": "2023-05-16"
+  "dateCreated": "2023-05-19",
+  "dateModified": "2023-05-19",
+  "datePublished": "2023-05-19"
 }
 
   </script><script>
