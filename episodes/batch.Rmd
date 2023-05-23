@@ -26,6 +26,9 @@ exercises: 2
 library(targets)
 library(tarchetypes)
 source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
+
+# Increase width for printing tibbles
+options(width = 140)
 ```
 
 ## Why batch and parallel processing?
@@ -189,6 +192,10 @@ tar_plan(
 )
 ```
 
+What is going on here?
+
+First, let's look at the messages provided by `tar_make()`.
+
 ```{r}
 #| label: example-model-hide-3
 #| echo: FALSE
@@ -224,24 +231,48 @@ tar_dir({
 })
 ```
 
-What is going on here?
-
-First, let's look at the output of `tar_make()`.
-
 There is a series of smaller targets (branches) that are each named like `model_summaries_f9795da2`, then one overall `model_summaries` target.
 That is the result of specifying targets using branching: each of the smaller targets are the "branches" that comprise the overall target.
 Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
 `targets` builds each branch one at a time, then combines them into the overall target.
 
-Next, let's look in more detail about how the workflow is set up.
+Next, let's look in more detail about how the workflow is set up, starting with how we defined the models:
 
-Unlike the non-branching version, we defined the models in a list (instead of one target per model).
-This is because dynamic branching is similar to the `apply()` or `purrrr::map()` method of looping: it applies a function to each element of a list.
+```{r}
+#| label: model-def
+#| eval: false
+# Build models
+models <- list(
+  combined_model = lm(
+    bill_depth_mm ~ bill_length_mm, data = penguin_data),
+  species_model = lm(
+    bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+  interaction_model = lm(
+    bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+)
+```
+
+Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
+This is because dynamic branching is similar to the `apply()` or [`purrrr::map()`](https://purrr.tidyverse.org/reference/map.html) method of looping: it applies a function to each element of a list.
 So we need to prepare the input for looping as a list.
 
-Take a look at the command to build the target `model_summaries`.
+Next, take a look at the command to build the target `model_summaries`.
+
+```{r}
+#| label: model-summaries
+#| eval: false
+# Get model summaries
+tar_target(
+  model_summaries,
+  glance(models[[1]]),
+  pattern = map(models)
+)
+```
+
 As before, the first argument is the name of the target to build, and the second is the command to build it.
+
 Here, we apply the `glance()` function to each element of `models` (the `[[1]]` is necessary because when the function gets applied, each element is actually a nested list, and we need to remove one layer of nesting).
+
 Finally, there is an argument we haven't seen before, `pattern`, which indicates that this target should be built using dynamic branching.
 `map` means to apply the command to each element of the input list (`models`) sequentially.
 
@@ -289,7 +320,7 @@ tar_dir({
 })
 ```
 
-The model summary statistics are all included in a single dataframe, which is convenient.
+The model summary statistics are all included in a single dataframe.
 
 But there's one problem: **we can't tell which row came from which model!** It would be unwise to assume that they are in the same order as the list of models.
 
@@ -327,6 +358,8 @@ library(tarchetypes)
 library(palmerpenguins)
 library(tidyverse)
 
+source("R/functions.R")
+
 tar_plan(
   # Load data from package
   penguin_data = palmerpenguins::penguins,
@@ -350,10 +383,12 @@ tar_plan(
 
 ```{r}
 #| label: example-model-hide-6
-#| echo: FALSE
+#| echo: false
+#| warning: false
 tar_dir({
   fs::dir_create("_targets/user/data")
   tar_script({
+    options(tidyverse.quiet = TRUE)
     library(targets)
     library(tarchetypes)
     library(palmerpenguins)
@@ -388,14 +423,16 @@ tar_dir({
 })
 ```
 
-And this time, when we load the `model_summaries`, we can tell which model corresponds to which row.
+And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
 
 ```{r}
 #| label: example-model-hide-7
-#| echo: FALSE
+#| echo: false
+#| warning: false
 tar_dir({
   fs::dir_create("_targets/user/data")
   tar_script({
+    options(tidyverse.quiet = TRUE)
     library(targets)
     library(tarchetypes)
     library(palmerpenguins)
@@ -431,6 +468,16 @@ tar_dir({
 })
 ```
 
+::::::::::::::::::::::::::::::::::::: {.callout}
+
+## Best practices for branching
+
+Dynamic branching is designed to work well with **dataframes** (tibbles).
+
+So if possible, write your custom functions to accept dataframes as input and return them as output, and always include any necessary metadata as a column or columns.
+
+:::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: {.challenge}
 
 ## Challenge: What other kinds of patterns are there?
@@ -460,6 +507,8 @@ This takes advantage of multiple processors in your computer to build multiple t
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
+## When to use parallel computing
+
 Parallel computing should only be used if your workflow has a structure such that it makes sense---if your workflow only consists of a linear sequence of targets, then there is nothing to parallelize.
 
 :::::::::::::::::::::::::::::::::::::
@@ -472,7 +521,11 @@ If you are interested in high-performance computing, [see the `targets` manual](
 
 For this demo, we will use the [`future` backend](https://github.com/HenrikBengtsson/future).
 
-You will need to install several packages:
+::::::::::::::::::::::::::::::::::::: {.prereq}
+
+### Install required packages
+
+You will need to install several packages to use the `future` backend:
 
 ```{r}
 #| label: install-future
@@ -481,6 +534,8 @@ install.packages("future")
 install.packages("future.batchtools")
 install.packages("future.callr")
 ```
+
+:::::::::::::::::::::::::::::::::::::
 
 ### Set up workflow
 
@@ -565,6 +620,8 @@ library(tidyverse)
 library(future)
 library(future.callr)
 
+source("R/functions.R")
+
 plan(callr)
 
 tar_plan(
@@ -635,7 +692,8 @@ You won't notice much difference since these computations run so quickly, but th
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Dynamic branching is easier to use, but the names of the targets it creates are arbitrary
+- Dynamic branching creates multiple targets with a single command
+- You usually need to write custom functions so that the output of the branches includes necessary metadata 
 - Parallel computing works at the level of the workflow, not the function
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
