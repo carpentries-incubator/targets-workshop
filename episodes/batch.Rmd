@@ -18,6 +18,12 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: instructor
+
+Episode summary: Show how to use branching and parallel processing (technically separate topics, but they go well together)
+
+:::::::::::::::::::::::::::::::::::::
+
 ```{r}
 #| label: setup
 #| echo: FALSE
@@ -84,8 +90,6 @@ tar_plan(
 #| label: example-model-hide-1
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  writeLines("Hello World", "_targets/user/data/hello.txt")
   tar_script({
      library(targets)
      library(tarchetypes)
@@ -124,8 +128,6 @@ tar_read(combined_summary)
 #| label: example-model-hide-2
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  writeLines("Hello World", "_targets/user/data/hello.txt")
   tar_script({
      library(targets)
      library(tarchetypes)
@@ -200,8 +202,6 @@ First, let's look at the messages provided by `tar_make()`.
 #| label: example-model-hide-3
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  writeLines("Hello World", "_targets/user/data/hello.txt")
   tar_script({
     library(targets)
     library(tarchetypes)
@@ -288,8 +288,6 @@ tar_read(model_summaries)
 #| label: example-model-hide-4
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  writeLines("Hello World", "_targets/user/data/hello.txt")
   tar_script({
     library(targets)
     library(tarchetypes)
@@ -386,7 +384,6 @@ tar_plan(
 #| echo: false
 #| warning: false
 tar_dir({
-  fs::dir_create("_targets/user/data")
   tar_script({
     options(tidyverse.quiet = TRUE)
     library(targets)
@@ -430,7 +427,6 @@ And this time, when we load the `model_summaries`, we can tell which model corre
 #| echo: false
 #| warning: false
 tar_dir({
-  fs::dir_create("_targets/user/data")
   tar_script({
     options(tidyverse.quiet = TRUE)
     library(targets)
@@ -580,7 +576,6 @@ Here is the output when running with `tar_make_future(workers = 2)`:
 #| label: example-model-hide-8
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
   tar_script({
     library(targets)
     library(tarchetypes)
@@ -649,7 +644,6 @@ tar_plan(
 #| label: example-model-hide-9
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
   tar_script({
     library(targets)
     library(tarchetypes)

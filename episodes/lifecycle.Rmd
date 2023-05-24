@@ -19,6 +19,12 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: {.instructor}
+
+Episode summary: Demonstrate typical cycle of running `targets`: make, inspect, adjust, make...
+
+:::::::::::::::::::::::::::::::::::::
+
 ```{r}
 #| label: setup
 #| echo: FALSE

@@ -1,5 +1,5 @@
 ---
-title: 'First `targets` Workflow'
+title: 'First targets Workflow'
 teaching: 10
 exercises: 2
 ---
@@ -21,6 +21,12 @@ exercises: 2
 - Use a `_targets.R` file to run a workflow
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: {.instructor}
+
+Episode summary: First chance to get hands dirty by writing a very simple workflow
+
+:::::::::::::::::::::::::::::::::::::
 
 ```{r}
 #| label: setup

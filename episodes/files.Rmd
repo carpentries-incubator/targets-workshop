@@ -17,6 +17,12 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: instructor
+
+Episode summary: Show how to read and write external files
+
+:::::::::::::::::::::::::::::::::::::
+
 ```{r}
 #| label: setup
 #| echo: FALSE
