@@ -189,7 +189,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="basic-targets.html">2. First <code>targets</code> Workflow</a>
+        <a href="basic-targets.html">2. First targets Workflow</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -225,7 +225,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="organization.html">5. Best Practices for <code>targets</code> Project Organization</a>
+        <a href="organization.html">5. Best Practices for targets Project Organization</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -359,7 +359,7 @@ workflow</li>
 <li>
 <code>targests</code> is designed for use with the R programming
 language</li>
-</ul></section><section id="basic-targets"><h2 class="section-heading"><a href="basic-targets.html">First <code>targets</code> Workflow</a></h2>
+</ul></section><section id="basic-targets"><h2 class="section-heading"><a href="basic-targets.html">First targets Workflow</a></h2>
 <hr class="half-width">
 <ul>
 <li>Projects help keep our analyses organized so we can easily re-run
@@ -399,7 +399,7 @@ workflow as a network</li>
 as a data frame</li>
 <li>
 <code>tar_outdated()</code> lists outdated targets</li>
-</ul></section><section id="organization"><h2 class="section-heading"><a href="organization.html">Best Practices for <code>targets</code> Project Organization</a></h2>
+</ul></section><section id="organization"><h2 class="section-heading"><a href="organization.html">Best Practices for targets Project Organization</a></h2>
 <hr class="half-width">
 <ul>
 <li>Put code in the <code>R/</code> folder</li>
@@ -412,6 +412,9 @@ as a data frame</li>
 </ul></section><section id="packages"><h2 class="section-heading"><a href="packages.html">Managing Packages</a></h2>
 <hr class="half-width">
 <ul>
+<li>There are multiple ways to load packages with
+<code>targets</code>
+</li>
 <li>
 <code>targets</code> only tracks user-defined functions, not
 packages</li>
@@ -433,9 +436,12 @@ data</li>
 </ul></section><section id="batch"><h2 class="section-heading"><a href="batch.html">Batch and Parallel Processing</a></h2>
 <hr class="half-width">
 <ul>
-<li>Dynamic branching is easier to use, but the names of the targets it
-creates are arbitrary</li>
-<li>There are many parallel backends available</li>
+<li>Dynamic branching creates multiple targets with a single
+command</li>
+<li>You usually need to write custom functions so that the output of the
+branches includes necessary metadata</li>
+<li>Parallel computing works at the level of the workflow, not the
+function</li>
 </ul></section><section id="quarto"><h2 class="section-heading"><a href="quarto.html">Reproducible Reports with Quarto</a></h2>
 <hr class="half-width">
 <ul>
@@ -459,11 +465,6 @@ invalidate them with <code>tar_invalidate()</code>
 </li>
 <li>The settings for each targets project are contained in the
 <code>_targets.yaml</code> file</li>
-<li>
-<code>targets</code> does not track the content of R packages by
-default</li>
-<li>
-<code>renv</code> should be used for tracking package versions</li>
 </ul></section>
 </div>
     </main>
@@ -489,7 +490,7 @@ default</li>
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.11.18)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
@@ -512,9 +513,9 @@ default</li>
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/key-points.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/key-points.html",
-  "dateCreated": "2023-05-19",
-  "dateModified": "2023-05-19",
-  "datePublished": "2023-05-19"
+  "dateCreated": "2023-05-24",
+  "dateModified": "2023-05-24",
+  "datePublished": "2023-05-24"
 }
 
   </script><script>

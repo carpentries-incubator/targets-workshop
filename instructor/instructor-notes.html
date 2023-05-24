@@ -189,7 +189,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="basic-targets.html">2. First <code>targets</code> Workflow</a>
+        <a href="basic-targets.html">2. First targets Workflow</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -225,7 +225,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="organization.html">5. Best Practices for <code>targets</code> Project Organization</a>
+        <a href="organization.html">5. Best Practices for targets Project Organization</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -347,32 +347,124 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Instructor Notes</h1>
         
-
-<p>This is a placeholder file. Please add content here.</p>
+<section id="general-notes"><h2 class="section-heading">General notes<a class="anchor" aria-label="anchor" href="#general-notes"></a>
+</h2>
+<hr class="half-width">
+<p>Most of the examples are very short so that the participants can
+easily type them and don’t get overwhelmed. However, there are a few
+downsides to this approach:</p>
+<ul>
+<li><p>First, this makes it difficult to demonstrate a realistic
+(longer) workflow. There is a demo available at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a> of a more
+typical workflow based on the <a href="https://allisonhorst.github.io/palmerpenguins/" class="external-link">Palmer Penguins
+dataset</a>. The demo first shows up in “Best Practices for targets
+Project Organization”, but could be shown earlier if needed. The
+instructor could even clone and run the demo.</p></li>
+<li><p>Second, since a given <code>targets</code> project can only have
+one <code>_targets.R</code> file, this means the participants may have
+to frequently delete their existing <code>_targets.R</code> file and
+write a new one to follow along with the examples. This may cause
+frustration if they can’t keep a record of what they have done so far.
+One solution would be to save old <code>_targets.R</code> files as
+<code>_targets_1.R</code>, <code>_targets_2.R</code>, etc. instead of
+overwriting them.</p></li>
+</ul>
 <!-- 
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
- -->
-
-
-      <section id="aggregate-instructor-notes"><section id="introduction"><h2 class="section-heading"><a href="introduction.html">Introduction</a></h2>
-<hr class="half-width"></section><section id="basic-targets"><h2 class="section-heading"><a href="basic-targets.html">First <code>targets</code> Workflow</a></h2>
-<hr class="half-width"></section><section id="cache"><h2 class="section-heading"><a href="cache.html">Loading Workflow Objects</a></h2>
+ --></section><section id="aggregate-instructor-notes"><section id="introduction"><h2 class="section-heading"><a href="introduction.html">Introduction</a></h2>
 <hr class="half-width">
-<p>You may want to pretend trying to run <code>my_data</code> or
-<code>my_summary</code>, then feigning surprise when it doesn’t work and
-using it as a teaching moment (errors are pedagogy!).</p>
-<p>In the previous episode, these were renamed from the defaults of
-<code>data</code> and <code>summary</code> to avoid confusion with the
-base R functions <code>data()</code> and <code>summary()</code>.</p>
-<hr></section><section id="lifecycle"><h2 class="section-heading"><a href="lifecycle.html">The Workflow Lifecycle</a></h2>
-<hr class="half-width"></section><section id="organization"><h2 class="section-heading"><a href="organization.html">Best Practices for <code>targets</code> Project Organization</a></h2>
-<hr class="half-width"></section><section id="packages"><h2 class="section-heading"><a href="packages.html">Managing Packages</a></h2>
-<hr class="half-width"></section><section id="files"><h2 class="section-heading"><a href="files.html">Working with External Files</a></h2>
-<hr class="half-width"></section><section id="batch"><h2 class="section-heading"><a href="batch.html">Batch and Parallel Processing</a></h2>
-<hr class="half-width"></section><section id="quarto"><h2 class="section-heading"><a href="quarto.html">Reproducible Reports with Quarto</a></h2>
-<hr class="half-width"></section><section id="advanced"><h2 class="section-heading"><a href="advanced.html">Advanced topics</a></h2>
-<hr class="half-width"></section></section>
+<h3 id="introduction-headingInstructor1">
+<a href="introduction.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#introduction-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Introduce the idea of reproducibility and why / who
+would want to use <code>targets</code></p>
+<hr>
+<br></section><section id="basic-targets"><h2 class="section-heading"><a href="basic-targets.html">First targets Workflow</a></h2>
+<hr class="half-width">
+<h3 id="basic-targets-headingInstructor1">
+<a href="basic-targets.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#basic-targets-headingInstructor1"></a>
+</h3>
+<p>Episode summary: First chance to get hands dirty by writing a very
+simple workflow</p>
+<hr>
+<br></section><section id="cache"><h2 class="section-heading"><a href="cache.html">Loading Workflow Objects</a></h2>
+<hr class="half-width">
+<h3 id="cache-headingInstructor1">
+<a href="cache.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#cache-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Show how to get at the objects that we built</p>
+<hr>
+<br><h3 id="cache-headingInstructor2">
+<a href="cache.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#cache-headingInstructor2"></a>
+</h3>
+<ul>
+<li><p>To reinforce the concept of <code>targets</code> running in a
+separate R session, you may want to pretend trying to run
+<code>my_data</code> or <code>my_summary</code>, then feigning surprise
+when it doesn’t work and using it as a teaching moment (errors are
+pedagogy!).</p></li>
+<li><p>In the previous episode, the default names of targets
+<code>data</code> and <code>summary</code> were changed to avoid
+confusion with the base R functions <code>data()</code> and
+<code>summary()</code>.</p></li>
+</ul>
+<hr>
+<br></section><section id="lifecycle"><h2 class="section-heading"><a href="lifecycle.html">The Workflow Lifecycle</a></h2>
+<hr class="half-width">
+<h3 id="lifecycle-headingInstructor1">
+<a href="lifecycle.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#lifecycle-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Demonstrate typical cycle of running
+<code>targets</code>: make, inspect, adjust, make…</p>
+<hr>
+<br></section><section id="organization"><h2 class="section-heading"><a href="organization.html">Best Practices for targets Project Organization</a></h2>
+<hr class="half-width">
+<h3 id="organization-headingInstructor1">
+<a href="organization.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#organization-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Demonstrate best-practices for project
+organization</p>
+<hr>
+<br></section><section id="packages"><h2 class="section-heading"><a href="packages.html">Managing Packages</a></h2>
+<hr class="half-width">
+<h3 id="packages-headingInstructor1">
+<a href="packages.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#packages-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Show how to load packages and maintain package
+versions</p>
+<hr>
+<br></section><section id="files"><h2 class="section-heading"><a href="files.html">Working with External Files</a></h2>
+<hr class="half-width">
+<h3 id="files-headingInstructor1">
+<a href="files.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#files-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Show how to read and write external files</p>
+<hr>
+<br></section><section id="batch"><h2 class="section-heading"><a href="batch.html">Batch and Parallel Processing</a></h2>
+<hr class="half-width">
+<h3 id="batch-headingInstructor1">
+<a href="batch.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#batch-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Show how to use branching and parallel processing
+(technically separate topics, but they go well together)</p>
+<hr>
+<br></section><section id="quarto"><h2 class="section-heading"><a href="quarto.html">Reproducible Reports with Quarto</a></h2>
+<hr class="half-width">
+<h3 id="quarto-headingInstructor1">
+<a href="quarto.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#quarto-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Show how to write reports with Quarto</p>
+<hr>
+<br></section><section id="advanced"><h2 class="section-heading"><a href="advanced.html">Advanced topics</a></h2>
+<hr class="half-width">
+<h3 id="advanced-headingInstructor1">
+<a href="advanced.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#advanced-headingInstructor1"></a>
+</h3>
+<p>Episode summary: Show some trickier aspects of targets, such as only
+running a specific target or managing multiple projects</p>
+<hr>
+<br></section></section>
 </div>
     </main>
 </div>
@@ -397,7 +489,7 @@ base R functions <code>data()</code> and <code>summary()</code>.</p>
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.11.18)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
@@ -420,9 +512,9 @@ base R functions <code>data()</code> and <code>summary()</code>.</p>
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/instructor-notes.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/instructor-notes.html",
-  "dateCreated": "2023-05-19",
-  "dateModified": "2023-05-19",
-  "datePublished": "2023-05-19"
+  "dateCreated": "2023-05-24",
+  "dateModified": "2023-05-24",
+  "datePublished": "2023-05-24"
 }
 
   </script><script>

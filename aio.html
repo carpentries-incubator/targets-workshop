@@ -191,7 +191,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="basic-targets.html">2. First <code>targets</code> Workflow</a>
+        <a href="basic-targets.html">2. First targets Workflow</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -227,7 +227,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="organization.html">5. Best Practices for <code>targets</code> Project Organization</a>
+        <a href="organization.html">5. Best Practices for targets Project Organization</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -351,7 +351,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p> Last updated on 2023-05-16 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -470,7 +470,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p> Last updated on 2023-05-16 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -610,12 +610,12 @@ main parts:</p>
 argument is the command used to build it. Note that the name of the
 target is <strong>unquoted</strong>, that is, it is written without any
 surrounding quotation marks.</p>
-<div id="callout1" class="callout callout">
+<div id="edit-_targets.r" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="edit-_targets.r" class="callout-inner">
-<h3 class="callout-title">Edit <code>_targets.R</code><a class="anchor" aria-label="anchor" href="#callout1"></a>
+<h3 class="callout-title">Edit <code>_targets.R</code><a class="anchor" aria-label="anchor" href="#edit-_targets.r"></a>
 </h3>
 <div class="callout-content">
 <p>Let’s modify the default workflow: rename the names of the targets
@@ -679,18 +679,18 @@ something like this:</p>
 <pre class="output" tabindex="0"><code>• start target my_data
 • built target my_data [0.001 seconds]
 • start target my_summary
-• built target my_summary [0.001 seconds]
-• end pipeline [0.079 seconds]</code></pre>
+• built target my_summary [0 seconds]
+• end pipeline [0.077 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
-<div id="challenge1" class="callout challenge">
+<div id="challenge-what-happened-during-the-workflow" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="challenge-what-happened-during-the-workflow" class="callout-inner">
 <h3 class="callout-title">Challenge: What happened during the
-workflow?<a class="anchor" aria-label="anchor" href="#challenge1"></a>
+workflow?<a class="anchor" aria-label="anchor" href="#challenge-what-happened-during-the-workflow"></a>
 </h3>
 <div class="callout-content">
 <p>Inspect the list at the end of <code>_targets.R</code>. Can you
@@ -746,7 +746,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p> Last updated on 2023-05-16 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -926,7 +926,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
 <hr>
-<p> Last updated on 2023-05-16 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -979,7 +979,7 @@ running the workflow again:</p>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target my_data
 ✔ skip target my_summary
-✔ skip pipeline [0.066 seconds]</code></pre>
+✔ skip pipeline [0.064 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -1016,7 +1016,7 @@ looks like this:</p>
 <pre class="output" tabindex="0"><code>✔ skip target my_data
 • start target my_summary
 • built target my_summary [0.001 seconds]
-• end pipeline [0.079 seconds]</code></pre>
+• end pipeline [0.077 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>my_data</code> and only ran
@@ -1025,12 +1025,12 @@ looks like this:</p>
 notice the amount of time saved. But imagine using this in a series of
 computationally intensive analysis steps. The ability to automatically
 skip steps results in a massive increase in efficiency.</p>
-<div id="challenge1" class="callout challenge">
+<div id="challenge-1-inspect-the-output" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="challenge-1-inspect-the-output" class="callout-inner">
-<h3 class="callout-title">Challenge 1: Inspect the output<a class="anchor" aria-label="anchor" href="#challenge1"></a>
+<h3 class="callout-title">Challenge 1: Inspect the output<a class="anchor" aria-label="anchor" href="#challenge-1-inspect-the-output"></a>
 </h3>
 <div class="callout-content">
 <p>How can you inspect the contents of <code>my_summary</code>?</p>
@@ -1044,7 +1044,7 @@ skip steps results in a massive increase in efficiency.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(my_summary</code>) or by running
 <code>tar_load(my_summary)</code> followed by
@@ -1072,12 +1072,12 @@ Then, for each subsequent call of <code>tar_make()</code>, it calculates
 the hashes again and compares them to the stored values. It detects
 which have changed, and this is how it knows which targets are out of
 date.</p>
-<div id="callout1" class="callout callout">
+<div id="where-the-hashes-live" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="where-the-hashes-live" class="callout-inner">
-<h3 class="callout-title">Where the hashes live<a class="anchor" aria-label="anchor" href="#callout1"></a>
+<h3 class="callout-title">Where the hashes live<a class="anchor" aria-label="anchor" href="#where-the-hashes-live"></a>
 </h3>
 <div class="callout-content">
 <p>If you are curious about what the hashes look like, you can see them
@@ -1110,12 +1110,12 @@ for larger, “real-life” workflows).</p>
 <p>Here, we see that all of the targets are dark green, indicating that
 they are up-to-date and would be skipped if we were to run the workflow
 again.</p>
-<div id="callout2" class="callout callout">
+<div id="installing-visnetwork" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="installing-visnetwork" class="callout-inner">
-<h3 class="callout-title">Installing visNetwork<a class="anchor" aria-label="anchor" href="#callout2"></a>
+<h3 class="callout-title">Installing visNetwork<a class="anchor" aria-label="anchor" href="#installing-visnetwork"></a>
 </h3>
 <div class="callout-content">
 <p>You may encounter an error message
@@ -1125,13 +1125,13 @@ again.</p>
 </div>
 </div>
 </div>
-<div id="challenge2" class="callout challenge">
+<div id="challenge-2-what-else-can-the-visualization-tell-us" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="challenge-2-what-else-can-the-visualization-tell-us" class="callout-inner">
 <h3 class="callout-title">Challenge 2: What else can the visualization
-tell us?<a class="anchor" aria-label="anchor" href="#challenge2"></a>
+tell us?<a class="anchor" aria-label="anchor" href="#challenge-2-what-else-can-the-visualization-tell-us"></a>
 </h3>
 <div class="callout-content">
 <p>Modify the workflow in <code>_targets.R</code>, then run
@@ -1148,7 +1148,7 @@ date?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -1157,13 +1157,13 @@ now be light blue.</p>
 </div>
 </div>
 </div>
-<div id="callout3" class="callout callout">
+<div id="outdated-does-not-always-mean-will-be-run" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="outdated-does-not-always-mean-will-be-run" class="callout-inner">
 <h3 class="callout-title">‘Outdated’ does not always mean ‘will be
-run’<a class="anchor" aria-label="anchor" href="#callout3"></a>
+run’<a class="anchor" aria-label="anchor" href="#outdated-does-not-always-mean-will-be-run"></a>
 </h3>
 <div class="callout-content">
 <p>Just because a target appears as light blue (is “outdated”) in the
@@ -1259,7 +1259,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p> Last updated on 2023-05-19 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1343,12 +1343,12 @@ because <code>=</code>, while short and easy to read, does not provide
 all of the customization that <code>targets</code> is capable of. This
 doesn’t matter so much for now, but it will become important when you
 start to create more advanced <code>targets</code> workflows.</p>
-<div id="challenge1" class="callout challenge">
+<div id="challenge-1-try-tar_plan" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="challenge-1-try-tar_plan" class="callout-inner">
-<h3 class="callout-title">Challenge 1: Try <code>tar_plan()</code><a class="anchor" aria-label="anchor" href="#challenge1"></a>
+<h3 class="callout-title">Challenge 1: Try <code>tar_plan()</code><a class="anchor" aria-label="anchor" href="#challenge-1-try-tar_plan"></a>
 </h3>
 <div class="callout-content">
 <p>How can we use <code>tar_plan()</code> to rewrite
@@ -1464,21 +1464,23 @@ per target.</p>
 </h2>
 <hr class="half-width">
 <p>So far, we have only used a very simple targets workflow to
-demonstrate basic usage of <code>targets</code>. However, this is not
-very realistic.</p>
-<p>For the rest of the lesson, we will practice on Palmer’s Penguins, a
-real dataset of measurements taken on penguins in Antarctica. This is
-probably closer to something you may encounter in your own research.</p>
-<p>Since a given project can only have one <code>_targets.R</code> file
-in it, we will start from a completely fresh project.</p>
-<div id="challenge2" class="callout challenge">
+demonstrate basic usage of <code>targets</code>.</p>
+<p>There is a demonstration of a more realistic workflow based on
+Palmer’s Penguins, a dataset of measurements taken on penguins in
+Antarctica, available at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a>.</p>
+<p>Please browse <a href="https://github.com/joelnitta/penguins-targets" class="external-link">the repo</a> and
+verify that it is set up using the folder organization described
+above.</p>
+<div id="challenge-2-set-up-a-new-project" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="challenge-2-set-up-the-project" class="callout-inner">
-<h3 class="callout-title">Challenge 2: Set up the project<a class="anchor" aria-label="anchor" href="#challenge2"></a>
+<div id="challenge-2-set-up-a-new-project" class="callout-inner">
+<h3 class="callout-title">Challenge 2: Set up a new project<a class="anchor" aria-label="anchor" href="#challenge-2-set-up-a-new-project"></a>
 </h3>
 <div class="callout-content">
+<p>For this challenge, we will emulate the “Palmer’s Penguins” <a href="https://github.com/joelnitta/penguins-targets" class="external-link">demonstration
+project</a>.</p>
 <p>Set up a new R project called “penguins_analysis” using the
 recommended file and folder structure for <code>targets</code>. It is
 recommended to create the project on the desktop so you can find it
@@ -1530,7 +1532,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-packages"><p>Content from <a href="packages.html">Managing Packages</a></p>
 <hr>
-<p> Last updated on 2023-05-19 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/packages.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1562,9 +1564,264 @@ project?</li>
 </div>
 </div>
 </div>
-<section id="introduction"><h2 class="section-heading">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<section id="loading-packages"><h2 class="section-heading">Loading packages<a class="anchor" aria-label="anchor" href="#loading-packages"></a>
 </h2>
 <hr class="half-width">
+<p>Almost every R analysis relies on packages for functions beyond those
+available in base R.</p>
+<p>There are three main ways to load packages in <code>targets</code>
+workflows.</p>
+<div class="section level3">
+<h3 id="method-1">Method 1: <code>library()</code>
+<a class="anchor" aria-label="anchor" href="#method-1"></a>
+</h3>
+<p>This is the method you are almost certainly more familiar with, and
+is the method we have been using by default so far.</p>
+<p>Like any other R script, include <code>library()</code> calls near
+the top of the <code>_targets.R</code> script. Alternatively (and as the
+recommended best practice for project organization), you can put all of
+the <code>library()</code> calls in a separate script—this is typically
+called <code>packages.R</code> and stored in the <code>R/</code>
+directory of your project.</p>
+<p>The potential downside to this approach is that if you have a long
+list of packages to load, certain functions like
+<code>tar_visnetwork()</code>, <code>tar_outdated()</code>, etc., may
+take an unnecessarily long time to run because they have to load all the
+packages, even though they don’t necessarily use them.</p>
+</div>
+<div class="section level3">
+<h3 id="method-2">Method 2: <code>tar_option_set()</code>
+<a class="anchor" aria-label="anchor" href="#method-2"></a>
+</h3>
+<p>In this method, use the <code>tar_option_set()</code> function in
+<code>_targets.R</code> to specify the packages to load when running the
+workflow.</p>
+<p>For example, let’s filter some data from the
+<code>palmerpenguins</code> package:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_option_set</span><span class="op">(</span>packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"dplyr"</span>, <span class="st">"palmerpenguins"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  adelie_data <span class="op">=</span> <span class="fu">filter</span><span class="op">(</span><span class="va">penguins</span>, <span class="va">species</span> <span class="op">==</span> <span class="st">"Adelie"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target adelie_data
+• built target adelie_data [0.025 seconds]
+• end pipeline [0.082 seconds]</code></pre>
+</div>
+<p>This method gets around the slow-downs that may sometimes be
+experienced with Method 1.</p>
+</div>
+<div class="section level3">
+<h3 id="method-3">Method 3: <code>packages</code> argument of
+<code>tar_target()</code>
+<a class="anchor" aria-label="anchor" href="#method-3"></a>
+</h3>
+<p>The main function for defining targets, <code>tar_target()</code>
+includes a <code>packages</code> argument that will load the specified
+packages <strong>only for that target</strong>.</p>
+<p>Here is how we could use this method, modified from the same example
+as above.</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">adelie_data</span>,</span>
+<span>    <span class="fu">filter</span><span class="op">(</span><span class="va">penguins</span>, <span class="va">species</span> <span class="op">==</span> <span class="st">"Adelie"</span><span class="op">)</span>,</span>
+<span>    packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"dplyr"</span>, <span class="st">"palmerpenguins"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target adelie_data
+• built target adelie_data [0.025 seconds]
+• end pipeline [0.082 seconds]</code></pre>
+</div>
+<p>This can be more memory efficient in some cases than loading all
+packages, since not every target is always made during a typical run of
+the workflow. But, it can be tedious to remember and specify packages
+needed on a per-target basis.</p>
+</div>
+<div class="section level3">
+<h3 id="one-more-option">One more option<a class="anchor" aria-label="anchor" href="#one-more-option"></a>
+</h3>
+<p>Another alternative that does not actually involve loading packages
+is to specify the package associated with each function by using the
+<code>::</code> notation, for example, <code>dplyr::mutate()</code>.
+This means you can <strong>avoid loading packages
+altogether</strong>.</p>
+<p>Here is how to write the plan using this method:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  adelie_data <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">filter</span><span class="op">(</span><span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>, <span class="va">species</span> <span class="op">==</span> <span class="st">"Adelie"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target adelie_data
+• built target adelie_data [0.012 seconds]
+• end pipeline [0.07 seconds]</code></pre>
+</div>
+<p>The benefits of this approach are that the origins of all functions
+is explicit, so you could browse your code (for example, by looking at
+its source in GitHub), and immediately know where all the functions come
+from. The downside is that it is rather verbose because you need to type
+the package name every time you use one of its functions.</p>
+</div>
+<div class="section level3">
+<h3 id="which-is-the-right-way">Which is the right way?<a class="anchor" aria-label="anchor" href="#which-is-the-right-way"></a>
+</h3>
+<p><strong>There is no “right” answer about how to load
+packages</strong>—it is a matter of what works best for your particular
+situation.</p>
+<p>Often a reasonable approach is to load your most commonly used
+packages with <code>library()</code> (such as <code>tidyverse</code>) in
+<code>packages.R</code>, then use <code>::</code> notation for less
+frequently used functions whose origins you may otherwise forget.</p>
+</div>
+</section><section id="maintaining-package-versions"><h2 class="section-heading">Maintaining package versions<a class="anchor" aria-label="anchor" href="#maintaining-package-versions"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="tracking-of-custom-functions-vs--functions-from-packages">Tracking of custom functions vs. functions from packages<a class="anchor" aria-label="anchor" href="#tracking-of-custom-functions-vs--functions-from-packages"></a>
+</h3>
+<p>A critical thing to understand about <code>targets</code> is that
+<strong>it only tracks custom functions and targets</strong>, not
+functions provided by packages.</p>
+<p>However, the content of packages can change, and packages typically
+get updated on a regular basis. <strong>The output of your workflow may
+depend not only on the packages you use, but their
+versions</strong>.</p>
+<p>Therefore, it is a good idea to track package versions.</p>
+</div>
+<div class="section level3">
+<h3 id="about-renv">About <code>renv</code>
+<a class="anchor" aria-label="anchor" href="#about-renv"></a>
+</h3>
+<p>Fortunately, you don’t have to do this by hand: there are R packages
+available that can help automate this process. We recommend <a href="https://rstudio.github.io/renv/index.html" class="external-link">renv</a>, but there are
+others available as well (e.g., <a href="https://groundhogr.com/" class="external-link">groundhog</a>). We don’t have the time to
+cover detailed usage of <code>renv</code> in this lesson. To get started
+with <code>renv</code>, see the <a href="https://rstudio.github.io/renv/articles/renv.html" class="external-link">“Introduction
+to renv” vignette</a>.</p>
+<p>You can generally use <code>renv</code> the same way you would for a
+<code>targets</code> project as any other R project. However, there is
+one exception: if you load packages using <code>tar_option_set()</code>
+or the <code>packages</code> argument of <code>tar_target()</code> (<a href="#method-2">Method 2</a> or <a href="#method-3">Method 3</a>,
+respectively), <code>renv</code> will not detect them (because it
+expects packages to be loaded with <code>library()</code>,
+<code>require()</code>, etc.).</p>
+<p>The solution in this case is to use the <a href="https://docs.ropensci.org/targets/reference/tar_renv.html" class="external-link"><code>tar_renv()</code>
+function</a>. This will write a separate file with
+<code>library()</code> calls for each package used in the workflow so
+that <code>renv</code> will properly detect them.</p>
+</div>
+<div class="section level3">
+<h3 id="selective-tracking-of-functions-from-packages">Selective tracking of functions from packages<a class="anchor" aria-label="anchor" href="#selective-tracking-of-functions-from-packages"></a>
+</h3>
+<p>Because <code>targets</code> doesn’t track functions from packages,
+if you update a package and the contents of one of its functions
+changes, <code>targets</code> <strong>will not re-build the target that
+was generated by that function</strong>.</p>
+<p>However, it is possible to change this behavior on a per-package
+basis. This is best done only for a small number of packages, since
+adding too many would add too much computational overhead to
+<code>targets</code> when it has to calculate dependencies. For example,
+you may want to do this if you are using your own custom package that
+you update frequently.</p>
+<p>The way to do so is by using <code>tar_option_set()</code>,
+specifying the <strong>same</strong> package name in both
+<code>packages</code> and <code>imports</code>. Here is a modified
+version of the earlier code that demonstrates this for
+<code>dplyr</code> and <code>palmerpenguins</code>.</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_option_set</span><span class="op">(</span></span>
+<span>  packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"dplyr"</span>, <span class="st">"palmerpenguins"</span><span class="op">)</span>,</span>
+<span>  imports <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"dplyr"</span>, <span class="st">"palmerpenguins"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  adelie_data <span class="op">=</span> <span class="fu">filter</span><span class="op">(</span><span class="va">penguins</span>, <span class="va">species</span> <span class="op">==</span> <span class="st">"Adelie"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>If we were to re-install either <code>dplyr</code> or
+<code>palmerpenguins</code> and one of the functions used from those in
+the pipeline changes (for example, <code>filter()</code>), any target
+depending on that function will be rebuilt.</p>
+</div>
+</section><section id="resolving-namespace-conflicts"><h2 class="section-heading">Resolving namespace conflicts<a class="anchor" aria-label="anchor" href="#resolving-namespace-conflicts"></a>
+</h2>
+<hr class="half-width">
+<p>There is one final best-practice to mention related to packages:
+resolving namespace conflicts.</p>
+<p>“Namespace” refers to the idea that a certain set of unique names are
+only unique <strong>within a particular context</strong>. For example,
+all the function names of a package have to be unique, but only within
+that package. Function names could be duplicated across packages.</p>
+<p>As you may imagine, this can cause confusion. For example, the
+<code>filter()</code> function appears in both the <code>stats</code>
+package and the <code>dplyr</code> package, but does completely
+different things in each. This is a <strong>namespace conflict</strong>:
+how do we know which <code>filter()</code> we are talking about?</p>
+<p>The <code>conflicted</code> package can help prevent such confusion
+by stopping you if you try to use an ambiguous function, and help you be
+explicit about which package to use. We don’t have time to cover the
+details here, but you can read more about how to use
+<code>conflicted</code> at its <a href="https://conflicted.r-lib.org/" class="external-link">website</a>.</p>
+<p>When you use <code>conflicted</code>, you will typically run a series
+of commands to explicitly resolve namespace conflicts, like
+<code>conflicts_prefer(dplyr::filter)</code> (this would tell R that we
+want to use <code>filter</code> from <code>dplyr</code>, not
+<code>stats</code>).</p>
+<p>To use this in a <code>targets</code> workflow, you should put all
+calls to <code>conflicts_prefer</code> in a special file called
+<code>.Rprofile</code> that is located in the main folder of your
+project. This will ensure that the conflicts are always resolved for
+each target.</p>
+<p>The recommended way to edit your <code>.Rprofile</code> is to use
+<code>usethis::edit_r_profile("project")</code>. This will open
+<code>.Rprofile</code> in your editor, where you can edit it and save
+it.</p>
+<p>For example, your <code>.Rprofile</code> could include this:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">conflicted</span><span class="op">)</span></span>
+<span><span class="fu">conflicts_prefer</span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va">filter</span><span class="op">)</span></span></code></pre>
+</div>
+<p>Note that you don’t need to run <code>source()</code> to run the code
+in <code>.Rprofile</code>. It will always get run at the start of each R
+session automatically.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1574,6 +1831,9 @@ project?</li>
 </h3>
 <div class="callout-content">
 <ul>
+<li>There are multiple ways to load packages with
+<code>targets</code>
+</li>
 <li>
 <code>targets</code> only tracks user-defined functions, not
 packages</li>
@@ -1590,7 +1850,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p> Last updated on 2023-05-19 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1651,7 +1911,7 @@ running <code>tar_make()</code>:</p>
 </h3>
 <pre class="output" tabindex="0"><code>• start target some_data
 • built target some_data [0.001 seconds]
-• end pipeline [0.058 seconds]</code></pre>
+• end pipeline [0.059 seconds]</code></pre>
 </div>
 <p>If we inspect the contents of <code>some_data</code> with
 <code>tar_read(some_data)</code>, it will contain the string
@@ -1674,7 +1934,7 @@ pipeline again.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target some_data
-✔ skip pipeline [0.045 seconds]</code></pre>
+✔ skip pipeline [0.046 seconds]</code></pre>
 </div>
 <p>The target <code>some_data</code> was skipped, even though the
 contents of the file changed.</p>
@@ -1701,7 +1961,7 @@ this will be detected by <code>targets</code>.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target data_file
-• built target data_file [0.002 seconds]
+• built target data_file [0.001 seconds]
 • start target some_data
 • built target some_data [0 seconds]
 • end pipeline [0.068 seconds]</code></pre>
@@ -1857,22 +2117,22 @@ to upper case then write it out again:</p>
 <pre class="output" tabindex="0"><code>• start target hello_file
 • built target hello_file [0.001 seconds]
 • start target hello
-• built target hello [0.001 seconds]
+• built target hello [0 seconds]
 • start target hello_caps
-• built target hello_caps [0.001 seconds]
+• built target hello_caps [0 seconds]
 • start target hello_caps_out
-• built target hello_caps_out [0 seconds]
-• end pipeline [0.083 seconds]</code></pre>
+• built target hello_caps_out [0.008 seconds]
+• end pipeline [0.082 seconds]</code></pre>
 </div>
 <p>Take a look at <code>hello_caps.txt</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
-<div id="challenge1" class="callout challenge">
+<div id="challenge-what-happens-to-file-output-if-its-modified" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="challenge-what-happens-to-file-output-if-its-modified" class="callout-inner">
 <h3 class="callout-title">Challenge: What happens to file output if its
-modified?<a class="anchor" aria-label="anchor" href="#challenge1"></a>
+modified?<a class="anchor" aria-label="anchor" href="#challenge-what-happens-to-file-output-if-its-modified"></a>
 </h3>
 <div class="callout-content">
 <p>Delete or change the contents of <code>hello_caps.txt</code> in the
@@ -1888,7 +2148,7 @@ modified?<a class="anchor" aria-label="anchor" href="#challenge1"></a>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>hello_caps_out</code> has
 changed (is “invalidated”), and re-runs the code to make it, thus
@@ -1929,7 +2189,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-batch"><p>Content from <a href="batch.html">Batch and Parallel Processing</a></p>
 <hr>
-<p> Last updated on 2023-05-16 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1962,6 +2222,580 @@ any links that you are not going to use.
 </div>
 </div>
 </div>
+<section id="why-batch-and-parallel-processing"><h2 class="section-heading">Why batch and parallel processing?<a class="anchor" aria-label="anchor" href="#why-batch-and-parallel-processing"></a>
+</h2>
+<hr class="half-width">
+<p>One of the major strengths of <code>targets</code> is the ability to
+define many targets from a single line of code (batch processing). This
+not only saves you typing, it also <strong>reduces the risk of
+errors</strong> since there is less chance of making a typo.
+Furthermore, it is related to another powerful feature:
+<code>targets</code> can run multiple analyses in parallel (at the same
+time), thereby <strong>making your analysis finish sooner</strong>.</p>
+</section><section id="types-of-branching"><h2 class="section-heading">Types of branching<a class="anchor" aria-label="anchor" href="#types-of-branching"></a>
+</h2>
+<hr class="half-width">
+<p>Batching in <code>targets</code> is called “branching.” There are two
+types of branching, <strong>dynamic branching</strong> and
+<strong>static branching</strong>. “Branching” refers to the idea that
+you can provide a single specification for how to make targets (the
+“pattern”), and <code>targets</code> generates multiple targets from it
+(“branches”). “Dynamic” means that the branches that result from the
+pattern do not have to be defined ahead of time—they are a dynamic
+result of the code.</p>
+<p>In this workshop, we will only cover dynamic branching since it is
+generally easier to write (static branching requires use of <a href="https://books.ropensci.org/targets/static.html#metaprogramming" class="external-link">meta-programming</a>,
+an advanced topic). For more information about each and when you might
+want to use one or the other (or some combination of the two), <a href="https://books.ropensci.org/targets/dynamic.html" class="external-link">see the
+<code>targets</code> package manual</a>.</p>
+</section><section id="example-without-branching"><h2 class="section-heading">Example without branching<a class="anchor" aria-label="anchor" href="#example-without-branching"></a>
+</h2>
+<hr class="half-width">
+<p>To see how this works, let’s use an example based on the
+<code>palmerpenguins</code> dataset. Our hypothesis is that bill depth
+decreases with bill length. We want to test this using several
+alternative models. The models will either ignore species identity, add
+a parameter for species, or add an interaction effect between species
+and bill length.</p>
+<p>This is what a workflow for such an analysis might look like
+<strong>without branching</strong>:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">broom</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load data from package</span></span>
+<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get model summaries</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span>,</span>
+<span>  species_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">species_model</span><span class="op">)</span>,</span>
+<span>  interaction_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">interaction_model</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target penguin_data
+• built target penguin_data [0.003 seconds]
+• start target combined_model
+• built target combined_model [0.064 seconds]
+• start target interaction_model
+• built target interaction_model [0.002 seconds]
+• start target species_model
+• built target species_model [0.002 seconds]
+• start target combined_summary
+• built target combined_summary [0.079 seconds]
+• start target interaction_summary
+• built target interaction_summary [0.003 seconds]
+• start target species_summary
+• built target species_summary [0.003 seconds]
+• end pipeline [0.253 seconds]</code></pre>
+</div>
+<p>It worked. Let’s check some of the model output:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">combined_summary</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 1 × 12
+  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+1    0.0552        0.0525  1.92      19.9 0.0000112     1  -708. 1422. 1433.    1256.         340   342</code></pre>
+</div>
+<p>This way of writing the pipeline is repetitive: we have to call
+<code>glance()</code> each time we want to obtain summary statistics for
+each model. Furthermore, each summary target
+(<code>combined_summary</code>, etc.) is explicitly named and typed out
+manually. It would be fairly easy to make a typo and end up with the
+wrong model being summarized.</p>
+</section><section id="example-with-branching"><h2 class="section-heading">Example with branching<a class="anchor" aria-label="anchor" href="#example-with-branching"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="first-attempt">First attempt<a class="anchor" aria-label="anchor" href="#first-attempt"></a>
+</h3>
+<p>Let’s see how to write the same plan using <strong>dynamic
+branching</strong>:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">broom</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load data from package</span></span>
+<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">model_summaries</span>,</span>
+<span>    <span class="fu">glance</span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>What is going on here?</p>
+<p>First, let’s look at the messages provided by
+<code>tar_make()</code>.</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target penguin_data
+• built target penguin_data [0.002 seconds]
+• start target models
+• built target models [0.006 seconds]
+• start branch model_summaries_ea786eaa
+• built branch model_summaries_ea786eaa [0.007 seconds]
+• start branch model_summaries_1c878f62
+• built branch model_summaries_1c878f62 [0.003 seconds]
+• start branch model_summaries_afef26b4
+• built branch model_summaries_afef26b4 [0.003 seconds]
+• built pattern model_summaries
+• end pipeline [0.116 seconds]</code></pre>
+</div>
+<p>There is a series of smaller targets (branches) that are each named
+like <code>model_summaries_f9795da2</code>, then one overall
+<code>model_summaries</code> target. That is the result of specifying
+targets using branching: each of the smaller targets are the “branches”
+that comprise the overall target. Since <code>targets</code> has no way
+of knowing ahead of time how many branches there will be or what they
+represent, it names each one using this series of numbers and letters
+(the “hash”). <code>targets</code> builds each branch one at a time,
+then combines them into the overall target.</p>
+<p>Next, let’s look in more detail about how the workflow is set up,
+starting with how we defined the models:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Build models</span></span>
+<span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>Unlike the non-branching version, we defined the models <strong>in a
+list</strong> (instead of one target per model). This is because dynamic
+branching is similar to the <code>apply()</code> or <a href="https://purrr.tidyverse.org/reference/map.html" class="external-link"><code>purrrr::map()</code></a>
+method of looping: it applies a function to each element of a list. So
+we need to prepare the input for looping as a list.</p>
+<p>Next, take a look at the command to build the target
+<code>model_summaries</code>.</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get model summaries</span></span>
+<span><span class="fu">tar_target</span><span class="op">(</span></span>
+<span>  <span class="va">model_summaries</span>,</span>
+<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>As before, the first argument is the name of the target to build, and
+the second is the command to build it.</p>
+<p>Here, we apply the <code>glance()</code> function to each element of
+<code>models</code> (the <code>[[1]]</code> is necessary because when
+the function gets applied, each element is actually a nested list, and
+we need to remove one layer of nesting).</p>
+<p>Finally, there is an argument we haven’t seen before,
+<code>pattern</code>, which indicates that this target should be built
+using dynamic branching. <code>map</code> means to apply the command to
+each element of the input list (<code>models</code>) sequentially.</p>
+<p>Now that we understand how the branching workflow is constructed,
+let’s inspect the output:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">model_summaries</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 3 × 12
+  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+1    0.0552        0.0525 1.92       19.9 1.12e-  5     1  -708. 1422. 1433.    1256.         340   342
+2    0.769         0.767  0.953     375.  3.65e-107     3  -467.  944.  963.     307.         338   342
+3    0.770         0.766  0.955     225.  8.52e-105     5  -466.  947.  974.     306.         336   342</code></pre>
+</div>
+<p>The model summary statistics are all included in a single
+dataframe.</p>
+<p>But there’s one problem: <strong>we can’t tell which row came from
+which model!</strong> It would be unwise to assume that they are in the
+same order as the list of models.</p>
+<p>This is due to the way dynamic branching works: by default, there is
+no information about the provenance of each target preserved in the
+output.</p>
+<p>How can we fix this?</p>
+</div>
+<div class="section level3">
+<h3 id="second-attempt">Second attempt<a class="anchor" aria-label="anchor" href="#second-attempt"></a>
+</h3>
+<p>The key to obtaining useful output from branching pipelines is to
+include the necessary information in the output of each individual
+branch. Here, we want to know the kind of model that corresponds to each
+row of the model summaries. To do that, we need to write a
+<strong>custom function</strong>. You will need to write custom
+functions frequently when using <code>targets</code>, so it’s good to
+get used to it!</p>
+<p>Here is the function. Save this in <code>R/functions.R</code>:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">glance_with_mod_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
+</div>
+<p>Our new pipeline looks almost the same as before, but this time we
+use the custom function instead of <code>broom::glance()</code>.</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load data from package</span></span>
+<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">model_summaries</span>,</span>
+<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target penguin_data
+• built target penguin_data [0.003 seconds]
+• start target models
+• built target models [0.013 seconds]
+• start branch model_summaries_ea786eaa
+• built branch model_summaries_ea786eaa [0.032 seconds]
+• start branch model_summaries_1c878f62
+• built branch model_summaries_1c878f62 [0.008 seconds]
+• start branch model_summaries_afef26b4
+• built branch model_summaries_afef26b4 [0.004 seconds]
+• built pattern model_summaries
+• end pipeline [0.194 seconds]</code></pre>
+</div>
+<p>And this time, when we load the <code>model_summaries</code>, we can
+tell which model corresponds to which row (you may need to scroll to the
+right to see it).</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 3 × 13
+  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs model_name       
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt; &lt;chr&gt;            
+1    0.0552        0.0525 1.92       19.9 1.12e-  5     1  -708. 1422. 1433.    1256.         340   342 combined_model   
+2    0.769         0.767  0.953     375.  3.65e-107     3  -467.  944.  963.     307.         338   342 species_model    
+3    0.770         0.766  0.955     225.  8.52e-105     5  -466.  947.  974.     306.         336   342 interaction_model</code></pre>
+</div>
+<div id="best-practices-for-branching" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="best-practices-for-branching" class="callout-inner">
+<h3 class="callout-title">Best practices for branching<a class="anchor" aria-label="anchor" href="#best-practices-for-branching"></a>
+</h3>
+<div class="callout-content">
+<p>Dynamic branching is designed to work well with
+<strong>dataframes</strong> (tibbles).</p>
+<p>So if possible, write your custom functions to accept dataframes as
+input and return them as output, and always include any necessary
+metadata as a column or columns.</p>
+</div>
+</div>
+</div>
+<div id="challenge-what-other-kinds-of-patterns-are-there" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-what-other-kinds-of-patterns-are-there" class="callout-inner">
+<h3 class="callout-title">Challenge: What other kinds of patterns are
+there?<a class="anchor" aria-label="anchor" href="#challenge-what-other-kinds-of-patterns-are-there"></a>
+</h3>
+<div class="callout-content">
+<p>So far, we have only used a single function in conjunction with the
+<code>pattern</code> argument, <code>map()</code>, which applies the
+function to each element of its input in sequence.</p>
+<p>Can you think of any other ways you might want to apply a branching
+pattern?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1">
+  Show me the solution
+  </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>Some other ways of applying branching patterns include:</p>
+<ul>
+<li>crossing: one branch per combination of elements
+(<code>cross()</code> function)</li>
+<li>slicing: one branch for each of a manually selected set of elements
+(<code>slice()</code> function)</li>
+<li>sampling: one branch for each of a randomly selected set of elements
+(<code>sample()</code> function)</li>
+</ul>
+<p>You can <a href="https://books.ropensci.org/targets/dynamic.html#patterns" class="external-link">find out
+more about different branching patterns in the <code>targets</code>
+manual</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="parallel-processing"><h2 class="section-heading">Parallel processing<a class="anchor" aria-label="anchor" href="#parallel-processing"></a>
+</h2>
+<hr class="half-width">
+<p>Once a pipeline starts to include many targets, you may want to think
+about parallel processing. This takes advantage of multiple processors
+in your computer to build multiple targets at the same time.</p>
+<div id="when-to-use-parallel-computing" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="when-to-use-parallel-computing" class="callout-inner">
+<h3 class="callout-title">When to use parallel computing<a class="anchor" aria-label="anchor" href="#when-to-use-parallel-computing"></a>
+</h3>
+<div class="callout-content">
+<p>Parallel computing should only be used if your workflow has a
+structure such that it makes sense—if your workflow only consists of a
+linear sequence of targets, then there is nothing to parallelize.</p>
+</div>
+</div>
+</div>
+<p><code>targets</code> includes support for high-performance computing,
+cloud computing, and various parallel backends. Here, we assume you are
+running this analysis on a laptop and so will use a relatively simple
+backend. If you are interested in high-performance computing, <a href="https://books.ropensci.org/targets/hpc.html" class="external-link">see the
+<code>targets</code> manual</a>.</p>
+<div class="section level3">
+<h3 id="install-r-packages-for-parallel-computing">Install R packages for parallel computing<a class="anchor" aria-label="anchor" href="#install-r-packages-for-parallel-computing"></a>
+</h3>
+<p>For this demo, we will use the <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>future</code>
+backend</a>.</p>
+<div id="install-required-packages" class="callout prereq">
+<div class="callout-square">
+<i class="callout-icon" data-feather="check"></i>
+</div>
+<div id="install-required-packages" class="callout-inner">
+<h3 class="callout-title">Install required packages<a class="anchor" aria-label="anchor" href="#install-required-packages"></a>
+</h3>
+<div class="callout-content">
+<p>You will need to install several packages to use the
+<code>future</code> backend:</p>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"future"</span><span class="op">)</span></span>
+<span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"future.batchtools"</span><span class="op">)</span></span>
+<span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"future.callr"</span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="set-up-workflow">Set up workflow<a class="anchor" aria-label="anchor" href="#set-up-workflow"></a>
+</h3>
+<p>There are a few things you need to change to enable parallel
+processing with <code>future</code>:</p>
+<ul>
+<li>Load the <code>future</code> and <code>future.callr</code>
+packages</li>
+<li>Add a line with <code>plan(callr)</code>
+</li>
+<li>When you run the pipeline, use
+<code>tar_make_future(workers = 2)</code> instead of
+<code>tar_make()</code>
+</li>
+</ul>
+<p>Here, <code>workers = 2</code> is the number of processes to run in
+parallel. You may increase this up to the number of cores available on
+your machine.</p>
+<p>To show how this works we will simulate a long(ish) running analysis
+with the <code>Sys.sleep()</code> function, which just tells the
+computer to wait some number of seconds.</p>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">future</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">future.callr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plan</span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">long_square</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">Sys.sleep</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span>  <span class="va">data</span><span class="op">^</span><span class="fl">2</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  some_data <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">data_squared</span>,</span>
+<span>    <span class="fu">long_square</span><span class="op">(</span><span class="va">some_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">some_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>Here is the output when running with
+<code>tar_make_future(workers = 2)</code>:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target some_data
+• built target some_data [0.147 seconds]
+• start branch data_squared_3ba31302
+• start branch data_squared_880e1e2e
+• built branch data_squared_3ba31302 [3.153 seconds]
+• start branch data_squared_552eb2cc
+• built branch data_squared_880e1e2e [3.155 seconds]
+• start branch data_squared_92b840e1
+• built branch data_squared_552eb2cc [3.155 seconds]
+• built branch data_squared_92b840e1 [3.155 seconds]
+• built pattern data_squared
+• end pipeline [9.689 seconds]</code></pre>
+</div>
+<p>Notice that although the time required to build each individual
+target is about 3 seconds, the total time to run the entire workflow is
+less than the sum of the individual target times! That is proof that
+processes are running in parallel <strong>and saving you
+time</strong>.</p>
+<p>The unique and powerful thing about targets is that <strong>we did
+not need to change our custom function to run it in parallel</strong>.
+We only adjusted <em>the workflow</em>. This means it is relatively easy
+to refactor (modify) a workflow for running sequentially locally or
+running in parallel in a high-performance context.</p>
+<p>We can see this by applying parallel processing to a workflow that we
+were previously running sequentially, the penguins analysis:</p>
+<div class="codewrapper sourceCode" id="cb18">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">future</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">future.callr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plan</span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load data from package</span></span>
+<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">model_summaries</span>,</span>
+<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
+• start target penguin_data
+• built target penguin_data [0.627 seconds]
+• start target models
+• built target models [0.641 seconds]
+• start branch model_summaries_ea786eaa
+• start branch model_summaries_1c878f62
+• built branch model_summaries_ea786eaa [0.665 seconds]
+• start branch model_summaries_afef26b4
+• built branch model_summaries_1c878f62 [0.675 seconds]
+• built branch model_summaries_afef26b4 [0.665 seconds]
+• built pattern model_summaries
+• end pipeline [6.737 seconds]</code></pre>
+</div>
+<p>You won’t notice much difference since these computations run so
+quickly, but this demonstrates how easy it is to make massive gains in
+efficiency with your own real analysis by using parallel computing.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1971,15 +2805,24 @@ any links that you are not going to use.
 </h3>
 <div class="callout-content">
 <ul>
-<li>Dynamic branching is easier to use, but the names of the targets it
-creates are arbitrary</li>
-<li>There are many parallel backends available</li>
+<li>Dynamic branching creates multiple targets with a single
+command</li>
+<li>You usually need to write custom functions so that the output of the
+branches includes necessary metadata</li>
+<li>Parallel computing works at the level of the workflow, not the
+function</li>
 </ul>
 </div>
 </div>
-</div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
+</div>
+<!-- 
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use. 
+ -->
+</div>
+</section></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p> Last updated on 2023-05-16 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2034,7 +2877,7 @@ document</li>
 </div>
 </div></section><section id="aio-advanced"><p>Content from <a href="advanced.html">Advanced topics</a></p>
 <hr>
-<p> Last updated on 2023-05-16 | 
+<p> Last updated on 2023-05-24 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/advanced.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2050,8 +2893,6 @@ document</li>
 <ul>
 <li>How can I control the building of each target?</li>
 <li>How can I maintain multiple workflows within a single project?</li>
-<li>How can I make sure the workflow is in sync with the R packages it
-uses?</li>
 </ul>
 </div>
 </div>
@@ -2063,7 +2904,6 @@ uses?</li>
 <ul>
 <li>Be able to run only a specific part of the workflow</li>
 <li>Understand how to control project settings with a YAML file</li>
-<li>Adhere to best practices for maintaining package versions</li>
 </ul>
 </div>
 </div>
@@ -2087,11 +2927,6 @@ invalidate them with <code>tar_invalidate()</code>
 </li>
 <li>The settings for each targets project are contained in the
 <code>_targets.yaml</code> file</li>
-<li>
-<code>targets</code> does not track the content of R packages by
-default</li>
-<li>
-<code>renv</code> should be used for tracking package versions</li>
 </ul>
 </div>
 </div>
@@ -2120,7 +2955,7 @@ default</li>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.11.18)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
@@ -2143,9 +2978,9 @@ default</li>
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/aio.html",
-  "dateCreated": "2023-05-19",
-  "dateModified": "2023-05-19",
-  "datePublished": "2023-05-19"
+  "dateCreated": "2023-05-24",
+  "dateModified": "2023-05-24",
+  "datePublished": "2023-05-24"
 }
 
   </script><script>
