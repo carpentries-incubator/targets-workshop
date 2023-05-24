@@ -20,6 +20,12 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: instructor
+
+Episode summary: Show how to get at the objects that we built
+
+:::::::::::::::::::::::::::::::::::::
+
 ## Where does the workflow happen?
 
 So we just finished running our first workflow.
@@ -38,9 +44,9 @@ Where are the results of our workflow?
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-You may want to pretend trying to run `my_data` or `my_summary`, then feigning surprise when it doesn't work and using it as a teaching moment (errors are pedagogy!).
+- To reinforce the concept of `targets` running in a separate R session, you may want to pretend trying to run `my_data` or `my_summary`, then feigning surprise when it doesn't work and using it as a teaching moment (errors are pedagogy!).
 
-In the previous episode, these were renamed from the defaults of `data` and `summary` to avoid confusion with the base R functions `data()` and `summary()`.
+- In the previous episode, the default names of targets `data` and `summary` were changed to avoid confusion with the base R functions `data()` and `summary()`.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 

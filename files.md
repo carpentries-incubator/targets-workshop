@@ -17,6 +17,12 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: instructor
+
+Episode summary: Show how to read and write external files
+
+:::::::::::::::::::::::::::::::::::::
+
 
 
 ## Treating external files as a dependency
@@ -41,7 +47,7 @@ tar_plan(
 ```{.output}
 • start target some_data
 • built target some_data [0.001 seconds]
-• end pipeline [0.058 seconds]
+• end pipeline [0.059 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -61,7 +67,7 @@ tar_plan(
 
 ```{.output}
 ✔ skip target some_data
-✔ skip pipeline [0.045 seconds]
+✔ skip pipeline [0.046 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -82,7 +88,7 @@ tar_plan(
 
 ```{.output}
 • start target data_file
-• built target data_file [0.002 seconds]
+• built target data_file [0.001 seconds]
 • start target some_data
 • built target some_data [0 seconds]
 • end pipeline [0.068 seconds]
@@ -206,12 +212,12 @@ tar_plan(
 • start target hello_file
 • built target hello_file [0.001 seconds]
 • start target hello
-• built target hello [0.001 seconds]
+• built target hello [0 seconds]
 • start target hello_caps
-• built target hello_caps [0.001 seconds]
+• built target hello_caps [0 seconds]
 • start target hello_caps_out
-• built target hello_caps_out [0 seconds]
-• end pipeline [0.083 seconds]
+• built target hello_caps_out [0.008 seconds]
+• end pipeline [0.082 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.

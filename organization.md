@@ -1,5 +1,5 @@
 ---
-title: 'Best Practices for `targets` Project Organization'
+title: 'Best Practices for targets Project Organization'
 teaching: 10
 exercises: 2
 ---
@@ -17,6 +17,12 @@ exercises: 2
 - Understand how to use functions in the context of `targets`
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: instructor
+
+Episode summary: Demonstrate best-practices for project organization
+
+:::::::::::::::::::::::::::::::::::::
 
 
 
@@ -151,16 +157,16 @@ Striking this balance is more of art than science, and only comes with practice.
 ## A more realistic workflow
 
 So far, we have only used a very simple targets workflow to demonstrate basic usage of `targets`.
-However, this is not very realistic.
 
-For the rest of the lesson, we will practice on Palmer's Penguins, a real dataset of measurements taken on penguins in Antarctica.
-This is probably closer to something you may encounter in your own research.
+There is a demonstration of a more realistic workflow based on Palmer's Penguins, a dataset of measurements taken on penguins in Antarctica, available at <https://github.com/joelnitta/penguins-targets>.
 
-Since a given project can only have one `_targets.R` file in it, we will start from a completely fresh project.
+Please browse [the repo](https://github.com/joelnitta/penguins-targets) and verify that it is set up using the folder organization described above.
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
 
-## Challenge 2: Set up the project
+## Challenge 2: Set up a new project
+
+For this challenge, we will emulate the "Palmer's Penguins" [demonstration project](https://github.com/joelnitta/penguins-targets).
 
 Set up a new R project called "penguins_analysis" using the recommended file and folder structure for `targets`. It is recommended to create the project on the desktop so you can find it easily.
 

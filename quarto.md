@@ -16,6 +16,12 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: instructor
+
+Episode summary: Show how to write reports with Quarto
+
+:::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `tarchetypes::tar_quarto()` is used to render Quarto documents

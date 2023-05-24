@@ -1,5 +1,5 @@
 ---
-title: 'First `targets` Workflow'
+title: 'First targets Workflow'
 teaching: 10
 exercises: 2
 ---
@@ -21,6 +21,12 @@ exercises: 2
 - Use a `_targets.R` file to run a workflow
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: {.instructor}
+
+Episode summary: First chance to get hands dirty by writing a very simple workflow
+
+:::::::::::::::::::::::::::::::::::::
 
 
 
@@ -157,8 +163,8 @@ tar_make()
 • start target my_data
 • built target my_data [0.001 seconds]
 • start target my_summary
-• built target my_summary [0.001 seconds]
-• end pipeline [0.079 seconds]
+• built target my_summary [0 seconds]
+• end pipeline [0.077 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!

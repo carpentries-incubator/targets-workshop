@@ -18,6 +18,12 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: {.instructor}
+
+Episode summary: Introduce the idea of reproducibility and why / who would want to use `targets`
+
+:::::::::::::::::::::::::::::::::::::
+
 ## What is reproducibility?
 
 Reproducibility is the ability for others (including your future self) to reproduce your analysis.
