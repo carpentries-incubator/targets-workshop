@@ -77,7 +77,7 @@ tar_make()
 ```{.output}
 ✔ skip target my_data
 • start target my_summary
-• built target my_summary [0.001 seconds]
+• built target my_summary [0.002 seconds]
 • end pipeline [0.077 seconds]
 ```
 
@@ -226,11 +226,57 @@ tar_progress()
 2 my_summary skipped 
 ```
 
+## Granular control of targets
+
+It is possible to only make a particular target instead of running the entire workflow.
+
+To do this, type the name of the target you wish to build after `tar_make()` (note that any targets required by the one you specify will also be built).
+For example, `tar_make(my_data)` would **only** build `my_data`, not `my_summary`.
+
+Furthermore, if you want to manually "reset" a target and make it appear out-of-date, you can do so with `tar_invalidate()`. This means that target (and any that depend on it) will be re-run next time.
+
+Let's give this a try. Remember that our pipeline is currently up to date, so `tar_make()` will skip everything:
+
+
+```r
+tar_make()
+```
+
+
+```{.output}
+✔ skip target my_data
+✔ skip target my_summary
+✔ skip pipeline [0.064 seconds]
+```
+
+Let's invalidate `my_summary` and run it again:
+
+
+```r
+tar_invalidate(my_summary)
+tar_make()
+```
+
+
+```{.output}
+✔ skip target my_data
+• start target my_summary
+• built target my_summary [0.002 seconds]
+• end pipeline [0.076 seconds]
+```
+
+**Caution should be exercised** when using granular methods like this, though, since you may end up with your workflow in an unexpected state. The surest way to maintain an up-to-date workflow is to run `tar_make()` frequently.
+
+## How this all works in practice
+
+In practice, you will likely be switching between running the workflow with `tar_make()`, loading the targets you built with `tar_load()`, and editing your custom functions by running code in an interactive R session. It takes some time to get used to it, but soon you will feel that your code isn't "real" until it is embedded in a `targets` workflow.
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `targets` only runs the steps that have been affected by a change to the code
 - `tar_visnetwork()` shows the current state of the workflow as a network
 - `tar_progress()` shows the current state of the workflow as a data frame
 - `tar_outdated()` lists outdated targets
+- `tar_invalidate()` can be used to invalidate (re-run) specific targets
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
