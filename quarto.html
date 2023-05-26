@@ -86,11 +86,11 @@
   Introduction to targets
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 80%" class="percentage">
-    80%
+<aside class="col-md-12 lesson-progress"><div style="width: 89%" class="percentage">
+    89%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 80%" aria-valuenow="80" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 89%" aria-valuenow="89" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -217,21 +217,24 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         Reproducible Reports with Quarto
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush11">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading11">
-        <a href="advanced.html">10. Advanced topics</a>
-    </div><!--/div.accordion-header-->
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#copy-paste-vs.-dynamic-documents">Copy-paste vs. dynamic documents</a></li>
+<li><a href="#about-quarto-files">About Quarto files</a></li>
+<li><a href="#recommended-workflow">Recommended workflow</a></li>
+<li><a href="#an-example-bill-size-in-penguins">An example: Bill size in penguins</a></li>
+<li><a href="#how-does-targets-know-when-to-render-the-report">How does <code>targets</code> know when to render the report?</a></li>
+<li><a href="#generating-dynamic-content">Generating dynamic content</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
         
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -278,16 +281,16 @@
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="batch.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="advanced.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="index.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="batch.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Batch and Parallel</a>
-        <a class="chapter-link float-end" href="advanced.html" rel="next">Next: Advanced topics... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="index.html" rel="next">Next... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Reproducible Reports with Quarto</h1>
-        <p> Last updated on 2023-05-24 | 
+        <p> Last updated on 2023-05-26 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -322,6 +325,231 @@
 </div>
 </div>
 
+<section id="copy-paste-vs.-dynamic-documents"><h2 class="section-heading">Copy-paste vs. dynamic documents<a class="anchor" aria-label="anchor" href="#copy-paste-vs.-dynamic-documents"></a>
+</h2>
+<hr class="half-width"><p>Typically, you will want to communicate the results of a data
+analysis to a broader audience.</p>
+<p>You may have done this before by copying and pasting statistics,
+plots, and other results into a text document or presentation. This may
+be fine if you only ever do the analysis once. But that is rarely the
+case—it is much more likely that you will tweak parts of the analysis or
+add new data and re-run your pipeline. With the copy-paste method, you’d
+have to remember what results changed and manually make sure everything
+is up-to-date. This is a perilous exercise!</p>
+<p>Fortunately, <code>targets</code> provides functions for keeping a
+document in sync with pipeline results, so you can avoid such pitfalls.
+The main tool we will use to generate documents is
+<strong>Quarto</strong>. Quarto can be used separately from
+<code>targets</code> (and is a large topic on its own), but it also
+happens to be an excellent way to dynamically generate reports with
+<code>targets</code>.</p>
+<p>Quarto allows you to insert the results of R code directly into your
+documents so that there is no danger of copy-and-paste mistakes.
+Furthermore, it can generate output from the same underlying script in
+multiple formats including PDF, HTML, and Microsoft Word.</p>
+<div id="install-quarto" class="callout prereq">
+<div class="callout-square">
+<i class="callout-icon" data-feather="check"></i>
+</div>
+<div id="install-quarto" class="callout-inner">
+<h3 class="callout-title">Install Quarto<a class="anchor" aria-label="anchor" href="#install-quarto"></a>
+</h3>
+<div class="callout-content">
+<p>If you haven’t done so already, you will need to <a href="https://quarto.org/docs/get-started/" class="external-link">install Quarto</a>, which is
+separate from R.</p>
+<p>You will also need to install the <code>quarto</code> R package with
+<code>install.packages("quarto")</code>.</p>
+</div>
+</div>
+</div>
+</section><section id="about-quarto-files"><h2 class="section-heading">About Quarto files<a class="anchor" aria-label="anchor" href="#about-quarto-files"></a>
+</h2>
+<hr class="half-width"><p><code>.qmd</code> or <code>.Qmd</code> is the extension for Quarto
+files, and stands for “Quarto markdown”. Quarto files invert the normal
+way of writing code and comments: in a typical R script, all text is
+assumed to be R code, unless you preface it with a <code>#</code> to
+show that it is a comment. In Quarto, all text is assumed to be prose,
+and you use special notation to indicate which lines are R code to be
+evaluated. Once the code is evaluated, the results get inserted into a
+final, rendered document, which could be one of various formats.</p>
+<figure><img src="https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/fig/03-qmd-workflow.png" alt="" class="figure mx-auto d-block"><figcaption>Quarto workflow</figcaption></figure><p>We don’t have the time to go into the details of Quarto during this
+lesson, but recommend the <a href="https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/" class="external-link">“Introduction
+to Reproducible Publications with RStudio” incubator (in-development)
+lesson</a> for more on this topic.</p>
+</section><section id="recommended-workflow"><h2 class="section-heading">Recommended workflow<a class="anchor" aria-label="anchor" href="#recommended-workflow"></a>
+</h2>
+<hr class="half-width"><p>Dynamic documents like Quarto (or Rmarkdown, the predecessor to
+Quarto) can actually be used to manage data analysis pipelines. But that
+is not recommended because it doesn’t scale well and lacks the
+sophisticated dependency tracking offered by <code>targets</code>.</p>
+<p>Our suggested approach is to conduct the vast majority of data
+analysis (in other words, the “heavy lifting”) in the
+<code>targets</code> pipeline, then use the Quarto document to
+<strong>summarize</strong> and <strong>plot</strong> the results.</p>
+</section><section id="an-example-bill-size-in-penguins"><h2 class="section-heading">An example: Bill size in penguins<a class="anchor" aria-label="anchor" href="#an-example-bill-size-in-penguins"></a>
+</h2>
+<hr class="half-width"><p>For example, the <a href="https://github.com/joelnitta/penguins-targets" class="external-link">demo workflow on
+bill size in penguins</a> constructs several models of bill size that
+differ in how they account for species, then generates a report:</p>
+
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguin_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean data</span></span>
+<span>  penguin_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguin_data_raw</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Make models</span></span>
+<span>  penguin_models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    combined <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    separate <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Predict points from models</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">penguin_models_augmented</span>,</span>
+<span>    <span class="fu">augment_penguins</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">penguin_models_summary</span>,</span>
+<span>    <span class="fu">glance_penguins</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Generate report</span></span>
+<span>  <span class="fu">tar_quarto</span><span class="op">(</span></span>
+<span>    <span class="va">penguin_report</span>,</span>
+<span>    path <span class="op">=</span> <span class="st">"penguin_report.qmd"</span>,</span>
+<span>    quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"targets"</span>, <span class="st">"tidyverse"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>The function to generate the report is <code>tar_quarto()</code>,
+from the <code>tarchetypes</code> package.</p>
+<p>As you can see, the “heavy” analysis of running the models is done in
+the workflow, then there is a single call to render the report at the
+end with <code>tar_quarto()</code>.</p>
+</section><section id="how-does-targets-know-when-to-render-the-report"><h2 class="section-heading">How does <code>targets</code> know when to render the report?<a class="anchor" aria-label="anchor" href="#how-does-targets-know-when-to-render-the-report"></a>
+</h2>
+<hr class="half-width"><p>It is not immediately apparent just from this how
+<code>targets</code> knows to generate the report <strong>at the end of
+the workflow</strong> (recall that build order is not determined by the
+order of how targets are written in the workflow, but rather by their
+dependencies). <code>penguin_report</code> does not appear to depend on
+any of the other targets, since they do not show up in the
+<code>tar_quarto()</code> call.</p>
+<p>How does this work?</p>
+<p>The answer lies <strong>inside</strong> the
+<code>penguin_report.qmd</code> file. Let’s look at the start of the
+file:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">MARKDOWN<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode markdown" tabindex="0"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Simpson's Paradox in Palmer Penguins"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
+</div>
+<p>The lines in between <code>---</code> and <code>---</code> at the
+very beginning are called the “YAML header”, and contain directions
+about how to render the document.</p>
+<p>The R code to be executed is specified by the lines between
+<code>```{r}</code> and <code>```</code>. This is called a “code chunk”,
+since it is a portion of code interspersed within prose text.</p>
+<p>Take a closer look at the R code chunk. Notice the two calls to
+<code>targets::tar_load()</code>. Do you remember what that function
+does? It loads the targets built during the workflow.</p>
+<p>Now things should make a bit more sense: <code>targets</code> knows
+that the report depends on the targets built during the workflow,
+<code>penguin_models_augmented</code> and
+<code>penguin_models_summary</code>, <strong>because they are loaded in
+the report with <code>tar_load()</code>.</strong></p>
+</section><section id="generating-dynamic-content"><h2 class="section-heading">Generating dynamic content<a class="anchor" aria-label="anchor" href="#generating-dynamic-content"></a>
+</h2>
+<hr class="half-width"><p>The call to <code>tar_load()</code> at the start of
+<code>penguin_report.qmd</code> is really the key to generating an
+up-to-date report—once those are loaded from the workflow, we know that
+they are in sync with the data, and can use them to produce “polished”
+text and plots.</p>
+<div id="challenge-spot-the-dynamic-contents" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-spot-the-dynamic-contents" class="callout-inner">
+<h3 class="callout-title">Challenge: Spot the dynamic contents<a class="anchor" aria-label="anchor" href="#challenge-spot-the-dynamic-contents"></a>
+</h3>
+<div class="callout-content">
+<p>Read through <code>penguin_report.qmd</code> and try to find
+instances where the targets built during the workflow
+(<code>penguin_models_augmented</code> and
+<code>penguin_models_summary</code>) are used to dynamically produce
+text and plots.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1">
+  Show me the solution
+  </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<ul><li><p>In the code chunk labeled <code>results-stats</code>, statistics
+from the models like <em>P</em>-value and adjusted <em>R</em> squared
+are extracted, then inserted into the text with in-line code like
+<code>`r mod_stats$combined$r.squared`</code>.</p></li>
+<li><p>There are two figures, one for the combined model and one for the
+separate model (code chunks labeled <code>fig-combined-plot</code> and
+<code>fig-separate-plot</code>, respectively). These are built using the
+points predicted from the model in
+<code>penguin_models_augmented</code>.</p></li>
+</ul></div>
+</div>
+</div>
+</div>
+<p>You should also interactively run the code in
+<code>penguin_report.qmd</code> to better understand what is going on,
+starting with <code>tar_load()</code>. In fact, that is how this report
+was written: the code was run in an interactive session, and saved to
+the report as it was gradually tweaked to obtain the desired
+results.</p>
+<p>The best way to learn this approach to generating reports is to
+<strong>try it yourself</strong>.</p>
+<p>So your final Challenge is to construct a <code>targets</code>
+workflow using your own data and generate a report. Good luck!</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -346,18 +574,15 @@ document</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="batch.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="advanced.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="index.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="batch.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Batch and Parallel</a>
-        <a class="chapter-link float-end" href="advanced.html" rel="next">Next: Advanced topics... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="index.html" rel="next">Next... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
     </nav></div> <!-- / div.primary-content.col-xs-12 -->
 <!-- END:   inst/pkgdown/templates/content-instructor.html-->
@@ -379,9 +604,9 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.1)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
-      and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
+      and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -401,9 +626,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/quarto.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/quarto.html",
-  "dateCreated": "2023-05-24",
-  "dateModified": "2023-05-24",
-  "datePublished": "2023-05-24"
+  "dateCreated": "2023-05-26",
+  "dateModified": "2023-05-26",
+  "datePublished": "2023-05-26"
 }
 
   </script><script>

@@ -284,18 +284,6 @@
 </div>
 <!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush11">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading11">
-        <a href="advanced.html">10. Advanced topics</a>
-    </div>
-<!--/div.accordion-header-->
-        
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
                 </div>
               </div>
             </div>
@@ -401,6 +389,9 @@ workflow as a network</li>
 as a data frame</li>
 <li>
 <code>tar_outdated()</code> lists outdated targets</li>
+<li>
+<code>tar_invalidate()</code> can be used to invalidate (re-run)
+specific targets</li>
 </ul></section><section id="organization"><h2 class="section-heading"><a href="organization.html">Best Practices for targets Project Organization</a></h2>
 <hr class="half-width">
 <ul>
@@ -456,17 +447,6 @@ documents</li>
 <li>It is recommended to do heavy computations in the main targets
 workflow, and lighter formatting and plot generation in the Quarto
 document</li>
-</ul></section><section id="advanced"><h2 class="section-heading"><a href="advanced.html">Advanced topics</a></h2>
-<hr class="half-width">
-<ul>
-<li>You can provide names of specific targets to build to
-<code>tar_make()</code>
-</li>
-<li>You can delete targets with <code>tar_delete()</code> and manually
-invalidate them with <code>tar_invalidate()</code>
-</li>
-<li>The settings for each targets project are contained in the
-<code>_targets.yaml</code> file</li>
 </ul></section>
 </div>
     </main>
@@ -492,9 +472,9 @@ invalidate them with <code>tar_invalidate()</code>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.1)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
-      and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
+      and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
 		</footer>
 </div> <!-- / div.container -->
@@ -515,9 +495,9 @@ invalidate them with <code>tar_invalidate()</code>
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/key-points.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/key-points.html",
-  "dateCreated": "2023-05-24",
-  "dateModified": "2023-05-24",
-  "datePublished": "2023-05-24"
+  "dateCreated": "2023-05-26",
+  "dateModified": "2023-05-26",
+  "datePublished": "2023-05-26"
 }
 
   </script><script>

@@ -68,7 +68,6 @@ episodes:
 - files.Rmd
 - batch.Rmd
 - quarto.Rmd
-- advanced.Rmd
 
 # Information for Learners
 learners: 
