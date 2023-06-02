@@ -119,7 +119,8 @@ Create a new R file in `R/` called `functions.R`.
 This is where we will put our custom functions.
 Let's go ahead and put `summ()` in there now and save it.
 
-We will also need to modify our `_targets.R` script.
+We will also need to modify our `_targets.R` script. 
+<!-- This requires some more instruction. modify how? -->
 
 Next, let's make some directories for storing data and output---files that are not code.
 Create a new directory inside the targets cache called `user`: `_targets/user`.
