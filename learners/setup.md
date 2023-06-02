@@ -12,8 +12,14 @@ We will also be using a couple extra packages related to `targets`, and you shou
 
 ```r
 install.packages(c
-    "visNetwork",   # visualising the workflow
-    "tarchetypes"   # simpler write-up of workflows
-    
+    "visNetwork",           # visualising the workflow
+    "tarchetypes"           # simpler write-up of workflows
+    "palmerpenguins".       # example data
+    "broom".                # tidy model outputs
+    "purrr".                # iterative operations
+    "future",               # parallell processing
+    "future.batchtools",    # parallell processing
+    "future.callr",         # parallell processing
+    "quarto"                # report generation
 ))
 ```
