@@ -57,7 +57,7 @@ tar_plan(
 • built target height_cm [0.001 seconds]
 • start target height_in
 • built target height_in [0 seconds]
-• end pipeline [0.064 seconds]
+• end pipeline [0.06 seconds]
 ```
 
 Notice that `tar_plan()` does not mean you have to write *all* targets this way; you can still use the `tar_target()` format within `tar_plan()`.
@@ -102,7 +102,8 @@ Create a new R file in `R/` called `functions.R`.
 This is where we will put our custom functions.
 Let's go ahead and put `summ()` in there now and save it.
 
-We will also need to modify our `_targets.R` script.
+We will also need to modify our `_targets.R` script. 
+<!-- This requires some more instruction. modify how? -->
 
 Next, let's make some directories for storing data and output---files that are not code.
 Create a new directory inside the targets cache called `user`: `_targets/user`.

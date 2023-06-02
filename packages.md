@@ -43,6 +43,7 @@ The potential downside to this approach is that if you have a long list of packa
 In this method, use the `tar_option_set()` function in `_targets.R` to specify the packages to load when running the workflow.
 
 For example, let's filter some data from the `palmerpenguins` package:
+<!-- the learners have not been instructed to install palmerpenguins or dplyr at this point yet, nor what dplyr is and does. -->
 
 
 ```r
@@ -59,8 +60,8 @@ tar_plan(
 
 ```{.output}
 • start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]
+• built target adelie_data [0.024 seconds]
+• end pipeline [0.079 seconds]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -88,8 +89,8 @@ tar_plan(
 
 ```{.output}
 • start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]
+• built target adelie_data [0.024 seconds]
+• end pipeline [0.079 seconds]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -116,7 +117,7 @@ tar_plan(
 ```{.output}
 • start target adelie_data
 • built target adelie_data [0.012 seconds]
-• end pipeline [0.07 seconds]
+• end pipeline [0.068 seconds]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.

@@ -49,6 +49,8 @@ We want to test this using several alternative models.
 The models will either ignore species identity, add a parameter for species, or add an interaction effect between species and bill length.
 
 This is what a workflow for such an analysis might look like **without branching**:
+<!-- a lot of new packages introduced here, people might not be particularly familier with what they do -->
+<!-- might consider running a single model and glance in non-target form first, just to show what they do -->
 
 
 ```r
@@ -79,18 +81,18 @@ tar_plan(
 • start target penguin_data
 • built target penguin_data [0.003 seconds]
 • start target combined_model
-• built target combined_model [0.064 seconds]
+• built target combined_model [0.025 seconds]
 • start target interaction_model
 • built target interaction_model [0.002 seconds]
 • start target species_model
-• built target species_model [0.002 seconds]
+• built target species_model [0.001 seconds]
 • start target combined_summary
-• built target combined_summary [0.079 seconds]
+• built target combined_summary [0.11 seconds]
 • start target interaction_summary
 • built target interaction_summary [0.003 seconds]
 • start target species_summary
 • built target species_summary [0.003 seconds]
-• end pipeline [0.253 seconds]
+• end pipeline [0.24 seconds]
 ```
 
 It worked. Let's check some of the model output:
@@ -153,9 +155,9 @@ First, let's look at the messages provided by `tar_make()`.
 
 ```{.output}
 • start target penguin_data
-• built target penguin_data [0.002 seconds]
+• built target penguin_data [0.003 seconds]
 • start target models
-• built target models [0.006 seconds]
+• built target models [0.005 seconds]
 • start branch model_summaries_ea786eaa
 • built branch model_summaries_ea786eaa [0.007 seconds]
 • start branch model_summaries_1c878f62
@@ -163,7 +165,7 @@ First, let's look at the messages provided by `tar_make()`.
 • start branch model_summaries_afef26b4
 • built branch model_summaries_afef26b4 [0.003 seconds]
 • built pattern model_summaries
-• end pipeline [0.116 seconds]
+• end pipeline [0.112 seconds]
 ```
 
 There is a series of smaller targets (branches) that are each named like `model_summaries_f9795da2`, then one overall `model_summaries` target.
@@ -294,11 +296,11 @@ tar_plan(
 • start branch model_summaries_ea786eaa
 • built branch model_summaries_ea786eaa [0.032 seconds]
 • start branch model_summaries_1c878f62
-• built branch model_summaries_1c878f62 [0.008 seconds]
+• built branch model_summaries_1c878f62 [0.007 seconds]
 • start branch model_summaries_afef26b4
 • built branch model_summaries_afef26b4 [0.004 seconds]
 • built pattern model_summaries
-• end pipeline [0.194 seconds]
+• end pipeline [0.179 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
@@ -422,17 +424,17 @@ Here is the output when running with `tar_make_future(workers = 2)`:
 
 ```{.output}
 • start target some_data
-• built target some_data [0.147 seconds]
+• built target some_data [0.139 seconds]
 • start branch data_squared_3ba31302
 • start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.153 seconds]
+• built branch data_squared_3ba31302 [3.142 seconds]
 • start branch data_squared_552eb2cc
-• built branch data_squared_880e1e2e [3.155 seconds]
+• built branch data_squared_880e1e2e [3.14 seconds]
 • start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.155 seconds]
-• built branch data_squared_92b840e1 [3.155 seconds]
+• built branch data_squared_552eb2cc [3.142 seconds]
+• built branch data_squared_92b840e1 [3.142 seconds]
 • built pattern data_squared
-• end pipeline [9.689 seconds]
+• end pipeline [9.478 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 3 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
@@ -488,17 +490,17 @@ tar_plan(
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 • start target penguin_data
-• built target penguin_data [0.627 seconds]
+• built target penguin_data [0.602 seconds]
 • start target models
-• built target models [0.641 seconds]
+• built target models [0.614 seconds]
 • start branch model_summaries_ea786eaa
 • start branch model_summaries_1c878f62
-• built branch model_summaries_ea786eaa [0.665 seconds]
+• built branch model_summaries_ea786eaa [0.65 seconds]
 • start branch model_summaries_afef26b4
-• built branch model_summaries_1c878f62 [0.675 seconds]
-• built branch model_summaries_afef26b4 [0.665 seconds]
+• built branch model_summaries_1c878f62 [0.648 seconds]
+• built branch model_summaries_afef26b4 [0.638 seconds]
 • built pattern model_summaries
-• end pipeline [6.737 seconds]
+• end pipeline [6.573 seconds]
 ```
 
 You won't notice much difference since these computations run so quickly, but this demonstrates how easy it is to make massive gains in efficiency with your own real analysis by using parallel computing.
