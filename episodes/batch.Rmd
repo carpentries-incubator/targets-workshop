@@ -60,6 +60,8 @@ We want to test this using several alternative models.
 The models will either ignore species identity, add a parameter for species, or add an interaction effect between species and bill length.
 
 This is what a workflow for such an analysis might look like **without branching**:
+<!-- a lot of new packages introduced here, people might not be particularly familier with what they do -->
+<!-- might consider running a single model and glance in non-target form first, just to show what they do -->
 
 ```{r}
 #| label: example-model-show-1
