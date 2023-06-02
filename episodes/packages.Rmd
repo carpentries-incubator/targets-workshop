@@ -51,6 +51,7 @@ The potential downside to this approach is that if you have a long list of packa
 In this method, use the `tar_option_set()` function in `_targets.R` to specify the packages to load when running the workflow.
 
 For example, let's filter some data from the `palmerpenguins` package:
+<!-- the learners have not been instructed to install palmerpenguins or dplyr at this point yet, nor what dplyr is and does. -->
 
 ```{r}
 #| eval: FALSE
