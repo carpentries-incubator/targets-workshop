@@ -138,6 +138,7 @@ It contains all of the workflow output; that is how we can load the targets buil
 
 **You should not edit the contents of the cache by hand** (with one exception).
 Doing so would make your analysis non-reproducible.
+<!-- what if you manually delete the entire cache? -->
 
 The one exception to this rule is a special subfolder called `_targets/user`.
 This folder does not exist by default.
