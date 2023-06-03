@@ -75,8 +75,9 @@ Continuing our penguin bill size analysis, let's write a report evaluating each 
 
 To save time, the report is already available at <https://github.com/joelnitta/penguins-targets>.
 
-<!-- FIXME ADD DETAILED DOWNLOAD INSTRUCTIONS -->
-Download the `penguin_report.qmd` file to your project folder, and add one more target to the pipeline using the `tar_quarto()` function like this:
+Copy the [raw code from here](https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd) and save it as a new file `penguin_report.qmd` in your project folder (you may also be able to right click in your browser and select "Save As").
+
+Then, add one more target to the pipeline using the `tar_quarto()` function like this:
 
 
 ```r
@@ -107,6 +108,12 @@ tar_plan(
     glance_with_mod_name(models),
     pattern = map(models)
   ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
+    pattern = map(models)
+  ),
   # Generate report
   tar_quarto(
     penguin_report,
@@ -124,7 +131,7 @@ Error:
   Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
   Debugging guide: https://books.ropensci.org/targets/debugging.html
   How to ask for help: https://books.ropensci.org/targets/help.html
-  Last error: could not find function "plan"
+  Last error: The package "quarto" is required.
 ```
 
 The function to generate the report is `tar_quarto()`, from the `tarchetypes` package.

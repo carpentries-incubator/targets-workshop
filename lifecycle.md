@@ -43,7 +43,7 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.073 seconds]
+✔ skip pipeline [0.068 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -88,8 +88,8 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.021 seconds]
-• end pipeline [0.109 seconds]
+• built target penguins_data [0.019 seconds]
+• end pipeline [0.1 seconds]
 ```
 
 What happened?
@@ -259,7 +259,7 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.074 seconds]
+✔ skip pipeline [0.065 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -275,11 +275,11 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.021 seconds]
-• end pipeline [0.107 seconds]
+• built target penguins_data [0.019 seconds]
+• end pipeline [0.102 seconds]
 ```
 
-If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` accepts <!-- FIXME ADD LINK -->tidy select functions to specify target names).
+If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
 
 **Caution should be exercised** when using granular methods like this, though, since you may end up with your workflow in an unexpected state. The surest way to maintain an up-to-date workflow is to run `tar_make()` frequently.
 

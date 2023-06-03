@@ -52,7 +52,7 @@ For example, this is a model of bill depth dependent on bill length:
 
 
 ```r
-lm(bill_depth_mm ~ bill_length_mm, data = penguin_data)
+lm(bill_depth_mm ~ bill_length_mm, data = penguins_data)
 ```
 
 We can add this to our pipeline. We will call it the `combined_model` because it combines all the species together without distinction:
@@ -83,16 +83,19 @@ tar_plan(
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.027 seconds]
-• end pipeline [0.117 seconds]
+• built target combined_model [0.024 seconds]
+• end pipeline [0.109 seconds]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 
 ```r
+library(broom)
+
 tar_load(combined_model)
-broom::glance(combined_model)
+
+glance(combined_model)
 ```
 
 
@@ -148,16 +151,16 @@ tar_plan(
 ✔ skip target penguins_data
 ✔ skip target combined_model
 • start target interaction_model
-• built target interaction_model [0.006 seconds]
+• built target interaction_model [0.005 seconds]
 • start target species_model
 • built target species_model [0.001 seconds]
 • start target combined_summary
-• built target combined_summary [0.05 seconds]
+• built target combined_summary [0.058 seconds]
 • start target interaction_summary
 • built target interaction_summary [0.003 seconds]
 • start target species_summary
 • built target species_summary [0.003 seconds]
-• end pipeline [0.182 seconds]
+• end pipeline [0.183 seconds]
 ```
 
 Let's look at the summary of one of the models:
@@ -227,15 +230,15 @@ First, let's look at the messages provided by `tar_make()`.
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target models
-• built target models [0.008 seconds]
+• built target models [0.007 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.009 seconds]
+• built branch model_summaries_5ad4cec5 [0.008 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.046 seconds]
+• built branch model_summaries_c73912d5 [0.052 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.003 seconds]
+• built branch model_summaries_91696941 [0.004 seconds]
 • built pattern model_summaries
-• end pipeline [0.189 seconds]
+• end pipeline [0.182 seconds]
 ```
 
 There is a series of smaller targets (branches) that are each named like model_summaries_5ad4cec5, then one overall `model_summaries` target.
@@ -320,12 +323,12 @@ Here is the function. Save this in `R/functions.R`:
 glance_with_mod_name <- function(model_in_list) {
   model_name <- names(model_in_list)
   model <- model_in_list[[1]]
-  broom::glance(model) %>%
+  glance(model) %>%
     mutate(model_name = model_name)
 }
 ```
 
-Our new pipeline looks almost the same as before, but this time we use the custom function instead of `broom::glance()`.
+Our new pipeline looks almost the same as before, but this time we use the custom function instead of `glance()`.
 
 
 ```r
@@ -366,13 +369,13 @@ tar_plan(
 ✔ skip target penguins_data
 ✔ skip target models
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.017 seconds]
+• built branch model_summaries_5ad4cec5 [0.016 seconds]
 • start branch model_summaries_c73912d5
 • built branch model_summaries_c73912d5 [0.009 seconds]
 • start branch model_summaries_91696941
 • built branch model_summaries_91696941 [0.005 seconds]
 • built pattern model_summaries
-• end pipeline [0.193 seconds]
+• end pipeline [0.192 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
@@ -386,6 +389,97 @@ And this time, when we load the `model_summaries`, we can tell which model corre
 2    0.769         0.767  0.953     375.  3.65e-107     3  -467.  944.  963.     307.         338   342 species_model    
 3    0.770         0.766  0.955     225.  8.52e-105     5  -466.  947.  974.     306.         336   342 interaction_model
 ```
+
+Next we will add one more target, a prediction of bill depth based on each model. These will be needed for plotting the models in the report.
+Such a prediction can be obtained with the `augment()` function of the `broom` package.
+
+
+```r
+tar_load(models)
+augment(models[[1]])
+```
+
+
+```{.output}
+# A tibble: 342 × 8
+   bill_depth_mm bill_length_mm .fitted .resid    .hat .sigma   .cooksd .std.resid
+           <dbl>          <dbl>   <dbl>  <dbl>   <dbl>  <dbl>     <dbl>      <dbl>
+ 1          18.7           39.1    17.6  1.14  0.00521   1.92 0.000924      0.594 
+ 2          17.4           39.5    17.5 -0.127 0.00485   1.93 0.0000107    -0.0663
+ 3          18             40.3    17.5  0.541 0.00421   1.92 0.000168      0.282 
+ 4          19.3           36.7    17.8  1.53  0.00806   1.92 0.00261       0.802 
+ 5          20.6           39.3    17.5  3.06  0.00503   1.92 0.00641       1.59  
+ 6          17.8           38.9    17.6  0.222 0.00541   1.93 0.0000364     0.116 
+ 7          19.6           39.2    17.6  2.05  0.00512   1.92 0.00293       1.07  
+ 8          18.1           34.1    18.0  0.114 0.0124    1.93 0.0000223     0.0595
+ 9          20.2           42      17.3  2.89  0.00329   1.92 0.00373       1.50  
+10          17.1           37.8    17.7 -0.572 0.00661   1.92 0.000296     -0.298 
+# ℹ 332 more rows
+```
+
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge: Add model predictions to the workflow
+
+Can you add the model predictions using `augment()`? You will need to define a custom function just like we did for `glance()`.
+
+:::::::::::::::::::::::::::::::::: {.solution}
+
+Define the new function as `augment_with_mod_name()`. It is the same as `glance_with_mod_name()`, but use `augment()` instead of `glance()`:
+
+
+```r
+augment_with_mod_name <- function(model_in_list) {
+  model_name <- names(model_in_list)
+  model <- model_in_list[[1]]
+  augment(model) %>%
+    mutate(model_name = model_name)
+}
+```
+
+Add the step to the workflow:
+
+
+```r
+source("R/packages.R")
+source("R/functions.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  ),
+  # Get model summaries
+  tar_target(
+    model_summaries,
+    glance_with_mod_name(models),
+    pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
+    pattern = map(models)
+  )
+)
+```
+
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
@@ -496,17 +590,17 @@ Here is the output when running with `tar_make_future(workers = 2)`:
 
 ```{.output}
 • start target some_data
-• built target some_data [0.164 seconds]
+• built target some_data [0.158 seconds]
 • start branch data_squared_3ba31302
 • start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.168 seconds]
+• built branch data_squared_3ba31302 [3.163 seconds]
 • start branch data_squared_552eb2cc
 • built branch data_squared_880e1e2e [3.167 seconds]
 • start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.173 seconds]
-• built branch data_squared_92b840e1 [3.17 seconds]
+• built branch data_squared_552eb2cc [3.161 seconds]
+• built branch data_squared_92b840e1 [3.161 seconds]
 • built pattern data_squared
-• end pipeline [10.187 seconds]
+• end pipeline [9.961 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 3 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
@@ -547,6 +641,12 @@ tar_plan(
     model_summaries,
     glance_with_mod_name(models),
     pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
+    pattern = map(models)
   )
 )
 ```
@@ -556,21 +656,28 @@ Finally, run the pipeline with `tar_make_future()` (you may need to run `tar_inv
 
 ```{.output}
 • start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.745 seconds]
+• built target penguins_data_raw_file [0.709 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.906 seconds]
+• built target penguins_data_raw [0.884 seconds]
 • start target penguins_data
-• built target penguins_data [0.753 seconds]
+• built target penguins_data [0.718 seconds]
 • start target models
-• built target models [0.751 seconds]
+• built target models [0.709 seconds]
+• start branch model_predictions_5ad4cec5
+• start branch model_predictions_c73912d5
+• built branch model_predictions_5ad4cec5 [0.734 seconds]
+• start branch model_predictions_91696941
+• built branch model_predictions_c73912d5 [0.718 seconds]
 • start branch model_summaries_5ad4cec5
+• built branch model_predictions_91696941 [0.762 seconds]
+• built pattern model_predictions
 • start branch model_summaries_c73912d5
-• built branch model_summaries_5ad4cec5 [0.795 seconds]
+• built branch model_summaries_5ad4cec5 [0.743 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_c73912d5 [0.798 seconds]
-• built branch model_summaries_91696941 [0.76 seconds]
+• built branch model_summaries_c73912d5 [0.723 seconds]
+• built branch model_summaries_91696941 [0.734 seconds]
 • built pattern model_summaries
-• end pipeline [11.812 seconds]
+• end pipeline [13.088 seconds]
 ```
 
 You won't notice much difference since these computations run so quickly, but this demonstrates how easy it is to make massive gains in efficiency with your own real analysis by using parallel computing.

@@ -117,7 +117,7 @@ Recall that we are using the `palmerpenguins` R package to obtain the data.
 This package actually includes two variations of the dataset: one is an external CSV file with the raw data, and another is the cleaned data loaded into R.
 In real life you are probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
 
-The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package)
+The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package).
 
 
 ```r
@@ -133,32 +133,20 @@ penguins_csv_file
 [1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
 ```
 
-We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see <!-- FIXME ADD LINK -->this lesson.
+We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html).
 
 Let's load the data with `read_csv()`.
 
 
 ```r
 library(tidyverse)
-```
 
-```{.output}
-── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-```r
 # Read CSV file into R
 penguins_data_raw <- read_csv(penguins_csv_file)
+
+penguins_data_raw
 ```
+
 
 ```{.output}
 Rows: 344 Columns: 17
@@ -170,10 +158,6 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-```
-
-```r
-penguins_data_raw
 ```
 
 ```{.output}
@@ -199,7 +183,9 @@ penguins_data_raw
 
 We see the raw data has some awkward column names with spaces (these are hard to type out and can easily lead to mistakes in the code), and far more columns than we need.
 For the purposes of this analysis, we only need species name, bill length, and bill depth.
-In the raw data, the rather technical term "Culmen" is used to refer to the bill.
+In the raw data, the rather technical term "culmen" is used to refer to the bill.
+
+![Illustration of bill (culmen) length and depth. Artwork by @allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png)
 
 Let's clean up the data to make it easier to use for downstream analyses.
 We will also remove any rows with missing data, because this could cause errors for some functions later.
@@ -294,10 +280,10 @@ tar_make()
 • start target penguins_csv_file
 • built target penguins_csv_file [0.002 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.15 seconds]
+• built target penguins_data_raw [0.132 seconds]
 • start target penguins_data
-• built target penguins_data [0.011 seconds]
-• end pipeline [0.253 seconds]
+• built target penguins_data [0.009 seconds]
+• end pipeline [0.222 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
