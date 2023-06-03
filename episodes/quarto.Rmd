@@ -29,6 +29,7 @@ Episode summary: Show how to write reports with Quarto
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
+library(quarto) # don't actually need to load, but put here so renv catches it
 source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
 
 # Increase width for printing tibbles

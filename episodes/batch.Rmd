@@ -572,7 +572,6 @@ You will need to install several packages to use the `future` backend:
 #| label: install-future
 #| eval: false
 install.packages("future")
-install.packages("future.batchtools")
 install.packages("future.callr")
 ```
 

@@ -15,6 +15,7 @@ install.packages(
     "future.callr",
     "future",
     "palmerpenguins",
+    "quarto",
     "tarchetypes",
     "targets",
     "tidyverse",
