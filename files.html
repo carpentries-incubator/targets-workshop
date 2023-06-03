@@ -370,8 +370,8 @@ below. Then, rename them when you are ready to work on it again.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target some_data
-• built target some_data [0.001 seconds]
-• end pipeline [0.063 seconds]</code></pre>
+• built target some_data [0.002 seconds]
+• end pipeline [0.06 seconds]</code></pre>
 </div>
 <p>If we inspect the contents of <code>some_data</code> with
 <code>tar_read(some_data)</code>, it will contain the string
@@ -424,7 +424,7 @@ this will be detected by <code>targets</code>.</p>
 • built target data_file [0.001 seconds]
 • start target some_data
 • built target some_data [0 seconds]
-• end pipeline [0.069 seconds]</code></pre>
+• end pipeline [0.07 seconds]</code></pre>
 </div>
 <p>This time we see that <code>targets</code> does successfully re-build
 <code>some_data</code> as expected.</p>
@@ -542,10 +542,10 @@ while tracking its contents?</p>
 <pre class="output" tabindex="0"><code>• start target penguins_data_raw_file
 • built target penguins_data_raw_file [0.002 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.289 seconds]
+• built target penguins_data_raw [0.295 seconds]
 • start target penguins_data
 • built target penguins_data [0.017 seconds]
-• end pipeline [0.38 seconds]</code></pre>
+• end pipeline [0.389 seconds]</code></pre>
 </div>
 </div>
 </div>
@@ -627,14 +627,14 @@ to upper case then write it out again:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target hello_file
-• built target hello_file [0.002 seconds]
+• built target hello_file [0.001 seconds]
 • start target hello
-• built target hello [0 seconds]
+• built target hello [0.001 seconds]
 • start target hello_caps
-• built target hello_caps [0.001 seconds]
+• built target hello_caps [0 seconds]
 • start target hello_caps_out
-• built target hello_caps_out [0.012 seconds]
-• end pipeline [0.092 seconds]</code></pre>
+• built target hello_caps_out [0.01 seconds]
+• end pipeline [0.088 seconds]</code></pre>
 </div>
 <p>Take a look at <code>hello_caps.txt</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
