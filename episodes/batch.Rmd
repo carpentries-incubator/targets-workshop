@@ -65,7 +65,7 @@ For example, this is a model of bill depth dependent on bill length:
 ```{r}
 #| label: example-lm
 #| eval: FALSE
-lm(bill_depth_mm ~ bill_length_mm, data = penguin_data)
+lm(bill_depth_mm ~ bill_length_mm, data = penguins_data)
 ```
 
 We can add this to our pipeline. We will call it the `combined_model` because it combines all the species together without distinction:
@@ -109,8 +109,11 @@ Let's have a look at the model. We will use the `glance()` function from the `br
 ```{r}
 #| label: example-lm-pipeline-inspect-show
 #| eval: FALSE
+library(broom)
+
 tar_load(combined_model)
-broom::glance(combined_model)
+
+glance(combined_model)
 ```
 
 ```{r}
@@ -122,7 +125,7 @@ tar_dir({
   # Run it
   tar_make(reporter = "silent")
   tar_load(combined_model)
-  broom::glance(combined_model)
+  glance(combined_model)
 })
 ```
 
@@ -347,12 +350,12 @@ Here is the function. Save this in `R/functions.R`:
 glance_with_mod_name <- function(model_in_list) {
   model_name <- names(model_in_list)
   model <- model_in_list[[1]]
-  broom::glance(model) %>%
+  glance(model) %>%
     mutate(model_name = model_name)
 }
 ```
 
-Our new pipeline looks almost the same as before, but this time we use the custom function instead of `broom::glance()`.
+Our new pipeline looks almost the same as before, but this time we use the custom function instead of `glance()`.
 
 ```{r}
 #| label: example-model-show-6
@@ -414,6 +417,97 @@ tar_dir({
   tar_read(model_summaries)
 })
 ```
+
+Next we will add one more target, a prediction of bill depth based on each model. These will be needed for plotting the models in the report.
+Such a prediction can be obtained with the `augment()` function of the `broom` package.
+
+```{r}
+#| label: example-augment-show
+#| echo: true
+#| eval: false
+tar_load(models)
+augment(models[[1]])
+```
+
+```{r}
+#| label: example-augment-hide
+#| echo: false
+#| warning: false
+tar_dir({
+  # New workflow
+  write_example_plan(7)
+  # Run it
+  tar_make(reporter = "silent")
+  tar_load(models)
+})
+augment(models[[1]])
+```
+
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge: Add model predictions to the workflow
+
+Can you add the model predictions using `augment()`? You will need to define a custom function just like we did for `glance()`.
+
+:::::::::::::::::::::::::::::::::: {.solution}
+
+Define the new function as `augment_with_mod_name()`. It is the same as `glance_with_mod_name()`, but use `augment()` instead of `glance()`:
+
+```{r}
+#| label: example-model-augment-func
+#| eval: FALSE
+augment_with_mod_name <- function(model_in_list) {
+  model_name <- names(model_in_list)
+  model <- model_in_list[[1]]
+  augment(model) %>%
+    mutate(model_name = model_name)
+}
+```
+
+Add the step to the workflow:
+
+```{r}
+#| label: example-model-augment-show
+#| eval: FALSE
+source("R/packages.R")
+source("R/functions.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  ),
+  # Get model summaries
+  tar_target(
+    model_summaries,
+    glance_with_mod_name(models),
+    pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
+    pattern = map(models)
+  )
+)
+```
+
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
@@ -588,6 +682,12 @@ tar_plan(
   tar_target(
     model_summaries,
     glance_with_mod_name(models),
+    pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
     pattern = map(models)
   )
 )
