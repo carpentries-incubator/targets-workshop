@@ -65,6 +65,19 @@ If you mostly code with other tools, you may want to consider an alternative.
 
 The **goal** of this workshop is to **learn how to use `targets` to reproducible data analysis in R**.
 
+## Where to get more information
+
+`targets` is a sophisticated package and there is a lot more to learn that we can cover in this workshop.
+
+Here are some recommended resources for continuing on your `targets` journey:
+
+- [The `targets` R package user manual](https://books.ropensci.org/targets/) by the author of `targets`, Will Landau, should be considered required reading for anyone seriously interested in `targets`.
+- [The `targets` discussion board](https://github.com/ropensci/targets/discussions) is a great place for asking questions and getting help. Before you ask a question though, be sure to [read the policy on asking for help](https://books.ropensci.org/targets/help.html).
+- [The `targets` package webpage](https://docs.ropensci.org/targets/) includes documentation of all `targets` functions.
+- [The `tarchetypes` package webpage](https://docs.ropensci.org/tarchetypes/) includes documentation of all `tarchetypes` functions. You will almost certainly use `tarchetypes` along with `targets`, so it's good to consult both.
+- [Reproducible computation at scale in R with `targets`](https://github.com/wlandau/targets-tutorial) is a tutorial by Will Landau analyzing customer churn with Keras.
+- [Recorded talks](https://github.com/ropensci/targets#recorded-talks) and [example projects](https://github.com/ropensci/targets#example-projects) listed on the `targets` README.
+
 ## About the example dataset
 
 For this workshop, we will analyze an example dataset of measurements taken on adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago, Antarctica.
