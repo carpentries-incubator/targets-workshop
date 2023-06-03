@@ -30,7 +30,7 @@ Episode summary: Show how to read and write external files
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
 ```
 
 ## Treating external files as a dependency

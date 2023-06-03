@@ -96,7 +96,7 @@ Create a new R file in `R/` called `functions.R`.
 This is where we will put our custom functions.
 Let's go ahead and put `clean_penguin_data()` in there now and save it.
 
-Similarly, let's put the `library()` calls in their own script in `R/` called `packages.R` (this isn't the only way to do it though; see the <!-- FIXME ADD LINK -->"Managing Packages" episode for alternative approaches).
+Similarly, let's put the `library()` calls in their own script in `R/` called `packages.R` (this isn't the only way to do it though; see the ["Managing Packages" episode](https://joelnitta.github.io/targets-workshop/packages.html) for alternative approaches).
 
 We will also need to modify our `_targets.R` script to call these scripts with `source`:
 
@@ -128,7 +128,7 @@ If you are used to analyzing data in R with a series of scripts instead of a sin
 This is a major difference from `targets`.
 It would be quite difficult to write an efficient `targets` pipeline without the use of custom functions, because each target you build has to be the output of a single command.
 
-We don't have time in this curriculum to cover how to write functions in R, but the <!-- FIXME ADD LINK -->Software Carpentry lesson is recommended for reviewing this topic.
+We don't have time in this curriculum to cover how to write functions in R, but the [Software Carpentry lesson](https://swcarpentry.github.io/r-novice-gapminder/10-functions) is recommended for reviewing this topic.
 
 Another major difference is that **each target must have a unique name**.
 You may be used to writing code that looks like this:

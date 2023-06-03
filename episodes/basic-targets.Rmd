@@ -125,7 +125,7 @@ Recall that we are using the `palmerpenguins` R package to obtain the data.
 This package actually includes two variations of the dataset: one is an external CSV file with the raw data, and another is the cleaned data loaded into R.
 In real life you are probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
 
-The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package)
+The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package).
 
 ```{r}
 #| label: normal-r-path
@@ -137,13 +137,25 @@ penguins_csv_file <- path_to_file("penguins_raw.csv")
 penguins_csv_file
 ```
 
-We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see <!-- FIXME ADD LINK -->this lesson.
+We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html).
 
 Let's load the data with `read_csv()`.
 
 ```{r}
-#| label: normal-r-load
+#| label: normal-r-load-show
+#| eval: false
 library(tidyverse)
+
+# Read CSV file into R
+penguins_data_raw <- read_csv(penguins_csv_file)
+
+penguins_data_raw
+```
+
+```{r}
+#| label: normal-r-load-hide
+#| echo: false
+suppressPackageStartupMessages(library(tidyverse))
 
 # Read CSV file into R
 penguins_data_raw <- read_csv(penguins_csv_file)
@@ -153,7 +165,9 @@ penguins_data_raw
 
 We see the raw data has some awkward column names with spaces (these are hard to type out and can easily lead to mistakes in the code), and far more columns than we need.
 For the purposes of this analysis, we only need species name, bill length, and bill depth.
-In the raw data, the rather technical term "Culmen" is used to refer to the bill.
+In the raw data, the rather technical term "culmen" is used to refer to the bill.
+
+![Illustration of bill (culmen) length and depth. Artwork by @allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png)
 
 Let's clean up the data to make it easier to use for downstream analyses.
 We will also remove any rows with missing data, because this could cause errors for some functions later.
