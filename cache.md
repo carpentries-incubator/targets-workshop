@@ -135,6 +135,8 @@ You can create it if you want, and put whatever you want inside.
 
 Generally, `_targets/user` is a good place to store files that are not code, like data and output.
 
+Note that if you don't have anything in `_targets/user` that you need to keep around, it is possible to "reset" your workflow by simply deleting the entire `_targets` folder. Of course, this means you will need to run everything over again, so don't do this lightly!
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `targets` workflows are run in a separate, non-interactive R session
