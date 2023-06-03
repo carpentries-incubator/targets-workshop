@@ -391,9 +391,11 @@ analysis (in other words, the “heavy lifting”) in the
 <hr class="half-width"><p>Continuing our penguin bill size analysis, let’s write a report
 evaluating each model.</p>
 <p>To save time, the report is already available at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a>.</p>
-<!-- FIXME ADD DETAILED DOWNLOAD INSTRUCTIONS -->
-<p>Download the <code>penguin_report.qmd</code> file to your project
-folder, and add one more target to the pipeline using the
+<p>Copy the <a href="https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd" class="external-link">raw
+code from here</a> and save it as a new file
+<code>penguin_report.qmd</code> in your project folder (you may also be
+able to right click in your browser and select “Save As”).</p>
+<p>Then, add one more target to the pipeline using the
 <code>tar_quarto()</code> function like this:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -426,6 +428,12 @@ folder, and add one more target to the pipeline using the
 <span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
 <span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get model predictions</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">model_predictions</span>,</span>
+<span>    <span class="fu">augment_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Generate report</span></span>
 <span>  <span class="fu">tar_quarto</span><span class="op">(</span></span>
 <span>    <span class="va">penguin_report</span>,</span>
@@ -443,7 +451,7 @@ folder, and add one more target to the pipeline using the
   Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
   Debugging guide: https://books.ropensci.org/targets/debugging.html
   How to ask for help: https://books.ropensci.org/targets/help.html
-  Last error: could not find function "plan"</code></pre>
+  Last error: The package "quarto" is required.</code></pre>
 </div>
 <p>The function to generate the report is <code>tar_quarto()</code>,
 from the <code>tarchetypes</code> package.</p>
@@ -530,7 +538,7 @@ text and plots.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul><li><p>In the code chunk labeled <code>results-stats</code>, statistics
 from the models like <em>P</em>-value and adjusted <em>R</em> squared

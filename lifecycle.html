@@ -347,7 +347,7 @@ running the workflow again:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.073 seconds]</code></pre>
+✔ skip pipeline [0.068 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -392,8 +392,8 @@ need the first part of the common name to distinguish them.</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.021 seconds]
-• end pipeline [0.109 seconds]</code></pre>
+• built target penguins_data [0.019 seconds]
+• end pipeline [0.1 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -422,7 +422,7 @@ skip steps results in a massive increase in efficiency.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(penguins_data</code>) or by running
 <code>tar_load(penguins_data)</code> followed by
@@ -524,7 +524,7 @@ date?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -633,7 +633,7 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.074 seconds]</code></pre>
+✔ skip pipeline [0.065 seconds]</code></pre>
 </div>
 <p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
 <div class="codewrapper sourceCode" id="cb13">
@@ -649,13 +649,13 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.021 seconds]
-• end pipeline [0.107 seconds]</code></pre>
+• built target penguins_data [0.019 seconds]
+• end pipeline [0.102 seconds]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
-(<code>tar_invalidate()</code> accepts <!-- FIXME ADD LINK -->tidy
-select functions to specify target names).</p>
+(<code>tar_invalidate()</code> <a href="https://docs.ropensci.org/targets/reference/tar_invalidate.html" class="external-link">accepts
+<code>tidyselect</code> expressions</a> to specify target names).</p>
 <p><strong>Caution should be exercised</strong> when using granular
 methods like this, though, since you may end up with your workflow in an
 unexpected state. The surest way to maintain an up-to-date workflow is

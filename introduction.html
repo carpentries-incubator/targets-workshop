@@ -366,12 +366,13 @@ functions</li>
 </h2>
 <hr class="half-width"><p><code>targets</code> is by no means the only workflow management
 software. There is a large number of similar tools, each with varying
-features and use-cases. For example, snakemake is a popular workflow
-tool for python, and <code>make</code> is a tool that has been around
-for a very long time for automating bash scripts. <code>targets</code>
-is designed to work specifically with R, so it makes the most sense to
-use it if you primarily use R, or intend to. If you mostly code with
-other tools, you may want to consider an alternative.</p>
+features and use-cases. For example, <a href="https://snakemake.readthedocs.io/en/stable/" class="external-link">snakemake</a> is a
+popular workflow tool for python, and <a href="https://www.gnu.org/software/make/" class="external-link"><code>make</code></a> is a
+tool that has been around for a very long time for automating bash
+scripts. <code>targets</code> is designed to work specifically with R,
+so it makes the most sense to use it if you primarily use R, or intend
+to. If you mostly code with other tools, you may want to consider an
+alternative.</p>
 <p>The <strong>goal</strong> of this workshop is to <strong>learn how to
 use <code>targets</code> to reproducible data analysis in
 R</strong>.</p>
@@ -380,18 +381,14 @@ R</strong>.</p>
 <hr class="half-width"><p>For this workshop, we will analyze an example dataset of measurements
 taken on adult foraging Adélie, Chinstrap, and Gentoo penguins observed
 on islands in the Palmer Archipelago, Antarctica.</p>
-<p>The goal of the analysis is to determine the relationship between
-bill length and depth by using linear models.</p>
 <p>The data are available from the <code>palmerpenguins</code> R
 package. You can get more information about the data by running
 <code>?palmerpenguins</code>.</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="op">?</span><span class="va">palmerpenguins</span></span></code></pre>
-</div>
+<figure><img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png" alt="" class="figure mx-auto d-block"><figcaption>The three species of penguins in the
+<code>palmerpenguins</code> dataset. Artwork by <span class="citation">@allison_horst</span>.</figcaption></figure><p>The goal of the analysis is to determine the relationship between
+bill length and depth by using linear models.</p>
+<p>We will gradually build up the analysis through this lesson, but you
+can see the final version at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a>.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>

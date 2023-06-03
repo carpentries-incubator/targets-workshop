@@ -390,8 +390,8 @@ any links that you are not going to use.
  --></tbody></table><p>
       The actual schedule may vary slightly depending on the topics and exercises chosen by the instructor.
       </p>
-      </section><section id="setup"><p>This lesson assumes you have R, RStudio, and the <code>targets</code>
-R package installed on your computer.</p>
+      </section><section id="setup"><p>Follow these instructions to install the required software on your
+computer.</p>
 <ul><li>
 <a href="https://www.r-project.org/" class="external-link">Download and install the latest
 version of R</a>.</li>
@@ -401,12 +401,31 @@ and install RStudio</a>. RStudio is an application (an integrated
 development environment or IDE) that facilitates the use of R and offers
 a number of nice additional features. You will need the free Desktop
 version for your computer.</li>
-<li>Install the <code>targets</code> package by running the command
-<code>install.packages("targets")</code> in R.</li>
-</ul><!-- 
+<li>Install the necessary R packages with the following command:</li>
+</ul><div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">install.packages</span><span class="op">(</span></span>
+<span>  <span class="fu">c</span><span class="op">(</span></span>
+<span>    <span class="st">"conflicted"</span>,</span>
+<span>    <span class="st">"future.callr"</span>,</span>
+<span>    <span class="st">"future"</span>,</span>
+<span>    <span class="st">"palmerpenguins"</span>,</span>
+<span>    <span class="st">"tarchetypes"</span>,</span>
+<span>    <span class="st">"targets"</span>,</span>
+<span>    <span class="st">"tidyverse"</span>,</span>
+<span>    <span class="st">"visNetwork"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<!-- 
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
- --></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
+ -->
+
+
+      </section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link float-end" href="../instructor/introduction.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
