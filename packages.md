@@ -34,7 +34,7 @@ There are three main ways to load packages in `targets` workflows.
 
 This is the method you are almost certainly more familiar with, and is the method we have been using by default so far.
 
-Like any other R script, include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the recommended best practice for project organization), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
+Like any other R script, include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the <!-- FIXME ADD LINK -->recommended best practice for project organization), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
 
 The potential downside to this approach is that if you have a long list of packages to load, certain functions like `tar_visnetwork()`, `tar_outdated()`, etc., may take an unnecessarily long time to run because they have to load all the packages, even though they don't necessarily use them.
 
@@ -42,7 +42,19 @@ The potential downside to this approach is that if you have a long list of packa
 
 In this method, use the `tar_option_set()` function in `_targets.R` to specify the packages to load when running the workflow.
 
-For example, let's filter some data from the `palmerpenguins` package:
+This will be demonstrated using the pre-cleaned dataset from the `palmerpenguins` package. Let's say we want to filter it down to just data for the Adelie penguin.
+
+::::::::::::::::::::::::::::::::::::: {.callout}
+
+## Save your progress
+
+You can only have one active `_targets.R` file at a time in a given project.
+
+We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins bill analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
+
+:::::::::::::::::::::::::::::::::::::
+
+This is what using the `tar_option_set()` method looks like:
 
 
 ```r
@@ -59,8 +71,8 @@ tar_plan(
 
 ```{.output}
 • start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]
+• built target adelie_data [0.028 seconds]
+• end pipeline [0.092 seconds]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -88,8 +100,8 @@ tar_plan(
 
 ```{.output}
 • start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]
+• built target adelie_data [0.026 seconds]
+• end pipeline [0.099 seconds]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -115,8 +127,8 @@ tar_plan(
 
 ```{.output}
 • start target adelie_data
-• built target adelie_data [0.012 seconds]
-• end pipeline [0.07 seconds]
+• built target adelie_data [0.015 seconds]
+• end pipeline [0.079 seconds]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.

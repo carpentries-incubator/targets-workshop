@@ -69,52 +69,43 @@ But that is not recommended because it doesn't scale well and lacks the sophisti
 
 Our suggested approach is to conduct the vast majority of data analysis (in other words, the "heavy lifting") in the `targets` pipeline, then use the Quarto document to **summarize** and **plot** the results.
 
-## An example: Bill size in penguins
+## Report on bill size in penguins
 
-For example, the [demo workflow on bill size in penguins](https://github.com/joelnitta/penguins-targets) constructs several models of bill size that differ in how they account for species, then generates a report:
+Continuing our penguin bill size analysis, let's write a report evaluating each model.
 
-::::::::::::::::::::::::::::::::::::: {.instructor}
+To save time, the report is already available at <https://github.com/joelnitta/penguins-targets>.
 
-You will probably want to clone and run the [penguins-targets](https://github.com/joelnitta/penguins-targets) demo since this is a lot to type out by hand.
-
-:::::::::::::::::::::::::::::::::::::
+<!-- FIXME ADD DETAILED DOWNLOAD INSTRUCTIONS -->
+Download the `penguin_report.qmd` file to your project folder, and add one more target to the pipeline using the `tar_quarto()` function like this:
 
 
 ```r
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(tidyverse)
-
+source("R/packages.R")
 source("R/functions.R")
 
 tar_plan(
   # Load raw data
   tar_file_read(
-    penguin_data_raw,
+    penguins_data_raw,
     path_to_file("penguins_raw.csv"),
-    read_csv(!!.x)
+    read_csv(!!.x, show_col_types = FALSE)
   ),
   # Clean data
-  penguin_data = clean_penguin_data(penguin_data_raw),
-  # Make models
-  penguin_models = list(
-    combined = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguin_data),
-    separate = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
-  ),
-  # Predict points from models
-  tar_target(
-    penguin_models_augmented,
-    augment_penguins(penguin_models),
-    pattern = map(penguin_models)
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
   ),
   # Get model summaries
   tar_target(
-    penguin_models_summary,
-    glance_penguins(penguin_models),
-    pattern = map(penguin_models)
+    model_summaries,
+    glance_with_mod_name(models),
+    pattern = map(models)
   ),
   # Generate report
   tar_quarto(
@@ -127,6 +118,14 @@ tar_plan(
 ```
 
 
+```{.error}
+Error:
+! Error running targets::tar_make()
+  Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
+  Debugging guide: https://books.ropensci.org/targets/debugging.html
+  How to ask for help: https://books.ropensci.org/targets/help.html
+  Last error: could not find function "plan"
+```
 
 The function to generate the report is `tar_quarto()`, from the `tarchetypes` package.
 

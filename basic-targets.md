@@ -106,47 +106,178 @@ Furthermore, each item in the list is a call of the `tar_target()` function.
 The first argument of `tar_target()` is name of the target to build, and the second argument is the command used to build it.
 Note that the name of the target is **unquoted**, that is, it is written without any surrounding quotation marks.
 
-::::::::::::::::::::::::::::::::::::: callout
+## Set up `_targets.R` file to run example analysis
 
-## Edit `_targets.R`
+### Background: non-`targets` version
 
-Let's modify the default workflow: rename the names of the targets from `data` to `my_data` and `summary` to `my_summary`.
-This is to avoid confusion with base R functions `data()` and `summary()`.
-It is generally a good idea to avoid naming objects in R with the names of existing functions.
+We will use this template to start building our analysis of bill shape in penguins.
+First though, to get familiar with the functions and packages we'll use, let's run the code like you would in a "normal" R script without using `targets`.
 
-Make sure to rename `data` to `my_data` **each time it appears** (twice).
-The names of the targets are very important: this is how `targets` knows how workflow steps depend on each other.
+Recall that we are using the `palmerpenguins` R package to obtain the data.
+This package actually includes two variations of the dataset: one is an external CSV file with the raw data, and another is the cleaned data loaded into R.
+In real life you are probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
 
-:::::::::::::::::::::::::::::::::::::
+The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package)
 
-Your final `_targets.R` file should look like this:
+
+```r
+library(palmerpenguins)
+
+# Get path to CSV file
+penguins_csv_file <- path_to_file("penguins_raw.csv")
+
+penguins_csv_file
+```
+
+```{.output}
+[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+```
+
+We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see <!-- FIXME ADD LINK -->this lesson.
+
+Let's load the data with `read_csv()`.
+
+
+```r
+library(tidyverse)
+```
+
+```{.output}
+── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+```
+
+```r
+# Read CSV file into R
+penguins_data_raw <- read_csv(penguins_csv_file)
+```
+
+```{.output}
+Rows: 344 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (9): studyName, Species, Region, Island, Stage, Individual ID, Clutch C...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+date (1): Date Egg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```r
+penguins_data_raw
+```
+
+```{.output}
+# A tibble: 344 × 17
+   studyName `Sample Number` Species         Region Island Stage `Individual ID`
+   <chr>               <dbl> <chr>           <chr>  <chr>  <chr> <chr>          
+ 1 PAL0708                 1 Adelie Penguin… Anvers Torge… Adul… N1A1           
+ 2 PAL0708                 2 Adelie Penguin… Anvers Torge… Adul… N1A2           
+ 3 PAL0708                 3 Adelie Penguin… Anvers Torge… Adul… N2A1           
+ 4 PAL0708                 4 Adelie Penguin… Anvers Torge… Adul… N2A2           
+ 5 PAL0708                 5 Adelie Penguin… Anvers Torge… Adul… N3A1           
+ 6 PAL0708                 6 Adelie Penguin… Anvers Torge… Adul… N3A2           
+ 7 PAL0708                 7 Adelie Penguin… Anvers Torge… Adul… N4A1           
+ 8 PAL0708                 8 Adelie Penguin… Anvers Torge… Adul… N4A2           
+ 9 PAL0708                 9 Adelie Penguin… Anvers Torge… Adul… N5A1           
+10 PAL0708                10 Adelie Penguin… Anvers Torge… Adul… N5A2           
+# ℹ 334 more rows
+# ℹ 10 more variables: `Clutch Completion` <chr>, `Date Egg` <date>,
+#   `Culmen Length (mm)` <dbl>, `Culmen Depth (mm)` <dbl>,
+#   `Flipper Length (mm)` <dbl>, `Body Mass (g)` <dbl>, Sex <chr>,
+#   `Delta 15 N (o/oo)` <dbl>, `Delta 13 C (o/oo)` <dbl>, Comments <chr>
+```
+
+We see the raw data has some awkward column names with spaces (these are hard to type out and can easily lead to mistakes in the code), and far more columns than we need.
+For the purposes of this analysis, we only need species name, bill length, and bill depth.
+In the raw data, the rather technical term "Culmen" is used to refer to the bill.
+
+Let's clean up the data to make it easier to use for downstream analyses.
+We will also remove any rows with missing data, because this could cause errors for some functions later.
+
+
+```r
+# Clean up raw data
+penguins_data <- penguins_data_raw %>%
+  # Rename columns for easier typing and
+  # subset to only the columns needed for analysis
+  select(
+    species = Species,
+    bill_length_mm = `Culmen Length (mm)`,
+    bill_depth_mm = `Culmen Depth (mm)`
+  ) %>%
+  # Delete rows with missing data
+  remove_missing(na.rm = TRUE)
+
+penguins_data
+```
+
+```{.output}
+# A tibble: 342 × 3
+   species                             bill_length_mm bill_depth_mm
+   <chr>                                        <dbl>         <dbl>
+ 1 Adelie Penguin (Pygoscelis adeliae)           39.1          18.7
+ 2 Adelie Penguin (Pygoscelis adeliae)           39.5          17.4
+ 3 Adelie Penguin (Pygoscelis adeliae)           40.3          18  
+ 4 Adelie Penguin (Pygoscelis adeliae)           36.7          19.3
+ 5 Adelie Penguin (Pygoscelis adeliae)           39.3          20.6
+ 6 Adelie Penguin (Pygoscelis adeliae)           38.9          17.8
+ 7 Adelie Penguin (Pygoscelis adeliae)           39.2          19.6
+ 8 Adelie Penguin (Pygoscelis adeliae)           34.1          18.1
+ 9 Adelie Penguin (Pygoscelis adeliae)           42            20.2
+10 Adelie Penguin (Pygoscelis adeliae)           37.8          17.1
+# ℹ 332 more rows
+```
+
+That's better!
+
+### `targets` version
+
+What does this look like using `targets`?
+
+The biggest difference is that we need to **put each step of the workflow into the list at the end**.
+
+We also define a custom function for the data cleaning step.
+That is because the list of targets at the end **should look like a high-level summary of your analysis**.
+You want to avoid lengthy chunks of code when defining the targets; instead, put that code in the custom functions.
+The other steps (setting the file path and loading the data) are each just one function call so there's not much point in putting those into their own custom functions.
+
+Finally, each step in the workflow is defined with the `tar_target()` function.
 
 
 ```r
 library(targets)
-# This is an example _targets.R file. Every
-# {targets} pipeline needs one.
-# Use tar_script() to create _targets.R and tar_edit()
-# to open it again for editing.
-# Then, run tar_make() to run the pipeline
-# and tar_read(summary) to view the results.
+library(palmerpenguins)
+library(tidyverse)
 
-# Define custom functions and other global objects.
-# This is where you write source(\"R/functions.R\")
-# if you keep your functions in external scripts.
-summ <- function(dataset) {
-  colMeans(dataset)
+clean_penguin_data <- function(penguins_data_raw) {
+  penguins_data_raw %>%
+    select(
+      species = Species,
+      bill_length_mm = `Culmen Length (mm)`,
+      bill_depth_mm = `Culmen Depth (mm)`
+    ) %>%
+    remove_missing(na.rm = TRUE)
 }
 
-# Set target-specific options such as packages:
-# tar_option_set(packages = "utils") # nolint
-
-# End this file with a list of target objects.
 list(
-  tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-  tar_target(my_summary, summ(my_data)) # Call your custom functions as needed.
+  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_target(penguins_data_raw, read_csv(
+    penguins_csv_file, show_col_types = FALSE)),
+  tar_target(penguins_data, clean_penguin_data(penguins_data_raw))
 )
 ```
+
+I have set `show_col_types = FALSE` in `read_csv()` because we know from the earlier code that the column types were set correctly by default (character for species and numeric for bill length and depth), so we don't need to see the warning it would otherwise issue.
 
 ## Run the workflow
 
@@ -160,30 +291,16 @@ tar_make()
 
 
 ```{.output}
-• start target my_data
-• built target my_data [0.001 seconds]
-• start target my_summary
-• built target my_summary [0 seconds]
-• end pipeline [0.077 seconds]
+• start target penguins_csv_file
+• built target penguins_csv_file [0.002 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.15 seconds]
+• start target penguins_data
+• built target penguins_data [0.011 seconds]
+• end pipeline [0.253 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
-
-::::::::::::::::::::::::::::::::::::: challenge
-
-## Challenge: What happened during the workflow?
-
-Inspect the list at the end of `_targets.R`. Can you describe the steps of the workflow?
-
-:::::::::::::::::::::::::::::::::: solution
-
-The first step of the workflow built a target called `my_data` that includes two variables, `x` and `y`.
-
-The second step of the workflow built a target called `my_summ` that includes the mean of `x` and `y` calculated with a custom function called `summ()`.
-
-::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 

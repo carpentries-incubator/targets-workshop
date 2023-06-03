@@ -30,23 +30,21 @@ Episode summary: Show how to get at the objects that we built
 
 So we just finished running our first workflow.
 Now you probably want to look at its output.
-But, if we just call the name of the object (`my_data` or `my_summary`), we get an error.
+But, if we just call the name of the object (for example, `penguins_data`), we get an error.
 
 ```r
-my_data
+penguins_data
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'my_data' not found
+Error in eval(expr, envir, enclos): object 'penguins_data' not found
 ```
 
 Where are the results of our workflow?
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-- To reinforce the concept of `targets` running in a separate R session, you may want to pretend trying to run `my_data` or `my_summary`, then feigning surprise when it doesn't work and using it as a teaching moment (errors are pedagogy!).
-
-- In the previous episode, the default names of targets `data` and `summary` were changed to avoid confusion with the base R functions `data()` and `summary()`.
+- To reinforce the concept of `targets` running in a separate R session, you may want to pretend trying to run `penguins_data`, then feigning surprise when it doesn't work and using it as a teaching moment (errors are pedagogy!).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -60,25 +58,25 @@ Let's see how these work.
 
 `tar_load()` loads an object built by the workflow into the current session.
 Its first argument is the name of the object you want to load.
-Let's use this to load `my_data` and inspect the first several rows with `head()`.
+Let's use this to load `penguins_data` and get an overview of the data with `summary()`.
 
 
 
 
 ```r
-tar_load(my_data)
-head(my_data)
+tar_load(penguins_data)
+summary(penguins_data)
 ```
 
 
 ```{.output}
-   x  y
-1 65 88
-2  4  9
-3 14 71
-4 26 11
-5 69 85
-6 76 26
+   species          bill_length_mm  bill_depth_mm  
+ Length:342         Min.   :32.10   Min.   :13.10  
+ Class :character   1st Qu.:39.23   1st Qu.:15.60  
+ Mode  :character   Median :44.45   Median :17.30  
+                    Mean   :43.92   Mean   :17.15  
+                    3rd Qu.:48.50   3rd Qu.:18.70  
+                    Max.   :59.60   Max.   :21.50  
 ```
 
 Note that `tar_load()` is used for its **side-effect**---loading the desired object into the current R session.
@@ -88,30 +86,29 @@ It doesn't actually return a value.
 
 `tar_read()` is similar to `tar_load()` in that it is used to retrieve objects built by the workflow, but unlike `tar_load()`, it returns them directly as output.
 
-Let's try it with `my_summary`.
+Let's try it with `penguins_csv_file`.
 
 
 ```r
-tar_read(my_summary)
+tar_read(penguins_csv_file)
 ```
 
 
 ```{.output}
-   x    y 
-50.5 50.5 
+[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
 ```
 
-We immediately see the contents of `my_summary`.
-But it has not been loaded into the enviroment.
-If you try to run `my_summary` now, you will get an error:
+We immediately see the contents of `penguins_csv_file`.
+But it has not been loaded into the environment.
+If you try to run `penguins_csv_file` now, you will get an error:
 
 
 ```r
-my_summary
+penguins_csv_file
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'my_summary' not found
+Error in eval(expr, envir, enclos): object 'penguins_csv_file' not found
 ```
 
 ## When to use which function

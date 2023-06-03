@@ -40,9 +40,10 @@ tar_make()
 
 
 ```{.output}
-✔ skip target my_data
-✔ skip target my_summary
-✔ skip pipeline [0.064 seconds]
+✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip pipeline [0.073 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -55,14 +56,23 @@ Remember, the fastest code is the code you don't have to run!
 
 What happens when we change one part of the workflow then run it again?
 
-Let's modify the workflow to calculate the **sum** of the columns instead of the mean.
+Say that we decide the species names should be shorter.
+Right now they include the common name and the scientific name, but we really only need the first part of the common name to distinguish them.
 
-Edit `_targets.R` so that the `summ()` function looks like this:
+Edit `_targets.R` so that the `clean_penguin_data()` function looks like this:
 
 
 ```r
-summ <- function(dataset) {
-  colSums(dataset)
+clean_penguin_data <- function(penguins_data_raw) {
+  penguins_data_raw %>%
+    select(
+      species = Species,
+      bill_length_mm = `Culmen Length (mm)`,
+      bill_depth_mm = `Culmen Depth (mm)`
+    ) %>%
+    remove_missing(na.rm = TRUE) %>%
+    # Split "species" apart on spaces, and only keep the first word
+    separate(species, into = "species", extra = "drop")
 }
 ```
 
@@ -75,15 +85,16 @@ tar_make()
 
 
 ```{.output}
-✔ skip target my_data
-• start target my_summary
-• built target my_summary [0.002 seconds]
-• end pipeline [0.077 seconds]
+✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+• start target penguins_data
+• built target penguins_data [0.021 seconds]
+• end pipeline [0.109 seconds]
 ```
 
 What happened?
 
-This time, it skipped `my_data` and only ran `my_summary`.
+This time, it skipped `penguins_csv_file` and `penguins_data_raw` and only ran `penguins_data`.
 
 Of course, since our example workflow is so short we don't even notice the amount of time saved.
 But imagine using this in a series of computationally intensive analysis steps.
@@ -93,11 +104,11 @@ The ability to automatically skip steps results in a massive increase in efficie
 
 ## Challenge 1: Inspect the output
 
-How can you inspect the contents of `my_summary`?
+How can you inspect the contents of `penguins_data`?
 
 :::::::::::::::::::::::::::::::::: solution
 
-With `tar_read(my_summary`) or by running `tar_load(my_summary)` followed by `my_summary`.
+With `tar_read(penguins_data`) or by running `tar_load(penguins_data)` followed by `penguins_data`.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -138,7 +149,7 @@ tar_visnetwork()
 
 
 
-![](fig/lifecycle-visnetwork.png){alt="Visualization of the targets worklow, showing 'my_summary' connected by lines to 'my_data' and 'summ'"}
+![](fig/lifecycle-visnetwork.png){alt="Visualization of the targets worklow, showing 'penguins_data' connected by lines to 'penguins_data_raw', 'penguins_csv_file' and 'clean_penguin_data'"}
 
 You should see the network show up in the plot area of RStudio.
 
@@ -146,7 +157,7 @@ It is an HTML widget, so you can zoom in and out (this isn't important for the c
 
 Here, we see that all of the targets are dark green, indicating that they are up-to-date and would be skipped if we were to run the workflow again.
 
-::::::::::::::::::::::::::::::::::::: callout 
+::::::::::::::::::::::::::::::::::::: prereq 
 
 ## Installing visNetwork
 
@@ -219,11 +230,12 @@ tar_progress()
 
 
 ```{.output}
-# A tibble: 2 × 2
-  name       progress
-  <chr>      <chr>   
-1 my_data    skipped 
-2 my_summary skipped 
+# A tibble: 3 × 2
+  name              progress
+  <chr>             <chr>   
+1 penguins_csv_file skipped 
+2 penguins_data_raw skipped 
+3 penguins_data     skipped 
 ```
 
 ## Granular control of targets
@@ -231,7 +243,7 @@ tar_progress()
 It is possible to only make a particular target instead of running the entire workflow.
 
 To do this, type the name of the target you wish to build after `tar_make()` (note that any targets required by the one you specify will also be built).
-For example, `tar_make(my_data)` would **only** build `my_data`, not `my_summary`.
+For example, `tar_make(penguins_data_raw)` would **only** build `penguins_data_raw`, not `penguins_data`.
 
 Furthermore, if you want to manually "reset" a target and make it appear out-of-date, you can do so with `tar_invalidate()`. This means that target (and any that depend on it) will be re-run next time.
 
@@ -244,26 +256,30 @@ tar_make()
 
 
 ```{.output}
-✔ skip target my_data
-✔ skip target my_summary
-✔ skip pipeline [0.064 seconds]
+✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip pipeline [0.074 seconds]
 ```
 
-Let's invalidate `my_summary` and run it again:
+Let's invalidate `penguins_data` and run it again:
 
 
 ```r
-tar_invalidate(my_summary)
+tar_invalidate(penguins_data)
 tar_make()
 ```
 
 
 ```{.output}
-✔ skip target my_data
-• start target my_summary
-• built target my_summary [0.002 seconds]
-• end pipeline [0.076 seconds]
+✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+• start target penguins_data
+• built target penguins_data [0.021 seconds]
+• end pipeline [0.107 seconds]
 ```
+
+If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` accepts <!-- FIXME ADD LINK -->tidy select functions to specify target names).
 
 **Caution should be exercised** when using granular methods like this, though, since you may end up with your workflow in an unexpected state. The surest way to maintain an up-to-date workflow is to run `tar_make()` frequently.
 

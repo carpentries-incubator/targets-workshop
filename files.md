@@ -33,6 +33,16 @@ As a simple example, let's create an external data file in RStudio with the "New
 
 We will read in the contents of this file and store it as `some_data` in the workflow by writing the following plan and running `tar_make()`:
 
+::::::::::::::::::::::::::::::::::::: {.callout}
+
+## Save your progress
+
+You can only have one active `_targets.R` file at a time in a given project.
+
+We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins bill analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
+
+:::::::::::::::::::::::::::::::::::::
+
 
 ```r
 library(targets)
@@ -47,7 +57,7 @@ tar_plan(
 ```{.output}
 • start target some_data
 • built target some_data [0.001 seconds]
-• end pipeline [0.059 seconds]
+• end pipeline [0.068 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -67,7 +77,7 @@ tar_plan(
 
 ```{.output}
 ✔ skip target some_data
-✔ skip pipeline [0.046 seconds]
+✔ skip pipeline [0.052 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -88,10 +98,10 @@ tar_plan(
 
 ```{.output}
 • start target data_file
-• built target data_file [0.001 seconds]
+• built target data_file [0.002 seconds]
 • start target some_data
 • built target some_data [0 seconds]
-• end pipeline [0.068 seconds]
+• end pipeline [0.077 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -145,6 +155,46 @@ What is the deal with the `!!.x`? That may look unfamiliar even if you are used 
 Although we used `readLines()` as an example here, you can use the same pattern for other functions that load data from external files, such as `readr::read_csv()`, `xlsx::read_excel()`, and others (for example, `read_csv(!!.x)`, `read_excel(!!.x)`, etc.).
 
 This is generally recommended so that your pipeline stays up to date with your input data.
+
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge: Use `tar_file_read()` with the penguins example
+
+We didn't know about `tar_file_read()` yet when we started on the penguins bill analysis.
+
+How can you use `tar_file_read()` to load the CSV file while tracking its contents?
+
+:::::::::::::::::::::::::::::::::: {.solution}
+
+
+```r
+source("R/packages.R")
+source("R/functions.R")
+
+tar_plan(
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  penguins_data = clean_penguin_data(penguins_data_raw)
+)
+```
+
+
+```{.output}
+• start target penguins_data_raw_file
+• built target penguins_data_raw_file [0.002 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.282 seconds]
+• start target penguins_data
+• built target penguins_data [0.019 seconds]
+• end pipeline [0.383 seconds]
+```
+
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::
 
 ## Writing out data
 
@@ -210,14 +260,14 @@ tar_plan(
 
 ```{.output}
 • start target hello_file
-• built target hello_file [0.001 seconds]
+• built target hello_file [0.002 seconds]
 • start target hello
 • built target hello [0 seconds]
 • start target hello_caps
 • built target hello_caps [0 seconds]
 • start target hello_caps_out
-• built target hello_caps_out [0.008 seconds]
-• end pipeline [0.082 seconds]
+• built target hello_caps_out [0.009 seconds]
+• end pipeline [0.093 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.

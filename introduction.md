@@ -65,11 +65,25 @@ If you mostly code with other tools, you may want to consider an alternative.
 
 The **goal** of this workshop is to **learn how to use `targets` to reproducible data analysis in R**.
 
+## About the example dataset
+
+For this workshop, we will analyze an example dataset of measurements taken on adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago, Antarctica.
+
+The goal of the analysis is to determine the relationship between bill length and depth by using linear models.
+
+The data are available from the `palmerpenguins` R package. You can get more information about the data by running `?palmerpenguins`.
+
+
+```r
+library(palmerpenguins)
+?palmerpenguins
+```
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- We can only have confidence in the results of scientific analyses if they can be reproduced by others
-- "Others" includes your future self
+- We can only have confidence in the results of scientific analyses if they can be reproduced by others (including your future self)
 - `targets` helps achieve reproducibility by automating workflow
 - `targests` is designed for use with the R programming language
+- The example dataset for this workshop includes measurements taken on penguins in Antarctica
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

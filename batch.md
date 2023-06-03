@@ -43,61 +43,56 @@ In this workshop, we will only cover dynamic branching since it is generally eas
 
 ## Example without branching
 
-To see how this works, let's use an example based on the `palmerpenguins` dataset.
-Our hypothesis is that bill depth decreases with bill length.
-We want to test this using several alternative models.
-The models will either ignore species identity, add a parameter for species, or add an interaction effect between species and bill length.
+To see how this works, let's continue our analysis of the `palmerpenguins` dataset.
 
-This is what a workflow for such an analysis might look like **without branching**:
+**Our hypothesis is that bill depth decreases with bill length.**
+We will test this hypothesis with a linear model.
+
+For example, this is a model of bill depth dependent on bill length:
 
 
 ```r
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(broom)
+lm(bill_depth_mm ~ bill_length_mm, data = penguin_data)
+```
+
+We can add this to our pipeline. We will call it the `combined_model` because it combines all the species together without distinction:
+
+
+```r
+source("R/packages.R")
+source("R/functions.R")
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
-  # Build models
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build model
   combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguin_data),
-  species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-  interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguin_data),
-  # Get model summaries
-  combined_summary = glance(combined_model),
-  species_summary = glance(species_model),
-  interaction_summary = glance(interaction_model)
+    bill_depth_mm ~ bill_length_mm, data = penguins_data)
 )
 ```
 
 
 ```{.output}
-• start target penguin_data
-• built target penguin_data [0.003 seconds]
+✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.064 seconds]
-• start target interaction_model
-• built target interaction_model [0.002 seconds]
-• start target species_model
-• built target species_model [0.002 seconds]
-• start target combined_summary
-• built target combined_summary [0.079 seconds]
-• start target interaction_summary
-• built target interaction_summary [0.003 seconds]
-• start target species_summary
-• built target species_summary [0.003 seconds]
-• end pipeline [0.253 seconds]
+• built target combined_model [0.027 seconds]
+• end pipeline [0.117 seconds]
 ```
 
-It worked. Let's check some of the model output:
+Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 
 ```r
-tar_read(combined_summary)
+tar_load(combined_model)
+broom::glance(combined_model)
 ```
 
 
@@ -108,7 +103,79 @@ tar_read(combined_summary)
 1    0.0552        0.0525  1.92      19.9 0.0000112     1  -708. 1422. 1433.    1256.         340   342
 ```
 
-This way of writing the pipeline is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
+Notice the small *P*-value.
+This seems to indicate that the model is highly significant.
+
+But wait a moment... is this really an appropriate model? Recall that there are three species of penguins in the dataset. It is possible that the relationship between bill depth and length **varies by species**.
+
+We should probably test some alternative models.
+These could include models that add a parameter for species, or add an interaction effect between species and bill length.
+
+Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching** (make sure to add `library(broom)` to `packages.R`):
+
+
+```r
+source("R/packages.R")
+source("R/functions.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  combined_model = lm(
+    bill_depth_mm ~ bill_length_mm, data = penguins_data),
+  species_model = lm(
+    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+  interaction_model = lm(
+    bill_depth_mm ~ bill_length_mm * species, data = penguins_data),
+  # Get model summaries
+  combined_summary = glance(combined_model),
+  species_summary = glance(species_model),
+  interaction_summary = glance(interaction_model)
+)
+```
+
+
+```{.output}
+✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip target combined_model
+• start target interaction_model
+• built target interaction_model [0.006 seconds]
+• start target species_model
+• built target species_model [0.001 seconds]
+• start target combined_summary
+• built target combined_summary [0.05 seconds]
+• start target interaction_summary
+• built target interaction_summary [0.003 seconds]
+• start target species_summary
+• built target species_summary [0.003 seconds]
+• end pipeline [0.182 seconds]
+```
+
+Let's look at the summary of one of the models:
+
+
+```r
+tar_read(species_summary)
+```
+
+
+```{.output}
+# A tibble: 1 × 12
+  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
+      <dbl>         <dbl> <dbl>     <dbl>     <dbl> <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int> <int>
+1     0.769         0.767 0.953      375. 3.65e-107     3  -467.  944.  963.     307.         338   342
+```
+
+So this way of writing the pipeline works, but is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
 Furthermore, each summary target (`combined_summary`, etc.) is explicitly named and typed out manually.
 It would be fairly easy to make a typo and end up with the wrong model being summarized.
 
@@ -120,22 +187,26 @@ Let's see how to write the same plan using **dynamic branching**:
 
 
 ```r
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(broom)
+source("R/packages.R")
+source("R/functions.R")
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   models = list(
     combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
     species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
     interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
   ),
   # Get model summaries
   tar_target(
@@ -152,21 +223,22 @@ First, let's look at the messages provided by `tar_make()`.
 
 
 ```{.output}
-• start target penguin_data
-• built target penguin_data [0.002 seconds]
+✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
 • start target models
-• built target models [0.006 seconds]
-• start branch model_summaries_ea786eaa
-• built branch model_summaries_ea786eaa [0.007 seconds]
-• start branch model_summaries_1c878f62
-• built branch model_summaries_1c878f62 [0.003 seconds]
-• start branch model_summaries_afef26b4
-• built branch model_summaries_afef26b4 [0.003 seconds]
+• built target models [0.008 seconds]
+• start branch model_summaries_5ad4cec5
+• built branch model_summaries_5ad4cec5 [0.009 seconds]
+• start branch model_summaries_c73912d5
+• built branch model_summaries_c73912d5 [0.046 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_91696941 [0.003 seconds]
 • built pattern model_summaries
-• end pipeline [0.116 seconds]
+• end pipeline [0.189 seconds]
 ```
 
-There is a series of smaller targets (branches) that are each named like `model_summaries_f9795da2`, then one overall `model_summaries` target.
+There is a series of smaller targets (branches) that are each named like model_summaries_5ad4cec5, then one overall `model_summaries` target.
 That is the result of specifying targets using branching: each of the smaller targets are the "branches" that comprise the overall target.
 Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
 `targets` builds each branch one at a time, then combines them into the overall target.
@@ -178,16 +250,16 @@ Next, let's look in more detail about how the workflow is set up, starting with 
 # Build models
 models <- list(
   combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguin_data),
+    bill_depth_mm ~ bill_length_mm, data = penguins_data),
   species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
   interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+    bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
 )
 ```
 
 Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
-This is because dynamic branching is similar to the `apply()` or [`purrrr::map()`](https://purrr.tidyverse.org/reference/map.html) method of looping: it applies a function to each element of a list.
+This is because dynamic branching is similar to the `base::apply()` or [`purrrr::map()`](https://purrr.tidyverse.org/reference/map.html) method of looping: it applies a function to each element of a list.
 So we need to prepare the input for looping as a list.
 
 Next, take a look at the command to build the target `model_summaries`.
@@ -257,24 +329,26 @@ Our new pipeline looks almost the same as before, but this time we use the custo
 
 
 ```r
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(tidyverse)
-
+source("R/packages.R")
 source("R/functions.R")
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   models = list(
     combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
     species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
     interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
   ),
   # Get model summaries
   tar_target(
@@ -287,18 +361,18 @@ tar_plan(
 
 
 ```{.output}
-• start target penguin_data
-• built target penguin_data [0.003 seconds]
-• start target models
-• built target models [0.013 seconds]
-• start branch model_summaries_ea786eaa
-• built branch model_summaries_ea786eaa [0.032 seconds]
-• start branch model_summaries_1c878f62
-• built branch model_summaries_1c878f62 [0.008 seconds]
-• start branch model_summaries_afef26b4
-• built branch model_summaries_afef26b4 [0.004 seconds]
+✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip target models
+• start branch model_summaries_5ad4cec5
+• built branch model_summaries_5ad4cec5 [0.017 seconds]
+• start branch model_summaries_c73912d5
+• built branch model_summaries_c73912d5 [0.009 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_91696941 [0.005 seconds]
 • built pattern model_summaries
-• end pipeline [0.194 seconds]
+• end pipeline [0.193 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
@@ -422,49 +496,51 @@ Here is the output when running with `tar_make_future(workers = 2)`:
 
 ```{.output}
 • start target some_data
-• built target some_data [0.147 seconds]
+• built target some_data [0.164 seconds]
 • start branch data_squared_3ba31302
 • start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.153 seconds]
+• built branch data_squared_3ba31302 [3.168 seconds]
 • start branch data_squared_552eb2cc
-• built branch data_squared_880e1e2e [3.155 seconds]
+• built branch data_squared_880e1e2e [3.167 seconds]
 • start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.155 seconds]
-• built branch data_squared_92b840e1 [3.155 seconds]
+• built branch data_squared_552eb2cc [3.173 seconds]
+• built branch data_squared_92b840e1 [3.17 seconds]
 • built pattern data_squared
-• end pipeline [9.689 seconds]
+• end pipeline [10.187 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 3 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
 
 The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
 
-We can see this by applying parallel processing to a workflow that we were previously running sequentially, the penguins analysis:
+We can see this by applying parallel processing to the penguins analysis.
+Add two more packages to `packages.R`, `library(future)` and `library(future.callr)`.
+Also, add the line `plan(callr)` to `_targets.R`:
 
 
 ```r
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(tidyverse)
-library(future)
-library(future.callr)
-
+source("R/packages.R")
 source("R/functions.R")
 
 plan(callr)
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   models = list(
     combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
     species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
     interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
   ),
   # Get model summaries
   tar_target(
@@ -475,30 +551,26 @@ tar_plan(
 )
 ```
 
+Finally, run the pipeline with `tar_make_future()` (you may need to run `tar_invalidate(everything())` to reset the pipeline first).
+
 
 ```{.output}
-── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-• start target penguin_data
-• built target penguin_data [0.627 seconds]
+• start target penguins_data_raw_file
+• built target penguins_data_raw_file [0.745 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.906 seconds]
+• start target penguins_data
+• built target penguins_data [0.753 seconds]
 • start target models
-• built target models [0.641 seconds]
-• start branch model_summaries_ea786eaa
-• start branch model_summaries_1c878f62
-• built branch model_summaries_ea786eaa [0.665 seconds]
-• start branch model_summaries_afef26b4
-• built branch model_summaries_1c878f62 [0.675 seconds]
-• built branch model_summaries_afef26b4 [0.665 seconds]
+• built target models [0.751 seconds]
+• start branch model_summaries_5ad4cec5
+• start branch model_summaries_c73912d5
+• built branch model_summaries_5ad4cec5 [0.795 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_c73912d5 [0.798 seconds]
+• built branch model_summaries_91696941 [0.76 seconds]
 • built pattern model_summaries
-• end pipeline [6.737 seconds]
+• end pipeline [11.812 seconds]
 ```
 
 You won't notice much difference since these computations run so quickly, but this demonstrates how easy it is to make massive gains in efficiency with your own real analysis by using parallel computing.
