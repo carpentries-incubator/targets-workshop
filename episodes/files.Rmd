@@ -47,7 +47,7 @@ We will read in the contents of this file and store it as `some_data` in the wor
 
 You can only have one active `_targets.R` file at a time in a given project.
 
-We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
+We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins bill analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -227,7 +227,7 @@ How can you use `tar_file_read()` to load the CSV file while tracking its conten
 :::::::::::::::::::::::::::::::::: {.solution}
 
 ```{r}
-#| label: tar-file-read-answer
+#| label: tar-file-read-answer-show
 #| eval: FALSE
 source("R/packages.R")
 source("R/functions.R")
@@ -243,8 +243,8 @@ tar_plan(
 ```
 
 ```{r}
-#| label: tar-file-read-answer
-#| show: FALSE
+#| label: tar-file-read-answer-hide
+#| echo: FALSE
 tar_dir({
   # New workflow
   write_example_plan(3)

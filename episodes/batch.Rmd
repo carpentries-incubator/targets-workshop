@@ -92,7 +92,7 @@ tar_plan(
 
 ```{r}
 #| label: example-lm-pipeline-hide
-#| show: FALSE
+#| echo: FALSE
 tar_dir({
   # New workflow
   write_example_plan(3)
@@ -114,7 +114,7 @@ broom::glance(combined_model)
 
 ```{r}
 #| label: example-lm-pipeline-inspect-hide
-#| show: FALSE
+#| echo: FALSE
 tar_dir({
   # New workflow
   write_example_plan(4)
@@ -166,7 +166,7 @@ tar_plan(
 
 ```{r}
 #| label: example-model-hide-1
-#| show: FALSE
+#| echo: FALSE
 tar_dir({
   # New workflow
   write_example_plan(4)
@@ -280,7 +280,7 @@ models <- list(
 ```
 
 Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
-This is because dynamic branching is similar to the `apply()` or [`purrrr::map()`](https://purrr.tidyverse.org/reference/map.html) method of looping: it applies a function to each element of a list.
+This is because dynamic branching is similar to the `base::apply()` or [`purrrr::map()`](https://purrr.tidyverse.org/reference/map.html) method of looping: it applies a function to each element of a list.
 So we need to prepare the input for looping as a list.
 
 Next, take a look at the command to build the target `model_summaries`.

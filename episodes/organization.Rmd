@@ -56,7 +56,7 @@ By using `tar_plan()`, instead of specifying targets with `tar_target()`, we can
 Let's edit the penguins workflow to use the `tar_plan()` syntax:
 
 ```{r}
-#| label: tar-plan-show
+#| label: tar-plan-show-1
 #| eval: FALSE
 library(targets)
 library(palmerpenguins)
@@ -101,7 +101,7 @@ Similarly, let's put the `library()` calls in their own script in `R/` called `p
 We will also need to modify our `_targets.R` script to call these scripts with `source`:
 
 ```{r}
-#| label: tar-plan-show
+#| label: tar-plan-show-2
 #| eval: FALSE
 source("R/packages.R")
 source("R/functions.R")
