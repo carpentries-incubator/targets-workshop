@@ -142,6 +142,7 @@ tar_plan(
 #| echo: FALSE
 
 tar_dir({
+  library(quarto)
   write_example_plan(9)
   readr::read_lines("https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd") |>
     readr::write_lines("penguin_report.qmd")
