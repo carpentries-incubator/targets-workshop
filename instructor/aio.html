@@ -380,7 +380,7 @@ reproducibility</li>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Introduce the idea of reproducibility and why / who
 would want to use <code>targets</code></p>
@@ -446,7 +446,44 @@ alternative.</p>
 <p>The <strong>goal</strong> of this workshop is to <strong>learn how to
 use <code>targets</code> to reproducible data analysis in
 R</strong>.</p>
-</section><section id="about-the-example-dataset"><h2 class="section-heading">About the example dataset<a class="anchor" aria-label="anchor" href="#about-the-example-dataset"></a>
+</section><section id="where-to-get-more-information"><h2 class="section-heading">Where to get more information<a class="anchor" aria-label="anchor" href="#where-to-get-more-information"></a>
+</h2>
+<hr class="half-width">
+<p><code>targets</code> is a sophisticated package and there is a lot
+more to learn that we can cover in this workshop.</p>
+<p>Here are some recommended resources for continuing on your
+<code>targets</code> journey:</p>
+<ul>
+<li>
+<a href="https://books.ropensci.org/targets/" class="external-link">The
+<code>targets</code> R package user manual</a> by the author of
+<code>targets</code>, Will Landau, should be considered required reading
+for anyone seriously interested in <code>targets</code>.</li>
+<li>
+<a href="https://github.com/ropensci/targets/discussions" class="external-link">The
+<code>targets</code> discussion board</a> is a great place for asking
+questions and getting help. Before you ask a question though, be sure to
+<a href="https://books.ropensci.org/targets/help.html" class="external-link">read the policy
+on asking for help</a>.</li>
+<li>
+<a href="https://docs.ropensci.org/targets/" class="external-link">The
+<code>targets</code> package webpage</a> includes documentation of all
+<code>targets</code> functions.</li>
+<li>
+<a href="https://docs.ropensci.org/tarchetypes/" class="external-link">The
+<code>tarchetypes</code> package webpage</a> includes documentation of
+all <code>tarchetypes</code> functions. You will almost certainly use
+<code>tarchetypes</code> along with <code>targets</code>, so it’s good
+to consult both.</li>
+<li>
+<a href="https://github.com/wlandau/targets-tutorial" class="external-link">Reproducible
+computation at scale in R with <code>targets</code></a> is a tutorial by
+Will Landau analyzing customer churn with Keras.</li>
+<li>
+<a href="https://github.com/ropensci/targets#recorded-talks" class="external-link">Recorded
+talks</a> and <a href="https://github.com/ropensci/targets#example-projects" class="external-link">example
+projects</a> listed on the <code>targets</code> README.</li>
+</ul></section><section id="about-the-example-dataset"><h2 class="section-heading">About the example dataset<a class="anchor" aria-label="anchor" href="#about-the-example-dataset"></a>
 </h2>
 <hr class="half-width">
 <p>For this workshop, we will analyze an example dataset of measurements
@@ -535,7 +572,7 @@ any links that you are not going to use.
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: First chance to get hands dirty by writing a very
 simple workflow</p>
@@ -925,7 +962,7 @@ session</li>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to get at the objects that we built</p>
 </div>
@@ -958,7 +995,7 @@ example, <code>penguins_data</code>), we get an error.</p>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
 <div class="accordion-body">
 <ul>
 <li>To reinforce the concept of <code>targets</code> running in a
@@ -1812,7 +1849,7 @@ project?</li>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to load packages and maintain package
 versions</p>
@@ -2600,7 +2637,7 @@ any links that you are not going to use.
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching and parallel processing
 (technically separate topics, but they go well together)</p>
@@ -3067,7 +3104,7 @@ will need to define a custom function just like we did for
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>augment_with_mod_name()</code>. It
 is the same as <code>glance_with_mod_name()</code>, but use
@@ -3167,7 +3204,7 @@ pattern?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
