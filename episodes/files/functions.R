@@ -23,6 +23,14 @@ write_example_plan <- function(plan_select) {
     "  mutate(model_name = model_name)",
     "}"
   )
+  augment_with_mod_name_func <- c(
+    "augment_with_mod_name <- function(model_in_list) {",
+    "model_name <- names(model_in_list)",
+    "model <- model_in_list[[1]]",
+    "broom::augment(model) %>%",
+    "  mutate(model_name = model_name)",
+    "}"
+  )
   clean_penguin_data_func <- c(
     "clean_penguin_data <- function(penguins_data_raw) {",
     "  penguins_data_raw %>%",
@@ -226,7 +234,7 @@ write_example_plan <- function(plan_select) {
     "   )",
     ")"
     )
-  # adds future
+  # adds future and predictions
   plan_8 <- c(
     "library(targets)",
     "library(palmerpenguins)",
@@ -236,6 +244,7 @@ write_example_plan <- function(plan_select) {
     "library(future.callr)",
     "suppressPackageStartupMessages(library(tidyverse))",
     glance_with_mod_name_func,
+    augment_with_mod_name_func,
     clean_penguin_data_func,
     "plan(callr)",
     "tar_plan(",
@@ -257,7 +266,12 @@ write_example_plan <- function(plan_select) {
     "     model_summaries,",
     "     glance_with_mod_name(models),",
     "     pattern = map(models)",
-    "   )",
+    "   ),",
+    "   tar_target(",
+    "     model_predictions,",
+    "     augment_with_mod_name(models),",
+    "     pattern = map(models)",
+    "   ),",
     ")"
     )
     # adds report
@@ -268,8 +282,8 @@ write_example_plan <- function(plan_select) {
     "library(broom)",
     "suppressPackageStartupMessages(library(tidyverse))",
     glance_with_mod_name_func,
+    augment_with_mod_name_func,
     clean_penguin_data_func,
-    "plan(callr)",
     "tar_plan(",
     "   tar_file_read(",
     "       penguins_data_raw,",
@@ -290,7 +304,11 @@ write_example_plan <- function(plan_select) {
     "     glance_with_mod_name(models),",
     "     pattern = map(models)",
     "   ),",
-    "     # Generate report",
+    "   tar_target(",
+    "     model_predictions,",
+    "     augment_with_mod_name(models),",
+    "     pattern = map(models)",
+    "   ),",
     "   tar_quarto(",
     "     penguin_report,",
     "     path = 'penguin_report.qmd',",
