@@ -41,6 +41,16 @@ As a simple example, let's create an external data file in RStudio with the "New
 
 We will read in the contents of this file and store it as `some_data` in the workflow by writing the following plan and running `tar_make()`:
 
+::::::::::::::::::::::::::::::::::::: {.callout}
+
+## Save your progress
+
+You can only have one active `_targets.R` file at a time in a given project.
+
+We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
+
+:::::::::::::::::::::::::::::::::::::
+
 ```{r}
 #| label: example-file-show-1
 #| eval: FALSE
@@ -206,6 +216,47 @@ Although we used `readLines()` as an example here, you can use the same pattern 
 
 This is generally recommended so that your pipeline stays up to date with your input data.
 
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge: Use `tar_file_read()` with the penguins example
+
+We didn't know about `tar_file_read()` yet when we started on the penguins bill analysis.
+
+How can you use `tar_file_read()` to load the CSV file while tracking its contents?
+
+:::::::::::::::::::::::::::::::::: {.solution}
+
+```{r}
+#| label: tar-file-read-answer
+#| eval: FALSE
+source("R/packages.R")
+source("R/functions.R")
+
+tar_plan(
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  penguins_data = clean_penguin_data(penguins_data_raw)
+)
+```
+
+```{r}
+#| label: tar-file-read-answer
+#| show: FALSE
+tar_dir({
+  # New workflow
+  write_example_plan(3)
+  # Run it
+  tar_make()
+})
+```
+
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::
+
 ## Writing out data
 
 Writing to files is similar to loading in files: we will use the `tar_file()` function. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return nothing; these treat the output file is a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
@@ -280,11 +331,11 @@ tar_plan(
 #| label: example-file-hide-6
 #| echo: false
 tar_dir({
-  
+
   fs::dir_create("_targets/user/data")
   fs::dir_create("_targets/user/results")
   writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
-  
+
   tar_script({
     library(targets)
     library(tarchetypes)

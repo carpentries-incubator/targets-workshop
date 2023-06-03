@@ -54,31 +54,109 @@ In this workshop, we will only cover dynamic branching since it is generally eas
 
 ## Example without branching
 
-To see how this works, let's use an example based on the `palmerpenguins` dataset.
-Our hypothesis is that bill depth decreases with bill length.
-We want to test this using several alternative models.
-The models will either ignore species identity, add a parameter for species, or add an interaction effect between species and bill length.
+To see how this works, let's continue our analysis of the `palmerpenguins` dataset.
 
-This is what a workflow for such an analysis might look like **without branching**:
+**Our hypothesis is that bill depth decreases with bill length.**
+We will test this hypothesis with a linear model.
+
+For example, this is a model of bill depth dependent on bill length:
+
+```{r}
+#| label: example-lm
+#| eval: FALSE
+lm(bill_depth_mm ~ bill_length_mm, data = penguin_data)
+```
+
+We can add this to our pipeline. We will call it the `combined_model` because it combines all the species together without distinction:
+
+```{r}
+#| label: example-lm-pipeline-show
+#| eval: FALSE
+source("R/packages.R")
+source("R/functions.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build model
+  combined_model = lm(
+    bill_depth_mm ~ bill_length_mm, data = penguins_data)
+)
+```
+
+```{r}
+#| label: example-lm-pipeline-hide
+#| show: FALSE
+tar_dir({
+  # New workflow
+  write_example_plan(3)
+  # Run it
+  tar_make(reporter = "silent")
+  write_example_plan(4)
+  tar_make()
+})
+```
+
+Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
+
+```{r}
+#| label: example-lm-pipeline-inspect-show
+#| eval: FALSE
+tar_load(combined_model)
+broom::glance(combined_model)
+```
+
+```{r}
+#| label: example-lm-pipeline-inspect-hide
+#| show: FALSE
+tar_dir({
+  # New workflow
+  write_example_plan(4)
+  # Run it
+  tar_make(reporter = "silent")
+  tar_load(combined_model)
+  broom::glance(combined_model)
+})
+```
+
+Notice the small *P*-value.
+This seems to indicate that the model is highly significant.
+
+But wait a moment... is this really an appropriate model? Recall that there are three species of penguins in the dataset. It is possible that the relationship between bill depth and length **varies by species**.
+
+We should probably test some alternative models.
+These could include models that add a parameter for species, or add an interaction effect between species and bill length.
+
+Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching** (make sure to add `library(broom)` to `packages.R`):
 
 ```{r}
 #| label: example-model-show-1
 #| eval: FALSE
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(broom)
+source("R/packages.R")
+source("R/functions.R")
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguin_data),
+    bill_depth_mm ~ bill_length_mm, data = penguins_data),
   species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
   interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguin_data),
+    bill_depth_mm ~ bill_length_mm * species, data = penguins_data),
   # Get model summaries
   combined_summary = glance(combined_model),
   species_summary = glance(species_model),
@@ -88,74 +166,38 @@ tar_plan(
 
 ```{r}
 #| label: example-model-hide-1
-#| echo: FALSE
+#| show: FALSE
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     library(palmerpenguins)
-     library(broom)
-
-     tar_plan(
-       # Load data from package
-       penguin_data = palmerpenguins::penguins,
-       # Build models
-       combined_model = lm(
-         bill_depth_mm ~ bill_length_mm, data = penguin_data),
-       species_model = lm(
-         bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-       interaction_model = lm(
-         bill_depth_mm ~ bill_length_mm * species, data = penguin_data),
-       # Get model summaries
-       combined_summary = glance(combined_model),
-       species_summary = glance(species_model),
-       interaction_summary = glance(interaction_model)
-     )
-  })
+  # New workflow
+  write_example_plan(4)
+  # Run it
+  tar_make(reporter = "silent")
+  write_example_plan(5)
   tar_make()
 })
 ```
 
-It worked. Let's check some of the model output:
+Let's look at the summary of one of the models:
 
 ```{r}
 #| label: example-model-show-2
 #| eval: FALSE
-tar_read(combined_summary)
+tar_read(species_summary)
 ```
 
 ```{r}
 #| label: example-model-hide-2
 #| echo: FALSE
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     library(palmerpenguins)
-     library(broom)
-
-     tar_plan(
-       # Load data from package
-       penguin_data = palmerpenguins::penguins,
-       # Build models
-       combined_model = lm(
-         bill_depth_mm ~ bill_length_mm, data = penguin_data),
-       species_model = lm(
-         bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-       interaction_model = lm(
-         bill_depth_mm ~ bill_length_mm * species, data = penguin_data),
-       # Get model summaries
-       combined_summary = glance(combined_model),
-       species_summary = glance(species_model),
-       interaction_summary = glance(interaction_model)
-     )
-  })
+  # New workflow
+  write_example_plan(5)
+  # Run it
   tar_make(reporter = "silent")
-  tar_read(combined_summary)
+  tar_read(species_summary)
 })
 ```
 
-This way of writing the pipeline is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
+So this way of writing the pipeline works, but is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
 Furthermore, each summary target (`combined_summary`, etc.) is explicitly named and typed out manually.
 It would be fairly easy to make a typo and end up with the wrong model being summarized.
 
@@ -168,22 +210,26 @@ Let's see how to write the same plan using **dynamic branching**:
 ```{r}
 #| label: example-model-show-3
 #| eval: FALSE
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(broom)
+source("R/packages.R")
+source("R/functions.R")
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   models = list(
     combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
     species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
     interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
   ),
   # Get model summaries
   tar_target(
@@ -202,36 +248,17 @@ First, let's look at the messages provided by `tar_make()`.
 #| label: example-model-hide-3
 #| echo: FALSE
 tar_dir({
-  tar_script({
-    library(targets)
-    library(tarchetypes)
-    library(palmerpenguins)
-    library(broom)
-    tar_plan(
-      # Load data from package
-      penguin_data = palmerpenguins::penguins,
-      # Build models
-      models = list(
-        combined_model = lm(
-          bill_depth_mm ~ bill_length_mm, data = penguin_data),
-        species_model = lm(
-          bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-        interaction_model = lm(
-          bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
-      ),
-      # Get model summaries
-      tar_target(
-        model_summaries,
-        glance(models[[1]]),
-        pattern = map(models)
-      )
-    )
-  })
+  # New workflow
+  write_example_plan(5)
+  # Run it
+  tar_make(reporter = "silent")
+  write_example_plan(6)
   tar_make()
+  example_branch_name <- tar_branch_names(model_summaries, 1)
 })
 ```
 
-There is a series of smaller targets (branches) that are each named like `model_summaries_f9795da2`, then one overall `model_summaries` target.
+There is a series of smaller targets (branches) that are each named like `r example_branch_name`, then one overall `model_summaries` target.
 That is the result of specifying targets using branching: each of the smaller targets are the "branches" that comprise the overall target.
 Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
 `targets` builds each branch one at a time, then combines them into the overall target.
@@ -244,11 +271,11 @@ Next, let's look in more detail about how the workflow is set up, starting with 
 # Build models
 models <- list(
   combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguin_data),
+    bill_depth_mm ~ bill_length_mm, data = penguins_data),
   species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
   interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+    bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
 )
 ```
 
@@ -288,31 +315,9 @@ tar_read(model_summaries)
 #| label: example-model-hide-4
 #| echo: FALSE
 tar_dir({
-  tar_script({
-    library(targets)
-    library(tarchetypes)
-    library(palmerpenguins)
-    library(broom)
-    tar_plan(
-      # Load data from package
-      penguin_data = palmerpenguins::penguins,
-      # Build models
-      models = list(
-        combined_model = lm(
-          bill_depth_mm ~ bill_length_mm, data = penguin_data),
-        species_model = lm(
-          bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-        interaction_model = lm(
-          bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
-      ),
-      # Get model summaries
-      tar_target(
-        model_summaries,
-        glance(models[[1]]),
-        pattern = map(models)
-      )
-    )
-  })
+  # New workflow
+  write_example_plan(6)
+  # Run it
   tar_make(reporter = "silent")
   tar_read(model_summaries)
 })
@@ -351,24 +356,26 @@ Our new pipeline looks almost the same as before, but this time we use the custo
 ```{r}
 #| label: example-model-show-6
 #| eval: FALSE
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(tidyverse)
-
+source("R/packages.R")
 source("R/functions.R")
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   models = list(
     combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
     species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
     interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
   ),
   # Get model summaries
   tar_target(
@@ -381,41 +388,13 @@ tar_plan(
 
 ```{r}
 #| label: example-model-hide-6
-#| echo: false
-#| warning: false
+#| echo: FALSE
 tar_dir({
-  tar_script({
-    options(tidyverse.quiet = TRUE)
-    library(targets)
-    library(tarchetypes)
-    library(palmerpenguins)
-    library(tidyverse)
-    glance_with_mod_name <- function(model_in_list) {
-      model_name <- names(model_in_list)
-      model <- model_in_list[[1]]
-      broom::glance(model) %>%
-        mutate(model_name = model_name)
-    }
-    tar_plan(
-      # Load data from package
-      penguin_data = palmerpenguins::penguins,
-      # Build models
-      models = list(
-        combined_model = lm(
-          bill_depth_mm ~ bill_length_mm, data = penguin_data),
-        species_model = lm(
-          bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-        interaction_model = lm(
-          bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
-      ),
-      # Get model summaries
-      tar_target(
-        model_summaries,
-        glance_with_mod_name(models),
-        pattern = map(models)
-      )
-    )
-  })
+  # New workflow
+  write_example_plan(6)
+  # Run it
+  tar_make(reporter = "silent")
+  write_example_plan(7)
   tar_make()
 })
 ```
@@ -427,38 +406,9 @@ And this time, when we load the `model_summaries`, we can tell which model corre
 #| echo: false
 #| warning: false
 tar_dir({
-  tar_script({
-    options(tidyverse.quiet = TRUE)
-    library(targets)
-    library(tarchetypes)
-    library(palmerpenguins)
-    library(tidyverse)
-    glance_with_mod_name <- function(model_in_list) {
-      model_name <- names(model_in_list)
-      model <- model_in_list[[1]]
-      broom::glance(model) %>%
-        mutate(model_name = model_name)
-    }
-    tar_plan(
-      # Load data from package
-      penguin_data = palmerpenguins::penguins,
-      # Build models
-      models = list(
-        combined_model = lm(
-          bill_depth_mm ~ bill_length_mm, data = penguin_data),
-        species_model = lm(
-          bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-        interaction_model = lm(
-          bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
-      ),
-      # Get model summaries
-      tar_target(
-        model_summaries,
-        glance_with_mod_name(models),
-        pattern = map(models)
-      )
-    )
-  })
+  # New workflow
+  write_example_plan(7)
+  # Run it
   tar_make(reporter = "silent")
   tar_read(model_summaries)
 })
@@ -603,33 +553,35 @@ Notice that although the time required to build each individual target is about 
 
 The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
 
-We can see this by applying parallel processing to a workflow that we were previously running sequentially, the penguins analysis:
+We can see this by applying parallel processing to the penguins analysis.
+Add two more packages to `packages.R`, `library(future)` and `library(future.callr)`.
+Also, add the line `plan(callr)` to `_targets.R`:
 
 ```{r}
 #| label: example-model-show-9
 #| eval: FALSE
-library(targets)
-library(tarchetypes)
-library(palmerpenguins)
-library(tidyverse)
-library(future)
-library(future.callr)
-
+source("R/packages.R")
 source("R/functions.R")
 
 plan(callr)
 
 tar_plan(
-  # Load data from package
-  penguin_data = palmerpenguins::penguins,
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   models = list(
     combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
     species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
     interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
   ),
   # Get model summaries
   tar_target(
@@ -640,44 +592,15 @@ tar_plan(
 )
 ```
 
+Finally, run the pipeline with `tar_make_future()` (you may need to run `tar_invalidate(everything())` to reset the pipeline first).
+
 ```{r}
 #| label: example-model-hide-9
 #| echo: FALSE
 tar_dir({
-  tar_script({
-    library(targets)
-    library(tarchetypes)
-    library(palmerpenguins)
-    library(tidyverse)
-    library(future)
-    library(future.callr)
-    plan(callr)
-    glance_with_mod_name <- function(model_in_list) {
-      model_name <- names(model_in_list)
-      model <- model_in_list[[1]]
-      broom::glance(model) %>%
-        mutate(model_name = model_name)
-    }
-    tar_plan(
-      # Load data from package
-      penguin_data = palmerpenguins::penguins,
-      # Build models
-      models = list(
-        combined_model = lm(
-          bill_depth_mm ~ bill_length_mm, data = penguin_data),
-        species_model = lm(
-          bill_depth_mm ~ bill_length_mm + species, data = penguin_data),
-        interaction_model = lm(
-          bill_depth_mm ~ bill_length_mm * species, data = penguin_data)
-      ),
-      # Get model summaries
-      tar_target(
-        model_summaries,
-        glance_with_mod_name(models),
-        pattern = map(models)
-      )
-    )
-  })
+  # New workflow
+  write_example_plan(8)
+  # Run it
   tar_make_future(workers = 2)
 })
 ```
