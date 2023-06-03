@@ -165,6 +165,7 @@
       <div class="accordion-body">
         <ul><li><a href="#create-a-project">Create a project</a></li>
 <li><a href="#create-a-_targets.r-file">Create a <code>_targets.R</code> file</a></li>
+<li><a href="#set-up-_targets.r-file-to-run-example-analysis">Set up <code>_targets.R</code> file to run example analysis</a></li>
 <li><a href="#run-the-workflow">Run the workflow</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -286,7 +287,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>First targets Workflow</h1>
-        <p> Last updated on 2023-05-24 | 
+        <p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -335,7 +336,7 @@
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: First chance to get hands dirty by writing a very
 simple workflow</p>
@@ -439,63 +440,212 @@ main parts:</p>
 argument is the command used to build it. Note that the name of the
 target is <strong>unquoted</strong>, that is, it is written without any
 surrounding quotation marks.</p>
-<div id="edit-_targets.r" class="callout callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="edit-_targets.r" class="callout-inner">
-<h3 class="callout-title">Edit <code>_targets.R</code><a class="anchor" aria-label="anchor" href="#edit-_targets.r"></a>
-</h3>
-<div class="callout-content">
-<p>Let’s modify the default workflow: rename the names of the targets
-from <code>data</code> to <code>my_data</code> and <code>summary</code>
-to <code>my_summary</code>. This is to avoid confusion with base R
-functions <code>data()</code> and <code>summary()</code>. It is
-generally a good idea to avoid naming objects in R with the names of
-existing functions.</p>
-<p>Make sure to rename <code>data</code> to <code>my_data</code>
-<strong>each time it appears</strong> (twice). The names of the targets
-are very important: this is how <code>targets</code> knows how workflow
-steps depend on each other.</p>
-</div>
-</div>
-</div>
-<p>Your final <code>_targets.R</code> file should look like this:</p>
+</section><section id="set-up-_targets.r-file-to-run-example-analysis"><h2 class="section-heading">Set up <code>_targets.R</code> file to run example analysis<a class="anchor" aria-label="anchor" href="#set-up-_targets.r-file-to-run-example-analysis"></a>
+</h2>
+<hr class="half-width"><div class="section level3">
+<h3 id="background-non-targets-version">Background: non-<code>targets</code> version<a class="anchor" aria-label="anchor" href="#background-non-targets-version"></a></h3>
+<p>We will use this template to start building our analysis of bill
+shape in penguins. First though, to get familiar with the functions and
+packages we’ll use, let’s run the code like you would in a “normal” R
+script without using <code>targets</code>.</p>
+<p>Recall that we are using the <code>palmerpenguins</code> R package to
+obtain the data. This package actually includes two variations of the
+dataset: one is an external CSV file with the raw data, and another is
+the cleaned data loaded into R. In real life you are probably have
+externally stored raw data, so <strong>let’s use the raw penguin
+data</strong> as the starting point for our analysis too.</p>
+<p>The <code>path_to_file()</code> function in
+<code>palmerpenguins</code> provides the path to the raw data CSV file
+(it is inside the <code>palmerpenguins</code> R package source code that
+you downloaded to your computer when you installed the package)</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="co"># This is an example _targets.R file. Every</span></span>
-<span><span class="co"># {targets} pipeline needs one.</span></span>
-<span><span class="co"># Use tar_script() to create _targets.R and tar_edit()</span></span>
-<span><span class="co"># to open it again for editing.</span></span>
-<span><span class="co"># Then, run tar_make() to run the pipeline</span></span>
-<span><span class="co"># and tar_read(summary) to view the results.</span></span>
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Define custom functions and other global objects.</span></span>
-<span><span class="co"># This is where you write source(\"R/functions.R\")</span></span>
-<span><span class="co"># if you keep your functions in external scripts.</span></span>
-<span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">colMeans</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="co"># Get path to CSV file</span></span>
+<span><span class="va">penguins_csv_file</span> <span class="op">&lt;-</span> <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">penguins_csv_file</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
+</div>
+<p>We will use the <code>tidyverse</code> set of packages for loading
+and manipulating the data. We don’t have time to cover all the details
+about using <code>tidyverse</code> now, but if you want to learn more
+about it, please see <!-- FIXME ADD LINK -->this lesson.</p>
+<p>Let’s load the data with <code>read_csv()</code>.</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Read CSV file into R</span></span>
+<span><span class="va">penguins_data_raw</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Rows: 344 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (9): studyName, Species, Region, Island, Stage, Individual ID, Clutch C...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+date (1): Date Egg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins_data_raw</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 344 × 17
+   studyName `Sample Number` Species         Region Island Stage `Individual ID`
+   &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;          
+ 1 PAL0708                 1 Adelie Penguin… Anvers Torge… Adul… N1A1           
+ 2 PAL0708                 2 Adelie Penguin… Anvers Torge… Adul… N1A2           
+ 3 PAL0708                 3 Adelie Penguin… Anvers Torge… Adul… N2A1           
+ 4 PAL0708                 4 Adelie Penguin… Anvers Torge… Adul… N2A2           
+ 5 PAL0708                 5 Adelie Penguin… Anvers Torge… Adul… N3A1           
+ 6 PAL0708                 6 Adelie Penguin… Anvers Torge… Adul… N3A2           
+ 7 PAL0708                 7 Adelie Penguin… Anvers Torge… Adul… N4A1           
+ 8 PAL0708                 8 Adelie Penguin… Anvers Torge… Adul… N4A2           
+ 9 PAL0708                 9 Adelie Penguin… Anvers Torge… Adul… N5A1           
+10 PAL0708                10 Adelie Penguin… Anvers Torge… Adul… N5A2           
+# ℹ 334 more rows
+# ℹ 10 more variables: `Clutch Completion` &lt;chr&gt;, `Date Egg` &lt;date&gt;,
+#   `Culmen Length (mm)` &lt;dbl&gt;, `Culmen Depth (mm)` &lt;dbl&gt;,
+#   `Flipper Length (mm)` &lt;dbl&gt;, `Body Mass (g)` &lt;dbl&gt;, Sex &lt;chr&gt;,
+#   `Delta 15 N (o/oo)` &lt;dbl&gt;, `Delta 13 C (o/oo)` &lt;dbl&gt;, Comments &lt;chr&gt;</code></pre>
+</div>
+<p>We see the raw data has some awkward column names with spaces (these
+are hard to type out and can easily lead to mistakes in the code), and
+far more columns than we need. For the purposes of this analysis, we
+only need species name, bill length, and bill depth. In the raw data,
+the rather technical term “Culmen” is used to refer to the bill.</p>
+<p>Let’s clean up the data to make it easier to use for downstream
+analyses. We will also remove any rows with missing data, because this
+could cause errors for some functions later.</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Clean up raw data</span></span>
+<span><span class="va">penguins_data</span> <span class="op">&lt;-</span> <span class="va">penguins_data_raw</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="co"># Rename columns for easier typing and</span></span>
+<span>  <span class="co"># subset to only the columns needed for analysis</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>    bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>    bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="co"># Delete rows with missing data</span></span>
+<span>  <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">penguins_data</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 342 × 3
+   species                             bill_length_mm bill_depth_mm
+   &lt;chr&gt;                                        &lt;dbl&gt;         &lt;dbl&gt;
+ 1 Adelie Penguin (Pygoscelis adeliae)           39.1          18.7
+ 2 Adelie Penguin (Pygoscelis adeliae)           39.5          17.4
+ 3 Adelie Penguin (Pygoscelis adeliae)           40.3          18  
+ 4 Adelie Penguin (Pygoscelis adeliae)           36.7          19.3
+ 5 Adelie Penguin (Pygoscelis adeliae)           39.3          20.6
+ 6 Adelie Penguin (Pygoscelis adeliae)           38.9          17.8
+ 7 Adelie Penguin (Pygoscelis adeliae)           39.2          19.6
+ 8 Adelie Penguin (Pygoscelis adeliae)           34.1          18.1
+ 9 Adelie Penguin (Pygoscelis adeliae)           42            20.2
+10 Adelie Penguin (Pygoscelis adeliae)           37.8          17.1
+# ℹ 332 more rows</code></pre>
+</div>
+<p>That’s better!</p>
+</div>
+<div class="section level3">
+<h3 id="targets-version">
+<code>targets</code> version<a class="anchor" aria-label="anchor" href="#targets-version"></a></h3>
+<p>What does this look like using <code>targets</code>?</p>
+<p>The biggest difference is that we need to <strong>put each step of
+the workflow into the list at the end</strong>.</p>
+<p>We also define a custom function for the data cleaning step. That is
+because the list of targets at the end <strong>should look like a
+high-level summary of your analysis</strong>. You want to avoid lengthy
+chunks of code when defining the targets; instead, put that code in the
+custom functions. The other steps (setting the file path and loading the
+data) are each just one function call so there’s not much point in
+putting those into their own custom functions.</p>
+<p>Finally, each step in the workflow is defined with the
+<code>tar_target()</code> function.</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">penguins_data_raw</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">select</span><span class="op">(</span></span>
+<span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Set target-specific options such as packages:</span></span>
-<span><span class="co"># tar_option_set(packages = "utils") # nolint</span></span>
-<span></span>
-<span><span class="co"># End this file with a list of target objects.</span></span>
 <span><span class="fu">list</span><span class="op">(</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">my_data</span>, <span class="fu">data.frame</span><span class="op">(</span>x <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">my_summary</span>, <span class="fu">summ</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span><span class="op">)</span> <span class="co"># Call your custom functions as needed.</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data_raw</span>, <span class="fu">read_csv</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data</span>, <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+<p>I have set <code>show_col_types = FALSE</code> in
+<code>read_csv()</code> because we know from the earlier code that the
+column types were set correctly by default (character for species and
+numeric for bill length and depth), so we don’t need to see the warning
+it would otherwise issue.</p>
 </div>
 </section><section id="run-the-workflow"><h2 class="section-heading">Run the workflow<a class="anchor" aria-label="anchor" href="#run-the-workflow"></a>
 </h2>
 <hr class="half-width"><p>Now that we have a workflow, we can run it with the
 <code>tar_make()</code> function. Try running it, and you should see
 something like this:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -504,48 +654,16 @@ something like this:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>• start target my_data
-• built target my_data [0.001 seconds]
-• start target my_summary
-• built target my_summary [0 seconds]
-• end pipeline [0.077 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target penguins_csv_file
+• built target penguins_csv_file [0.002 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.15 seconds]
+• start target penguins_data
+• built target penguins_data [0.011 seconds]
+• end pipeline [0.253 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
-<div id="challenge-what-happened-during-the-workflow" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="challenge-what-happened-during-the-workflow" class="callout-inner">
-<h3 class="callout-title">Challenge: What happened during the
-workflow?<a class="anchor" aria-label="anchor" href="#challenge-what-happened-during-the-workflow"></a>
-</h3>
-<div class="callout-content">
-<p>Inspect the list at the end of <code>_targets.R</code>. Can you
-describe the steps of the workflow?</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1">
-  Show me the solution
-  </h4>
-</button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
-<div class="accordion-body">
-<p>The first step of the workflow built a target called
-<code>my_data</code> that includes two variables, <code>x</code> and
-<code>y</code>.</p>
-<p>The second step of the workflow built a target called
-<code>my_summ</code> that includes the mean of <code>x</code> and
-<code>y</code> calculated with a custom function called
-<code>summ()</code>.</p>
-</div>
-</div>
-</div>
-</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -600,7 +718,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.2" class="external-link">sandpaper (0.12.2)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.3" class="external-link">sandpaper (0.12.3)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -622,9 +740,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/basic-targets.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/basic-targets.html",
-  "dateCreated": "2023-05-26",
-  "dateModified": "2023-05-24",
-  "datePublished": "2023-05-30"
+  "dateCreated": "2023-06-03",
+  "dateModified": "2023-06-03",
+  "datePublished": "2023-06-03"
 }
 
   </script><script>

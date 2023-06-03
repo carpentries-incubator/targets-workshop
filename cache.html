@@ -289,7 +289,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Loading Workflow Objects</h1>
-        <p> Last updated on 2023-05-24 | 
+        <p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -329,18 +329,18 @@ session</li>
 <section id="where-does-the-workflow-happen"><h2 class="section-heading">Where does the workflow happen?<a class="anchor" aria-label="anchor" href="#where-does-the-workflow-happen"></a>
 </h2>
 <hr class="half-width"><p>So we just finished running our first workflow. Now you probably want
-to look at its output. But, if we just call the name of the object
-(<code>my_data</code> or <code>my_summary</code>), we get an error.</p>
+to look at its output. But, if we just call the name of the object (for
+example, <code>penguins_data</code>), we get an error.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_data</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">penguins_data</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'my_data' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'penguins_data' not found</code></pre>
 </div>
 <p>Where are the results of our workflow?</p>
 
@@ -357,25 +357,25 @@ work.</p>
 </h2>
 <hr class="half-width"><p><code>tar_load()</code> loads an object built by the workflow into
 the current session. Its first argument is the name of the object you
-want to load. Let’s use this to load <code>my_data</code> and inspect
-the first several rows with <code>head()</code>.</p>
+want to load. Let’s use this to load <code>penguins_data</code> and get
+an overview of the data with <code>summary()</code>.</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span>
-<span><span class="fu">head</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>   x  y
-1 65 88
-2  4  9
-3 14 71
-4 26 11
-5 69 85
-6 76 26</code></pre>
+<pre class="output" tabindex="0"><code>   species          bill_length_mm  bill_depth_mm  
+ Length:342         Min.   :32.10   Min.   :13.10  
+ Class :character   1st Qu.:39.23   1st Qu.:15.60  
+ Mode  :character   Median :44.45   Median :17.30  
+                    Mean   :43.92   Mean   :17.15  
+                    3rd Qu.:48.50   3rd Qu.:18.70  
+                    Max.   :59.60   Max.   :21.50  </code></pre>
 </div>
 <p>Note that <code>tar_load()</code> is used for its
 <strong>side-effect</strong>—loading the desired object into the current
@@ -385,32 +385,31 @@ R session. It doesn’t actually return a value.</p>
 <hr class="half-width"><p><code>tar_read()</code> is similar to <code>tar_load()</code> in that
 it is used to retrieve objects built by the workflow, but unlike
 <code>tar_load()</code>, it returns them directly as output.</p>
-<p>Let’s try it with <code>my_summary</code>.</p>
+<p>Let’s try it with <code>penguins_csv_file</code>.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">my_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>   x    y 
-50.5 50.5 </code></pre>
+<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
 </div>
-<p>We immediately see the contents of <code>my_summary</code>. But it
-has not been loaded into the enviroment. If you try to run
-<code>my_summary</code> now, you will get an error:</p>
+<p>We immediately see the contents of <code>penguins_csv_file</code>.
+But it has not been loaded into the environment. If you try to run
+<code>penguins_csv_file</code> now, you will get an error:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_summary</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">penguins_csv_file</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'my_summary' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'penguins_csv_file' not found</code></pre>
 </div>
 </section><section id="when-to-use-which-function"><h2 class="section-heading">When to use which function<a class="anchor" aria-label="anchor" href="#when-to-use-which-function"></a>
 </h2>
@@ -493,7 +492,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.2" class="external-link">sandpaper (0.12.2)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.3" class="external-link">sandpaper (0.12.3)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -515,9 +514,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/cache.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/cache.html",
-  "dateCreated": "2023-05-26",
-  "dateModified": "2023-05-24",
-  "datePublished": "2023-05-30"
+  "dateCreated": "2023-06-03",
+  "dateModified": "2023-06-03",
+  "datePublished": "2023-06-03"
 }
 
   </script><script>

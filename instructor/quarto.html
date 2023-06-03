@@ -229,7 +229,7 @@
         <ul><li><a href="#copy-paste-vs.-dynamic-documents">Copy-paste vs. dynamic documents</a></li>
 <li><a href="#about-quarto-files">About Quarto files</a></li>
 <li><a href="#recommended-workflow">Recommended workflow</a></li>
-<li><a href="#an-example-bill-size-in-penguins">An example: Bill size in penguins</a></li>
+<li><a href="#report-on-bill-size-in-penguins">Report on bill size in penguins</a></li>
 <li><a href="#how-does-targets-know-when-to-render-the-report">How does <code>targets</code> know when to render the report?</a></li>
 <li><a href="#generating-dynamic-content">Generating dynamic content</a></li>
         </ul></div><!--/div.accordion-body-->
@@ -289,7 +289,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Reproducible Reports with Quarto</h1>
-        <p> Last updated on 2023-05-26 | 
+        <p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -401,65 +401,45 @@ sophisticated dependency tracking offered by <code>targets</code>.</p>
 analysis (in other words, the “heavy lifting”) in the
 <code>targets</code> pipeline, then use the Quarto document to
 <strong>summarize</strong> and <strong>plot</strong> the results.</p>
-</section><section id="an-example-bill-size-in-penguins"><h2 class="section-heading">An example: Bill size in penguins<a class="anchor" aria-label="anchor" href="#an-example-bill-size-in-penguins"></a>
+</section><section id="report-on-bill-size-in-penguins"><h2 class="section-heading">Report on bill size in penguins<a class="anchor" aria-label="anchor" href="#report-on-bill-size-in-penguins"></a>
 </h2>
-<hr class="half-width"><p>For example, the <a href="https://github.com/joelnitta/penguins-targets" class="external-link">demo workflow on
-bill size in penguins</a> constructs several models of bill size that
-differ in how they account for species, then generates a report:</p>
-<div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
-  <h3 class="accordion-header" id="headingInstructor2">
-  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>
-  Instructor Note
-  </h3>
-</button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
-<div class="accordion-body">
-<p>You will probably want to clone and run the <a href="https://github.com/joelnitta/penguins-targets" class="external-link">penguins-targets</a>
-demo since this is a lot to type out by hand.</p>
-</div>
-</div>
-</div>
-</div>
+<hr class="half-width"><p>Continuing our penguin bill size analysis, let’s write a report
+evaluating each model.</p>
+<p>To save time, the report is already available at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a>.</p>
+<!-- FIXME ADD DETAILED DOWNLOAD INSTRUCTIONS -->
+<p>Download the <code>penguin_report.qmd</code> file to your project
+folder, and add one more target to the pipeline using the
+<code>tar_quarto()</code> function like this:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
 <span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
-<span>    <span class="va">penguin_data_raw</span>,</span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
 <span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
-<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span><span class="op">)</span></span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
-<span>  penguin_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguin_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Make models</span></span>
-<span>  penguin_models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
-<span>    separate <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Predict points from models</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">penguin_models_augmented</span>,</span>
-<span>    <span class="fu">augment_penguins</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Get model summaries</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">penguin_models_summary</span>,</span>
-<span>    <span class="fu">glance_penguins</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span></span>
+<span>    <span class="va">model_summaries</span>,</span>
+<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Generate report</span></span>
 <span>  <span class="fu">tar_quarto</span><span class="op">(</span></span>
@@ -469,6 +449,16 @@ demo since this is a lot to type out by hand.</p>
 <span>    packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"targets"</span>, <span class="st">"tidyverse"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error:
+! Error running targets::tar_make()
+  Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
+  Debugging guide: https://books.ropensci.org/targets/debugging.html
+  How to ask for help: https://books.ropensci.org/targets/help.html
+  Last error: could not find function "plan"</code></pre>
 </div>
 <p>The function to generate the report is <code>tar_quarto()</code>,
 from the <code>tarchetypes</code> package.</p>
@@ -488,28 +478,28 @@ any of the other targets, since they do not show up in the
 <p>The answer lies <strong>inside</strong> the
 <code>penguin_report.qmd</code> file. Let’s look at the start of the
 file:</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">MARKDOWN<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode markdown" tabindex="0"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Simpson's Paradox in Palmer Penguins"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
+<pre class="sourceCode markdown" tabindex="0"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Simpson's Paradox in Palmer Penguins"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
 </div>
 <p>The lines in between <code>---</code> and <code>---</code> at the
 very beginning are called the “YAML header”, and contain directions
@@ -634,7 +624,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.2" class="external-link">sandpaper (0.12.2)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.3" class="external-link">sandpaper (0.12.3)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -656,9 +646,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/quarto.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/quarto.html",
-  "dateCreated": "2023-05-26",
-  "dateModified": "2023-05-26",
-  "datePublished": "2023-05-30"
+  "dateCreated": "2023-06-03",
+  "dateModified": "2023-06-03",
+  "datePublished": "2023-06-03"
 }
 
   </script><script>

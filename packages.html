@@ -287,7 +287,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Managing Packages</h1>
-        <p> Last updated on 2023-05-24 | 
+        <p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/packages.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -335,10 +335,10 @@ workflows.</p>
 is the method we have been using by default so far.</p>
 <p>Like any other R script, include <code>library()</code> calls near
 the top of the <code>_targets.R</code> script. Alternatively (and as the
-recommended best practice for project organization), you can put all of
-the <code>library()</code> calls in a separate script—this is typically
-called <code>packages.R</code> and stored in the <code>R/</code>
-directory of your project.</p>
+<!-- FIXME ADD LINK -->recommended best practice for project
+organization), you can put all of the <code>library()</code> calls in a
+separate script—this is typically called <code>packages.R</code> and
+stored in the <code>R/</code> directory of your project.</p>
 <p>The potential downside to this approach is that if you have a long
 list of packages to load, certain functions like
 <code>tar_visnetwork()</code>, <code>tar_outdated()</code>, etc., may
@@ -351,8 +351,30 @@ packages, even though they don’t necessarily use them.</p>
 <p>In this method, use the <code>tar_option_set()</code> function in
 <code>_targets.R</code> to specify the packages to load when running the
 workflow.</p>
-<p>For example, let’s filter some data from the
-<code>palmerpenguins</code> package:</p>
+<p>This will be demonstrated using the pre-cleaned dataset from the
+<code>palmerpenguins</code> package. Let’s say we want to filter it down
+to just data for the Adelie penguin.</p>
+<div id="save-your-progress" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="save-your-progress" class="callout-inner">
+<h3 class="callout-title">Save your progress<a class="anchor" aria-label="anchor" href="#save-your-progress"></a>
+</h3>
+<div class="callout-content">
+<p>You can only have one active <code>_targets.R</code> file at a time
+in a given project.</p>
+<p>We are about to create a new <code>_targets.R</code> file, but you
+probably don’t want to lose your progress in the one we have been
+working on so far (the penguins bill analysis). You can temporarily
+rename that one to something like <code>_targets_old.R</code> so that
+you don’t overwrite it with the new example <code>_targets.R</code> file
+below. Then, rename them when you are ready to work on it again.</p>
+</div>
+</div>
+</div>
+<p>This is what using the <code>tar_option_set()</code> method looks
+like:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -370,8 +392,8 @@ workflow.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]</code></pre>
+• built target adelie_data [0.028 seconds]
+• end pipeline [0.092 seconds]</code></pre>
 </div>
 <p>This method gets around the slow-downs that may sometimes be
 experienced with Method 1.</p>
@@ -404,8 +426,8 @@ as above.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]</code></pre>
+• built target adelie_data [0.026 seconds]
+• end pipeline [0.099 seconds]</code></pre>
 </div>
 <p>This can be more memory efficient in some cases than loading all
 packages, since not every target is always made during a typical run of
@@ -435,8 +457,8 @@ altogether</strong>.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target adelie_data
-• built target adelie_data [0.012 seconds]
-• end pipeline [0.07 seconds]</code></pre>
+• built target adelie_data [0.015 seconds]
+• end pipeline [0.079 seconds]</code></pre>
 </div>
 <p>The benefits of this approach are that the origins of all functions
 is explicit, so you could browse your code (for example, by looking at
@@ -623,7 +645,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.2" class="external-link">sandpaper (0.12.2)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.3" class="external-link">sandpaper (0.12.3)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -645,9 +667,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/packages.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/packages.html",
-  "dateCreated": "2023-05-26",
-  "dateModified": "2023-05-24",
-  "datePublished": "2023-05-30"
+  "dateCreated": "2023-06-03",
+  "dateModified": "2023-06-03",
+  "datePublished": "2023-06-03"
 }
 
   </script><script>

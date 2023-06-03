@@ -337,7 +337,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p> Last updated on 2023-05-24 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -380,7 +380,7 @@ reproducibility</li>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Introduce the idea of reproducibility and why / who
 would want to use <code>targets</code></p>
@@ -445,6 +445,24 @@ other tools, you may want to consider an alternative.</p>
 <p>The <strong>goal</strong> of this workshop is to <strong>learn how to
 use <code>targets</code> to reproducible data analysis in
 R</strong>.</p>
+</section><section id="about-the-example-dataset"><h2 class="section-heading">About the example dataset<a class="anchor" aria-label="anchor" href="#about-the-example-dataset"></a>
+</h2>
+<hr class="half-width">
+<p>For this workshop, we will analyze an example dataset of measurements
+taken on adult foraging Adélie, Chinstrap, and Gentoo penguins observed
+on islands in the Palmer Archipelago, Antarctica.</p>
+<p>The goal of the analysis is to determine the relationship between
+bill length and depth by using linear models.</p>
+<p>The data are available from the <code>palmerpenguins</code> R
+package. You can get more information about the data by running
+<code>?palmerpenguins</code>.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="op">?</span><span class="va">palmerpenguins</span></span></code></pre>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -455,14 +473,15 @@ R</strong>.</p>
 <div class="callout-content">
 <ul>
 <li>We can only have confidence in the results of scientific analyses if
-they can be reproduced by others</li>
-<li>“Others” includes your future self</li>
+they can be reproduced by others (including your future self)</li>
 <li>
 <code>targets</code> helps achieve reproducibility by automating
 workflow</li>
 <li>
 <code>targests</code> is designed for use with the R programming
 language</li>
+<li>The example dataset for this workshop includes measurements taken on
+penguins in Antarctica</li>
 </ul>
 </div>
 </div>
@@ -473,7 +492,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p> Last updated on 2023-05-24 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -519,7 +538,7 @@ any links that you are not going to use.
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: First chance to get hands dirty by writing a very
 simple workflow</p>
@@ -630,56 +649,208 @@ main parts:</p>
 argument is the command used to build it. Note that the name of the
 target is <strong>unquoted</strong>, that is, it is written without any
 surrounding quotation marks.</p>
-<div id="edit-_targets.r" class="callout callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="edit-_targets.r" class="callout-inner">
-<h3 class="callout-title">Edit <code>_targets.R</code><a class="anchor" aria-label="anchor" href="#edit-_targets.r"></a>
+</section><section id="set-up-_targets.r-file-to-run-example-analysis"><h2 class="section-heading">Set up <code>_targets.R</code> file to run example analysis<a class="anchor" aria-label="anchor" href="#set-up-_targets.r-file-to-run-example-analysis"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="background-non-targets-version">Background: non-<code>targets</code> version<a class="anchor" aria-label="anchor" href="#background-non-targets-version"></a>
 </h3>
-<div class="callout-content">
-<p>Let’s modify the default workflow: rename the names of the targets
-from <code>data</code> to <code>my_data</code> and <code>summary</code>
-to <code>my_summary</code>. This is to avoid confusion with base R
-functions <code>data()</code> and <code>summary()</code>. It is
-generally a good idea to avoid naming objects in R with the names of
-existing functions.</p>
-<p>Make sure to rename <code>data</code> to <code>my_data</code>
-<strong>each time it appears</strong> (twice). The names of the targets
-are very important: this is how <code>targets</code> knows how workflow
-steps depend on each other.</p>
-</div>
-</div>
-</div>
-<p>Your final <code>_targets.R</code> file should look like this:</p>
+<p>We will use this template to start building our analysis of bill
+shape in penguins. First though, to get familiar with the functions and
+packages we’ll use, let’s run the code like you would in a “normal” R
+script without using <code>targets</code>.</p>
+<p>Recall that we are using the <code>palmerpenguins</code> R package to
+obtain the data. This package actually includes two variations of the
+dataset: one is an external CSV file with the raw data, and another is
+the cleaned data loaded into R. In real life you are probably have
+externally stored raw data, so <strong>let’s use the raw penguin
+data</strong> as the starting point for our analysis too.</p>
+<p>The <code>path_to_file()</code> function in
+<code>palmerpenguins</code> provides the path to the raw data CSV file
+(it is inside the <code>palmerpenguins</code> R package source code that
+you downloaded to your computer when you installed the package)</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="co"># This is an example _targets.R file. Every</span></span>
-<span><span class="co"># {targets} pipeline needs one.</span></span>
-<span><span class="co"># Use tar_script() to create _targets.R and tar_edit()</span></span>
-<span><span class="co"># to open it again for editing.</span></span>
-<span><span class="co"># Then, run tar_make() to run the pipeline</span></span>
-<span><span class="co"># and tar_read(summary) to view the results.</span></span>
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Define custom functions and other global objects.</span></span>
-<span><span class="co"># This is where you write source(\"R/functions.R\")</span></span>
-<span><span class="co"># if you keep your functions in external scripts.</span></span>
-<span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">colMeans</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="co"># Get path to CSV file</span></span>
+<span><span class="va">penguins_csv_file</span> <span class="op">&lt;-</span> <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">penguins_csv_file</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
+</div>
+<p>We will use the <code>tidyverse</code> set of packages for loading
+and manipulating the data. We don’t have time to cover all the details
+about using <code>tidyverse</code> now, but if you want to learn more
+about it, please see <!-- FIXME ADD LINK -->this lesson.</p>
+<p>Let’s load the data with <code>read_csv()</code>.</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Read CSV file into R</span></span>
+<span><span class="va">penguins_data_raw</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Rows: 344 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (9): studyName, Species, Region, Island, Stage, Individual ID, Clutch C...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+date (1): Date Egg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins_data_raw</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 344 × 17
+   studyName `Sample Number` Species         Region Island Stage `Individual ID`
+   &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;          
+ 1 PAL0708                 1 Adelie Penguin… Anvers Torge… Adul… N1A1           
+ 2 PAL0708                 2 Adelie Penguin… Anvers Torge… Adul… N1A2           
+ 3 PAL0708                 3 Adelie Penguin… Anvers Torge… Adul… N2A1           
+ 4 PAL0708                 4 Adelie Penguin… Anvers Torge… Adul… N2A2           
+ 5 PAL0708                 5 Adelie Penguin… Anvers Torge… Adul… N3A1           
+ 6 PAL0708                 6 Adelie Penguin… Anvers Torge… Adul… N3A2           
+ 7 PAL0708                 7 Adelie Penguin… Anvers Torge… Adul… N4A1           
+ 8 PAL0708                 8 Adelie Penguin… Anvers Torge… Adul… N4A2           
+ 9 PAL0708                 9 Adelie Penguin… Anvers Torge… Adul… N5A1           
+10 PAL0708                10 Adelie Penguin… Anvers Torge… Adul… N5A2           
+# ℹ 334 more rows
+# ℹ 10 more variables: `Clutch Completion` &lt;chr&gt;, `Date Egg` &lt;date&gt;,
+#   `Culmen Length (mm)` &lt;dbl&gt;, `Culmen Depth (mm)` &lt;dbl&gt;,
+#   `Flipper Length (mm)` &lt;dbl&gt;, `Body Mass (g)` &lt;dbl&gt;, Sex &lt;chr&gt;,
+#   `Delta 15 N (o/oo)` &lt;dbl&gt;, `Delta 13 C (o/oo)` &lt;dbl&gt;, Comments &lt;chr&gt;</code></pre>
+</div>
+<p>We see the raw data has some awkward column names with spaces (these
+are hard to type out and can easily lead to mistakes in the code), and
+far more columns than we need. For the purposes of this analysis, we
+only need species name, bill length, and bill depth. In the raw data,
+the rather technical term “Culmen” is used to refer to the bill.</p>
+<p>Let’s clean up the data to make it easier to use for downstream
+analyses. We will also remove any rows with missing data, because this
+could cause errors for some functions later.</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Clean up raw data</span></span>
+<span><span class="va">penguins_data</span> <span class="op">&lt;-</span> <span class="va">penguins_data_raw</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="co"># Rename columns for easier typing and</span></span>
+<span>  <span class="co"># subset to only the columns needed for analysis</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>    bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>    bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="co"># Delete rows with missing data</span></span>
+<span>  <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">penguins_data</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 342 × 3
+   species                             bill_length_mm bill_depth_mm
+   &lt;chr&gt;                                        &lt;dbl&gt;         &lt;dbl&gt;
+ 1 Adelie Penguin (Pygoscelis adeliae)           39.1          18.7
+ 2 Adelie Penguin (Pygoscelis adeliae)           39.5          17.4
+ 3 Adelie Penguin (Pygoscelis adeliae)           40.3          18  
+ 4 Adelie Penguin (Pygoscelis adeliae)           36.7          19.3
+ 5 Adelie Penguin (Pygoscelis adeliae)           39.3          20.6
+ 6 Adelie Penguin (Pygoscelis adeliae)           38.9          17.8
+ 7 Adelie Penguin (Pygoscelis adeliae)           39.2          19.6
+ 8 Adelie Penguin (Pygoscelis adeliae)           34.1          18.1
+ 9 Adelie Penguin (Pygoscelis adeliae)           42            20.2
+10 Adelie Penguin (Pygoscelis adeliae)           37.8          17.1
+# ℹ 332 more rows</code></pre>
+</div>
+<p>That’s better!</p>
+</div>
+<div class="section level3">
+<h3 id="targets-version">
+<code>targets</code> version<a class="anchor" aria-label="anchor" href="#targets-version"></a>
+</h3>
+<p>What does this look like using <code>targets</code>?</p>
+<p>The biggest difference is that we need to <strong>put each step of
+the workflow into the list at the end</strong>.</p>
+<p>We also define a custom function for the data cleaning step. That is
+because the list of targets at the end <strong>should look like a
+high-level summary of your analysis</strong>. You want to avoid lengthy
+chunks of code when defining the targets; instead, put that code in the
+custom functions. The other steps (setting the file path and loading the
+data) are each just one function call so there’s not much point in
+putting those into their own custom functions.</p>
+<p>Finally, each step in the workflow is defined with the
+<code>tar_target()</code> function.</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">penguins_data_raw</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">select</span><span class="op">(</span></span>
+<span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Set target-specific options such as packages:</span></span>
-<span><span class="co"># tar_option_set(packages = "utils") # nolint</span></span>
-<span></span>
-<span><span class="co"># End this file with a list of target objects.</span></span>
 <span><span class="fu">list</span><span class="op">(</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">my_data</span>, <span class="fu">data.frame</span><span class="op">(</span>x <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">my_summary</span>, <span class="fu">summ</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span><span class="op">)</span> <span class="co"># Call your custom functions as needed.</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data_raw</span>, <span class="fu">read_csv</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data</span>, <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+<p>I have set <code>show_col_types = FALSE</code> in
+<code>read_csv()</code> because we know from the earlier code that the
+column types were set correctly by default (character for species and
+numeric for bill length and depth), so we don’t need to see the warning
+it would otherwise issue.</p>
 </div>
 </section><section id="run-the-workflow"><h2 class="section-heading">Run the workflow<a class="anchor" aria-label="anchor" href="#run-the-workflow"></a>
 </h2>
@@ -687,7 +858,7 @@ steps depend on each other.</p>
 <p>Now that we have a workflow, we can run it with the
 <code>tar_make()</code> function. Try running it, and you should see
 something like this:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -696,48 +867,16 @@ something like this:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>• start target my_data
-• built target my_data [0.001 seconds]
-• start target my_summary
-• built target my_summary [0 seconds]
-• end pipeline [0.077 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target penguins_csv_file
+• built target penguins_csv_file [0.002 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.15 seconds]
+• start target penguins_data
+• built target penguins_data [0.011 seconds]
+• end pipeline [0.253 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
-<div id="challenge-what-happened-during-the-workflow" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="challenge-what-happened-during-the-workflow" class="callout-inner">
-<h3 class="callout-title">Challenge: What happened during the
-workflow?<a class="anchor" aria-label="anchor" href="#challenge-what-happened-during-the-workflow"></a>
-</h3>
-<div class="callout-content">
-<p>Inspect the list at the end of <code>_targets.R</code>. Can you
-describe the steps of the workflow?</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1">
-  Show me the solution
-  </h4>
-</button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
-<div class="accordion-body">
-<p>The first step of the workflow built a target called
-<code>my_data</code> that includes two variables, <code>x</code> and
-<code>y</code>.</p>
-<p>The second step of the workflow built a target called
-<code>my_summ</code> that includes the mean of <code>x</code> and
-<code>y</code> calculated with a custom function called
-<code>summ()</code>.</p>
-</div>
-</div>
-</div>
-</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -766,7 +905,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p> Last updated on 2023-05-24 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -820,18 +959,18 @@ session</li>
 </h2>
 <hr class="half-width">
 <p>So we just finished running our first workflow. Now you probably want
-to look at its output. But, if we just call the name of the object
-(<code>my_data</code> or <code>my_summary</code>), we get an error.</p>
+to look at its output. But, if we just call the name of the object (for
+example, <code>penguins_data</code>), we get an error.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_data</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">penguins_data</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'my_data' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'penguins_data' not found</code></pre>
 </div>
 <p>Where are the results of our workflow?</p>
 <div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
@@ -845,15 +984,10 @@ to look at its output. But, if we just call the name of the object
 <div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
 <div class="accordion-body">
 <ul>
-<li><p>To reinforce the concept of <code>targets</code> running in a
+<li>To reinforce the concept of <code>targets</code> running in a
 separate R session, you may want to pretend trying to run
-<code>my_data</code> or <code>my_summary</code>, then feigning surprise
-when it doesn’t work and using it as a teaching moment (errors are
-pedagogy!).</p></li>
-<li><p>In the previous episode, the default names of targets
-<code>data</code> and <code>summary</code> were changed to avoid
-confusion with the base R functions <code>data()</code> and
-<code>summary()</code>.</p></li>
+<code>penguins_data</code>, then feigning surprise when it doesn’t work
+and using it as a teaching moment (errors are pedagogy!).</li>
 </ul>
 </div>
 </div>
@@ -873,25 +1007,25 @@ work.</p>
 <hr class="half-width">
 <p><code>tar_load()</code> loads an object built by the workflow into
 the current session. Its first argument is the name of the object you
-want to load. Let’s use this to load <code>my_data</code> and inspect
-the first several rows with <code>head()</code>.</p>
+want to load. Let’s use this to load <code>penguins_data</code> and get
+an overview of the data with <code>summary()</code>.</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span>
-<span><span class="fu">head</span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>   x  y
-1 65 88
-2  4  9
-3 14 71
-4 26 11
-5 69 85
-6 76 26</code></pre>
+<pre class="output" tabindex="0"><code>   species          bill_length_mm  bill_depth_mm  
+ Length:342         Min.   :32.10   Min.   :13.10  
+ Class :character   1st Qu.:39.23   1st Qu.:15.60  
+ Mode  :character   Median :44.45   Median :17.30  
+                    Mean   :43.92   Mean   :17.15  
+                    3rd Qu.:48.50   3rd Qu.:18.70  
+                    Max.   :59.60   Max.   :21.50  </code></pre>
 </div>
 <p>Note that <code>tar_load()</code> is used for its
 <strong>side-effect</strong>—loading the desired object into the current
@@ -902,32 +1036,31 @@ R session. It doesn’t actually return a value.</p>
 <p><code>tar_read()</code> is similar to <code>tar_load()</code> in that
 it is used to retrieve objects built by the workflow, but unlike
 <code>tar_load()</code>, it returns them directly as output.</p>
-<p>Let’s try it with <code>my_summary</code>.</p>
+<p>Let’s try it with <code>penguins_csv_file</code>.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">my_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>   x    y 
-50.5 50.5 </code></pre>
+<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
 </div>
-<p>We immediately see the contents of <code>my_summary</code>. But it
-has not been loaded into the enviroment. If you try to run
-<code>my_summary</code> now, you will get an error:</p>
+<p>We immediately see the contents of <code>penguins_csv_file</code>.
+But it has not been loaded into the environment. If you try to run
+<code>penguins_csv_file</code> now, you will get an error:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_summary</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">penguins_csv_file</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'my_summary' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'penguins_csv_file' not found</code></pre>
 </div>
 </section><section id="when-to-use-which-function"><h2 class="section-heading">When to use which function<a class="anchor" aria-label="anchor" href="#when-to-use-which-function"></a>
 </h2>
@@ -986,7 +1119,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
 <hr>
-<p> Last updated on 2023-05-26 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -1029,7 +1162,7 @@ any links that you are not going to use.
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Demonstrate typical cycle of running
 <code>targets</code>: make, inspect, adjust, make…</p>
@@ -1054,9 +1187,10 @@ running the workflow again:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skip target my_data
-✔ skip target my_summary
-✔ skip pipeline [0.064 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip pipeline [0.073 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -1068,16 +1202,25 @@ already been built, so there’s no need to run that code again.</p>
 <hr class="half-width">
 <p>What happens when we change one part of the workflow then run it
 again?</p>
-<p>Let’s modify the workflow to calculate the <strong>sum</strong> of
-the columns instead of the mean.</p>
-<p>Edit <code>_targets.R</code> so that the <code>summ()</code> function
-looks like this:</p>
+<p>Say that we decide the species names should be shorter. Right now
+they include the common name and the scientific name, but we really only
+need the first part of the common name to distinguish them.</p>
+<p>Edit <code>_targets.R</code> so that the
+<code>clean_penguin_data()</code> function looks like this:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">colSums</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">penguins_data_raw</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">select</span><span class="op">(</span></span>
+<span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="co"># Split "species" apart on spaces, and only keep the first word</span></span>
+<span>    <span class="fu">separate</span><span class="op">(</span><span class="va">species</span>, into <span class="op">=</span> <span class="st">"species"</span>, extra <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Then run it again.</p>
@@ -1090,14 +1233,16 @@ looks like this:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skip target my_data
-• start target my_summary
-• built target my_summary [0.002 seconds]
-• end pipeline [0.077 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+• start target penguins_data
+• built target penguins_data [0.021 seconds]
+• end pipeline [0.109 seconds]</code></pre>
 </div>
 <p>What happened?</p>
-<p>This time, it skipped <code>my_data</code> and only ran
-<code>my_summary</code>.</p>
+<p>This time, it skipped <code>penguins_csv_file</code> and
+<code>penguins_data_raw</code> and only ran
+<code>penguins_data</code>.</p>
 <p>Of course, since our example workflow is so short we don’t even
 notice the amount of time saved. But imagine using this in a series of
 computationally intensive analysis steps. The ability to automatically
@@ -1110,7 +1255,7 @@ skip steps results in a massive increase in efficiency.</p>
 <h3 class="callout-title">Challenge 1: Inspect the output<a class="anchor" aria-label="anchor" href="#challenge-1-inspect-the-output"></a>
 </h3>
 <div class="callout-content">
-<p>How can you inspect the contents of <code>my_summary</code>?</p>
+<p>How can you inspect the contents of <code>penguins_data</code>?</p>
 </div>
 </div>
 </div>
@@ -1121,11 +1266,11 @@ skip steps results in a massive increase in efficiency.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<p>With <code>tar_read(my_summary</code>) or by running
-<code>tar_load(my_summary)</code> followed by
-<code>my_summary</code>.</p>
+<p>With <code>tar_read(penguins_data</code>) or by running
+<code>tar_load(penguins_data)</code> followed by
+<code>penguins_data</code>.</p>
 </div>
 </div>
 </div>
@@ -1180,16 +1325,16 @@ be able to visualize the state of the workflow.</p>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tar_visnetwork</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="../fig/lifecycle-visnetwork.png" alt="Visualization of the targets worklow, showing 'my_summary' connected by lines to 'my_data' and 'summ'" class="figure mx-auto d-block"></figure><p>You should see the network show up in the plot area of RStudio.</p>
+<figure><img src="../fig/lifecycle-visnetwork.png" alt="Visualization of the targets worklow, showing 'penguins_data' connected by lines to 'penguins_data_raw', 'penguins_csv_file' and 'clean_penguin_data'" class="figure mx-auto d-block"></figure><p>You should see the network show up in the plot area of RStudio.</p>
 <p>It is an HTML widget, so you can zoom in and out (this isn’t
 important for the current example since it is so small, but is useful
 for larger, “real-life” workflows).</p>
 <p>Here, we see that all of the targets are dark green, indicating that
 they are up-to-date and would be skipped if we were to run the workflow
 again.</p>
-<div id="installing-visnetwork" class="callout callout">
+<div id="installing-visnetwork" class="callout prereq">
 <div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
+<i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="installing-visnetwork" class="callout-inner">
 <h3 class="callout-title">Installing visNetwork<a class="anchor" aria-label="anchor" href="#installing-visnetwork"></a>
@@ -1225,7 +1370,7 @@ date?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -1300,11 +1445,12 @@ lesson but the instructor may demonstrate its use).</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code># A tibble: 2 × 2
-  name       progress
-  &lt;chr&gt;      &lt;chr&gt;   
-1 my_data    skipped 
-2 my_summary skipped </code></pre>
+<pre class="output" tabindex="0"><code># A tibble: 3 × 2
+  name              progress
+  &lt;chr&gt;             &lt;chr&gt;   
+1 penguins_csv_file skipped 
+2 penguins_data_raw skipped 
+3 penguins_data     skipped </code></pre>
 </div>
 </section><section id="granular-control-of-targets"><h2 class="section-heading">Granular control of targets<a class="anchor" aria-label="anchor" href="#granular-control-of-targets"></a>
 </h2>
@@ -1313,9 +1459,10 @@ lesson but the instructor may demonstrate its use).</p>
 the entire workflow.</p>
 <p>To do this, type the name of the target you wish to build after
 <code>tar_make()</code> (note that any targets required by the one you
-specify will also be built). For example, <code>tar_make(my_data)</code>
-would <strong>only</strong> build <code>my_data</code>, not
-<code>my_summary</code>.</p>
+specify will also be built). For example,
+<code>tar_make(penguins_data_raw)</code> would <strong>only</strong>
+build <code>penguins_data_raw</code>, not
+<code>penguins_data</code>.</p>
 <p>Furthermore, if you want to manually “reset” a target and make it
 appear out-of-date, you can do so with <code>tar_invalidate()</code>.
 This means that target (and any that depend on it) will be re-run next
@@ -1331,26 +1478,32 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skip target my_data
-✔ skip target my_summary
-✔ skip pipeline [0.064 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip pipeline [0.074 seconds]</code></pre>
 </div>
-<p>Let’s invalidate <code>my_summary</code> and run it again:</p>
+<p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_invalidate</span><span class="op">(</span><span class="va">my_summary</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">tar_invalidate</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span><span class="fu">tar_make</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skip target my_data
-• start target my_summary
-• built target my_summary [0.002 seconds]
-• end pipeline [0.076 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
+✔ skip target penguins_data_raw
+• start target penguins_data
+• built target penguins_data [0.021 seconds]
+• end pipeline [0.107 seconds]</code></pre>
 </div>
+<p>If you want to reset <strong>everything</strong> and start fresh, you
+can use <code>tar_invalidate(everything())</code>
+(<code>tar_invalidate()</code> accepts <!-- FIXME ADD LINK -->tidy
+select functions to specify target names).</p>
 <p><strong>Caution should be exercised</strong> when using granular
 methods like this, though, since you may end up with your workflow in an
 unexpected state. The surest way to maintain an up-to-date workflow is
@@ -1397,7 +1550,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p> Last updated on 2023-05-24 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -1460,8 +1613,20 @@ organization</p>
 a bit verbose.</p>
 <p>There is an alternative provided by the <code>tarchetypes</code>
 package, also written by the creator of <code>targets</code>, Will
-Landau. If you haven’t already, install it with
+Landau.</p>
+<div id="install-tarchetypes" class="callout prereq">
+<div class="callout-square">
+<i class="callout-icon" data-feather="check"></i>
+</div>
+<div id="install-tarchetypes" class="callout-inner">
+<h3 class="callout-title">Install <code>tarchetypes</code><a class="anchor" aria-label="anchor" href="#install-tarchetypes"></a>
+</h3>
+<div class="callout-content">
+<p>If you haven’t done so yet, install <code>tarchetypes</code> with
 <code>install.packages("tarchetypes")</code>.</p>
+</div>
+</div>
+</div>
 <p>The purpose of the <code>tarchetypes</code> is to provide various
 shortcuts that make writing <code>targets</code> pipelines easier. We
 will introduce just one for now, <code>tar_plan()</code>. This is used
@@ -1469,28 +1634,33 @@ in place of <code>list()</code> at the end of the
 <code>_targets.R</code> script. By using <code>tar_plan()</code>,
 instead of specifying targets with <code>tar_target()</code>, we can use
 a syntax like this: <code>target_name = target_command</code>.</p>
-<p>For example, try this short targets script:</p>
+<p>Let’s edit the penguins workflow to use the <code>tar_plan()</code>
+syntax:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">penguins_data_raw</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">select</span><span class="op">(</span></span>
+<span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  height_cm <span class="op">=</span> <span class="fl">160</span>,</span>
-<span>  height_in <span class="op">=</span> <span class="va">height_cm</span> <span class="op">/</span> <span class="fl">2.54</span></span>
+<span>  penguins_csv_file <span class="op">=</span> <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>  penguins_data_raw <span class="op">=</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>• start target height_cm
-• built target height_cm [0.001 seconds]
-• start target height_in
-• built target height_in [0 seconds]
-• end pipeline [0.064 seconds]</code></pre>
-</div>
+<p>I think it is easier to read, do you?</p>
 <p>Notice that <code>tar_plan()</code> does not mean you have to write
 <em>all</em> targets this way; you can still use the
 <code>tar_target()</code> format within <code>tar_plan()</code>. That is
@@ -1498,48 +1668,6 @@ because <code>=</code>, while short and easy to read, does not provide
 all of the customization that <code>targets</code> is capable of. This
 doesn’t matter so much for now, but it will become important when you
 start to create more advanced <code>targets</code> workflows.</p>
-<div id="challenge-1-try-tar_plan" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="challenge-1-try-tar_plan" class="callout-inner">
-<h3 class="callout-title">Challenge 1: Try <code>tar_plan()</code><a class="anchor" aria-label="anchor" href="#challenge-1-try-tar_plan"></a>
-</h3>
-<div class="callout-content">
-<p>How can we use <code>tar_plan()</code> to rewrite
-<code>_targets.R</code> with simpler syntax?</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1">
-  Show me the solution
-  </h4>
-</button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
-<div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">summarize_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">rowMeans</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  my_data <span class="op">=</span> <span class="fu">data.frame</span><span class="op">(</span>x <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  my_summary <span class="op">=</span> <span class="fu">summarize_data</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
 </section><section id="organizing-files-and-folders"><h2 class="section-heading">Organizing files and folders<a class="anchor" aria-label="anchor" href="#organizing-files-and-folders"></a>
 </h2>
 <hr class="half-width">
@@ -1552,32 +1680,55 @@ to organize your code.</p>
 <code>_targets.R</code> must be placed in the overall project directory,
 not in a subdirectory). Create a new R file in <code>R/</code> called
 <code>functions.R</code>. This is where we will put our custom
-functions. Let’s go ahead and put <code>summ()</code> in there now and
-save it.</p>
-<p>We will also need to modify our <code>_targets.R</code> script.</p>
-<p>Next, let’s make some directories for storing data and output—files
-that are not code. Create a new directory inside the targets cache
-called <code>user</code>: <code>_targets/user</code>. Within
-<code>user</code>, create two more directories, <code>data</code> and
-<code>results</code>. (If you use version control, you will probably
+functions. Let’s go ahead and put <code>clean_penguin_data()</code> in
+there now and save it.</p>
+<p>Similarly, let’s put the <code>library()</code> calls in their own
+script in <code>R/</code> called <code>packages.R</code> (this isn’t the
+only way to do it though; see the <!-- FIXME ADD LINK -->“Managing
+Packages” episode for alternative approaches).</p>
+<p>We will also need to modify our <code>_targets.R</code> script to
+call these scripts with <code>source</code>:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  penguins_csv_file <span class="op">=</span> <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>  penguins_data_raw <span class="op">=</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>Now <code>_targets.R</code> is much more streamlined: it is focused
+just on the workflow and immediately tells us what happens in each
+step.</p>
+<p>Finally, let’s make some directories for storing data and
+output—files that are not code. Create a new directory inside the
+targets cache called <code>user</code>: <code>_targets/user</code>.
+Within <code>user</code>, create two more directories, <code>data</code>
+and <code>results</code>. (If you use version control, you will probably
 want to ignore the <code>_targets</code> directory).</p>
 </section><section id="a-word-about-functions"><h2 class="section-heading">A word about functions<a class="anchor" aria-label="anchor" href="#a-word-about-functions"></a>
 </h2>
 <hr class="half-width">
-<p>If you are used to analyzing data in R with a series of scripts
-instead of a single workflow like <code>targets</code>, you may not
-write many functions (using the <code>function()</code> function).</p>
+<p>We mentioned custom functions earlier in the lesson, but this is an
+important topic that deserves further clarification. If you are used to
+analyzing data in R with a series of scripts instead of a single
+workflow like <code>targets</code>, you may not write many functions
+(using the <code>function()</code> function).</p>
 <p>This is a major difference from <code>targets</code>. It would be
 quite difficult to write an efficient <code>targets</code> pipeline
 without the use of custom functions, because each target you build has
-to be the output of a single function.</p>
+to be the output of a single command.</p>
 <p>We don’t have time in this curriculum to cover how to write functions
-in R, but the Software Carpentry lesson is recommended for reviewing
-this topic.</p>
+in R, but the <!-- FIXME ADD LINK -->Software Carpentry lesson is
+recommended for reviewing this topic.</p>
 <p>Another major difference is that <strong>each target must have a
 unique name</strong>. You may be used to writing code that looks like
 this:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1587,7 +1738,7 @@ this:</p>
 </div>
 <p>You would get an error if you tried to run the equivalent targets
 pipeline:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1615,52 +1766,6 @@ large numbers of inputs and is thus overly sensitive to changes.</p>
 <p>Striking this balance is more of art than science, and only comes
 with practice. I find a good rule of thumb is no more than three inputs
 per target.</p>
-</section><section id="a-more-realistic-workflow"><h2 class="section-heading">A more realistic workflow<a class="anchor" aria-label="anchor" href="#a-more-realistic-workflow"></a>
-</h2>
-<hr class="half-width">
-<p>So far, we have only used a very simple targets workflow to
-demonstrate basic usage of <code>targets</code>.</p>
-<p>There is a demonstration of a more realistic workflow based on
-Palmer’s Penguins, a dataset of measurements taken on penguins in
-Antarctica, available at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a>.</p>
-<p>Please browse <a href="https://github.com/joelnitta/penguins-targets" class="external-link">the repo</a> and
-verify that it is set up using the folder organization described
-above.</p>
-<div id="challenge-2-set-up-a-new-project" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="challenge-2-set-up-a-new-project" class="callout-inner">
-<h3 class="callout-title">Challenge 2: Set up a new project<a class="anchor" aria-label="anchor" href="#challenge-2-set-up-a-new-project"></a>
-</h3>
-<div class="callout-content">
-<p>For this challenge, we will emulate the “Palmer’s Penguins” <a href="https://github.com/joelnitta/penguins-targets" class="external-link">demonstration
-project</a>.</p>
-<p>Set up a new R project called “penguins_analysis” using the
-recommended file and folder structure for <code>targets</code>. It is
-recommended to create the project on the desktop so you can find it
-easily.</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2">
-  Show me the solution
-  </h4>
-</button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
-<div class="accordion-body">
-<p>You should have created a folder called “penguins_analysis” on your
-desktop containing a file called “_targets.R” in the main directory and
-two files, “functions.R” and “packages.R” in the “R” subdirectory.</p>
-<p>You could have also created a folder called “_targets” containing
-subfolders “user/data” and “user/results”.</p>
-</div>
-</div>
-</div>
-</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1677,6 +1782,8 @@ subfolders “user/data” and “user/results”.</p>
 </li>
 <li>Put other miscellaneous files in <code>_targets/user</code>
 </li>
+<li>Writing functions is a key skill for <code>targets</code>
+pipelines</li>
 </ul>
 </div>
 </div>
@@ -1687,7 +1794,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-packages"><p>Content from <a href="packages.html">Managing Packages</a></p>
 <hr>
-<p> Last updated on 2023-05-24 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/packages.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -1751,10 +1858,10 @@ workflows.</p>
 is the method we have been using by default so far.</p>
 <p>Like any other R script, include <code>library()</code> calls near
 the top of the <code>_targets.R</code> script. Alternatively (and as the
-recommended best practice for project organization), you can put all of
-the <code>library()</code> calls in a separate script—this is typically
-called <code>packages.R</code> and stored in the <code>R/</code>
-directory of your project.</p>
+<!-- FIXME ADD LINK -->recommended best practice for project
+organization), you can put all of the <code>library()</code> calls in a
+separate script—this is typically called <code>packages.R</code> and
+stored in the <code>R/</code> directory of your project.</p>
 <p>The potential downside to this approach is that if you have a long
 list of packages to load, certain functions like
 <code>tar_visnetwork()</code>, <code>tar_outdated()</code>, etc., may
@@ -1768,8 +1875,30 @@ packages, even though they don’t necessarily use them.</p>
 <p>In this method, use the <code>tar_option_set()</code> function in
 <code>_targets.R</code> to specify the packages to load when running the
 workflow.</p>
-<p>For example, let’s filter some data from the
-<code>palmerpenguins</code> package:</p>
+<p>This will be demonstrated using the pre-cleaned dataset from the
+<code>palmerpenguins</code> package. Let’s say we want to filter it down
+to just data for the Adelie penguin.</p>
+<div id="save-your-progress" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="save-your-progress" class="callout-inner">
+<h3 class="callout-title">Save your progress<a class="anchor" aria-label="anchor" href="#save-your-progress"></a>
+</h3>
+<div class="callout-content">
+<p>You can only have one active <code>_targets.R</code> file at a time
+in a given project.</p>
+<p>We are about to create a new <code>_targets.R</code> file, but you
+probably don’t want to lose your progress in the one we have been
+working on so far (the penguins bill analysis). You can temporarily
+rename that one to something like <code>_targets_old.R</code> so that
+you don’t overwrite it with the new example <code>_targets.R</code> file
+below. Then, rename them when you are ready to work on it again.</p>
+</div>
+</div>
+</div>
+<p>This is what using the <code>tar_option_set()</code> method looks
+like:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -1787,8 +1916,8 @@ workflow.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]</code></pre>
+• built target adelie_data [0.028 seconds]
+• end pipeline [0.092 seconds]</code></pre>
 </div>
 <p>This method gets around the slow-downs that may sometimes be
 experienced with Method 1.</p>
@@ -1822,8 +1951,8 @@ as above.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target adelie_data
-• built target adelie_data [0.025 seconds]
-• end pipeline [0.082 seconds]</code></pre>
+• built target adelie_data [0.026 seconds]
+• end pipeline [0.099 seconds]</code></pre>
 </div>
 <p>This can be more memory efficient in some cases than loading all
 packages, since not every target is always made during a typical run of
@@ -1854,8 +1983,8 @@ altogether</strong>.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target adelie_data
-• built target adelie_data [0.012 seconds]
-• end pipeline [0.07 seconds]</code></pre>
+• built target adelie_data [0.015 seconds]
+• end pipeline [0.079 seconds]</code></pre>
 </div>
 <p>The benefits of this approach are that the origins of all functions
 is explicit, so you could browse your code (for example, by looking at
@@ -2022,7 +2151,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p> Last updated on 2023-05-24 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -2083,6 +2212,25 @@ World” and save it as “hello.txt” text file in
 <p>We will read in the contents of this file and store it as
 <code>some_data</code> in the workflow by writing the following plan and
 running <code>tar_make()</code>:</p>
+<div id="save-your-progress" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="save-your-progress" class="callout-inner">
+<h3 class="callout-title">Save your progress<a class="anchor" aria-label="anchor" href="#save-your-progress"></a>
+</h3>
+<div class="callout-content">
+<p>You can only have one active <code>_targets.R</code> file at a time
+in a given project.</p>
+<p>We are about to create a new <code>_targets.R</code> file, but you
+probably don’t want to lose your progress in the one we have been
+working on so far (the penguins bill analysis). You can temporarily
+rename that one to something like <code>_targets_old.R</code> so that
+you don’t overwrite it with the new example <code>_targets.R</code> file
+below. Then, rename them when you are ready to work on it again.</p>
+</div>
+</div>
+</div>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -2099,7 +2247,7 @@ running <code>tar_make()</code>:</p>
 </h3>
 <pre class="output" tabindex="0"><code>• start target some_data
 • built target some_data [0.001 seconds]
-• end pipeline [0.059 seconds]</code></pre>
+• end pipeline [0.068 seconds]</code></pre>
 </div>
 <p>If we inspect the contents of <code>some_data</code> with
 <code>tar_read(some_data)</code>, it will contain the string
@@ -2122,7 +2270,7 @@ pipeline again.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target some_data
-✔ skip pipeline [0.046 seconds]</code></pre>
+✔ skip pipeline [0.052 seconds]</code></pre>
 </div>
 <p>The target <code>some_data</code> was skipped, even though the
 contents of the file changed.</p>
@@ -2149,10 +2297,10 @@ this will be detected by <code>targets</code>.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target data_file
-• built target data_file [0.001 seconds]
+• built target data_file [0.002 seconds]
 • start target some_data
 • built target some_data [0 seconds]
-• end pipeline [0.068 seconds]</code></pre>
+• end pipeline [0.077 seconds]</code></pre>
 </div>
 <p>This time we see that <code>targets</code> does successfully re-build
 <code>some_data</code> as expected.</p>
@@ -2226,6 +2374,62 @@ files, such as <code>readr::read_csv()</code>,
 <code>read_csv(!!.x)</code>, <code>read_excel(!!.x)</code>, etc.).</p>
 <p>This is generally recommended so that your pipeline stays up to date
 with your input data.</p>
+<div id="challenge-use-tar_file_read-with-the-penguins-example" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-use-tar_file_read-with-the-penguins-example" class="callout-inner">
+<h3 class="callout-title">Challenge: Use <code>tar_file_read()</code>
+with the penguins example<a class="anchor" aria-label="anchor" href="#challenge-use-tar_file_read-with-the-penguins-example"></a>
+</h3>
+<div class="callout-content">
+<p>We didn’t know about <code>tar_file_read()</code> yet when we started
+on the penguins bill analysis.</p>
+<p>How can you use <code>tar_file_read()</code> to load the CSV file
+while tracking its contents?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1">
+  Show me the solution
+  </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>• start target penguins_data_raw_file
+• built target penguins_data_raw_file [0.002 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.282 seconds]
+• start target penguins_data
+• built target penguins_data [0.019 seconds]
+• end pipeline [0.383 seconds]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section><section id="writing-out-data"><h2 class="section-heading">Writing out data<a class="anchor" aria-label="anchor" href="#writing-out-data"></a>
 </h2>
 <hr class="half-width">
@@ -2240,7 +2444,7 @@ returns its path.</p>
 <p>Let’s do this for <code>writeLines()</code>, the R function that
 writes character data to a file. Normally, its output would be
 <code>NULL</code> (nothing), as we can see here:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2255,7 +2459,7 @@ writes character data to a file. Normally, its output would be
 <p>Here is our modified function that writes character data to a file
 and returns the name of the file (the <code>...</code> means “pass the
 rest of these arguments to <code>writeLines()</code>”):</p>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2265,7 +2469,7 @@ rest of these arguments to <code>writeLines()</code>”):</p>
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Let’s try it out:</p>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2279,7 +2483,7 @@ rest of these arguments to <code>writeLines()</code>”):</p>
 </div>
 <p>We can now use this in a pipeline. For example let’s change the text
 to upper case then write it out again:</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2303,14 +2507,14 @@ to upper case then write it out again:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target hello_file
-• built target hello_file [0.001 seconds]
+• built target hello_file [0.002 seconds]
 • start target hello
 • built target hello [0 seconds]
 • start target hello_caps
 • built target hello_caps [0 seconds]
 • start target hello_caps_out
-• built target hello_caps_out [0.008 seconds]
-• end pipeline [0.082 seconds]</code></pre>
+• built target hello_caps_out [0.009 seconds]
+• end pipeline [0.093 seconds]</code></pre>
 </div>
 <p>Take a look at <code>hello_caps.txt</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
@@ -2329,14 +2533,14 @@ modified?<a class="anchor" aria-label="anchor" href="#challenge-what-happens-to-
 </div>
 </div>
 </div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2">
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>hello_caps_out</code> has
 changed (is “invalidated”), and re-runs the code to make it, thus
@@ -2377,7 +2581,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-batch"><p>Content from <a href="batch.html">Batch and Parallel Processing</a></p>
 <hr>
-<p> Last updated on 2023-05-24 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -2419,7 +2623,7 @@ any links that you are not going to use.
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching and parallel processing
 (technically separate topics, but they go well together)</p>
@@ -2456,64 +2660,63 @@ want to use one or the other (or some combination of the two), <a href="https://
 </section><section id="example-without-branching"><h2 class="section-heading">Example without branching<a class="anchor" aria-label="anchor" href="#example-without-branching"></a>
 </h2>
 <hr class="half-width">
-<p>To see how this works, let’s use an example based on the
-<code>palmerpenguins</code> dataset. Our hypothesis is that bill depth
-decreases with bill length. We want to test this using several
-alternative models. The models will either ignore species identity, add
-a parameter for species, or add an interaction effect between species
-and bill length.</p>
-<p>This is what a workflow for such an analysis might look like
-<strong>without branching</strong>:</p>
+<p>To see how this works, let’s continue our analysis of the
+<code>palmerpenguins</code> dataset.</p>
+<p><strong>Our hypothesis is that bill depth decreases with bill
+length.</strong> We will test this hypothesis with a linear model.</p>
+<p>For example, this is a model of bill depth dependent on bill
+length:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">broom</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">lm</span><span class="op">(</span><span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span></code></pre>
+</div>
+<p>We can add this to our pipeline. We will call it the
+<code>combined_model</code> because it combines all the species together
+without distinction:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="co"># Load data from package</span></span>
-<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
-<span>  <span class="co"># Build models</span></span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean data</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Build model</span></span>
 <span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
-<span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
-<span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
-<span>  combined_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span>,</span>
-<span>  species_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">species_model</span><span class="op">)</span>,</span>
-<span>  interaction_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">interaction_model</span><span class="op">)</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>• start target penguin_data
-• built target penguin_data [0.003 seconds]
+<pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.064 seconds]
-• start target interaction_model
-• built target interaction_model [0.002 seconds]
-• start target species_model
-• built target species_model [0.002 seconds]
-• start target combined_summary
-• built target combined_summary [0.079 seconds]
-• start target interaction_summary
-• built target interaction_summary [0.003 seconds]
-• start target species_summary
-• built target species_summary [0.003 seconds]
-• end pipeline [0.253 seconds]</code></pre>
+• built target combined_model [0.027 seconds]
+• end pipeline [0.117 seconds]</code></pre>
 </div>
-<p>It worked. Let’s check some of the model output:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<p>Let’s have a look at the model. We will use the <code>glance()</code>
+function from the <code>broom</code> package. Unlike base R
+<code>summary()</code>, this function returns output as a tibble (the
+tidyverse equivalent of a dataframe), which as we will see later is
+quite useful for downstream analyses.</p>
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">combined_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span></span>
+<span><span class="fu">broom</span><span class="fu">::</span><span class="fu">glance</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2523,9 +2726,85 @@ and bill length.</p>
       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
 1    0.0552        0.0525  1.92      19.9 0.0000112     1  -708. 1422. 1433.    1256.         340   342</code></pre>
 </div>
-<p>This way of writing the pipeline is repetitive: we have to call
-<code>glance()</code> each time we want to obtain summary statistics for
-each model. Furthermore, each summary target
+<p>Notice the small <em>P</em>-value. This seems to indicate that the
+model is highly significant.</p>
+<p>But wait a moment… is this really an appropriate model? Recall that
+there are three species of penguins in the dataset. It is possible that
+the relationship between bill depth and length <strong>varies by
+species</strong>.</p>
+<p>We should probably test some alternative models. These could include
+models that add a parameter for species, or add an interaction effect
+between species and bill length.</p>
+<p>Now our workflow is getting more complicated. This is what a workflow
+for such an analysis might look like <strong>without branching</strong>
+(make sure to add <code><a href="https://broom.tidymodels.org/" class="external-link">library(broom)</a></code> to
+<code>packages.R</code>):</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean data</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get model summaries</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span>,</span>
+<span>  species_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">species_model</span><span class="op">)</span>,</span>
+<span>  interaction_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">interaction_model</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip target combined_model
+• start target interaction_model
+• built target interaction_model [0.006 seconds]
+• start target species_model
+• built target species_model [0.001 seconds]
+• start target combined_summary
+• built target combined_summary [0.05 seconds]
+• start target interaction_summary
+• built target interaction_summary [0.003 seconds]
+• start target species_summary
+• built target species_summary [0.003 seconds]
+• end pipeline [0.182 seconds]</code></pre>
+</div>
+<p>Let’s look at the summary of one of the models:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 1 × 12
+  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+1     0.769         0.767 0.953      375. 3.65e-107     3  -467.  944.  963.     307.         338   342</code></pre>
+</div>
+<p>So this way of writing the pipeline works, but is repetitive: we have
+to call <code>glance()</code> each time we want to obtain summary
+statistics for each model. Furthermore, each summary target
 (<code>combined_summary</code>, etc.) is explicitly named and typed out
 manually. It would be fairly easy to make a typo and end up with the
 wrong model being summarized.</p>
@@ -2537,26 +2816,30 @@ wrong model being summarized.</p>
 </h3>
 <p>Let’s see how to write the same plan using <strong>dynamic
 branching</strong>:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">broom</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="co"># Load data from package</span></span>
-<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean data</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Build models</span></span>
 <span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
 <span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Get model summaries</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
@@ -2572,21 +2855,22 @@ branching</strong>:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>• start target penguin_data
-• built target penguin_data [0.002 seconds]
+<pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
 • start target models
-• built target models [0.006 seconds]
-• start branch model_summaries_ea786eaa
-• built branch model_summaries_ea786eaa [0.007 seconds]
-• start branch model_summaries_1c878f62
-• built branch model_summaries_1c878f62 [0.003 seconds]
-• start branch model_summaries_afef26b4
-• built branch model_summaries_afef26b4 [0.003 seconds]
+• built target models [0.008 seconds]
+• start branch model_summaries_5ad4cec5
+• built branch model_summaries_5ad4cec5 [0.009 seconds]
+• start branch model_summaries_c73912d5
+• built branch model_summaries_c73912d5 [0.046 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_91696941 [0.003 seconds]
 • built pattern model_summaries
-• end pipeline [0.116 seconds]</code></pre>
+• end pipeline [0.189 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
-like <code>model_summaries_f9795da2</code>, then one overall
+like model_summaries_5ad4cec5, then one overall
 <code>model_summaries</code> target. That is the result of specifying
 targets using branching: each of the smaller targets are the “branches”
 that comprise the overall target. Since <code>targets</code> has no way
@@ -2596,28 +2880,28 @@ represent, it names each one using this series of numbers and letters
 then combines them into the overall target.</p>
 <p>Next, let’s look in more detail about how the workflow is set up,
 starting with how we defined the models:</p>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Build models</span></span>
 <span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu">list</span><span class="op">(</span></span>
 <span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <p>Unlike the non-branching version, we defined the models <strong>in a
 list</strong> (instead of one target per model). This is because dynamic
-branching is similar to the <code>apply()</code> or <a href="https://purrr.tidyverse.org/reference/map.html" class="external-link"><code>purrrr::map()</code></a>
+branching is similar to the <code>base::apply()</code> or <a href="https://purrr.tidyverse.org/reference/map.html" class="external-link"><code>purrrr::map()</code></a>
 method of looping: it applies a function to each element of a list. So
 we need to prepare the input for looping as a list.</p>
 <p>Next, take a look at the command to build the target
 <code>model_summaries</code>.</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2640,7 +2924,7 @@ using dynamic branching. <code>map</code> means to apply the command to
 each element of the input list (<code>models</code>) sequentially.</p>
 <p>Now that we understand how the branching workflow is constructed,
 let’s inspect the output:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2677,7 +2961,7 @@ row of the model summaries. To do that, we need to write a
 functions frequently when using <code>targets</code>, so it’s good to
 get used to it!</p>
 <p>Here is the function. Save this in <code>R/functions.R</code>:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2690,28 +2974,30 @@ get used to it!</p>
 </div>
 <p>Our new pipeline looks almost the same as before, but this time we
 use the custom function instead of <code>broom::glance()</code>.</p>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="co"># Load data from package</span></span>
-<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean data</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Build models</span></span>
 <span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
 <span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Get model summaries</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
@@ -2724,18 +3010,18 @@ use the custom function instead of <code>broom::glance()</code>.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>• start target penguin_data
-• built target penguin_data [0.003 seconds]
-• start target models
-• built target models [0.013 seconds]
-• start branch model_summaries_ea786eaa
-• built branch model_summaries_ea786eaa [0.032 seconds]
-• start branch model_summaries_1c878f62
-• built branch model_summaries_1c878f62 [0.008 seconds]
-• start branch model_summaries_afef26b4
-• built branch model_summaries_afef26b4 [0.004 seconds]
+<pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip target models
+• start branch model_summaries_5ad4cec5
+• built branch model_summaries_5ad4cec5 [0.017 seconds]
+• start branch model_summaries_c73912d5
+• built branch model_summaries_c73912d5 [0.009 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_91696941 [0.005 seconds]
 • built pattern model_summaries
-• end pipeline [0.194 seconds]</code></pre>
+• end pipeline [0.193 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (you may need to scroll to the
@@ -2790,7 +3076,7 @@ pattern?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -2849,7 +3135,7 @@ backend</a>.</p>
 <div class="callout-content">
 <p>You will need to install several packages to use the
 <code>future</code> backend:</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2882,7 +3168,7 @@ your machine.</p>
 <p>To show how this works we will simulate a long(ish) running analysis
 with the <code>Sys.sleep()</code> function, which just tells the
 computer to wait some number of seconds.</p>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2913,17 +3199,17 @@ computer to wait some number of seconds.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target some_data
-• built target some_data [0.147 seconds]
+• built target some_data [0.164 seconds]
 • start branch data_squared_3ba31302
 • start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.153 seconds]
+• built branch data_squared_3ba31302 [3.168 seconds]
 • start branch data_squared_552eb2cc
-• built branch data_squared_880e1e2e [3.155 seconds]
+• built branch data_squared_880e1e2e [3.167 seconds]
 • start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.155 seconds]
-• built branch data_squared_92b840e1 [3.155 seconds]
+• built branch data_squared_552eb2cc [3.173 seconds]
+• built branch data_squared_92b840e1 [3.17 seconds]
 • built pattern data_squared
-• end pipeline [9.689 seconds]</code></pre>
+• end pipeline [10.187 seconds]</code></pre>
 </div>
 <p>Notice that although the time required to build each individual
 target is about 3 seconds, the total time to run the entire workflow is
@@ -2935,34 +3221,37 @@ not need to change our custom function to run it in parallel</strong>.
 We only adjusted <em>the workflow</em>. This means it is relatively easy
 to refactor (modify) a workflow for running sequentially locally or
 running in parallel in a high-performance context.</p>
-<p>We can see this by applying parallel processing to a workflow that we
-were previously running sequentially, the penguins analysis:</p>
-<div class="codewrapper sourceCode" id="cb18">
+<p>We can see this by applying parallel processing to the penguins
+analysis. Add two more packages to <code>packages.R</code>,
+<code><a href="https://future.futureverse.org" class="external-link">library(future)</a></code> and <code><a href="https://future.callr.futureverse.org" class="external-link">library(future.callr)</a></code>.
+Also, add the line <code>plan(callr)</code> to
+<code>_targets.R</code>:</p>
+<div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">future</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">future.callr</span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">plan</span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="co"># Load data from package</span></span>
-<span>  penguin_data <span class="op">=</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span>,</span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean data</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Build models</span></span>
 <span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
 <span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Get model summaries</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
@@ -2972,31 +3261,28 @@ were previously running sequentially, the penguins analysis:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+<p>Finally, run the pipeline with <code>tar_make_future()</code> (you
+may need to run <code>tar_invalidate(everything())</code> to reset the
+pipeline first).</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
-• start target penguin_data
-• built target penguin_data [0.627 seconds]
+<pre class="output" tabindex="0"><code>• start target penguins_data_raw_file
+• built target penguins_data_raw_file [0.745 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.906 seconds]
+• start target penguins_data
+• built target penguins_data [0.753 seconds]
 • start target models
-• built target models [0.641 seconds]
-• start branch model_summaries_ea786eaa
-• start branch model_summaries_1c878f62
-• built branch model_summaries_ea786eaa [0.665 seconds]
-• start branch model_summaries_afef26b4
-• built branch model_summaries_1c878f62 [0.675 seconds]
-• built branch model_summaries_afef26b4 [0.665 seconds]
+• built target models [0.751 seconds]
+• start branch model_summaries_5ad4cec5
+• start branch model_summaries_c73912d5
+• built branch model_summaries_5ad4cec5 [0.795 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_c73912d5 [0.798 seconds]
+• built branch model_summaries_91696941 [0.76 seconds]
 • built pattern model_summaries
-• end pipeline [6.737 seconds]</code></pre>
+• end pipeline [11.812 seconds]</code></pre>
 </div>
 <p>You won’t notice much difference since these computations run so
 quickly, but this demonstrates how easy it is to make massive gains in
@@ -3027,7 +3313,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p> Last updated on 2023-05-26 | 
+<p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
@@ -3139,66 +3425,46 @@ sophisticated dependency tracking offered by <code>targets</code>.</p>
 analysis (in other words, the “heavy lifting”) in the
 <code>targets</code> pipeline, then use the Quarto document to
 <strong>summarize</strong> and <strong>plot</strong> the results.</p>
-</section><section id="an-example-bill-size-in-penguins"><h2 class="section-heading">An example: Bill size in penguins<a class="anchor" aria-label="anchor" href="#an-example-bill-size-in-penguins"></a>
+</section><section id="report-on-bill-size-in-penguins"><h2 class="section-heading">Report on bill size in penguins<a class="anchor" aria-label="anchor" href="#report-on-bill-size-in-penguins"></a>
 </h2>
 <hr class="half-width">
-<p>For example, the <a href="https://github.com/joelnitta/penguins-targets" class="external-link">demo workflow on
-bill size in penguins</a> constructs several models of bill size that
-differ in how they account for species, then generates a report:</p>
-<div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
-  <h3 class="accordion-header" id="headingInstructor2">
-  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>
-  Instructor Note
-  </h3>
-</button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
-<div class="accordion-body">
-<p>You will probably want to clone and run the <a href="https://github.com/joelnitta/penguins-targets" class="external-link">penguins-targets</a>
-demo since this is a lot to type out by hand.</p>
-</div>
-</div>
-</div>
-</div>
+<p>Continuing our penguin bill size analysis, let’s write a report
+evaluating each model.</p>
+<p>To save time, the report is already available at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a>.</p>
+<!-- FIXME ADD DETAILED DOWNLOAD INSTRUCTIONS -->
+<p>Download the <code>penguin_report.qmd</code> file to your project
+folder, and add one more target to the pipeline using the
+<code>tar_quarto()</code> function like this:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
 <span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
-<span>    <span class="va">penguin_data_raw</span>,</span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
 <span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
-<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span><span class="op">)</span></span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
-<span>  penguin_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguin_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Make models</span></span>
-<span>  penguin_models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span>,</span>
-<span>    separate <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguin_data</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Predict points from models</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">penguin_models_augmented</span>,</span>
-<span>    <span class="fu">augment_penguins</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Get model summaries</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">penguin_models_summary</span>,</span>
-<span>    <span class="fu">glance_penguins</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguin_models</span><span class="op">)</span></span>
+<span>    <span class="va">model_summaries</span>,</span>
+<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Generate report</span></span>
 <span>  <span class="fu">tar_quarto</span><span class="op">(</span></span>
@@ -3208,6 +3474,16 @@ demo since this is a lot to type out by hand.</p>
 <span>    packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"targets"</span>, <span class="st">"tidyverse"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error:
+! Error running targets::tar_make()
+  Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
+  Debugging guide: https://books.ropensci.org/targets/debugging.html
+  How to ask for help: https://books.ropensci.org/targets/help.html
+  Last error: could not find function "plan"</code></pre>
 </div>
 <p>The function to generate the report is <code>tar_quarto()</code>,
 from the <code>tarchetypes</code> package.</p>
@@ -3228,28 +3504,28 @@ any of the other targets, since they do not show up in the
 <p>The answer lies <strong>inside</strong> the
 <code>penguin_report.qmd</code> file. Let’s look at the start of the
 file:</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">MARKDOWN<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode markdown" tabindex="0"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Simpson's Paradox in Palmer Penguins"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
+<pre class="sourceCode markdown" tabindex="0"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Simpson's Paradox in Palmer Penguins"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
 </div>
 <p>The lines in between <code>---</code> and <code>---</code> at the
 very beginning are called the “YAML header”, and contain directions
@@ -3374,7 +3650,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.2" class="external-link">sandpaper (0.12.2)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.3" class="external-link">sandpaper (0.12.3)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -3397,9 +3673,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/aio.html",
-  "dateCreated": "2023-05-26",
-  "dateModified": "2023-05-30",
-  "datePublished": "2023-05-30"
+  "dateCreated": "2023-06-03",
+  "dateModified": "2023-06-03",
+  "datePublished": "2023-06-03"
 }
 
   </script><script>

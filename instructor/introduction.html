@@ -157,6 +157,7 @@
         <ul><li><a href="#what-is-reproducibility">What is reproducibility?</a></li>
 <li><a href="#what-is-targets">What is <code>targets</code>?</a></li>
 <li><a href="#who-should-use-targets">Who should use <code>targets</code>?</a></li>
+<li><a href="#about-the-example-dataset">About the example dataset</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
         
@@ -286,7 +287,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Introduction</h1>
-        <p> Last updated on 2023-05-24 | 
+        <p> Last updated on 2023-06-03 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -332,7 +333,7 @@ reproducibility</li>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Introduce the idea of reproducibility and why / who
 would want to use <code>targets</code></p>
@@ -390,6 +391,23 @@ other tools, you may want to consider an alternative.</p>
 <p>The <strong>goal</strong> of this workshop is to <strong>learn how to
 use <code>targets</code> to reproducible data analysis in
 R</strong>.</p>
+</section><section id="about-the-example-dataset"><h2 class="section-heading">About the example dataset<a class="anchor" aria-label="anchor" href="#about-the-example-dataset"></a>
+</h2>
+<hr class="half-width"><p>For this workshop, we will analyze an example dataset of measurements
+taken on adult foraging Adélie, Chinstrap, and Gentoo penguins observed
+on islands in the Palmer Archipelago, Antarctica.</p>
+<p>The goal of the analysis is to determine the relationship between
+bill length and depth by using linear models.</p>
+<p>The data are available from the <code>palmerpenguins</code> R
+package. You can get more information about the data by running
+<code>?palmerpenguins</code>.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="op">?</span><span class="va">palmerpenguins</span></span></code></pre>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -399,14 +417,15 @@ R</strong>.</p>
 </h3>
 <div class="callout-content">
 <ul><li>We can only have confidence in the results of scientific analyses if
-they can be reproduced by others</li>
-<li>“Others” includes your future self</li>
+they can be reproduced by others (including your future self)</li>
 <li>
 <code>targets</code> helps achieve reproducibility by automating
 workflow</li>
 <li>
 <code>targests</code> is designed for use with the R programming
 language</li>
+<li>The example dataset for this workshop includes measurements taken on
+penguins in Antarctica</li>
 </ul></div>
 </div>
 </div>
@@ -444,7 +463,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.2" class="external-link">sandpaper (0.12.2)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.3" class="external-link">sandpaper (0.12.3)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -466,9 +485,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/introduction.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/introduction.html",
-  "dateCreated": "2023-05-26",
-  "dateModified": "2023-05-24",
-  "datePublished": "2023-05-30"
+  "dateCreated": "2023-06-03",
+  "dateModified": "2023-06-03",
+  "datePublished": "2023-06-03"
 }
 
   </script><script>
