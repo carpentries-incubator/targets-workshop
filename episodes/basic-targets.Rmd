@@ -114,8 +114,6 @@ Furthermore, each item in the list is a call of the `tar_target()` function.
 The first argument of `tar_target()` is name of the target to build, and the second argument is the command used to build it.
 Note that the name of the target is **unquoted**, that is, it is written without any surrounding quotation marks.
 
-::::::::::::::::::::::::::::::::::::: callout
-
 ## Set up `_targets.R` file to run example analysis
 
 ### Background: non-`targets` version
@@ -241,8 +239,6 @@ tar_dir({
 ```
 
 Congratulations, you've run your first workflow with `targets`!
-
-:::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 

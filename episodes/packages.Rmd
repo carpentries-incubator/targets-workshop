@@ -58,7 +58,7 @@ This will be demonstrated using the pre-cleaned dataset from the `palmerpenguins
 
 You can only have one active `_targets.R` file at a time in a given project.
 
-We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
+We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins bill analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
 
 :::::::::::::::::::::::::::::::::::::
 
