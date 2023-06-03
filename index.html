@@ -136,12 +136,20 @@
                   <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         Summary and Setup
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+        
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#local-setup">Local setup</a></li>
+<li><a href="#alternative-in-the-cloud">Alternative: In the cloud</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
         
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -285,7 +293,9 @@ any links that you are not going to use.
  -->
 
 
-      <section id="setup"><p>Follow these instructions to install the required software on your
+      <section id="setup"><section id="local-setup"><h2 class="section-heading">Local setup<a class="anchor" aria-label="anchor" href="#local-setup"></a>
+</h2>
+<hr class="half-width"><p>Follow these instructions to install the required software on your
 computer.</p>
 <ul><li>
 <a href="https://www.r-project.org/" class="external-link">Download and install the latest
@@ -315,13 +325,18 @@ version for your computer.</li>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+</section><section id="alternative-in-the-cloud"><h2 class="section-heading">Alternative: In the cloud<a class="anchor" aria-label="anchor" href="#alternative-in-the-cloud"></a>
+</h2>
+<hr class="half-width"><p>There is a <a href="https://mybinder.org/" class="external-link">Binder</a> instance with
+RStudio and all necessary packages pre-installed available, so you don’t
+need to install anything on your own computer.</p>
+<p>Click the “Launch Binder” button below:</p>
+<p><a href="https://mybinder.org/v2/gh/joelnitta/penguins-targets/HEAD?urlpath=rstudio" class="external-link"><img src="https://mybinder.org/badge_logo.svg" alt="Binder" class="figure"></a></p>
 <!-- 
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
-
-
-      </section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
+</section></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link float-end" href="introduction.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
