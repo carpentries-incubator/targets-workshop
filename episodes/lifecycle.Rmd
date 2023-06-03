@@ -32,7 +32,7 @@ Episode summary: Demonstrate typical cycle of running `targets`: make, inspect, 
 #| warning: FALSE
 library(targets)
 library(visNetwork)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
 ```
 
 ## Re-running the workflow

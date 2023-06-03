@@ -31,7 +31,8 @@ Episode summary: Show how to use branching and parallel processing (technically 
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R") # nolint
+library(broom)
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
 
 # Increase width for printing tibbles
 options(width = 140)
