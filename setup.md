@@ -2,6 +2,8 @@
 title: Setup
 ---
 
+## Local setup
+
 Follow these instructions to install the required software on your computer.
 
 - [Download and install the latest version of R](https://www.r-project.org/).
@@ -23,3 +25,11 @@ install.packages(
   )
 )
 ```
+
+## Alternative: In the cloud
+
+There is a [Binder](https://mybinder.org/) instance with RStudio and all necessary packages pre-installed available, so you don't need to install anything on your own computer.
+
+Click the "Launch Binder" button below:
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/joelnitta/penguins-targets/HEAD?urlpath=rstudio)

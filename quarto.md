@@ -125,14 +125,6 @@ tar_plan(
 ```
 
 
-```{.error}
-Error:
-! Error running targets::tar_make()
-  Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
-  Debugging guide: https://books.ropensci.org/targets/debugging.html
-  How to ask for help: https://books.ropensci.org/targets/help.html
-  Last error: Quarto CLI not found.
-```
 
 The function to generate the report is `tar_quarto()`, from the `tarchetypes` package.
 
