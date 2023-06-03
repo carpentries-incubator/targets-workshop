@@ -116,46 +116,109 @@ Note that the name of the target is **unquoted**, that is, it is written without
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## Edit `_targets.R`
+## Set up `_targets.R` file to run example analysis
 
-Let's modify the default workflow: rename the names of the targets from `data` to `my_data` and `summary` to `my_summary`.
-This is to avoid confusion with base R functions `data()` and `summary()`.
-It is generally a good idea to avoid naming objects in R with the names of existing functions.
+### Background: non-`targets` version
 
-Make sure to rename `data` to `my_data` **each time it appears** (twice).
-The names of the targets are very important: this is how `targets` knows how workflow steps depend on each other.
+We will use this template to start building our analysis of bill shape in penguins.
+First though, to get familiar with the functions and packages we'll use, let's run the code like you would in a "normal" R script without using `targets`.
 
-:::::::::::::::::::::::::::::::::::::
+Recall that we are using the `palmerpenguins` R package to obtain the data.
+This package actually includes two variations of the dataset: one is an external CSV file with the raw data, and another is the cleaned data loaded into R.
+In real life you are probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
 
-Your final `_targets.R` file should look like this:
+The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package)
+
+```{r}
+#| label: normal-r-path
+library(palmerpenguins)
+
+# Get path to CSV file
+penguins_csv_file <- path_to_file("penguins_raw.csv")
+
+penguins_csv_file
+```
+
+We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see <!-- FIXME ADD LINK -->this lesson.
+
+Let's load the data with `read_csv()`.
+
+```{r}
+#| label: normal-r-load
+library(tidyverse)
+
+# Read CSV file into R
+penguins_data_raw <- read_csv(penguins_csv_file)
+
+penguins_data_raw
+```
+
+We see the raw data has some awkward column names with spaces (these are hard to type out and can easily lead to mistakes in the code), and far more columns than we need.
+For the purposes of this analysis, we only need species name, bill length, and bill depth.
+In the raw data, the rather technical term "Culmen" is used to refer to the bill.
+
+Let's clean up the data to make it easier to use for downstream analyses.
+We will also remove any rows with missing data, because this could cause errors for some functions later.
+
+```{r}
+#| label: normal-r-clean
+
+# Clean up raw data
+penguins_data <- penguins_data_raw %>%
+  # Rename columns for easier typing and
+  # subset to only the columns needed for analysis
+  select(
+    species = Species,
+    bill_length_mm = `Culmen Length (mm)`,
+    bill_depth_mm = `Culmen Depth (mm)`
+  ) %>%
+  # Delete rows with missing data
+  remove_missing(na.rm = TRUE)
+
+penguins_data
+```
+
+That's better!
+
+### `targets` version
+
+What does this look like using `targets`?
+
+The biggest difference is that we need to **put each step of the workflow into the list at the end**.
+
+We also define a custom function for the data cleaning step.
+That is because the list of targets at the end **should look like a high-level summary of your analysis**.
+You want to avoid lengthy chunks of code when defining the targets; instead, put that code in the custom functions.
+The other steps (setting the file path and loading the data) are each just one function call so there's not much point in putting those into their own custom functions.
+
+Finally, each step in the workflow is defined with the `tar_target()` function.
 
 ```{r}
 #| label: targets-show-workflow
 #| eval: FALSE
 library(targets)
-# This is an example _targets.R file. Every
-# {targets} pipeline needs one.
-# Use tar_script() to create _targets.R and tar_edit()
-# to open it again for editing.
-# Then, run tar_make() to run the pipeline
-# and tar_read(summary) to view the results.
+library(palmerpenguins)
+library(tidyverse)
 
-# Define custom functions and other global objects.
-# This is where you write source(\"R/functions.R\")
-# if you keep your functions in external scripts.
-summ <- function(dataset) {
-  colMeans(dataset)
+clean_penguin_data <- function(penguins_data_raw) {
+  penguins_data_raw %>%
+    select(
+      species = Species,
+      bill_length_mm = `Culmen Length (mm)`,
+      bill_depth_mm = `Culmen Depth (mm)`
+    ) %>%
+    remove_missing(na.rm = TRUE)
 }
 
-# Set target-specific options such as packages:
-# tar_option_set(packages = "utils") # nolint
-
-# End this file with a list of target objects.
 list(
-  tar_target(my_data, data.frame(x = sample.int(100), y = sample.int(100))),
-  tar_target(my_summary, summ(my_data)) # Call your custom functions as needed.
+  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_target(penguins_data_raw, read_csv(
+    penguins_csv_file, show_col_types = FALSE)),
+  tar_target(penguins_data, clean_penguin_data(penguins_data_raw))
 )
 ```
+
+I have set `show_col_types = FALSE` in `read_csv()` because we know from the earlier code that the column types were set correctly by default (character for species and numeric for bill length and depth), so we don't need to see the warning it would otherwise issue.
 
 ## Run the workflow
 
@@ -172,26 +235,12 @@ tar_make()
 #| label: targets-run-hide
 #| echo: FALSE
 tar_dir({
-  write_example_plan(2)
+  write_example_plan(1)
   tar_make()
 })
 ```
 
 Congratulations, you've run your first workflow with `targets`!
-
-::::::::::::::::::::::::::::::::::::: challenge
-
-## Challenge: What happened during the workflow?
-
-Inspect the list at the end of `_targets.R`. Can you describe the steps of the workflow?
-
-:::::::::::::::::::::::::::::::::: solution
-
-The first step of the workflow built a target called `my_data` that includes two variables, `x` and `y`.
-
-The second step of the workflow built a target called `my_summ` that includes the mean of `x` and `y` calculated with a custom function called `summ()`.
-
-::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::::
 
