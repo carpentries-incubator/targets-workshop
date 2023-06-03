@@ -83,7 +83,7 @@ tar_plan(
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.024 seconds]
+• built target combined_model [0.023 seconds]
 • end pipeline [0.109 seconds]
 ```
 
@@ -153,14 +153,14 @@ tar_plan(
 • start target interaction_model
 • built target interaction_model [0.005 seconds]
 • start target species_model
-• built target species_model [0.001 seconds]
+• built target species_model [0.002 seconds]
 • start target combined_summary
-• built target combined_summary [0.058 seconds]
+• built target combined_summary [0.055 seconds]
 • start target interaction_summary
 • built target interaction_summary [0.003 seconds]
 • start target species_summary
 • built target species_summary [0.003 seconds]
-• end pipeline [0.183 seconds]
+• end pipeline [0.18 seconds]
 ```
 
 Let's look at the summary of one of the models:
@@ -236,7 +236,7 @@ First, let's look at the messages provided by `tar_make()`.
 • start branch model_summaries_c73912d5
 • built branch model_summaries_c73912d5 [0.052 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.004 seconds]
+• built branch model_summaries_91696941 [0.003 seconds]
 • built pattern model_summaries
 • end pipeline [0.182 seconds]
 ```
@@ -371,11 +371,11 @@ tar_plan(
 • start branch model_summaries_5ad4cec5
 • built branch model_summaries_5ad4cec5 [0.016 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.009 seconds]
+• built branch model_summaries_c73912d5 [0.008 seconds]
 • start branch model_summaries_91696941
 • built branch model_summaries_91696941 [0.005 seconds]
 • built pattern model_summaries
-• end pipeline [0.192 seconds]
+• end pipeline [0.19 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
@@ -543,7 +543,6 @@ You will need to install several packages to use the `future` backend:
 
 ```r
 install.packages("future")
-install.packages("future.batchtools")
 install.packages("future.callr")
 ```
 
@@ -590,17 +589,17 @@ Here is the output when running with `tar_make_future(workers = 2)`:
 
 ```{.output}
 • start target some_data
-• built target some_data [0.158 seconds]
+• built target some_data [0.155 seconds]
 • start branch data_squared_3ba31302
 • start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.163 seconds]
+• built branch data_squared_3ba31302 [3.158 seconds]
 • start branch data_squared_552eb2cc
-• built branch data_squared_880e1e2e [3.167 seconds]
+• built branch data_squared_880e1e2e [3.161 seconds]
 • start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.161 seconds]
-• built branch data_squared_92b840e1 [3.161 seconds]
+• built branch data_squared_552eb2cc [3.16 seconds]
+• built branch data_squared_92b840e1 [3.163 seconds]
 • built pattern data_squared
-• end pipeline [9.961 seconds]
+• end pipeline [9.888 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 3 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
@@ -656,28 +655,28 @@ Finally, run the pipeline with `tar_make_future()` (you may need to run `tar_inv
 
 ```{.output}
 • start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.709 seconds]
+• built target penguins_data_raw_file [0.701 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.884 seconds]
+• built target penguins_data_raw [0.902 seconds]
 • start target penguins_data
-• built target penguins_data [0.718 seconds]
+• built target penguins_data [0.709 seconds]
 • start target models
-• built target models [0.709 seconds]
+• built target models [0.716 seconds]
 • start branch model_predictions_5ad4cec5
 • start branch model_predictions_c73912d5
-• built branch model_predictions_5ad4cec5 [0.734 seconds]
+• built branch model_predictions_5ad4cec5 [0.715 seconds]
 • start branch model_predictions_91696941
-• built branch model_predictions_c73912d5 [0.718 seconds]
+• built branch model_predictions_c73912d5 [0.727 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_predictions_91696941 [0.762 seconds]
+• built branch model_predictions_91696941 [0.722 seconds]
 • built pattern model_predictions
 • start branch model_summaries_c73912d5
-• built branch model_summaries_5ad4cec5 [0.743 seconds]
+• built branch model_summaries_5ad4cec5 [0.742 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_c73912d5 [0.723 seconds]
-• built branch model_summaries_91696941 [0.734 seconds]
+• built branch model_summaries_c73912d5 [0.713 seconds]
+• built branch model_summaries_91696941 [0.721 seconds]
 • built pattern model_summaries
-• end pipeline [13.088 seconds]
+• end pipeline [13.005 seconds]
 ```
 
 You won't notice much difference since these computations run so quickly, but this demonstrates how easy it is to make massive gains in efficiency with your own real analysis by using parallel computing.

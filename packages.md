@@ -71,8 +71,8 @@ tar_plan(
 
 ```{.output}
 • start target adelie_data
-• built target adelie_data [0.027 seconds]
-• end pipeline [0.086 seconds]
+• built target adelie_data [0.026 seconds]
+• end pipeline [0.085 seconds]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -101,7 +101,7 @@ tar_plan(
 ```{.output}
 • start target adelie_data
 • built target adelie_data [0.026 seconds]
-• end pipeline [0.085 seconds]
+• end pipeline [0.086 seconds]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
