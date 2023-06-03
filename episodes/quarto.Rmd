@@ -140,6 +140,11 @@ tar_plan(
 ```{r}
 #| label: example-penguins-hide-1
 #| echo: FALSE
+#| eval: FALSE
+
+# FIXME
+# Skip eval until can figure out how to install quarto CLI in whatever is
+# compiling the lesson
 
 tar_dir({
   library(quarto)
