@@ -29,8 +29,6 @@ install.packages(
 
 ## Alternative: In the cloud
 
-There is a [Binder](https://mybinder.org/) instance with RStudio and all necessary packages pre-installed available, so you don't need to install anything on your own computer.
+There is a [Posit Cloud](https://posit.cloud/) instance with RStudio and all necessary packages pre-installed available, so you don't need to install anything on your own computer. You may need to create an account (free).
 
-Click the "Launch Binder" button below:
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/joelnitta/penguins-targets/HEAD?urlpath=rstudio)
+Click this link to open: <https://posit.cloud/content/6064275>
