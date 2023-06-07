@@ -289,7 +289,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Batch and Parallel Processing</h1>
-        <p> Last updated on 2023-06-03 | 
+        <p> Last updated on 2023-06-07 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -394,8 +394,8 @@ without distinction:</p>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.023 seconds]
-• end pipeline [0.109 seconds]</code></pre>
+• built target combined_model [0.027 seconds]
+• end pipeline [0.12 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -472,14 +472,14 @@ for such an analysis might look like <strong>without branching</strong>
 • start target interaction_model
 • built target interaction_model [0.005 seconds]
 • start target species_model
-• built target species_model [0.002 seconds]
+• built target species_model [0.001 seconds]
 • start target combined_summary
-• built target combined_summary [0.055 seconds]
+• built target combined_summary [0.053 seconds]
 • start target interaction_summary
-• built target interaction_summary [0.003 seconds]
+• built target interaction_summary [0.004 seconds]
 • start target species_summary
-• built target species_summary [0.003 seconds]
-• end pipeline [0.18 seconds]</code></pre>
+• built target species_summary [0.004 seconds]
+• end pipeline [0.188 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -551,15 +551,15 @@ branching</strong>:</p>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target models
-• built target models [0.007 seconds]
+• built target models [0.008 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.008 seconds]
+• built branch model_summaries_5ad4cec5 [0.01 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.052 seconds]
+• built branch model_summaries_c73912d5 [0.05 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.003 seconds]
+• built branch model_summaries_91696941 [0.004 seconds]
 • built pattern model_summaries
-• end pipeline [0.182 seconds]</code></pre>
+• end pipeline [0.196 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like model_summaries_5ad4cec5, then one overall
@@ -659,7 +659,7 @@ get used to it!</p>
 <code class="sourceCode R"><span><span class="va">glance_with_mod_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
 <span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
@@ -706,13 +706,13 @@ use the custom function instead of <code>glance()</code>.</p>
 ✔ skip target penguins_data
 ✔ skip target models
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.016 seconds]
+• built branch model_summaries_5ad4cec5 [0.018 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.008 seconds]
+• built branch model_summaries_c73912d5 [0.009 seconds]
 • start branch model_summaries_91696941
 • built branch model_summaries_91696941 [0.005 seconds]
 • built pattern model_summaries
-• end pipeline [0.19 seconds]</code></pre>
+• end pipeline [0.205 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (you may need to scroll to the
@@ -778,7 +778,7 @@ will need to define a custom function just like we did for
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>augment_with_mod_name()</code>. It
 is the same as <code>glance_with_mod_name()</code>, but use
@@ -790,7 +790,7 @@ is the same as <code>glance_with_mod_name()</code>, but use
 <code class="sourceCode R"><span><span class="va">augment_with_mod_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
 <span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
@@ -878,7 +878,7 @@ pattern?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul><li>crossing: one branch per combination of elements
@@ -993,17 +993,17 @@ computer to wait some number of seconds.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target some_data
-• built target some_data [0.155 seconds]
+• built target some_data [0.176 seconds]
 • start branch data_squared_3ba31302
 • start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.158 seconds]
+• built branch data_squared_3ba31302 [3.189 seconds]
 • start branch data_squared_552eb2cc
-• built branch data_squared_880e1e2e [3.161 seconds]
+• built branch data_squared_880e1e2e [3.177 seconds]
 • start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.16 seconds]
-• built branch data_squared_92b840e1 [3.163 seconds]
+• built branch data_squared_552eb2cc [3.177 seconds]
+• built branch data_squared_92b840e1 [3.183 seconds]
 • built pattern data_squared
-• end pipeline [9.888 seconds]</code></pre>
+• end pipeline [10.49 seconds]</code></pre>
 </div>
 <p>Notice that although the time required to build each individual
 target is about 3 seconds, the total time to run the entire workflow is
@@ -1068,28 +1068,28 @@ pipeline first).</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>• start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.701 seconds]
+• built target penguins_data_raw_file [0.771 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.902 seconds]
+• built target penguins_data_raw [0.944 seconds]
 • start target penguins_data
-• built target penguins_data [0.709 seconds]
+• built target penguins_data [0.787 seconds]
 • start target models
-• built target models [0.716 seconds]
+• built target models [0.767 seconds]
 • start branch model_predictions_5ad4cec5
 • start branch model_predictions_c73912d5
-• built branch model_predictions_5ad4cec5 [0.715 seconds]
+• built branch model_predictions_5ad4cec5 [0.807 seconds]
 • start branch model_predictions_91696941
-• built branch model_predictions_c73912d5 [0.727 seconds]
+• built branch model_predictions_c73912d5 [0.814 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_predictions_91696941 [0.722 seconds]
+• built branch model_predictions_91696941 [0.781 seconds]
 • built pattern model_predictions
 • start branch model_summaries_c73912d5
-• built branch model_summaries_5ad4cec5 [0.742 seconds]
+• built branch model_summaries_5ad4cec5 [0.804 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_c73912d5 [0.713 seconds]
-• built branch model_summaries_91696941 [0.721 seconds]
+• built branch model_summaries_c73912d5 [0.78 seconds]
+• built branch model_summaries_91696941 [0.785 seconds]
 • built pattern model_summaries
-• end pipeline [13.005 seconds]</code></pre>
+• end pipeline [14.242 seconds]</code></pre>
 </div>
 <p>You won’t notice much difference since these computations run so
 quickly, but this demonstrates how easy it is to make massive gains in
@@ -1168,9 +1168,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/batch.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/batch.html",
-  "dateCreated": "2023-06-06",
-  "dateModified": "2023-06-03",
-  "datePublished": "2023-06-06"
+  "dateCreated": "2023-06-07",
+  "dateModified": "2023-06-07",
+  "datePublished": "2023-06-07"
 }
 
   </script><script>

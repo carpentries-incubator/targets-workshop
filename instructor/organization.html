@@ -286,7 +286,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Best Practices for targets Project Organization</h1>
-        <p> Last updated on 2023-06-03 | 
+        <p> Last updated on 2023-06-07 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -336,7 +336,7 @@ reproducibility</li>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Demonstrate best-practices for project
 organization</p>
@@ -383,12 +383,12 @@ syntax:</p>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">penguins_data_raw</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="va">penguins_data_raw</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">select</span><span class="op">(</span></span>
 <span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
 <span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
 <span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
-<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -578,9 +578,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/organization.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/organization.html",
-  "dateCreated": "2023-06-06",
-  "dateModified": "2023-06-03",
-  "datePublished": "2023-06-06"
+  "dateCreated": "2023-06-07",
+  "dateModified": "2023-06-07",
+  "datePublished": "2023-06-07"
 }
 
   </script><script>
