@@ -43,7 +43,7 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.067 seconds]
+✔ skip pipeline [0.072 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -64,13 +64,13 @@ Edit `_targets.R` so that the `clean_penguin_data()` function looks like this:
 
 ```r
 clean_penguin_data <- function(penguins_data_raw) {
-  penguins_data_raw %>%
+  penguins_data_raw |>
     select(
       species = Species,
       bill_length_mm = `Culmen Length (mm)`,
       bill_depth_mm = `Culmen Depth (mm)`
-    ) %>%
-    remove_missing(na.rm = TRUE) %>%
+    ) |>
+    remove_missing(na.rm = TRUE) |>
     # Split "species" apart on spaces, and only keep the first word
     separate(species, into = "species", extra = "drop")
 }
@@ -88,8 +88,8 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.019 seconds]
-• end pipeline [0.1 seconds]
+• built target penguins_data [0.022 seconds]
+• end pipeline [0.109 seconds]
 ```
 
 What happened?
@@ -259,7 +259,7 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.067 seconds]
+✔ skip pipeline [0.072 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -275,8 +275,8 @@ tar_make()
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.02 seconds]
-• end pipeline [0.098 seconds]
+• built target penguins_data [0.021 seconds]
+• end pipeline [0.109 seconds]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).

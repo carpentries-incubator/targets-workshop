@@ -193,14 +193,14 @@ We will also remove any rows with missing data, because this could cause errors 
 
 ```r
 # Clean up raw data
-penguins_data <- penguins_data_raw %>%
+penguins_data <- penguins_data_raw |>
   # Rename columns for easier typing and
   # subset to only the columns needed for analysis
   select(
     species = Species,
     bill_length_mm = `Culmen Length (mm)`,
     bill_depth_mm = `Culmen Depth (mm)`
-  ) %>%
+  ) |>
   # Delete rows with missing data
   remove_missing(na.rm = TRUE)
 
@@ -246,12 +246,12 @@ library(palmerpenguins)
 library(tidyverse)
 
 clean_penguin_data <- function(penguins_data_raw) {
-  penguins_data_raw %>%
+  penguins_data_raw |>
     select(
       species = Species,
       bill_length_mm = `Culmen Length (mm)`,
       bill_depth_mm = `Culmen Depth (mm)`
-    ) %>%
+    ) |>
     remove_missing(na.rm = TRUE)
 }
 
@@ -280,10 +280,10 @@ tar_make()
 • start target penguins_csv_file
 • built target penguins_csv_file [0.002 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.133 seconds]
+• built target penguins_data_raw [0.15 seconds]
 • start target penguins_data
-• built target penguins_data [0.01 seconds]
-• end pipeline [0.225 seconds]
+• built target penguins_data [0.011 seconds]
+• end pipeline [0.252 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
