@@ -1,5 +1,5 @@
 ---
-title: 'Batch and Parallel Processing'
+title: 'Branching'
 teaching: 10
 exercises: 2
 ---
@@ -7,20 +7,18 @@ exercises: 2
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How can we specify many targets without typing everything out?
-- How can we build targets in parallel?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Be able to specify targets using branching
-- Be able to build targets in parallel
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-Episode summary: Show how to use branching and parallel processing (technically separate topics, but they go well together)
+Episode summary: Show how to use branching
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -38,15 +36,13 @@ source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episod
 options(width = 140)
 ```
 
-## Why batch and parallel processing?
+## Why branching?
 
-One of the major strengths of `targets` is the ability to define many targets from a single line of code (batch processing).
+One of the major strengths of `targets` is the ability to define many targets from a single line of code ("branching").
 This not only saves you typing, it also **reduces the risk of errors** since there is less chance of making a typo.
-Furthermore, it is related to another powerful feature: `targets` can run multiple analyses in parallel (at the same time), thereby **making your analysis finish sooner**.
 
 ## Types of branching
 
-Batching in `targets` is called "branching."
 There are two types of branching, **dynamic branching** and **static branching**.
 "Branching" refers to the idea that you can provide a single specification for how to make targets (the "pattern"), and `targets` generates multiple targets from it ("branches").
 "Dynamic" means that the branches that result from the pattern do not have to be defined ahead of time---they are a dynamic result of the code.
@@ -350,7 +346,7 @@ Here is the function. Save this in `R/functions.R`:
 glance_with_mod_name <- function(model_in_list) {
   model_name <- names(model_in_list)
   model <- model_in_list[[1]]
-  glance(model) %>%
+  glance(model) |>
     mutate(model_name = model_name)
 }
 ```
@@ -459,7 +455,7 @@ Define the new function as `augment_with_mod_name()`. It is the same as `glance_
 augment_with_mod_name <- function(model_in_list) {
   model_name <- names(model_in_list)
   model <- model_in_list[[1]]
-  augment(model) %>%
+  augment(model) |>
     mutate(model_name = model_name)
 }
 ```
@@ -541,176 +537,9 @@ You can [find out more about different branching patterns in the `targets` manua
 
 :::::::::::::::::::::::::::::::::::::
 
-## Parallel processing
-
-Once a pipeline starts to include many targets, you may want to think about parallel processing.
-This takes advantage of multiple processors in your computer to build multiple targets at the same time.
-
-::::::::::::::::::::::::::::::::::::: {.callout}
-
-## When to use parallel computing
-
-Parallel computing should only be used if your workflow has a structure such that it makes sense---if your workflow only consists of a linear sequence of targets, then there is nothing to parallelize.
-
-:::::::::::::::::::::::::::::::::::::
-
-`targets` includes support for high-performance computing, cloud computing, and various parallel backends.
-Here, we assume you are running this analysis on a laptop and so will use a relatively simple backend.
-If you are interested in high-performance computing, [see the `targets` manual](https://books.ropensci.org/targets/hpc.html).
-
-### Install R packages for parallel computing
-
-For this demo, we will use the [`future` backend](https://github.com/HenrikBengtsson/future).
-
-::::::::::::::::::::::::::::::::::::: {.prereq}
-
-### Install required packages
-
-You will need to install several packages to use the `future` backend:
-
-```{r}
-#| label: install-future
-#| eval: false
-install.packages("future")
-install.packages("future.callr")
-```
-
-:::::::::::::::::::::::::::::::::::::
-
-### Set up workflow
-
-There are a few things you need to change to enable parallel processing with `future`:
-
-- Load the `future` and `future.callr` packages
-- Add a line with `plan(callr)`
-- When you run the pipeline, use `tar_make_future(workers = 2)` instead of `tar_make()`
-
-Here, `workers = 2` is the number of processes to run in parallel. You may increase this up to the number of cores available on your machine.
-
-To show how this works we will simulate a long(ish) running analysis with the `Sys.sleep()` function, which just tells the computer to wait some number of seconds.
-
-```{r}
-#| label: example-model-show-8
-#| eval: FALSE
-library(targets)
-library(tarchetypes)
-library(future)
-library(future.callr)
-
-plan(callr)
-
-long_square <- function(data) {
-  Sys.sleep(3)
-  data^2
-}
-
-tar_plan(
-  some_data = c(1, 2, 3, 4),
-  tar_target(
-    data_squared,
-    long_square(some_data),
-    pattern = map(some_data)
-  )
-)
-```
-
-Here is the output when running with `tar_make_future(workers = 2)`:
-
-```{r}
-#| label: example-model-hide-8
-#| echo: FALSE
-tar_dir({
-  tar_script({
-    library(targets)
-    library(tarchetypes)
-    library(future)
-    library(future.callr)
-    plan(callr)
-    long_square <- function(data) {
-      Sys.sleep(3)
-      data^2
-    }
-    tar_plan(
-      some_data = c(1, 2, 3, 4),
-      tar_target(
-        data_squared,
-        long_square(some_data),
-        pattern = map(some_data)
-      )
-    )
-  })
-  tar_make_future(workers = 2)
-})
-```
-
-Notice that although the time required to build each individual target is about 3 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
-
-The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
-
-We can see this by applying parallel processing to the penguins analysis.
-Add two more packages to `packages.R`, `library(future)` and `library(future.callr)`.
-Also, add the line `plan(callr)` to `_targets.R`:
-
-```{r}
-#| label: example-model-show-9
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-plan(callr)
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
-  ),
-  # Get model predictions
-  tar_target(
-    model_predictions,
-    augment_with_mod_name(models),
-    pattern = map(models)
-  )
-)
-```
-
-Finally, run the pipeline with `tar_make_future()` (you may need to run `tar_invalidate(everything())` to reset the pipeline first).
-
-```{r}
-#| label: example-model-hide-9
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(8)
-  # Run it
-  tar_make_future(workers = 2)
-})
-```
-
-You won't notice much difference since these computations run so quickly, but this demonstrates how easy it is to make massive gains in efficiency with your own real analysis by using parallel computing.
-
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - Dynamic branching creates multiple targets with a single command
 - You usually need to write custom functions so that the output of the branches includes necessary metadata 
-- Parallel computing works at the level of the workflow, not the function
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
