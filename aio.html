@@ -263,7 +263,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="batch.html">8. Batch and Parallel Processing</a>
+        <a href="branch.html">8. Branching</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -275,7 +275,19 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="quarto.html">9. Reproducible Reports with Quarto</a>
+        <a href="parallel.html">9. Parallel Processing</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush11">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading11">
+        <a href="quarto.html">10. Reproducible Reports with Quarto</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -2282,7 +2294,7 @@ while tracking its contents?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2425,7 +2437,7 @@ modified?<a class="anchor" aria-label="anchor" href="#challenge-what-happens-to-
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>hello_caps_out</code> has
 changed (is “invalidated”), and re-runs the code to make it, thus
@@ -2464,11 +2476,11 @@ data</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
-</section></section><section id="aio-batch"><p>Content from <a href="batch.html">Batch and Parallel Processing</a></p>
+</section></section><section id="aio-branch"><p>Content from <a href="branch.html">Branching</a></p>
 <hr>
-<p> Last updated on 2023-06-07 | 
+<p> Last updated on 2023-06-14 | 
         
-        <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/batch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+        <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -2481,7 +2493,6 @@ any links that you are not going to use.
 <h3 class="card-title">Questions</h3>
 <ul>
 <li>How can we specify many targets without typing everything out?</li>
-<li>How can we build targets in parallel?</li>
 </ul>
 </div>
 </div>
@@ -2492,30 +2503,25 @@ any links that you are not going to use.
 <h3 class="card-title">Objectives</h3>
 <ul>
 <li>Be able to specify targets using branching</li>
-<li>Be able to build targets in parallel</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </div>
-<section id="why-batch-and-parallel-processing"><h2 class="section-heading">Why batch and parallel processing?<a class="anchor" aria-label="anchor" href="#why-batch-and-parallel-processing"></a>
+<section id="why-branching"><h2 class="section-heading">Why branching?<a class="anchor" aria-label="anchor" href="#why-branching"></a>
 </h2>
 <hr class="half-width">
 <p>One of the major strengths of <code>targets</code> is the ability to
-define many targets from a single line of code (batch processing). This
-not only saves you typing, it also <strong>reduces the risk of
-errors</strong> since there is less chance of making a typo.
-Furthermore, it is related to another powerful feature:
-<code>targets</code> can run multiple analyses in parallel (at the same
-time), thereby <strong>making your analysis finish sooner</strong>.</p>
+define many targets from a single line of code (“branching”). This not
+only saves you typing, it also <strong>reduces the risk of
+errors</strong> since there is less chance of making a typo.</p>
 </section><section id="types-of-branching"><h2 class="section-heading">Types of branching<a class="anchor" aria-label="anchor" href="#types-of-branching"></a>
 </h2>
 <hr class="half-width">
-<p>Batching in <code>targets</code> is called “branching.” There are two
-types of branching, <strong>dynamic branching</strong> and
-<strong>static branching</strong>. “Branching” refers to the idea that
-you can provide a single specification for how to make targets (the
+<p>There are two types of branching, <strong>dynamic branching</strong>
+and <strong>static branching</strong>. “Branching” refers to the idea
+that you can provide a single specification for how to make targets (the
 “pattern”), and <code>targets</code> generates multiple targets from it
 (“branches”). “Dynamic” means that the branches that result from the
 pattern do not have to be defined ahead of time—they are a dynamic
@@ -2571,8 +2577,8 @@ without distinction:</p>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.027 seconds]
-• end pipeline [0.12 seconds]</code></pre>
+• built target combined_model [0.028 seconds]
+• end pipeline [0.137 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -2647,16 +2653,16 @@ for such an analysis might look like <strong>without branching</strong>
 ✔ skip target penguins_data
 ✔ skip target combined_model
 • start target interaction_model
-• built target interaction_model [0.005 seconds]
+• built target interaction_model [0.006 seconds]
 • start target species_model
-• built target species_model [0.001 seconds]
+• built target species_model [0.002 seconds]
 • start target combined_summary
-• built target combined_summary [0.053 seconds]
+• built target combined_summary [0.063 seconds]
 • start target interaction_summary
-• built target interaction_summary [0.004 seconds]
+• built target interaction_summary [0.005 seconds]
 • start target species_summary
-• built target species_summary [0.004 seconds]
-• end pipeline [0.188 seconds]</code></pre>
+• built target species_summary [0.005 seconds]
+• end pipeline [0.226 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -2730,15 +2736,15 @@ branching</strong>:</p>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target models
-• built target models [0.008 seconds]
+• built target models [0.009 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.01 seconds]
+• built branch model_summaries_5ad4cec5 [0.012 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.05 seconds]
+• built branch model_summaries_c73912d5 [0.061 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.004 seconds]
+• built branch model_summaries_91696941 [0.005 seconds]
 • built pattern model_summaries
-• end pipeline [0.196 seconds]</code></pre>
+• end pipeline [0.231 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like model_summaries_5ad4cec5, then one overall
@@ -2886,13 +2892,13 @@ use the custom function instead of <code>glance()</code>.</p>
 ✔ skip target penguins_data
 ✔ skip target models
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.018 seconds]
+• built branch model_summaries_5ad4cec5 [0.021 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.009 seconds]
+• built branch model_summaries_c73912d5 [0.011 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.005 seconds]
+• built branch model_summaries_91696941 [0.006 seconds]
 • built pattern model_summaries
-• end pipeline [0.205 seconds]</code></pre>
+• end pipeline [0.221 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (you may need to scroll to the
@@ -3076,22 +3082,73 @@ manual</a>.</p>
 </div>
 </div>
 </div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
 </div>
-</section><section id="parallel-processing"><h2 class="section-heading">Parallel processing<a class="anchor" aria-label="anchor" href="#parallel-processing"></a>
-</h2>
-<hr class="half-width">
+<div class="callout-inner">
+<h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Dynamic branching creates multiple targets with a single
+command</li>
+<li>You usually need to write custom functions so that the output of the
+branches includes necessary metadata</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- 
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use. 
+ -->
+</div>
+</section></section><section id="aio-parallel"><p>Content from <a href="parallel.html">Parallel Processing</a></p>
+<hr>
+<p> Last updated on 2023-06-14 | 
+        
+        <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/parallel.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>How can we build targets in parallel?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Be able to build targets in parallel</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>Once a pipeline starts to include many targets, you may want to think
 about parallel processing. This takes advantage of multiple processors
 in your computer to build multiple targets at the same time.</p>
-<div id="when-to-use-parallel-computing" class="callout callout">
+<div id="when-to-use-parallel-processing" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="when-to-use-parallel-computing" class="callout-inner">
-<h3 class="callout-title">When to use parallel computing<a class="anchor" aria-label="anchor" href="#when-to-use-parallel-computing"></a>
+<div id="when-to-use-parallel-processing" class="callout-inner">
+<h3 class="callout-title">When to use parallel processing<a class="anchor" aria-label="anchor" href="#when-to-use-parallel-processing"></a>
 </h3>
 <div class="callout-content">
-<p>Parallel computing should only be used if your workflow has a
+<p>Parallel processing should only be used if your workflow has a
 structure such that it makes sense—if your workflow only consists of a
 linear sequence of targets, then there is nothing to parallelize.</p>
 </div>
@@ -3117,7 +3174,7 @@ backend</a>.</p>
 <div class="callout-content">
 <p>You will need to install several packages to use the
 <code>future</code> backend:</p>
-<div class="codewrapper sourceCode" id="cb24">
+<div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -3146,68 +3203,9 @@ packages</li>
 <p>Here, <code>workers = 2</code> is the number of processes to run in
 parallel. You may increase this up to the number of cores available on
 your machine.</p>
-<p>To show how this works we will simulate a long(ish) running analysis
-with the <code>Sys.sleep()</code> function, which just tells the
-computer to wait some number of seconds.</p>
-<div class="codewrapper sourceCode" id="cb25">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">future</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">future.callr</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">plan</span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">long_square</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">Sys.sleep</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">^</span><span class="fl">2</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  some_data <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">data_squared</span>,</span>
-<span>    <span class="fu">long_square</span><span class="op">(</span><span class="va">some_data</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">some_data</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
-</div>
-<p>Here is the output when running with
-<code>tar_make_future(workers = 2)</code>:</p>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>• start target some_data
-• built target some_data [0.176 seconds]
-• start branch data_squared_3ba31302
-• start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.189 seconds]
-• start branch data_squared_552eb2cc
-• built branch data_squared_880e1e2e [3.177 seconds]
-• start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.177 seconds]
-• built branch data_squared_92b840e1 [3.183 seconds]
-• built pattern data_squared
-• end pipeline [10.49 seconds]</code></pre>
-</div>
-<p>Notice that although the time required to build each individual
-target is about 3 seconds, the total time to run the entire workflow is
-less than the sum of the individual target times! That is proof that
-processes are running in parallel <strong>and saving you
-time</strong>.</p>
-<p>The unique and powerful thing about targets is that <strong>we did
-not need to change our custom function to run it in parallel</strong>.
-We only adjusted <em>the workflow</em>. This means it is relatively easy
-to refactor (modify) a workflow for running sequentially locally or
-running in parallel in a high-performance context.</p>
-<p>We can see this by applying parallel processing to the penguins
-analysis. Add two more packages to <code>packages.R</code>,
-<code><a href="https://future.futureverse.org" class="external-link">library(future)</a></code> and <code><a href="https://future.callr.futureverse.org" class="external-link">library(future.callr)</a></code>.
-Also, add the line <code>plan(callr)</code> to
-<code>_targets.R</code>:</p>
-<div class="codewrapper sourceCode" id="cb27">
+<p>Make these changes to the penguins analysis. It should now look like
+this:</p>
+<div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -3248,39 +3246,117 @@ Also, add the line <code>plan(callr)</code> to
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<p>Finally, run the pipeline with <code>tar_make_future()</code> (you
-may need to run <code>tar_invalidate(everything())</code> to reset the
-pipeline first).</p>
+<p>There is still one more thing we need to modify only for the purposes
+of this demo: if we ran the analysis in parallel now, you wouldn’t
+notice any difference in compute time because the functions are so
+fast.</p>
+<p>So let’s make “slow” versions of <code>glance_with_mod_name()</code>
+and <code>augment_with_mod_name()</code> using the
+<code>Sys.sleep()</code> function, which just tells the computer to wait
+some number of seconds. This will simulate a long-running computation
+and enable us to see the difference between running sequentially and in
+parallel.</p>
+<p>Add these functions to <code>functions.R</code> (you can copy-paste
+the original ones, then modify them):</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">glance_with_mod_name_slow</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">Sys.sleep</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
+<span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">augment_with_mod_name_slow</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">Sys.sleep</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
+<span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
+</div>
+<p>Then, change the plan to use the “slow” version of the functions:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plan</span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean data</span></span>
+<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Build models</span></span>
+<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">model_summaries</span>,</span>
+<span>    <span class="fu">glance_with_mod_name_slow</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get model predictions</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">model_predictions</span>,</span>
+<span>    <span class="fu">augment_with_mod_name_slow</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>Finally, run the pipeline with <code>tar_make_future()</code>.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>• start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.771 seconds]
-• start target penguins_data_raw
-• built target penguins_data_raw [0.944 seconds]
-• start target penguins_data
-• built target penguins_data [0.787 seconds]
-• start target models
-• built target models [0.767 seconds]
+<pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip target models
 • start branch model_predictions_5ad4cec5
 • start branch model_predictions_c73912d5
-• built branch model_predictions_5ad4cec5 [0.807 seconds]
+• built branch model_predictions_5ad4cec5 [4.929 seconds]
 • start branch model_predictions_91696941
-• built branch model_predictions_c73912d5 [0.814 seconds]
+• built branch model_predictions_c73912d5 [4.946 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_predictions_91696941 [0.781 seconds]
+• built branch model_predictions_91696941 [4.96 seconds]
 • built pattern model_predictions
 • start branch model_summaries_c73912d5
-• built branch model_summaries_5ad4cec5 [0.804 seconds]
+• built branch model_summaries_5ad4cec5 [4.978 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_c73912d5 [0.78 seconds]
-• built branch model_summaries_91696941 [0.785 seconds]
+• built branch model_summaries_c73912d5 [4.956 seconds]
+• built branch model_summaries_91696941 [4.977 seconds]
 • built pattern model_summaries
-• end pipeline [14.242 seconds]</code></pre>
+• end pipeline [19.872 seconds]</code></pre>
 </div>
-<p>You won’t notice much difference since these computations run so
-quickly, but this demonstrates how easy it is to make massive gains in
-efficiency with your own real analysis by using parallel computing.</p>
+<p>Notice that although the time required to build each individual
+target is about 4 seconds, the total time to run the entire workflow is
+less than the sum of the individual target times! That is proof that
+processes are running in parallel <strong>and saving you
+time</strong>.</p>
+<p>The unique and powerful thing about targets is that <strong>we did
+not need to change our custom function to run it in parallel</strong>.
+We only adjusted <em>the workflow</em>. This means it is relatively easy
+to refactor (modify) a workflow for running sequentially locally or
+running in parallel in a high-performance context.</p>
+<p>Now that we have demonstrated how this works, you can change your
+analysis plan back to the original versions of the functions you
+wrote.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -3304,8 +3380,7 @@ function</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
-</div>
-</section></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
+</div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
 <p> Last updated on 2023-06-03 | 
         
@@ -3548,7 +3623,7 @@ text and plots.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
@@ -3649,9 +3724,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/aio.html",
-  "dateCreated": "2023-06-07",
-  "dateModified": "2023-06-13",
-  "datePublished": "2023-06-13"
+  "dateCreated": "2023-06-14",
+  "dateModified": "2023-06-14",
+  "datePublished": "2023-06-14"
 }
 
   </script><script>

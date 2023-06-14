@@ -31,6 +31,24 @@ write_example_plan <- function(plan_select) {
     "  mutate(model_name = model_name)",
     "}"
   )
+  glance_slow_func <- c(
+    "glance_with_mod_name_slow <- function(model_in_list) {",
+    "Sys.sleep(4)",
+    "model_name <- names(model_in_list)",
+    "model <- model_in_list[[1]]",
+    "broom::glance(model) |>",
+    "  mutate(model_name = model_name)",
+    "}"
+  )
+  augment_slow_func <- c(
+    "augment_with_mod_name_slow <- function(model_in_list) {",
+    "Sys.sleep(4)",
+    "model_name <- names(model_in_list)",
+    "model <- model_in_list[[1]]",
+    "broom::augment(model) |>",
+    "  mutate(model_name = model_name)",
+    "}"
+  )
   clean_penguin_data_func <- c(
     "clean_penguin_data <- function(penguins_data_raw) {",
     "  penguins_data_raw |>",
@@ -243,8 +261,8 @@ write_example_plan <- function(plan_select) {
     "library(future)",
     "library(future.callr)",
     "suppressPackageStartupMessages(library(tidyverse))",
-    glance_with_mod_name_func,
-    augment_with_mod_name_func,
+    glance_slow_func,
+    augment_slow_func,
     clean_penguin_data_func,
     "plan(callr)",
     "tar_plan(",
@@ -264,12 +282,12 @@ write_example_plan <- function(plan_select) {
     "   ),",
     "   tar_target(",
     "     model_summaries,",
-    "     glance_with_mod_name(models),",
+    "     glance_with_mod_name_slow(models),",
     "     pattern = map(models)",
     "   ),",
     "   tar_target(",
     "     model_predictions,",
-    "     augment_with_mod_name(models),",
+    "     augment_with_mod_name_slow(models),",
     "     pattern = map(models)",
     "   ),",
     ")"
