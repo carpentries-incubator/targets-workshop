@@ -114,7 +114,7 @@ penguins_data_raw |>
     species = Species,
     bill_length_mm = `Culmen Length (mm)`,
     bill_depth_mm = `Culmen Depth (mm)`    ) |>
-  remove_missing(na.rm = TRUE)
+  drop_na()
 ```
 
 We could with down and make the effort of writing the function our selves, this one is not so complicated that we could not do that, it really only needs a single argument, and that is the incoming dataset.
@@ -123,7 +123,7 @@ RStudio also has a handy helper to extract a function from a piece of code.
 It's not perfect, but if you are new to functions, it's a convenient tool to help you get started.
 
 To use it, highligh the piece of code you want to make into a function.
-In our case that is the entire pipeline from `penguins_data_raw` to the `remove_missing` statement.
+In our case that is the entire pipeline from `penguins_data_raw` to the `drop_na` statement.
 Once you have done this, in RStudio go to the "Code" section in the top bar, and select "Extract function" from the list.
 A prompt will open asking you to name your function, call it "clean_penguin_data".
 Hit enter, and you should have the following code in your script where the cursor was.
@@ -139,7 +139,7 @@ clean_penguin_data <- function(penguins_data_raw, Species, Culmen Length (mm), C
       bill_depth_mm = `Culmen Depth (mm)`
     ) |>
     # Delete rows with missing data
-    remove_missing(na.rm = TRUE)
+    drop_na()
 }
 ```
 This function will not work, because it contains more stuff than is needed as an argument.
@@ -159,7 +159,7 @@ clean_penguin_data <- function(penguins_data_raw) {
       bill_depth_mm = `Culmen Depth (mm)`
     ) |>
     # Delete rows with missing data
-    remove_missing(na.rm = TRUE)
+    drop_na()
 }
 ```
 
