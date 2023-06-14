@@ -1,5 +1,5 @@
 ---
-title: 'Batch and Parallel Processing'
+title: 'Branching'
 teaching: 10
 exercises: 2
 ---
@@ -7,34 +7,30 @@ exercises: 2
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How can we specify many targets without typing everything out?
-- How can we build targets in parallel?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Be able to specify targets using branching
-- Be able to build targets in parallel
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-Episode summary: Show how to use branching and parallel processing (technically separate topics, but they go well together)
+Episode summary: Show how to use branching
 
 :::::::::::::::::::::::::::::::::::::
 
 
 
-## Why batch and parallel processing?
+## Why branching?
 
-One of the major strengths of `targets` is the ability to define many targets from a single line of code (batch processing).
+One of the major strengths of `targets` is the ability to define many targets from a single line of code ("branching").
 This not only saves you typing, it also **reduces the risk of errors** since there is less chance of making a typo.
-Furthermore, it is related to another powerful feature: `targets` can run multiple analyses in parallel (at the same time), thereby **making your analysis finish sooner**.
 
 ## Types of branching
 
-Batching in `targets` is called "branching."
 There are two types of branching, **dynamic branching** and **static branching**.
 "Branching" refers to the idea that you can provide a single specification for how to make targets (the "pattern"), and `targets` generates multiple targets from it ("branches").
 "Dynamic" means that the branches that result from the pattern do not have to be defined ahead of time---they are a dynamic result of the code.
@@ -83,8 +79,8 @@ tar_plan(
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.027 seconds]
-• end pipeline [0.12 seconds]
+• built target combined_model [0.028 seconds]
+• end pipeline [0.137 seconds]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -151,16 +147,16 @@ tar_plan(
 ✔ skip target penguins_data
 ✔ skip target combined_model
 • start target interaction_model
-• built target interaction_model [0.005 seconds]
+• built target interaction_model [0.006 seconds]
 • start target species_model
-• built target species_model [0.001 seconds]
+• built target species_model [0.002 seconds]
 • start target combined_summary
-• built target combined_summary [0.053 seconds]
+• built target combined_summary [0.063 seconds]
 • start target interaction_summary
-• built target interaction_summary [0.004 seconds]
+• built target interaction_summary [0.005 seconds]
 • start target species_summary
-• built target species_summary [0.004 seconds]
-• end pipeline [0.188 seconds]
+• built target species_summary [0.005 seconds]
+• end pipeline [0.226 seconds]
 ```
 
 Let's look at the summary of one of the models:
@@ -230,15 +226,15 @@ First, let's look at the messages provided by `tar_make()`.
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target models
-• built target models [0.008 seconds]
+• built target models [0.009 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.01 seconds]
+• built branch model_summaries_5ad4cec5 [0.012 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.05 seconds]
+• built branch model_summaries_c73912d5 [0.061 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.004 seconds]
+• built branch model_summaries_91696941 [0.005 seconds]
 • built pattern model_summaries
-• end pipeline [0.196 seconds]
+• end pipeline [0.231 seconds]
 ```
 
 There is a series of smaller targets (branches) that are each named like model_summaries_5ad4cec5, then one overall `model_summaries` target.
@@ -369,13 +365,13 @@ tar_plan(
 ✔ skip target penguins_data
 ✔ skip target models
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.018 seconds]
+• built branch model_summaries_5ad4cec5 [0.021 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.009 seconds]
+• built branch model_summaries_c73912d5 [0.011 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.005 seconds]
+• built branch model_summaries_91696941 [0.006 seconds]
 • built pattern model_summaries
-• end pipeline [0.205 seconds]
+• end pipeline [0.221 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
@@ -513,178 +509,9 @@ You can [find out more about different branching patterns in the `targets` manua
 
 :::::::::::::::::::::::::::::::::::::
 
-## Parallel processing
-
-Once a pipeline starts to include many targets, you may want to think about parallel processing.
-This takes advantage of multiple processors in your computer to build multiple targets at the same time.
-
-::::::::::::::::::::::::::::::::::::: {.callout}
-
-## When to use parallel computing
-
-Parallel computing should only be used if your workflow has a structure such that it makes sense---if your workflow only consists of a linear sequence of targets, then there is nothing to parallelize.
-
-:::::::::::::::::::::::::::::::::::::
-
-`targets` includes support for high-performance computing, cloud computing, and various parallel backends.
-Here, we assume you are running this analysis on a laptop and so will use a relatively simple backend.
-If you are interested in high-performance computing, [see the `targets` manual](https://books.ropensci.org/targets/hpc.html).
-
-### Install R packages for parallel computing
-
-For this demo, we will use the [`future` backend](https://github.com/HenrikBengtsson/future).
-
-::::::::::::::::::::::::::::::::::::: {.prereq}
-
-### Install required packages
-
-You will need to install several packages to use the `future` backend:
-
-
-```r
-install.packages("future")
-install.packages("future.callr")
-```
-
-:::::::::::::::::::::::::::::::::::::
-
-### Set up workflow
-
-There are a few things you need to change to enable parallel processing with `future`:
-
-- Load the `future` and `future.callr` packages
-- Add a line with `plan(callr)`
-- When you run the pipeline, use `tar_make_future(workers = 2)` instead of `tar_make()`
-
-Here, `workers = 2` is the number of processes to run in parallel. You may increase this up to the number of cores available on your machine.
-
-To show how this works we will simulate a long(ish) running analysis with the `Sys.sleep()` function, which just tells the computer to wait some number of seconds.
-
-
-```r
-library(targets)
-library(tarchetypes)
-library(future)
-library(future.callr)
-
-plan(callr)
-
-long_square <- function(data) {
-  Sys.sleep(3)
-  data^2
-}
-
-tar_plan(
-  some_data = c(1, 2, 3, 4),
-  tar_target(
-    data_squared,
-    long_square(some_data),
-    pattern = map(some_data)
-  )
-)
-```
-
-Here is the output when running with `tar_make_future(workers = 2)`:
-
-
-```{.output}
-• start target some_data
-• built target some_data [0.176 seconds]
-• start branch data_squared_3ba31302
-• start branch data_squared_880e1e2e
-• built branch data_squared_3ba31302 [3.189 seconds]
-• start branch data_squared_552eb2cc
-• built branch data_squared_880e1e2e [3.177 seconds]
-• start branch data_squared_92b840e1
-• built branch data_squared_552eb2cc [3.177 seconds]
-• built branch data_squared_92b840e1 [3.183 seconds]
-• built pattern data_squared
-• end pipeline [10.49 seconds]
-```
-
-Notice that although the time required to build each individual target is about 3 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
-
-The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
-
-We can see this by applying parallel processing to the penguins analysis.
-Add two more packages to `packages.R`, `library(future)` and `library(future.callr)`.
-Also, add the line `plan(callr)` to `_targets.R`:
-
-
-```r
-source("R/packages.R")
-source("R/functions.R")
-
-plan(callr)
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
-  ),
-  # Get model predictions
-  tar_target(
-    model_predictions,
-    augment_with_mod_name(models),
-    pattern = map(models)
-  )
-)
-```
-
-Finally, run the pipeline with `tar_make_future()` (you may need to run `tar_invalidate(everything())` to reset the pipeline first).
-
-
-```{.output}
-• start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.771 seconds]
-• start target penguins_data_raw
-• built target penguins_data_raw [0.944 seconds]
-• start target penguins_data
-• built target penguins_data [0.787 seconds]
-• start target models
-• built target models [0.767 seconds]
-• start branch model_predictions_5ad4cec5
-• start branch model_predictions_c73912d5
-• built branch model_predictions_5ad4cec5 [0.807 seconds]
-• start branch model_predictions_91696941
-• built branch model_predictions_c73912d5 [0.814 seconds]
-• start branch model_summaries_5ad4cec5
-• built branch model_predictions_91696941 [0.781 seconds]
-• built pattern model_predictions
-• start branch model_summaries_c73912d5
-• built branch model_summaries_5ad4cec5 [0.804 seconds]
-• start branch model_summaries_91696941
-• built branch model_summaries_c73912d5 [0.78 seconds]
-• built branch model_summaries_91696941 [0.785 seconds]
-• built pattern model_summaries
-• end pipeline [14.242 seconds]
-```
-
-You won't notice much difference since these computations run so quickly, but this demonstrates how easy it is to make massive gains in efficiency with your own real analysis by using parallel computing.
-
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - Dynamic branching creates multiple targets with a single command
 - You usually need to write custom functions so that the output of the branches includes necessary metadata 
-- Parallel computing works at the level of the workflow, not the function
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
