@@ -61,6 +61,7 @@ contact: 'joelnitta@gmail.com'
 episodes: 
 - introduction.Rmd
 - basic-targets.Rmd
+- functions.Rmd
 - cache.Rmd
 - lifecycle.Rmd
 - organization.Rmd
