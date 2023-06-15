@@ -63,7 +63,7 @@ For this demo, we will use the new [`crew` backend](https://wlandau.github.io/cr
 You will need to install several packages to use the `crew` backend:
 
 ```{r}
-#| label: install-vrew
+#| label: install-crew
 #| eval: false
 install.packages("nanonext", repos = "https://shikokuchuo.r-universe.dev")
 install.packages("mirai", repos = "https://shikokuchuo.r-universe.dev")
