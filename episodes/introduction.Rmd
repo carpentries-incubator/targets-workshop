@@ -94,7 +94,7 @@ We will gradually build up the analysis through this lesson, but you can see the
 
 - We can only have confidence in the results of scientific analyses if they can be reproduced by others (including your future self)
 - `targets` helps achieve reproducibility by automating workflow
-- `targests` is designed for use with the R programming language
+- `targets` is designed for use with the R programming language
 - The example dataset for this workshop includes measurements taken on penguins in Antarctica
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
