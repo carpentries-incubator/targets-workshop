@@ -1,8 +1,7 @@
-
- ---
+---
 title: 'A brief introduction to functions'
-teaching: 10
-exercises: 1git
+teaching: 5
+exercises: 1
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -16,16 +15,15 @@ exercises: 1git
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Understand the usefulness of custom functions
-- Know how to use the `Extract Function` button in RStudio
 - Understand the basic concepts around writing functions
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: {.instructor}
 
-Episode summary: First chance to get hands dirty by writing a very simple workflow
+Episode summary: A very brief introduction to functions, when you have learners who have no experience with them.
 
-:::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ```{r}
 #| label: setup
@@ -97,6 +95,7 @@ penguins |>
     bill_depth_cm = mm2cm(bill_depth_mm)
     )
 ```
+
 Our custom function will now transform any numerical input by dividing it by 10. 
 
 
@@ -117,35 +116,7 @@ penguins_data_raw |>
   drop_na()
 ```
 
-We could with down and make the effort of writing the function our selves, this one is not so complicated that we could not do that, it really only needs a single argument, and that is the incoming dataset.
-
-RStudio also has a handy helper to extract a function from a piece of code. 
-It's not perfect, but if you are new to functions, it's a convenient tool to help you get started.
-
-To use it, highligh the piece of code you want to make into a function.
-In our case that is the entire pipeline from `penguins_data_raw` to the `drop_na` statement.
-Once you have done this, in RStudio go to the "Code" section in the top bar, and select "Extract function" from the list.
-A prompt will open asking you to name your function, call it "clean_penguin_data".
-Hit enter, and you should have the following code in your script where the cursor was.
-
-```{r}
-clean_penguin_data <- function(penguins_data_raw, Species, Culmen Length (mm), Culmen Depth (mm)) {
-  penguins_data_raw |>
-    # Rename columns for easier typing and
-    # subset to only the columns needed for analysis
-    select(
-      species = Species,
-      bill_length_mm = `Culmen Length (mm)`,
-      bill_depth_mm = `Culmen Depth (mm)`
-    ) |>
-    # Delete rows with missing data
-    drop_na()
-}
-```
-This function will not work, because it contains more stuff than is needed as an argument.
-This is because tidyverse uses non-standard evaluation, and we can write unquoted column names insite the `select()`. 
-The function extractor thinks that all unquoted text (or back-ticked) in the code is a reference to an object.
-We will need to remove the unecessary parts manually, the function input should be a single argument for this particular function, which is the input of the raw penguins data.
+We need to adapt this code to become a function, and this function needs a single argument, which is the dataset it should clean.
 
 It should look like this:
 ```{r}
@@ -163,9 +134,36 @@ clean_penguin_data <- function(penguins_data_raw) {
 }
 ```
 
-::::::::::::::::::::::::::::::::::::: {.challenge}
-## Challenge: Write a function that takes a numerical vector and returns its mean divided by 10.
 
+::::::::::::::::: callout
+
+# RStudio function extraction
+
+RStudio also has a handy helper to extract a function from a piece oyou have basic familiarity with functions, may help you figure out the main necessary input when turning code into a function.
+
+:::::::::::::: solution
+
+## Using the tool
+
+To use it, highlight the piece of code you want to make into a function.
+In our case that is the entire pipeline from `penguins_data_raw` to the `drop_na` statement.
+Once you have done this, in RStudio go to the "Code" section in the top bar, and select "Extract function" from the list.
+A prompt will open asking you to n
+Hit enter, and you should have the following code in your script where the cursor was.
+
+This function will not work, because it contains more stuff than is needed as an argument.
+This is because tidyverse uses non-standard evaluation, and we can write unquoted column names inside the `select()`. 
+The function extractor thinks that all unquoted text (or back-ticked) in the code is a reference to an object.
+You will need to do some manual cleaning to get the function working, which is why its more convenient if you have a little experience with functions already.
+
+:::::::::::::::::::
+
+::::::::::::::::::
+
+
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge: Write a function that takes a numerical vector and returns its mean divided by 10.
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
