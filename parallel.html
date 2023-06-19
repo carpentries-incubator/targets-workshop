@@ -287,7 +287,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Parallel Processing</h1>
-        <p> Last updated on 2023-06-14 | 
+        <p> Last updated on 2023-06-19 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/parallel.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -332,9 +332,10 @@ in your computer to build multiple targets at the same time.</p>
 <h3 class="callout-title">When to use parallel processing<a class="anchor" aria-label="anchor" href="#when-to-use-parallel-processing"></a>
 </h3>
 <div class="callout-content">
-<p>Parallel processing should only be used if your workflow has a
-structure such that it makes sense—if your workflow only consists of a
-linear sequence of targets, then there is nothing to parallelize.</p>
+<p>Parallel processing should only be used if your workflow has
+independent tasks—if your workflow only consists of a linear sequence of
+targets, then there is nothing to parallelize. Most workflows that use
+branching can benefit from parallelism.</p>
 </div>
 </div>
 </div>
@@ -345,7 +346,7 @@ backend. If you are interested in high-performance computing, <a href="https://b
 <code>targets</code> manual</a>.</p>
 <div class="section level3">
 <h3 id="install-r-packages-for-parallel-computing">Install R packages for parallel computing<a class="anchor" aria-label="anchor" href="#install-r-packages-for-parallel-computing"></a></h3>
-<p>For this demo, we will use the <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>future</code>
+<p>For this demo, we will use the new <a href="https://wlandau.github.io/crew/" class="external-link"><code>crew</code>
 backend</a>.</p>
 <div id="install-required-packages" class="callout prereq">
 <div class="callout-square">
@@ -356,13 +357,14 @@ backend</a>.</p>
 </h3>
 <div class="callout-content">
 <p>You will need to install several packages to use the
-<code>future</code> backend:</p>
+<code>crew</code> backend:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"future"</span><span class="op">)</span></span>
-<span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"future.callr"</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"nanonext"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span>
+<span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"mirai"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span>
+<span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"crew"</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -370,29 +372,34 @@ backend</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="set-up-workflow">Set up workflow<a class="anchor" aria-label="anchor" href="#set-up-workflow"></a></h3>
-<p>There are a few things you need to change to enable parallel
-processing with <code>future</code>:</p>
-<ul><li>Load the <code>future</code> and <code>future.callr</code>
-packages</li>
-<li>Add a line with <code>plan(callr)</code>
-</li>
-<li>When you run the pipeline, use
-<code>tar_make_future(workers = 2)</code> instead of
-<code>tar_make()</code>
-</li>
-</ul><p>Here, <code>workers = 2</code> is the number of processes to run in
-parallel. You may increase this up to the number of cores available on
-your machine.</p>
+<p>To enable parallel processing with <code>crew</code> you only need to
+load the <code>crew</code> package, then tell <code>targets</code> to
+use it using <code>tar_option_set</code>. Specifically, the following
+lines enable crew, and tells it to use 2 parallel workers. You can
+increase this number on more powerful machines:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">crew</span><span class="op">)</span></span>
+<span><span class="fu">tar_option_set</span><span class="op">(</span></span>
+<span>  controller <span class="op">=</span> <span class="fu">crew_controller_local</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
 <p>Make these changes to the penguins analysis. It should now look like
 this:</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">plan</span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></span>
+<span><span class="co"># We just added this!</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">crew</span><span class="op">)</span></span>
+<span><span class="fu">tar_option_set</span><span class="op">(</span></span>
+<span>  controller <span class="op">=</span> <span class="fu">crew_controller_local</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
@@ -438,7 +445,7 @@ and enable us to see the difference between running sequentially and in
 parallel.</p>
 <p>Add these functions to <code>functions.R</code> (you can copy-paste
 the original ones, then modify them):</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -459,14 +466,17 @@ the original ones, then modify them):</p>
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Then, change the plan to use the “slow” version of the functions:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">plan</span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">crew</span><span class="op">)</span></span>
+<span><span class="fu">tar_option_set</span><span class="op">(</span></span>
+<span>  controller <span class="op">=</span> <span class="fu">crew_controller_local</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
@@ -500,29 +510,16 @@ the original ones, then modify them):</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<p>Finally, run the pipeline with <code>tar_make_future()</code>.</p>
+<p>Finally, run the pipeline with <code>tar_make()</code> as normal.</p>
 <div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip target models
-• start branch model_predictions_5ad4cec5
-• start branch model_predictions_c73912d5
-• built branch model_predictions_5ad4cec5 [4.929 seconds]
-• start branch model_predictions_91696941
-• built branch model_predictions_c73912d5 [4.946 seconds]
-• start branch model_summaries_5ad4cec5
-• built branch model_predictions_91696941 [4.96 seconds]
-• built pattern model_predictions
-• start branch model_summaries_c73912d5
-• built branch model_summaries_5ad4cec5 [4.978 seconds]
-• start branch model_summaries_91696941
-• built branch model_summaries_c73912d5 [4.956 seconds]
-• built branch model_summaries_91696941 [4.977 seconds]
-• built pattern model_summaries
-• end pipeline [19.872 seconds]</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! Error running targets::tar_make()
+  Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
+  Debugging guide: https://books.ropensci.org/targets/debugging.html
+  How to ask for help: https://books.ropensci.org/targets/help.html
+  Last error: there is no package called ‘crew’</code></pre>
 </div>
 <p>Notice that although the time required to build each individual
 target is about 4 seconds, the total time to run the entire workflow is
@@ -592,7 +589,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.3" class="external-link">sandpaper (0.12.3)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.4" class="external-link">sandpaper (0.12.4)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -614,9 +611,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/parallel.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/parallel.html",
-  "dateCreated": "2023-06-14",
-  "dateModified": "2023-06-14",
-  "datePublished": "2023-06-14"
+  "dateCreated": "2023-06-19",
+  "dateModified": "2023-06-19",
+  "datePublished": "2023-06-19"
 }
 
   </script><script>
