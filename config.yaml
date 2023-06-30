@@ -69,6 +69,7 @@ episodes:
 - branch.Rmd
 - parallel.Rmd
 - quarto.Rmd
+- hpc.Rmd
 
 # Information for Learners
 learners: 

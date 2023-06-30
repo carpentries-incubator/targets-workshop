@@ -1,0 +1,135 @@
+---
+title: 'Deploying Targets on HPC'
+teaching: 10
+exercises: 2
+---
+
+```{r, echo=FALSE}
+# Handle the case when the 
+if (!nzchar(Sys.which("sbatch"))){
+  knitr::knit_exit("sbatch was not detected. Likely Slurm is not installed. Exiting.")
+}
+```
+
+:::::::::::::::::::::::::::::::::::::: questions 
+
+- Why would we use HPC to run Targets workflows?
+- How can we run Targets workflows on Slurm?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Be able to generate a report using `targets`
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: instructor
+
+Episode summary: Show how to write reports with Quarto
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+```{r}
+#| label: setup
+#| echo: FALSE
+#| message: FALSE
+#| warning: FALSE
+library(targets)
+library(tarchetypes)
+library(quarto) # don't actually need to load, but put here so renv catches it
+source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+
+# Increase width for printing tibbles
+options(width = 140)
+```
+
+## Advantages of HPC
+
+If your analysis involves computationally intensive or long-running tasks such as training machine learning models or processing very large amounts of data, it will quickly become infeasible to use a single machine to run this.
+If you are part of an organisation with access to a High Performance Computing (HPC) cluster, you can easily leverage the numerous machines with Targets to scale up your analysis.
+This differs from the exucution we have learned so far, which spawns extra R processes on the *same machine* to speed up execution.
+
+## Configuring Targets for Slurm
+
+Fortunately, using HPC is as simple as changing the Targets `controller`.
+In this section we will assume that our HPC uses Slurm as its job scheduler, but you can easily use other schedulers such as PBS/TORQUE, Sun Grid Engine (SGE) or LSF.
+
+In the Parallel Processing section, we used the following configuration:
+```{R}
+library(crew)
+tar_option_set(
+  controller = crew_controller_local(workers = 2)
+)
+```
+To configure this for Slurm, we just swap out the controller with a new one from the `crew.cluster` package:
+
+```{R}
+library(crew.cluster)
+tar_option_set(
+  controller = crew_controller_slurm(
+    workers = 3,
+    script_lines = "module load R"
+  )
+)
+```
+
+There are a number of options you can pass to `crew_controller_slurm()` to fine-tune the Slurm execution, [which you can find here](https://wlandau.github.io/crew.cluster/reference/crew_controller_slurm.html).
+Here we are only using two:
+  * `workers` sets the number of jobs that are submitted to Slurm to process targets.
+  * `script_lines` adds some lines to the Slurm submit script used by Targets. This is useful for loading Environment Modules.
+
+Let's run the modified workflow:
+
+```{r}
+source("R/packages.R")
+source("R/functions.R")
+
+library(crew.cluster)
+tar_option_set(
+  controller = crew_controller_slurm(
+    workers = 3,
+    script_lines = "module load R"
+  )
+)
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  ),
+  # Get model summaries
+  tar_target(
+    model_summaries,
+    glance_with_mod_name_slow(models),
+    pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name_slow(models),
+    pattern = map(models)
+  )
+)
+```
+
+::::::::::::::::::::::::::::::::::::: keypoints 
+
+- `tarchetypes::tar_quarto()` is used to render Quarto documents
+- You should load targets within the Quarto document using `tar_load()` and `tar_read()`
+- It is recommended to do heavy computations in the main targets workflow, and lighter formatting and plot generation in the Quarto document
+
+::::::::::::::::::::::::::::::::::::::::::::::::
