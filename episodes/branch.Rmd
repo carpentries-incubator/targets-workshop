@@ -30,7 +30,7 @@ Episode summary: Show how to use branching
 library(targets)
 library(tarchetypes)
 library(broom)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 
 # Increase width for printing tibbles
 options(width = 140)
@@ -68,61 +68,33 @@ We can add this to our pipeline. We will call it the `combined_model` because it
 
 ```{r}
 #| label: example-lm-pipeline-show
+#| file: files/plans/plan_4.R
 #| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build model
-  combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data)
-)
 ```
-
 ```{r}
 #| label: example-lm-pipeline-hide
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(3)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(4)
-  tar_make()
-})
+plan_4_dir <- make_tempdir()
+withr::with_dir(
+  plan_4_dir,
+  execute_plan("plan_4.R")
+)
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 ```{r}
 #| label: example-lm-pipeline-inspect-show
-#| eval: FALSE
-library(broom)
-
-tar_load(combined_model)
-
-glance(combined_model)
-```
-
-```{r}
-#| label: example-lm-pipeline-inspect-hide
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(4)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_load(combined_model)
-  glance(combined_model)
-})
+#| eval: TRUE
+#| echo: -1
+withr::with_dir(
+  plan_4_dir,
+  {
+    library(broom)
+    tar_load(combined_model)
+    glance(combined_model)
+  }
+)
 ```
 
 Notice the small *P*-value.
@@ -138,63 +110,29 @@ Now our workflow is getting more complicated. This is what a workflow for such a
 ```{r}
 #| label: example-model-show-1
 #| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data),
-  species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-  interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguins_data),
-  # Get model summaries
-  combined_summary = glance(combined_model),
-  species_summary = glance(species_model),
-  interaction_summary = glance(interaction_model)
-)
+#| file: files/plans/plan_5.R
 ```
 
 ```{r}
 #| label: example-model-hide-1
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(4)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(5)
-  tar_make()
-})
+plan_5_dir <- make_tempdir()
+withr::with_dir(
+  plan_5_dir,
+  execute_plan("plan_5.R")
+)
 ```
 
 Let's look at the summary of one of the models:
 
 ```{r}
 #| label: example-model-show-2
-#| eval: FALSE
-tar_read(species_summary)
-```
-
-```{r}
-#| label: example-model-hide-2
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(5)
-  # Run it
-  tar_make(reporter = "silent")
+#| eval: TRUE
+#| echo: -1
+withr::with_dir(
+  plan_5_dir,
   tar_read(species_summary)
-})
+)
 ```
 
 So this way of writing the pipeline works, but is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
@@ -210,34 +148,7 @@ Let's see how to write the same plan using **dynamic branching**:
 ```{r}
 #| label: example-model-show-3
 #| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance(models[[1]]),
-    pattern = map(models)
-  )
-)
+#| file: files/plans/plan_6.R
 ```
 
 What is going on here?
@@ -247,15 +158,14 @@ First, let's look at the messages provided by `tar_make()`.
 ```{r}
 #| label: example-model-hide-3
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(5)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(6)
-  tar_make()
-  example_branch_name <- tar_branch_names(model_summaries, 1)
-})
+plan_6_dir <- make_tempdir()
+withr::with_dir(
+  plan_6_dir,
+  {
+    execute_plan("plan_6.R")
+    example_branch_name <- tar_branch_names(model_summaries, 1)
+  }
+)
 ```
 
 There is a series of smaller targets (branches) that are each named like `r example_branch_name`, then one overall `model_summaries` target.
@@ -265,18 +175,9 @@ Since `targets` has no way of knowing ahead of time how many branches there will
 
 Next, let's look in more detail about how the workflow is set up, starting with how we defined the models:
 
-```{r}
+```{r, results="asis", echo=FALSE}
 #| label: model-def
-#| eval: false
-# Build models
-models <- list(
-  combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data),
-  species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-  interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-)
+subset_file("files/plans/plan_6.R", 20:28)
 ```
 
 Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
@@ -285,15 +186,9 @@ So we need to prepare the input for looping as a list.
 
 Next, take a look at the command to build the target `model_summaries`.
 
-```{r}
+```{r, results="asis", echo=FALSE}
 #| label: model-summaries
-#| eval: false
-# Get model summaries
-tar_target(
-  model_summaries,
-  glance(models[[1]]),
-  pattern = map(models)
-)
+subset_file("files/plans/plan_6.R", 29:34)
 ```
 
 As before, the first argument is the name of the target to build, and the second is the command to build it.
@@ -314,13 +209,10 @@ tar_read(model_summaries)
 ```{r}
 #| label: example-model-hide-4
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(6)
-  # Run it
-  tar_make(reporter = "silent")
+withr::with_dir(
+  plan_6_dir,
   tar_read(model_summaries)
-})
+)
 ```
 
 The model summary statistics are all included in a single dataframe.
@@ -343,12 +235,7 @@ Here is the function. Save this in `R/functions.R`:
 ```{r}
 #| label: example-model-show-5
 #| eval: FALSE
-glance_with_mod_name <- function(model_in_list) {
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  glance(model) |>
-    mutate(model_name = model_name)
-}
+#| file: files/tar_functions/glance_with_mod_name.R
 ```
 
 Our new pipeline looks almost the same as before, but this time we use the custom function instead of `glance()`.
@@ -356,47 +243,17 @@ Our new pipeline looks almost the same as before, but this time we use the custo
 ```{r}
 #| label: example-model-show-6
 #| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
-  )
-)
+#| file: files/plans/plan_7.R
 ```
 
 ```{r}
 #| label: example-model-hide-6
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(6)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(7)
-  tar_make()
-})
+plan_7_dir <- make_tempdir()
+withr::with_dir(
+  plan_7_dir,
+  execute_plan("plan_7.R")
+)
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
@@ -405,13 +262,10 @@ And this time, when we load the `model_summaries`, we can tell which model corre
 #| label: example-model-hide-7
 #| echo: false
 #| warning: false
-tar_dir({
-  # New workflow
-  write_example_plan(7)
-  # Run it
-  tar_make(reporter = "silent")
+withr::with_dir(
+  plan_7_dir,
   tar_read(model_summaries)
-})
+)
 ```
 
 Next we will add one more target, a prediction of bill depth based on each model. These will be needed for plotting the models in the report.
@@ -429,14 +283,13 @@ augment(models[[1]])
 #| label: example-augment-hide
 #| echo: false
 #| warning: false
-tar_dir({
-  # New workflow
-  write_example_plan(7)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_load(models)
-})
-augment(models[[1]])
+withr::with_dir(
+  plan_7_dir,
+  {
+    tar_load(models)
+    augment(models[[1]])
+  }
+)
 ```
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
@@ -452,12 +305,7 @@ Define the new function as `augment_with_mod_name()`. It is the same as `glance_
 ```{r}
 #| label: example-model-augment-func
 #| eval: FALSE
-augment_with_mod_name <- function(model_in_list) {
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  augment(model) |>
-    mutate(model_name = model_name)
-}
+#| file: files/tar_functions/augment_with_mod_name.R
 ```
 
 Add the step to the workflow:
@@ -465,40 +313,7 @@ Add the step to the workflow:
 ```{r}
 #| label: example-model-augment-show
 #| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
-  ),
-  # Get model predictions
-  tar_target(
-    model_predictions,
-    augment_with_mod_name(models),
-    pattern = map(models)
-  )
-)
+#| file: files/plans/plan_9.R
 ```
 
 ::::::::::::::::::::::::::::::::::

@@ -34,7 +34,7 @@ Episode summary: First chance to get hands dirty by writing a very simple workfl
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/functions.R")
 ```
 
 ## Create a project
@@ -208,26 +208,7 @@ Finally, each step in the workflow is defined with the `tar_target()` function.
 ```{r}
 #| label: targets-show-workflow
 #| eval: FALSE
-library(targets)
-library(palmerpenguins)
-library(tidyverse)
-
-clean_penguin_data <- function(penguins_data_raw) {
-  penguins_data_raw |>
-    select(
-      species = Species,
-      bill_length_mm = `Culmen Length (mm)`,
-      bill_depth_mm = `Culmen Depth (mm)`
-    ) |>
-    remove_missing(na.rm = TRUE)
-}
-
-list(
-  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
-  tar_target(penguins_data_raw, read_csv(
-    penguins_csv_file, show_col_types = FALSE)),
-  tar_target(penguins_data, clean_penguin_data(penguins_data_raw))
-)
+#| file: files/plans/plan_1.R
 ```
 
 I have set `show_col_types = FALSE` in `read_csv()` because we know from the earlier code that the column types were set correctly by default (character for species and numeric for bill length and depth), so we don't need to see the warning it would otherwise issue.
@@ -246,10 +227,10 @@ tar_make()
 ```{r}
 #| label: targets-run-hide
 #| echo: FALSE
-tar_dir({
-  write_example_plan(1)
-  tar_make()
-})
+withr::with_dir(
+  make_tempdir(),
+  execute_plan("plan_1.R")
+)
 ```
 
 Congratulations, you've run your first workflow with `targets`!
