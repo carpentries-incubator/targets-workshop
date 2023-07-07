@@ -175,9 +175,8 @@ Since `targets` has no way of knowing ahead of time how many branches there will
 
 Next, let's look in more detail about how the workflow is set up, starting with how we defined the models:
 
-```{r, results="asis", echo=FALSE}
+```{r, code=readLines("files/plans/plan_6.R")[20:28], eval=FALSE}
 #| label: model-def
-subset_file("files/plans/plan_6.R", 20:28)
 ```
 
 Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
@@ -186,9 +185,8 @@ So we need to prepare the input for looping as a list.
 
 Next, take a look at the command to build the target `model_summaries`.
 
-```{r, results="asis", echo=FALSE}
+```{r, code=readLines("files/plans/plan_6.R")[29:34], eval=FALSE}
 #| label: model-summaries
-subset_file("files/plans/plan_6.R", 29:34)
 ```
 
 As before, the first argument is the name of the target to build, and the second is the command to build it.

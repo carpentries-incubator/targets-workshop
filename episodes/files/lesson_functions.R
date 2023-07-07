@@ -23,10 +23,3 @@ execute_plan <- function(name, ...) {
   script_path <- file.path(plan_root, name)
   targets::tar_make(script = script_path, ...)
 }
-
-subset_file <- function(path, lines) {
-  readLines(path)[lines] |>
-    c("```{r}", content=_, "```") |>
-    paste(collapse = "\n") |>
-    cat()
-}
