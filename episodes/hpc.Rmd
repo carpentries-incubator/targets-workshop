@@ -81,9 +81,6 @@ Here we are only using two:
 
 Let's run the modified workflow:
 
-```{r, file="/home/users/allstaff/milton.m/targets-workshop/episodes/files/functions.R"}
-```
-
 ```
 source("R/packages.R")
 source("R/functions.R")
@@ -165,7 +162,105 @@ We can verify that this has happened using `sacct`:
 sacct
 ```
 
-The downside of this approach
+The upside of this approach is that we don't have to work out the minutae of how long each target takes to build, or what resources it needs.
+It also means that we don't submit a lot of jobs, making our Slurm usage more efficient and easy to monitor.
+
+The downside of this mechanism is that **the resources of the worker have to be sufficient to build each of your targets**.
+So for example if you have two targets, the first of which uses 1 GB of RAM, and the second of which uses 100 GB, your worker will need 100 GB of RAM.
+
+In some cases we may prefer heterogeneous workers, especially if some of our targets need a GPU and others need a CPU.
+To do this, we firstly define each worker configuration using `crew_controller_slurm`:
+
+```{R}
+library(crew.cluster)
+crew_controller_slurm(
+  name = "cpu_worker"
+  workers = 3,
+  script_lines = "module load R",
+  slurm_memory_gigabytes_per_cpu = 200,
+  slurm_cpus_per_task = 1
+)
+```
+
+Then we specify this controller by name in each target definition:
+
+```{R}
+tar_target(
+  name = cpu_task,
+  command = run_model2(data),
+  resources = tar_resources(
+    crew = tar_resources_crew(controller = "cpu_worker")
+  )
+)
+```
+
+::: challenge
+## Mixing GPU and CPU targets
+
+Q: Say we have the following targets workflow. How would we modify it so that `gpu_task` is only run in a GPU Slurm job?
+```{R, eval=FALSE}
+graphics_devices <- function(){
+  system2("lshw", c("-class", "display), stdout=TRUE, stderr=TRUE)
+}
+
+tar_plan(
+  tar_target(
+    cpu_hardware,
+    graphics_devices()
+  ),
+  tar_target(
+    gpu_hardware,
+    graphics_devices()
+  )
+)
+```
+
+::: hint
+You will need to define two different crew controllers.
+:::
+::: solution
+```R
+graphics_devices <- function(){
+  system2("lshw", c("-class", "display), stdout=TRUE, stderr=TRUE)
+}
+
+library(crew.cluster)
+crew_controller_slurm(
+  name = "cpu_worker"
+  workers = 3,
+  script_lines = "module load R",
+  slurm_memory_gigabytes_per_cpu = 200,
+  slurm_cpus_per_task = 1
+)
+crew_controller_slurm(
+  name = "gpu_worker"
+  workers = 3,
+  script_lines = "#SBATCH --gres=gpu:1
+module load R",
+  slurm_memory_gigabytes_per_cpu = 200,
+  slurm_cpus_per_task = 1
+)
+```
+
+tar_plan(
+  tar_target(
+    cpu_hardware,
+    graphics_devices(),
+    resources = tar_resources(
+      crew = tar_resources_crew(controller = "cpu_worker")
+    )
+  ),
+  tar_target(
+    gpu_hardware,
+    graphics_devices(),
+    resources = tar_resources(
+      crew = tar_resources_crew(controller = "gpu_worker")
+    )
+  )
+)
+```
+:::
+:::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
