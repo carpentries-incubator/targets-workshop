@@ -5,7 +5,7 @@ exercises: 2
 ---
 
 ```{R, echo=FALSE}
-# Handle the case when the 
+# Exit sensibly when Slurm isn't installed 
 if (!nzchar(Sys.which("sbatch"))){
   knitr::knit_exit("sbatch was not detected. Likely Slurm is not installed. Exiting.")
 }
