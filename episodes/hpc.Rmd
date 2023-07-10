@@ -152,7 +152,7 @@ tar_option_set(
 
 ## HPC Workers
 
-Despite what you might expect, `crew` does not submit one Slurm job for each target. 
+`crew` uses a persistent worker strategy. This means that `crew` does not submit one Slurm job for each target. 
 Instead, it uses persistent workers, meaning that you define a pool of workers when configuring the workflow.
 In our example above we used 3 workers.
 For each worker, `crew` submits a single Slurm job, and these workers will process multiple targets over their lifetime.
