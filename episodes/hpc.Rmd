@@ -163,7 +163,7 @@ We can verify that this has happened using `sacct`:
 sacct
 ```
 
-The upside of this approach is that we don't have to work out the minutae of how long each target takes to build, or what resources it needs.
+The upside of this approach is that we don't have to know how long each target takes to build, or what resources it needs.
 It also means that we don't submit a lot of jobs, making our Slurm usage more efficient and easy to monitor.
 
 The downside of this mechanism is that **the resources of the worker have to be sufficient to build each of your targets**.
