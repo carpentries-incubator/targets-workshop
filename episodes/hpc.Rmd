@@ -62,7 +62,7 @@ tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
 ```
-To configure this for Slurm, we just swap out the controller with a new one from the `crew.cluster` package:
+To configure this for Slurm, we swap out the controller with a new one from the `crew.cluster` package:
 
 ```{R}
 library(crew.cluster)
