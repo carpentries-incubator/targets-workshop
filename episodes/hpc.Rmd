@@ -47,7 +47,7 @@ options(width = 140)
 ## Advantages of HPC
 
 If your analysis involves computationally intensive or long-running tasks such as training machine learning models or processing very large amounts of data, it will quickly become infeasible to use a single machine to run this.
-If you are part of an organisation with access to a High Performance Computing (HPC) cluster, you can easily leverage the numerous machines with Targets to scale up your analysis.
+If you have access to a High Performance Computing (HPC) cluster, you can leverage the numerous machines with Targets to scale up your analysis.
 This differs from the exucution we have learned so far, which spawns extra R processes on the *same machine* to speed up execution.
 
 ## Configuring Targets for Slurm
