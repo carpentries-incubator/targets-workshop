@@ -52,7 +52,7 @@ This differs from the exucution we have learned so far, which spawns extra R pro
 
 ## Configuring Targets for Slurm
 
-Fortunately, using HPC is as simple as changing the Targets `controller`.
+To adapt Targets to use the Slurm HPC scheduler, we change the `controller`.
 In this section we will assume that our HPC uses Slurm as its job scheduler, but you can easily use other schedulers such as PBS/TORQUE, Sun Grid Engine (SGE) or LSF.
 
 In the Parallel Processing section, we used the following configuration:
