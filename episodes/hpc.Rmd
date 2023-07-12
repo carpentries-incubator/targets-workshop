@@ -47,13 +47,13 @@ options(width = 140)
 ## Advantages of HPC
 
 If your analysis involves computationally intensive or long-running tasks such as training machine learning models or processing very large amounts of data, it will quickly become infeasible to use a single machine to run this.
-If you are part of an organisation with access to a High Performance Computing (HPC) cluster, you can easily leverage the numerous machines with Targets to scale up your analysis.
-This differs from the execution we have learned so far, which spawns extra R processes on the *same machine* to speed up execution.
+If you have access to a High Performance Computing (HPC) cluster, you can leverage the numerous machines with Targets to scale up your analysis.
+This differs from the exucution we have learned so far, which spawns extra R processes on the *same machine* to speed up execution.
 
 ## Configuring Targets for Slurm
 
-Fortunately, using HPC is as simple as changing the Targets `controller`.
-In this section we will assume that our HPC uses Slurm as its job scheduler, but you can easily use other schedulers such as PBS/TORQUE, Sun Grid Engine (SGE) or LSF.
+To adapt Targets to use the Slurm HPC scheduler, we change the `controller`.
+In this section we will assume that our HPC uses Slurm as its job scheduler, but you can use other schedulers such as PBS/TORQUE, Sun Grid Engine (SGE) or LSF.
 
 In the Parallel Processing section, we used the following configuration:
 ```{R}
@@ -62,7 +62,7 @@ tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
 ```
-To configure this for Slurm, we just swap out the controller with a new one from the [`crew.cluster`](https://wlandau.github.io/crew.cluster/index.html) package:
+To configure this for Slurm, we swap out the controller with a new one from the [`crew.cluster`](https://wlandau.github.io/crew.cluster/index.html) package:
 
 ```{R}
 library(crew.cluster)
@@ -180,7 +180,7 @@ For example, prefer `slurm_cpus_per_task=2` to `script_lines="--cpus-per-task=2"
 
 ## HPC Workers
 
-Despite what you might expect, `crew` does not submit one Slurm job for each target. 
+`crew` uses a persistent worker strategy. This means that `crew` does not submit one Slurm job for each target. 
 Instead, it uses persistent workers, meaning that you define a pool of workers when configuring the workflow.
 In our example above we used 3 workers.
 For each worker, `crew` submits a single Slurm job, and these workers will process multiple targets over their lifetime.
@@ -191,7 +191,7 @@ We can verify that this has happened using `sacct`:
 sacct
 ```
 
-The upside of this approach is that we don't have to work out the minutae of how long each target takes to build, or what resources it needs.
+The upside of this approach is that we don't have to know how long each target takes to build, or what resources it needs.
 It also means that we don't submit a lot of jobs, making our Slurm usage easy to monitor.
 
 The downside of this mechanism is that **the resources of the worker have to be sufficient to build all of your targets**. 
