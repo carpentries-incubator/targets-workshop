@@ -48,7 +48,7 @@ options(width = 140)
 
 If your analysis involves computationally intensive or long-running tasks such as training machine learning models or processing very large amounts of data, it will quickly become infeasible to use a single machine to run this.
 If you are part of an organisation with access to a High Performance Computing (HPC) cluster, you can easily leverage the numerous machines with Targets to scale up your analysis.
-This differs from the exucution we have learned so far, which spawns extra R processes on the *same machine* to speed up execution.
+This differs from the execution we have learned so far, which spawns extra R processes on the *same machine* to speed up execution.
 
 ## Configuring Targets for Slurm
 
@@ -62,7 +62,7 @@ tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
 ```
-To configure this for Slurm, we just swap out the controller with a new one from the `crew.cluster` package:
+To configure this for Slurm, we just swap out the controller with a new one from the [`crew.cluster`](https://wlandau.github.io/crew.cluster/index.html) package:
 
 ```{R}
 library(crew.cluster)
@@ -74,11 +74,17 @@ tar_option_set(
 )
 ```
 
+::: aside
+If you were using a scheduler other than Slurm, you would instead select [`crew_controller_lsf()`](https://wlandau.github.io/crew.cluster/reference/crew_controller_lsf.html), [`crew_controller_pbs()`](https://wlandau.github.io/crew.cluster/reference/crew_controller_pbs.html) or [`crew_controller_sge`](https://wlandau.github.io/crew.cluster/reference/crew_controller_sge.html) instead of `crew_controller_slurm`.
+
+These functions have their own unique arguments which are associated with the scheduler.
+:::
+
 There are a number of options you can pass to `crew_controller_slurm()` to fine-tune the Slurm execution, [which you can find here](https://wlandau.github.io/crew.cluster/reference/crew_controller_slurm.html).
 Here we are only using two:
 
   * `workers` sets the number of jobs that are submitted to Slurm to process targets.
-  * `script_lines` adds some lines to the Slurm submit script used by Targets. This is useful for loading Environment Modules and adding `#SBATCH` options.
+  * `script_lines` adds some lines to the Slurm submit script used by Targets. This is useful for loading Environment Modules as we have done here.
 
 Let's run the modified workflow:
 
@@ -130,7 +136,7 @@ tar_plan(
 ::: challenge
 ## Increasing Resources
 
-Q: How would you modify your `_targets.R` if your targets needed 200GB of RAM?
+Q: How would you modify your `_targets.R` if your targets needed 100GB of RAM?
 
 ::: hint
 Check the arguments for [`crew_controller_slurm`](https://wlandau.github.io/crew.cluster/reference/crew_controller_slurm.html#arguments-1).
@@ -142,13 +148,35 @@ tar_option_set(
     workers = 3,
     script_lines = "module load R",
     # Added this
-    slurm_memory_gigabytes_per_cpu = 200,
+    slurm_memory_gigabytes_per_cpu = 100,
     slurm_cpus_per_task = 1
   )
 )
 ```
 :::
 :::
+
+## SBATCH Options
+
+The `script_lines` argument shown above can also be used to add `#SBATCH` flags, to configure your worker job.
+Each entry in the vector will be treated as a new line to be added to the `sbatch` script that is generated.
+However, you have to be careful to put all of your `#SBATCH` lines before any other bash commands.
+`sbatch` flags [are listed here](https://slurm.schedmd.com/sbatch.html#SECTION_OPTIONS) in the Slurm documentation.
+For instance, to request that the worker has a GPU available, you could do the following:
+```R
+tar_option_set(
+  controller = crew_controller_slurm(
+    workers = 3,
+    script_lines = c(
+      "#SBATCH --gres=gpu:1",
+      "module load R"
+    )
+  )
+)
+```
+
+In general, it's better to use a dedicated `crew_controller_slurm` argument than to use `script_lines`, if one exists.
+For example, prefer `slurm_cpus_per_task=2` to `script_lines="--cpus-per-task=2"` and set `name="my_name"` rather than using `script_lines="--job-name=my_name"`.
 
 ## HPC Workers
 
@@ -164,9 +192,10 @@ sacct
 ```
 
 The upside of this approach is that we don't have to work out the minutae of how long each target takes to build, or what resources it needs.
-It also means that we don't submit a lot of jobs, making our Slurm usage more efficient and easy to monitor.
+It also means that we don't submit a lot of jobs, making our Slurm usage easy to monitor.
 
-The downside of this mechanism is that **the resources of the worker have to be sufficient to build each of your targets**.
+The downside of this mechanism is that **the resources of the worker have to be sufficient to build all of your targets**. 
+In other words, you need to work out the maximum RAM and CPUs used across all of your targets, and specify those maximum resources in the `crew_controller_slurm()` function.
 
 ::: challenge
 ## Choosing a Worker
@@ -181,9 +210,10 @@ To do this we might use a controller a bit like this:
 crew_controller_slurm(
   name = "cpu_worker",
   workers = 3,
-  script_lines = "
-#SBATCH --cpus-per-task=8
-module load R",
+  script_lines = c(
+    "#SBATCH --cpus-per-task=8",
+    "module load R"
+  ),
   slurm_memory_gigabytes_per_cpu = 100
 )
 ```
@@ -192,7 +222,8 @@ module load R",
 
 ## Heterogeneous Workers
 
-In some cases we may prefer heterogeneous workers, especially if some of our targets need a GPU and others need a CPU.
+In some cases we may prefer to use more than one different Slurm job processing our targets, especially if some of our targets need a GPU and others need a CPU.
+When we do this, we say we have "heterogeneous workers", meaning that not all worker jobs are the same as each other.
 To do this, we firstly define each worker configuration by adding the `name` argument to `crew_controller_slurm`.
 Note that this time we aren't passing it into `tar_option_set`:
 
