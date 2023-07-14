@@ -1,12 +1,5 @@
-suppressPackageStartupMessages({
-  library(targets)
-  library(palmerpenguins)
-  library(tidyverse)
-  library(tarchetypes)
-  library(broom)
-})
-
 source("R/functions.R")
+source("R/packages.R")
 
 tar_plan(
   # Load raw data
