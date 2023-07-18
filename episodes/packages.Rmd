@@ -29,7 +29,7 @@ Episode summary: Show how to load packages and maintain package versions
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 ```
 
 ## Loading packages
@@ -67,28 +67,14 @@ This is what using the `tar_option_set()` method looks like:
 ```{r}
 #| eval: FALSE
 #| label: load-pkg-show
-library(targets)
-library(tarchetypes)
-
-tar_option_set(packages = c("dplyr", "palmerpenguins"))
-
-tar_plan(
-  adelie_data = filter(penguins, species == "Adelie")
-)
+#| file: files/plans/plan_option_packages.R
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_option_set(packages = c("dplyr", "palmerpenguins"))
-     tar_plan(
-       adelie_data = filter(penguins, species == "Adelie")
-     )
-  })
+  write_example_plan("plan_option_packages.R")
   tar_make()
 })
 ```
@@ -104,33 +90,14 @@ Here is how we could use this method, modified from the same example as above.
 ```{r}
 #| eval: FALSE
 #| label: load-pkg-show-2
-library(targets)
-library(tarchetypes)
-
-tar_plan(
-  tar_target(
-    adelie_data,
-    filter(penguins, species == "Adelie"),
-    packages = c("dplyr", "palmerpenguins")
-  )
-)
+#| file: files/plans/plan_packages_argument.R
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide-2
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_plan(
-     tar_target(
-       adelie_data,
-       filter(penguins, species == "Adelie"),
-       packages = c("dplyr", "palmerpenguins")
-     )
-)
-  })
+  write_example_plan("plan_packages_argument.R")
   tar_make()
 })
 ```
@@ -148,25 +115,14 @@ Here is how to write the plan using this method:
 ```{r}
 #| eval: FALSE
 #| label: load-pkg-show-3
-library(targets)
-library(tarchetypes)
-
-tar_plan(
-  adelie_data = dplyr::filter(palmerpenguins::penguins, species == "Adelie")
-)
+#| file: files/plans/plan_packages_colon.R
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide-3
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_plan(
-      adelie_data = dplyr::filter(palmerpenguins::penguins, species == "Adelie")
-     )
-  })
+  write_example_plan("plan_packages_colon.R")
   tar_make()
 })
 ```

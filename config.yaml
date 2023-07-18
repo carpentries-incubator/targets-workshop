@@ -61,14 +61,14 @@ contact: 'joelnitta@gmail.com'
 episodes: 
 - introduction.Rmd
 - basic-targets.Rmd
-- cache.Rmd
-- lifecycle.Rmd
-- organization.Rmd
-- packages.Rmd
-- files.Rmd
-- branch.Rmd
-- parallel.Rmd
-- quarto.Rmd
+# - cache.Rmd
+# - lifecycle.Rmd
+# - organization.Rmd
+# - packages.Rmd
+# - files.Rmd
+# - branch.Rmd
+# - parallel.Rmd
+# - quarto.Rmd
 
 # Information for Learners
 learners: 

@@ -30,7 +30,7 @@ Episode summary: Show how to read and write external files
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 ```
 
 ## Treating external files as a dependency
@@ -54,12 +54,7 @@ We are about to create a new `_targets.R` file, but you probably don't want to l
 ```{r}
 #| label: example-file-show-1
 #| eval: FALSE
-library(targets)
-library(tarchetypes)
-
-tar_plan(
-  some_data = readLines("_targets/user/data/hello.txt")
-)
+#| files: files/plans/plan_files_read_lines.R
 ```
 
 ```{r}
@@ -68,13 +63,7 @@ tar_plan(
 tar_dir({
   fs::dir_create("_targets/user/data")
   writeLines("Hello World", "_targets/user/data/hello.txt")
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_plan(
-       some_data = readLines("_targets/user/data/hello.txt")
-      )
-  })
+  write_example_plan("plan_files_read_lines.R")
   tar_make()
 })
 ```
@@ -86,12 +75,7 @@ Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?".
 ```{r}
 #| label: example-file-show-2
 #| eval: FALSE
-library(targets)
-library(tarchetypes)
-
-tar_plan(
-  some_data = readLines("_targets/user/data/hello.txt")
-)
+#| files: files/plans/plan_files_read_lines.R
 ```
 
 ```{r}
@@ -100,13 +84,7 @@ tar_plan(
 tar_dir({
   fs::dir_create("_targets/user/data")
   writeLines("Hello World", "_targets/user/data/hello.txt")
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_plan(
-       some_data = readLines("_targets/user/data/hello.txt")
-      )
-  })
+  write_example_plan("plan_files_read_lines.R")
   tar_make(reporter = "silent")
   writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
   tar_make()

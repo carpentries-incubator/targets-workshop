@@ -73,28 +73,27 @@ We can add this to our pipeline. We will call it the `combined_model` because it
 ```
 ```{r}
 #| label: example-lm-pipeline-hide
-#| echo: FALSE
+#| echo: false
 plan_4_dir <- make_tempdir()
-withr::with_dir(
-  plan_4_dir,
-  execute_plan("plan_4.R")
-)
+pushd(plan_4_dir)
+write_example_plan("plan_3.R")
+tar_make(reporter = "silent")
+write_example_plan("plan_4.R")
+tar_make()
+popd()
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 ```{r}
 #| label: example-lm-pipeline-inspect-show
-#| eval: TRUE
-#| echo: -1
-withr::with_dir(
-  plan_4_dir,
-  {
-    library(broom)
-    tar_load(combined_model)
-    glance(combined_model)
-  }
-)
+#| eval: true
+#| echo: [3, 4, 5]
+pushd(plan_4_dir)
+library(broom)
+tar_load(combined_model)
+glance(combined_model)
+popd()
 ```
 
 Notice the small *P*-value.
@@ -109,30 +108,29 @@ Now our workflow is getting more complicated. This is what a workflow for such a
 
 ```{r}
 #| label: example-model-show-1
-#| eval: FALSE
+#| eval: false
 #| file: files/plans/plan_5.R
 ```
 
 ```{r}
 #| label: example-model-hide-1
-#| echo: FALSE
+#| echo: false
 plan_5_dir <- make_tempdir()
-withr::with_dir(
-  plan_5_dir,
-  execute_plan("plan_5.R")
-)
+pushd(plan_5_dir)
+write_example_plan("plan_5.R")
+tar_make()
+popd()
 ```
 
 Let's look at the summary of one of the models:
 
 ```{r}
 #| label: example-model-show-2
-#| eval: TRUE
-#| echo: -1
-withr::with_dir(
-  plan_5_dir,
-  tar_read(species_summary)
-)
+#| eval: true
+#| echo: [2]
+pushd(plan_5_dir)
+tar_read(species_summary)
+popd()
 ```
 
 So this way of writing the pipeline works, but is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
@@ -147,7 +145,7 @@ Let's see how to write the same plan using **dynamic branching**:
 
 ```{r}
 #| label: example-model-show-3
-#| eval: FALSE
+#| eval: false
 #| file: files/plans/plan_6.R
 ```
 
@@ -157,15 +155,13 @@ First, let's look at the messages provided by `tar_make()`.
 
 ```{r}
 #| label: example-model-hide-3
-#| echo: FALSE
+#| echo: false
 plan_6_dir <- make_tempdir()
-withr::with_dir(
-  plan_6_dir,
-  {
-    execute_plan("plan_6.R")
-    example_branch_name <- tar_branch_names(model_summaries, 1)
-  }
-)
+pushd(plan_6_dir)
+write_example_plan("plan_6.R")
+tar_make()
+example_branch_name <- tar_branch_names(model_summaries, 1)
+popd()
 ```
 
 There is a series of smaller targets (branches) that are each named like `r example_branch_name`, then one overall `model_summaries` target.

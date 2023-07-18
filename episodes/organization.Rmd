@@ -31,7 +31,7 @@ Episode summary: Demonstrate best-practices for project organization
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 ```
 
 ## A simpler way to write workflow plans
@@ -147,10 +147,7 @@ You would get an error if you tried to run the equivalent targets pipeline:
 ```{r}
 #| eval: FALSE
 #| label: example-bad-pipeline-show
-tar_plan(
-  height = 160,
-  height = height / 2.54
-)
+#| file: files/plans/plan_duplicate_height.R
 ```
 
 ```{r}
@@ -158,17 +155,9 @@ tar_plan(
 #| label: example-bad-pipeline-hide
 #| error: true
 tar_dir({
-  tar_script({
-    library(targets)
-    library(tarchetypes)
-    tar_plan(
-      height = 160,
-      height = height / 2.54
-    )
-  })
+  write_example_plan("plan_duplicate_height.R")
   tar_make()
-  }
-)
+})
 ```
 
 **A major part of working with `targets` pipelines is writing custom functions that are the right size.**

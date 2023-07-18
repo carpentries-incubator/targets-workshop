@@ -207,7 +207,7 @@ Finally, each step in the workflow is defined with the `tar_target()` function.
 
 ```{r}
 #| label: targets-show-workflow
-#| eval: FALSE
+#| eval: false
 #| file: files/plans/plan_1.R
 ```
 
@@ -219,18 +219,13 @@ Now that we have a workflow, we can run it with the `tar_make()` function.
 Try running it, and you should see something like this:
 
 ```{r}
-#| label: targets-run-show
-#| eval: FALSE
+#| label: targets-run
+#| eval: true
+#| echo: [3]
+pushd(make_tempdir())
+write_example_plan("plan_1.R")
 tar_make()
-```
-
-```{r}
-#| label: targets-run-hide
-#| echo: FALSE
-withr::with_dir(
-  make_tempdir(),
-  execute_plan("plan_1.R")
-)
+popd()
 ```
 
 Congratulations, you've run your first workflow with `targets`!

@@ -32,7 +32,7 @@ Episode summary: Demonstrate typical cycle of running `targets`: make, inspect, 
 #| warning: FALSE
 library(targets)
 library(visNetwork)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 ```
 
 ## Re-running the workflow
@@ -42,20 +42,14 @@ One of the features of `targets` is that it maximizes efficiency by only running
 This is easiest to understand by trying it yourself. Let's try running the workflow again:
 
 ```{r}
-#| label: targets-run-show
-#| eval: FALSE
-tar_make()
-```
-
-```{r}
-#| label: targets-run-hide
-#| echo: FALSE
+#| label: targets-run
+#| echo: [5]
 # Each tar_script is fresh, so need to run once to catch up to learners
-tar_dir({
-  write_example_plan(1)
-  tar_make(reporter = "silent")
-  tar_make()
-})
+pushd(make_tempdir())
+write_example_plan("plan_1.R")
+tar_make(reporter = "silent")
+tar_make()
+popd()
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -92,24 +86,15 @@ clean_penguin_data <- function(penguins_data_raw) {
 Then run it again.
 
 ```{r}
-#| label: targets-run-show-2
-#| eval: FALSE
+#| label: targets-run-2
+#| echo: [6]
+plan_2_dir <- make_tempdir()
+pushd(plan_2_dir)
+write_example_plan("plan_1.R")
+tar_make(reporter = "silent")
+write_example_plan("plan_2.R")
 tar_make()
-```
-
-```{r}
-#| label: targets-run-hide-2
-#| echo: FALSE
-tar_dir({
-  # Original workflow
-  write_example_plan(1)
-  # Run it silently
-  tar_make(reporter = "silent")
-  # New workflow
-  write_example_plan(2)
-  # Run it again
-  tar_make()
-})
+popd()
 ```
 
 What happened?
@@ -162,31 +147,18 @@ It is good to be able to visualize the state of the workflow.
 
 This can be done with `tar_visnetwork()`
 
-```{r}
-#| label: targets-run-show-3
-#| eval: FALSE
-tar_visnetwork()
-```
 
 ```{r}
 #| label: targets-run-hide-3
-#| echo: FALSE
+#| echo: [5]
 #| results: "asis"
 #| eval: FALSE
-
 # TODO: Change #| eval to TRUE when
 # https://github.com/carpentries/sandpaper/issues/443
 # is resolved
-
-tar_dir({
-  # New workflow
-  write_example_plan(2)
-  # Run it
-  tar_make(reporter = "silent")
-  # Run it again
-  tar_make(reporter = "silent")
-  tar_visnetwork()
-})
+pushd(plan_2_dir)
+tar_visnetwork()
+popd()
 ```
 
 ![](fig/lifecycle-visnetwork.png){alt="Visualization of the targets worklow, showing 'penguins_data' connected by lines to 'penguins_data_raw', 'penguins_csv_file' and 'clean_penguin_data'"}
@@ -250,47 +222,23 @@ There are some other useful functions that can do that.
 `tar_outdated()` lists only the outdated targets; that is, targets that will be built during the next run, or depend on such a target.
 If everything is up to date, it will return a zero-length character vector (`character(0)`).
 
+```{r}
+#| label: targets-outdated
+#| echo: [2]
+pushd(plan_2_dir)
+tar_outdated()
+popd()
+```
+
 `tar_progress()` shows the current status of the workflow as a dataframe.
 You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
 
 ```{r}
-#| label: targets-outdated-show
-#| eval: FALSE
-tar_outdated()
-```
-
-```{r}
-#| label: targets-outdated-hide
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(2)
-  # Run it
-  tar_make(reporter = "silent")
-  # Run it again
-  tar_make(reporter = "silent")
-  tar_outdated()
-})
-```
-
-```{r}
-#| label: targets-progress-show
-#| eval: FALSE
+#| label: targets-progress
+#| echo: [2]
+pushd(plan_2_dir)
 tar_progress()
-```
-
-```{r}
-#| label: targets-progress-hide
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(2)
-  # Run it
-  tar_make(reporter = "silent")
-  # Run it again
-  tar_make(reporter = "silent")
-  tar_progress()
-})
+popd()
 ```
 
 ## Granular control of targets
@@ -306,44 +254,23 @@ Let's give this a try. Remember that our pipeline is currently up to date, so `t
 
 ```{r}
 #| label: targets-progress-show-2
-#| eval: FALSE
+#| eval: true
+#| echo: [2]
+pushd(plan_2_dir)
 tar_make()
-```
-
-```{r}
-#| label: targets-progress-hide-2
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(2)
-  # Run it
-  tar_make(reporter = "silent")
-  # Run it again
-  tar_make()
-})
+popd()
 ```
 
 Let's invalidate `penguins_data` and run it again:
 
 ```{r}
 #| label: targets-progress-show-3
-#| eval: FALSE
+#| eval: true
+#| echo: [2, 3]
+pushd(plan_2_dir)
 tar_invalidate(penguins_data)
 tar_make()
-```
-
-```{r}
-#| label: targets-progress-hide-3
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(2)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_invalidate(penguins_data)
-  # Run it again
-  tar_make()
-})
+popd()
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
