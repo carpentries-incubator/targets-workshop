@@ -15,7 +15,9 @@ utility_funcs <- file.path(files_root, "tar_functions") |>
   unlist()
 package_script <- file.path(files_root, "packages.R")
 
-write_example_plan <- function(name) {
+#' @param file The path to another file to use as a workflow
+#' @param chunk The chunk name to use as a targets workflow
+write_example_plan <- function(file = NULL, chunk = NULL) {
   # Write the utility functions into the R/ directory
 
   if (!dir.exists("R")) {
@@ -30,9 +32,14 @@ write_example_plan <- function(name) {
       file.copy(from = package_script, to = _)
   }
 
-  # Copy the workflow
-  file.path(plan_root, name) |>
-      file.copy(from = _, to = "_targets.R", overwrite = TRUE)
+  # Write the workflow
+  if (!is.null(file)) {
+    file.path(plan_root, file) |>
+        file.copy(from = _, to = "_targets.R", overwrite = TRUE)
+  }
+  if (!is.null(chunk)) {
+    writeLines(text = knitr::knit_code$get(chunk), con = "_targets.R")
+  }
 
   invisible()
 }

@@ -147,7 +147,13 @@ You would get an error if you tried to run the equivalent targets pipeline:
 ```{r}
 #| eval: FALSE
 #| label: example-bad-pipeline-show
-#| file: files/plans/plan_duplicate_height.R
+#| echo: [-1, -2]
+library(targets)
+library(tarchetypes)
+tar_plan(
+    height = 160,
+    height = height / 2.54
+)
 ```
 
 ```{r}
@@ -155,7 +161,7 @@ You would get an error if you tried to run the equivalent targets pipeline:
 #| label: example-bad-pipeline-hide
 #| error: true
 tar_dir({
-  write_example_plan("plan_duplicate_height.R")
+  write_example_plan(chunk = "example-bad-pipeline-show")
   tar_make()
 })
 ```

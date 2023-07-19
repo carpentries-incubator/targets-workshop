@@ -68,8 +68,25 @@ We can add this to our pipeline. We will call it the `combined_model` because it
 
 ```{r}
 #| label: example-lm-pipeline-show
-#| file: files/plans/plan_4.R
-#| eval: FALSE
+#| eval: false
+source("R/functions.R")
+source("R/packages.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build model
+  combined_model = lm(
+    bill_depth_mm ~ bill_length_mm,
+    data = penguins_data
+  )
+)
 ```
 ```{r}
 #| label: example-lm-pipeline-hide
@@ -78,7 +95,7 @@ plan_4_dir <- make_tempdir()
 pushd(plan_4_dir)
 write_example_plan("plan_3.R")
 tar_make(reporter = "silent")
-write_example_plan("plan_4.R")
+write_example_plan(chunk = "example-lm-pipeline-show")
 tar_make()
 popd()
 ```
@@ -88,7 +105,7 @@ Let's have a look at the model. We will use the `glance()` function from the `br
 ```{r}
 #| label: example-lm-pipeline-inspect-show
 #| eval: true
-#| echo: [3, 4, 5]
+#| echo: [2, 3, 4]
 pushd(plan_4_dir)
 library(broom)
 tar_load(combined_model)
@@ -109,7 +126,36 @@ Now our workflow is getting more complicated. This is what a workflow for such a
 ```{r}
 #| label: example-model-show-1
 #| eval: false
-#| file: files/plans/plan_5.R
+source("R/functions.R")
+source("R/packages.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  combined_model = lm(
+    bill_depth_mm ~ bill_length_mm,
+    data = penguins_data
+  ),
+  species_model = lm(
+    bill_depth_mm ~ bill_length_mm + species,
+    data = penguins_data
+  ),
+  interaction_model = lm(
+    bill_depth_mm ~ bill_length_mm * species,
+    data = penguins_data
+  ),
+  # Get model summaries
+  combined_summary = glance(combined_model),
+  species_summary = glance(species_model),
+  interaction_summary = glance(interaction_model)
+)
 ```
 
 ```{r}
@@ -117,7 +163,7 @@ Now our workflow is getting more complicated. This is what a workflow for such a
 #| echo: false
 plan_5_dir <- make_tempdir()
 pushd(plan_5_dir)
-write_example_plan("plan_5.R")
+write_example_plan(chunk = "example-model-show-1")
 tar_make()
 popd()
 ```
@@ -146,7 +192,34 @@ Let's see how to write the same plan using **dynamic branching**:
 ```{r}
 #| label: example-model-show-3
 #| eval: false
-#| file: files/plans/plan_6.R
+source("R/functions.R")
+source("R/packages.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  ),
+  # Get model summaries
+  tar_target(
+    model_summaries,
+    glance(models[[1]]),
+    pattern = map(models)
+  )
+)
 ```
 
 What is going on here?
@@ -158,7 +231,7 @@ First, let's look at the messages provided by `tar_make()`.
 #| echo: false
 plan_6_dir <- make_tempdir()
 pushd(plan_6_dir)
-write_example_plan("plan_6.R")
+write_example_plan(chunk = "example-model-show-3")
 tar_make()
 example_branch_name <- tar_branch_names(model_summaries, 1)
 popd()
@@ -173,7 +246,7 @@ Next, let's look in more detail about how the workflow is set up, starting with 
 
 ```{r}
 #| label = "model-def",
-#| code = readLines("files/plans/plan_6.R")[14:21],
+#| code = knitr::knit_code$get("example-model-show-3")[14:21],
 #| eval = FALSE
 ```
 
@@ -185,7 +258,7 @@ Next, take a look at the command to build the target `model_summaries`.
 
 ```{r}
 #| label = "model-summaries",
-#| code = readLines("files/plans/plan_6.R")[22:27],
+#| code = knitr::knit_code$get("example-model-show-3")[22:27],
 #| eval = FALSE
 ```
 
@@ -247,47 +320,34 @@ Our new pipeline looks almost the same as before, but this time we use the custo
 ```{r}
 #| label: example-model-hide-6
 #| echo: FALSE
-plan_7_dir <- make_tempdir()
-withr::with_dir(
-  plan_7_dir,
-  execute_plan("plan_7.R")
-)
+pushd(plan_6_dir)
+write_example_plan(chunk = "example-model-show-6")
+tar_make()
+popd()
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
 
 ```{r}
-#| label: example-model-hide-7
-#| echo: false
+#| label: example-model-7
+#| echo: [2]
 #| warning: false
-withr::with_dir(
-  plan_7_dir,
-  tar_read(model_summaries)
-)
+pushd(plan_6_dir)
+tar_read(model_summaries)
+popd()
 ```
 
 Next we will add one more target, a prediction of bill depth based on each model. These will be needed for plotting the models in the report.
 Such a prediction can be obtained with the `augment()` function of the `broom` package.
 
 ```{r}
-#| label: example-augment-show
-#| echo: true
-#| eval: false
+#| label: example-augment
+#| echo: [2, 3]
+#| eval: true
+pushd(plan_6_dir)
 tar_load(models)
 augment(models[[1]])
-```
-
-```{r}
-#| label: example-augment-hide
-#| echo: false
-#| warning: false
-withr::with_dir(
-  plan_7_dir,
-  {
-    tar_load(models)
-    augment(models[[1]])
-  }
-)
+popd()
 ```
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
@@ -310,8 +370,40 @@ Add the step to the workflow:
 
 ```{r}
 #| label: example-model-augment-show
-#| eval: FALSE
-#| file: files/plans/plan_9.R
+#| eval: false
+source("R/packages.R")
+source("R/functions.R")
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  ),
+  # Get model summaries
+  tar_target(
+    model_summaries,
+    glance_with_mod_name(models),
+    pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
+    pattern = map(models)
+  )
 ```
 
 ::::::::::::::::::::::::::::::::::

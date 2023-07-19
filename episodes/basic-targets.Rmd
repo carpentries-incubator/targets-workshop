@@ -34,7 +34,7 @@ Episode summary: First chance to get hands dirty by writing a very simple workfl
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-source("files/functions.R")
+source("files/lesson_functions.R")
 ```
 
 ## Create a project

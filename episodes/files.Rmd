@@ -54,7 +54,12 @@ We are about to create a new `_targets.R` file, but you probably don't want to l
 ```{r}
 #| label: example-file-show-1
 #| eval: FALSE
-#| files: files/plans/plan_files_read_lines.R
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  some_data = readLines("_targets/user/data/hello.txt")
+)
 ```
 
 ```{r}
@@ -63,7 +68,7 @@ We are about to create a new `_targets.R` file, but you probably don't want to l
 tar_dir({
   fs::dir_create("_targets/user/data")
   writeLines("Hello World", "_targets/user/data/hello.txt")
-  write_example_plan("plan_files_read_lines.R")
+  write_example_plan(chunk = "example-file-show-1")
   tar_make()
 })
 ```
@@ -73,9 +78,9 @@ If we inspect the contents of `some_data` with `tar_read(some_data)`, it will co
 Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?". Edit this in the RStudio text editor and save it. Now run the pipeline again.
 
 ```{r}
-#| label: example-file-show-2
-#| eval: FALSE
-#| files: files/plans/plan_files_read_lines.R
+#| label = "example-file-show-2",
+#| eval = FALSE,
+#| code = knitr::knit_code$get("example-file-show-1")
 ```
 
 ```{r}
@@ -84,7 +89,7 @@ Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?".
 tar_dir({
   fs::dir_create("_targets/user/data")
   writeLines("Hello World", "_targets/user/data/hello.txt")
-  write_example_plan("plan_files_read_lines.R")
+  write_example_plan(chunk = "example-file-show-1")
   tar_make(reporter = "silent")
   writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
   tar_make()
@@ -113,14 +118,7 @@ tar_plan(
 tar_dir({
   fs::dir_create("_targets/user/data")
   writeLines("Hello World", "_targets/user/data/hello.txt")
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_plan(
-       tar_file(data_file, "_targets/user/data/hello.txt"),
-       some_data = readLines(data_file)
-     )
-  })
+  write_example_plan(chunk = "example-file-show-3")
   tar_make(reporter = "silent")
   writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
   tar_make()
@@ -167,15 +165,7 @@ tar_dir({
   # Old (longer) version:
   writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
   # Make it again with the shorter version
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_file_read(
-        hello,
-        "_targets/user/data/hello.txt",
-        readLines(!!.x)
-  )
-  })
+  write_example_plan(chunk = "example-file-show-4")
   tar_manifest()
 })
 ```
@@ -207,17 +197,7 @@ How can you use `tar_file_read()` to load the CSV file while tracking its conten
 ```{r}
 #| label: tar-file-read-answer-show
 #| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  penguins_data = clean_penguin_data(penguins_data_raw)
-)
+#| file: files/plans/plan_3.R
 ```
 
 ```{r}
@@ -225,7 +205,7 @@ tar_plan(
 #| echo: FALSE
 tar_dir({
   # New workflow
-  write_example_plan(3)
+  write_example_plan("plan_3.R")
   # Run it
   tar_make()
 })
@@ -260,10 +240,7 @@ Here is our modified function that writes character data to a file and returns t
 
 ```{r}
 #| label: write-data-func
-write_lines_file <- function(text, file, ...) {
-  writeLines(text = text, con = file, ...)
-  file
-}
+#| file: files/tar_functions/write_lines_file.R
 ```
 
 Let's try it out:
@@ -291,6 +268,8 @@ We can now use this in a pipeline. For example let's change the text to upper ca
 library(targets)
 library(tarchetypes)
 
+source("R/functions.R")
+
 tar_plan(
   tar_file_read(
     hello,
@@ -309,31 +288,10 @@ tar_plan(
 #| label: example-file-hide-6
 #| echo: false
 tar_dir({
-
   fs::dir_create("_targets/user/data")
   fs::dir_create("_targets/user/results")
   writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
-
-  tar_script({
-    library(targets)
-    library(tarchetypes)
-    write_lines_file <- function(text, file, ...) {
-      writeLines(text = text, con = file, ...)
-      file
-    }
-    tar_plan(
-      tar_file_read(
-        hello,
-        "_targets/user/data/hello.txt",
-        readLines(!!.x)
-      ),
-      hello_caps = toupper(hello),
-      tar_file(
-        hello_caps_out,
-        write_lines_file(hello_caps, "_targets/user/results/hello_caps.txt")
-      )
-    )
-  })
+  write_example_plan(chunk = "example-file-show-6")
   tar_make()
 })
 ```

@@ -67,14 +67,21 @@ This is what using the `tar_option_set()` method looks like:
 ```{r}
 #| eval: FALSE
 #| label: load-pkg-show
-#| file: files/plans/plan_option_packages.R
+library(targets)
+library(tarchetypes)
+
+tar_option_set(packages = c("dplyr", "palmerpenguins"))
+
+tar_plan(
+  adelie_data = filter(penguins, species == "Adelie")
+)
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide
 tar_dir({
-  write_example_plan("plan_option_packages.R")
+  write_example_plan(chunk = "load-pkg-show")
   tar_make()
 })
 ```
@@ -90,14 +97,23 @@ Here is how we could use this method, modified from the same example as above.
 ```{r}
 #| eval: FALSE
 #| label: load-pkg-show-2
-#| file: files/plans/plan_packages_argument.R
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  tar_target(
+    adelie_data,
+    filter(penguins, species == "Adelie"),
+    packages = c("dplyr", "palmerpenguins")
+  )
+)
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide-2
 tar_dir({
-  write_example_plan("plan_packages_argument.R")
+  write_example_plan(chunk="load-pkg-show-2")
   tar_make()
 })
 ```
@@ -115,14 +131,19 @@ Here is how to write the plan using this method:
 ```{r}
 #| eval: FALSE
 #| label: load-pkg-show-3
-#| file: files/plans/plan_packages_colon.R
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  adelie_data = dplyr::filter(palmerpenguins::penguins, species == "Adelie")
+)
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide-3
 tar_dir({
-  write_example_plan("plan_packages_colon.R")
+  write_example_plan(chunk = "load-pkg-show-3")
   tar_make()
 })
 ```
