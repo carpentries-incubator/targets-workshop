@@ -55,6 +55,19 @@ This differs from the exucution we have learned so far, which spawns extra R pro
 To adapt Targets to use the Slurm HPC scheduler, we change the `controller`.
 In this section we will assume that our HPC uses Slurm as its job scheduler, but you can use other schedulers such as PBS/TORQUE, Sun Grid Engine (SGE) or LSF.
 
+::::::::::::::::::::::::::::::::::::: {.prereq}
+
+### Install required packages
+
+You will need to install several packages to use the `crew` backend:
+
+```{r}
+#| label: install-crew.cluster
+#| eval: false
+install.packages("crew.cluster", type = "source")
+\```
+
+:::::::::::::::::::::::::::::::::::::
 In the Parallel Processing section, we used the following configuration:
 ```{R}
 library(crew)
