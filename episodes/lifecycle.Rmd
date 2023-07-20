@@ -293,6 +293,15 @@ tar_dir({
 })
 ```
 
+::: callout
+
+Targets also offers some dynamic monitoring tools that you can leave running to monitor long pipelines:
+
+* [`tar_poll`](https://docs.ropensci.org/targets/reference/tar_poll.html) gives a ongoing progress summary in the R terminal
+* [`tar_watch`](https://docs.ropensci.org/targets/reference/tar_watch.html) starts a Shiny app that shows the current output of `tar_visnetwork`
+
+:::
+
 ## Granular control of targets
 
 It is possible to only make a particular target instead of running the entire workflow.
