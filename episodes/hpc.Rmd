@@ -199,7 +199,7 @@ Instead, you define a pool of workers when configuring the workflow.
 In our example above we used 3 workers.
 For each worker, `crew` submits a single Slurm job, and these workers will process multiple targets over their lifetime.
 
-We can verify that this has happened using `sacct`:
+We can verify that this has happened using `sacct`, which we can use to query information about our past jobs:
 
 ```{bash}
 sacct
