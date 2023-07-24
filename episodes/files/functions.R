@@ -334,6 +334,114 @@ write_example_plan <- function(plan_select) {
     "   )",
     ")"
     )
+  plan_10 <- c(
+    glance_slow_func,
+    augment_slow_func,
+    clean_penguin_data_func,
+    '
+library(crew.cluster)
+library(targets)
+library(tarchetypes)
+library(palmerpenguins)
+library(broom)
+suppressPackageStartupMessages(library(tidyverse))
+
+tar_option_set(
+  controller = crew_controller_slurm(
+    workers = 3,
+    script_lines = "module load R",
+    slurm_memory_gigabytes_per_cpu = 1
+  )
+)
+
+tar_plan(
+  # Load raw data
+  tar_file_read(
+    penguins_data_raw,
+    path_to_file("penguins_raw.csv"),
+    read_csv(!!.x, show_col_types = FALSE)
+  ),
+  # Clean data
+  penguins_data = clean_penguin_data(penguins_data_raw),
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  ),
+  # Get model summaries
+  tar_target(
+    model_summaries,
+    glance_with_mod_name_slow(models),
+    pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name_slow(models),
+    pattern = map(models)
+  )
+)
+')
+plan_11 <- c(
+  '
+  graphics_devices <- function(){
+  system2("lshw", c("-class", "display"), stdout=TRUE, stderr=FALSE)
+}
+
+library(crew)
+library(crew.cluster)
+library(targets)
+library(tarchetypes)
+
+tar_option_set(
+  controller = crew_controller_group(
+    crew_controller_slurm(
+      name = "cpu_worker",
+      workers = 1,
+      script_lines = "module load R",
+      slurm_memory_gigabytes_per_cpu = 1,
+      slurm_cpus_per_task = 1 
+    ),
+
+    crew_controller_slurm(
+      name = "gpu_worker",
+      workers = 1,
+      script_lines = c(
+        "#SBATCH --partition=gpuq",
+        "#SBATCH --gres=gpu:1",
+        "module load R"
+      ),
+      slurm_memory_gigabytes_per_cpu = 1,
+      slurm_cpus_per_task = 1
+    )
+  ),
+  resources = tar_resources(
+    crew = tar_resources_crew(controller = "cpu_worker")
+  )
+)
+
+tar_plan(
+  tar_target(
+    cpu_hardware,
+    graphics_devices(),
+    resources = tar_resources(
+      crew = tar_resources_crew(controller = "cpu_worker")
+    )
+  ),
+  tar_target(
+    gpu_hardware,
+    graphics_devices(),
+    resources = tar_resources(
+      crew = tar_resources_crew(controller = "gpu_worker")
+    )
+  )
+)
+  '
+)
   switch(
     as.character(plan_select),
     "1" = readr::write_lines(plan_1, "_targets.R"),
@@ -345,7 +453,9 @@ write_example_plan <- function(plan_select) {
     "7" = readr::write_lines(plan_7, "_targets.R"),
     "8" = readr::write_lines(plan_8, "_targets.R"),
     "9" = readr::write_lines(plan_9, "_targets.R"),
-    stop("plan_select must be 1, 2, 3, 4, 5, 6, 7, 8, or 9")
+    "10" = readr::write_lines(plan_10, "_targets.R"),
+    "11" = readr::write_lines(plan_11, "_targets.R"),
+    stop("plan_select must be 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 or 11")
   )
 }
 

@@ -1504,7 +1504,7 @@
     },
     "targets": {
       "Package": "targets",
-      "Version": "1.0.0",
+      "Version": "1.2.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1525,10 +1525,9 @@
         "tools",
         "utils",
         "vctrs",
-        "withr",
         "yaml"
       ],
-      "Hash": "3f299989005cd3ccd101eb97623fd533"
+      "Hash": "a1e56d84e94c41a03391aea66c32b732"
     },
     "textshaping": {
       "Package": "textshaping",
