@@ -418,9 +418,6 @@ tar_option_set(
       slurm_memory_gigabytes_per_cpu = 1,
       slurm_cpus_per_task = 1
     )
-  ),
-  resources = tar_resources(
-    crew = tar_resources_crew(controller = "cpu_worker")
   )
 )
 
