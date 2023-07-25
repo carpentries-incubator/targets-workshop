@@ -294,7 +294,7 @@ tar_plan(
   ),
   tar_target(
     name = small_memory_task,
-    command = Sys.getenv("SBATCH_MEM_PER_CPU"),
+    command = Sys.getenv("SLURM_MEM_PER_CPU"),
     resources = tar_resources(
       crew = tar_resources_crew(controller = "small_memory")
     )
