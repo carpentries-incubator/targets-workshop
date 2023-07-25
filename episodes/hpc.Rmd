@@ -287,7 +287,7 @@ Then we specify each controller by name in each target definition:
 tar_plan(
   tar_target(
     name = big_memory_task,
-    command = Sys.getenv("SBATCH_MEM_PER_CPU"),
+    command = Sys.getenv("SLURM_MEM_PER_CPU"),
     resources = tar_resources(
       crew = tar_resources_crew(controller = "big_memory")
     )
