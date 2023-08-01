@@ -1,6 +1,6 @@
 options(tidyverse.quiet = TRUE)
-source("R/functions.R")
 source("R/packages.R")
+source("R/functions.R")
 
 tar_plan(
   # Load raw data
@@ -23,7 +23,7 @@ tar_plan(
   # Get model summaries
   tar_target(
     model_summaries,
-    glance_with_mod_name(models),
+    glance(models[[1]]),
     pattern = map(models)
   )
 )

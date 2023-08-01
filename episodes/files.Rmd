@@ -195,9 +195,9 @@ How can you use `tar_file_read()` to load the CSV file while tracking its conten
 :::::::::::::::::::::::::::::::::: {.solution}
 
 ```{r}
-#| label: tar-file-read-answer-show
-#| eval: FALSE
-#| file: files/plans/plan_3.R
+#| label = "tar-file-read-answer-show",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_3.R")[2:12]
 ```
 
 ```{r}

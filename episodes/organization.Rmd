@@ -55,28 +55,11 @@ By using `tar_plan()`, instead of specifying targets with `tar_target()`, we can
 
 Let's edit the penguins workflow to use the `tar_plan()` syntax:
 
+<!-- The chunk below intersperses plan_2b with clean_penguin_data() to avoid writing it manually -->
 ```{r}
-#| label: tar-plan-show-1
-#| eval: FALSE
-library(targets)
-library(palmerpenguins)
-library(tidyverse)
-
-clean_penguin_data <- function(penguins_data_raw) {
-  penguins_data_raw |>
-    select(
-      species = Species,
-      bill_length_mm = `Culmen Length (mm)`,
-      bill_depth_mm = `Culmen Depth (mm)`
-    ) |>
-    remove_missing(na.rm = TRUE)
-}
-
-tar_plan(
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
-  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
-  penguins_data = clean_penguin_data(penguins_data_raw)
-)
+#| label = "tar-plan-show-1",
+#| eval = FALSE,
+#| code = c(readLines("files/packages.R")[1:4], "\n", readLines("files/tar_functions/clean_penguin_data.R"), "\n", readLines("files/plans/plan_2b.R")[5:9])
 ```
 
 I think it is easier to read, do you?
@@ -101,16 +84,9 @@ Similarly, let's put the `library()` calls in their own script in `R/` called `p
 We will also need to modify our `_targets.R` script to call these scripts with `source`:
 
 ```{r}
-#| label: tar-plan-show-2
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
-  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
-  penguins_data = clean_penguin_data(penguins_data_raw)
-)
+#| label = "tar-plan-show-2",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_2b.R")[2:9]
 ```
 
 Now `_targets.R` is much more streamlined: it is focused just on the workflow and immediately tells us what happens in each step.

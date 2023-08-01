@@ -25,5 +25,11 @@ tar_plan(
     model_summaries,
     glance_with_mod_name(models),
     pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
+    pattern = map(models)
   )
 )

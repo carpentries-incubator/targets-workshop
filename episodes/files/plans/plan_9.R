@@ -1,6 +1,13 @@
 options(tidyverse.quiet = TRUE)
+suppressPackageStartupMessages(library(crew))
 source("R/functions.R")
 source("R/packages.R")
+
+# Set up parallelization
+library(crew)
+tar_option_set(
+  controller = crew_controller_local(workers = 2)
+)
 
 tar_plan(
   # Load raw data
@@ -24,6 +31,12 @@ tar_plan(
   tar_target(
     model_summaries,
     glance_with_mod_name(models),
+    pattern = map(models)
+  ),
+  # Get model predictions
+  tar_target(
+    model_predictions,
+    augment_with_mod_name(models),
     pattern = map(models)
   )
 )

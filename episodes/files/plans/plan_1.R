@@ -1,8 +1,7 @@
-suppressPackageStartupMessages({
-  library(targets)
-  library(palmerpenguins)
-  library(tidyverse)
-})
+options(tidyverse.quiet = TRUE)
+library(targets)
+library(tidyverse)
+library(palmerpenguins)
 
 clean_penguin_data <- function(penguins_data_raw) {
   penguins_data_raw |>

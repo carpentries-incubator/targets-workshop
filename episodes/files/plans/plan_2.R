@@ -1,16 +1,7 @@
-library(targets)
-library(palmerpenguins)
-suppressPackageStartupMessages(library(tidyverse))
-clean_penguin_data <- function(penguins_data_raw) {
-  penguins_data_raw |>
-    select(
-      species = Species,
-      bill_length_mm = `Culmen Length (mm)`,
-      bill_depth_mm = `Culmen Depth (mm)`
-    ) |>
-    remove_missing(na.rm = TRUE) |>
-    separate(species, into = 'species', extra = 'drop')
-}
+options(tidyverse.quiet = TRUE)
+source("R/packages.R")
+source("R/functions.R")
+
 list(
   tar_target(penguins_csv_file, path_to_file('penguins_raw.csv')),
   tar_target(penguins_data_raw, read_csv(

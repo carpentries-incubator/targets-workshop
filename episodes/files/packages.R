@@ -1,7 +1,5 @@
-suppressPackageStartupMessages({
-  library(targets)
-  library(palmerpenguins)
-  library(tidyverse)
-  library(tarchetypes)
-  library(broom)
-})
+library(targets)
+library(tarchetypes)
+library(palmerpenguins)
+library(tidyverse)
+library(broom)

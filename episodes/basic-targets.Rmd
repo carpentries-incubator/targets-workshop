@@ -206,9 +206,9 @@ The other steps (setting the file path and loading the data) are each just one f
 Finally, each step in the workflow is defined with the `tar_target()` function.
 
 ```{r}
-#| label: targets-show-workflow
-#| eval: false
-#| file: files/plans/plan_1.R
+#| label = "targets-show-workflow",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_1.R")[2:21]
 ```
 
 I have set `show_col_types = FALSE` in `read_csv()` because we know from the earlier code that the column types were set correctly by default (character for species and numeric for bill length and depth), so we don't need to see the warning it would otherwise issue.
