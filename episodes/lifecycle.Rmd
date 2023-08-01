@@ -137,7 +137,6 @@ It is good to be able to visualize the state of the workflow.
 
 This can be done with `tar_visnetwork()`
 
-
 ```{r}
 #| label: targets-run-hide-3
 #| echo: [5]
