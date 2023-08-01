@@ -1039,11 +1039,15 @@
       "Package": "openssl",
       "Version": "2.0.6",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteType": "repository",
+      "RemoteUrl": "https://github.com/jeroen/openssl",
+      "RemoteRef": "v2.0.6",
+      "RemoteSha": "72aa50a79b99bb1eb57a2668b1c437b1adecbabb",
       "Requirements": [
         "askpass"
       ],
-      "Hash": "0f7cd2962e3044bb940cca4f4b5cecbe"
+      "Hash": "51976e7d0fcabbadb3c1baec93103756"
     },
     "packrat": {
       "Package": "packrat",
@@ -1186,12 +1190,16 @@
       "Package": "ragg",
       "Version": "1.2.5",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteType": "repository",
+      "RemoteUrl": "https://github.com/r-lib/ragg",
+      "RemoteRef": "v1.2.5",
+      "RemoteSha": "dafb0d8e0308c4db56abed2290f32a1ca0719307",
       "Requirements": [
         "systemfonts",
         "textshaping"
       ],
-      "Hash": "690bc058ea2b1b8a407d3cfe3dce3ef9"
+      "Hash": "fa83fe2ea7fc41d5033a0759a8172910"
     },
     "rappdirs": {
       "Package": "rappdirs",
@@ -1420,6 +1428,7 @@
       "Version": "1.7.12",
       "Source": "Repository",
       "Repository": "https://carpentries.r-universe.dev",
+      "RemoteType": "repository",
       "RemoteUrl": "https://github.com/gagolews/stringi",
       "RemoteRef": "v1.7.12",
       "RemoteSha": "e4cf3176bc3943e6c477885be3445cbbd7d4bab6",
@@ -1429,7 +1438,7 @@
         "tools",
         "utils"
       ],
-      "Hash": "ca8bd84263c77310739d2cf64d84d7c9"
+      "Hash": "832ef2a01603f8f5b4f2af024080d5d9"
     },
     "stringr": {
       "Package": "stringr",
@@ -1459,12 +1468,16 @@
       "Package": "systemfonts",
       "Version": "1.0.4",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteType": "repository",
+      "RemoteUrl": "https://github.com/r-lib/systemfonts",
+      "RemoteRef": "v1.0.4",
+      "RemoteSha": "7cefacd49d39bb77e88f99d161a76a8cea28dc1b",
       "Requirements": [
         "R",
         "cpp11"
       ],
-      "Hash": "90b28393209827327de889f49935140a"
+      "Hash": "fd4f62a091a20ea96ecb9350b6f8d951"
     },
     "tarchetypes": {
       "Package": "tarchetypes",
@@ -1491,7 +1504,7 @@
     },
     "targets": {
       "Package": "targets",
-      "Version": "1.0.0",
+      "Version": "1.2.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1512,22 +1525,25 @@
         "tools",
         "utils",
         "vctrs",
-        "withr",
         "yaml"
       ],
-      "Hash": "3f299989005cd3ccd101eb97623fd533"
+      "Hash": "a1e56d84e94c41a03391aea66c32b732"
     },
     "textshaping": {
       "Package": "textshaping",
       "Version": "0.3.6",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteType": "repository",
+      "RemoteUrl": "https://github.com/r-lib/textshaping",
+      "RemoteRef": "v0.3.6",
+      "RemoteSha": "0ae8e32a2dab09a920db4b6a60fc10380ba1c4bc",
       "Requirements": [
         "R",
         "cpp11",
         "systemfonts"
       ],
-      "Hash": "1ab6223d3670fac7143202cb6a2d43d5"
+      "Hash": "b0f9ff08a8a4885acc43248bf3e37541"
     },
     "tibble": {
       "Package": "tibble",
