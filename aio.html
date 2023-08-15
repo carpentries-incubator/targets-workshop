@@ -351,7 +351,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -523,7 +523,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -861,13 +861,13 @@ something like this:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target penguins_csv_file
-● built target penguins_csv_file [0.002 seconds]
-▶ start target penguins_data_raw
-● built target penguins_data_raw [0.148 seconds]
-▶ start target penguins_data
-● built target penguins_data [0.011 seconds]
-▶ end pipeline [0.244 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target penguins_csv_file
+• built target penguins_csv_file [0.003 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.33 seconds]
+• start target penguins_data
+• built target penguins_data [0.012 seconds]
+• end pipeline [0.45 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
@@ -899,7 +899,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1083,7 +1083,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1137,7 +1137,7 @@ running the workflow again:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.063 seconds]</code></pre>
+✔ skip pipeline [0.088 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -1182,9 +1182,9 @@ need the first part of the common name to distinguish them.</p>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
-▶ start target penguins_data
-● built target penguins_data [0.022 seconds]
-▶ end pipeline [0.112 seconds]</code></pre>
+• start target penguins_data
+• built target penguins_data [0.024 seconds]
+• end pipeline [0.144 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -1213,7 +1213,7 @@ skip steps results in a massive increase in efficiency.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(penguins_data</code>) or by running
 <code>tar_load(penguins_data)</code> followed by
@@ -1317,7 +1317,7 @@ date?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -1428,7 +1428,7 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.056 seconds]</code></pre>
+✔ skip pipeline [0.079 seconds]</code></pre>
 </div>
 <p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
 <div class="codewrapper sourceCode" id="cb13">
@@ -1443,9 +1443,9 @@ date, so <code>tar_make()</code> will skip everything:</p>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
-▶ start target penguins_data
-● built target penguins_data [0.02 seconds]
-▶ end pipeline [0.101 seconds]</code></pre>
+• start target penguins_data
+• built target penguins_data [0.023 seconds]
+• end pipeline [0.133 seconds]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -1497,7 +1497,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1724,7 +1724,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-packages"><p>Content from <a href="packages.html">Managing Packages</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/packages.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1828,9 +1828,9 @@ like:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target adelie_data
-● built target adelie_data [0.028 seconds]
-▶ end pipeline [0.093 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target adelie_data
+• built target adelie_data [0.029 seconds]
+• end pipeline [0.124 seconds]</code></pre>
 </div>
 <p>This method gets around the slow-downs that may sometimes be
 experienced with Method 1.</p>
@@ -1863,9 +1863,9 @@ as above.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target adelie_data
-● built target adelie_data [0.028 seconds]
-▶ end pipeline [0.09 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target adelie_data
+• built target adelie_data [0.029 seconds]
+• end pipeline [0.124 seconds]</code></pre>
 </div>
 <p>This can be more memory efficient in some cases than loading all
 packages, since not every target is always made during a typical run of
@@ -1895,9 +1895,9 @@ altogether</strong>.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target adelie_data
-● built target adelie_data [0.014 seconds]
-▶ end pipeline [0.078 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target adelie_data
+• built target adelie_data [0.015 seconds]
+• end pipeline [0.112 seconds]</code></pre>
 </div>
 <p>The benefits of this approach are that the origins of all functions
 is explicit, so you could browse your code (for example, by looking at
@@ -2064,7 +2064,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2142,9 +2142,9 @@ below. Then, rename them when you are ready to work on it again.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target some_data
-● built target some_data [0.001 seconds]
-▶ end pipeline [0.065 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target some_data
+• built target some_data [0.002 seconds]
+• end pipeline [0.098 seconds]</code></pre>
 </div>
 <p>If we inspect the contents of <code>some_data</code> with
 <code>tar_read(some_data)</code>, it will contain the string
@@ -2167,7 +2167,7 @@ pipeline again.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skip target some_data
-✔ skip pipeline [0.047 seconds]</code></pre>
+✔ skip pipeline [0.079 seconds]</code></pre>
 </div>
 <p>The target <code>some_data</code> was skipped, even though the
 contents of the file changed.</p>
@@ -2193,11 +2193,11 @@ this will be detected by <code>targets</code>.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target data_file
-● built target data_file [0.001 seconds]
-▶ start target some_data
-● built target some_data [0 seconds]
-▶ end pipeline [0.072 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target data_file
+• built target data_file [0.001 seconds]
+• start target some_data
+• built target some_data [0.001 seconds]
+• end pipeline [0.109 seconds]</code></pre>
 </div>
 <p>This time we see that <code>targets</code> does successfully re-build
 <code>some_data</code> as expected.</p>
@@ -2294,7 +2294,7 @@ while tracking its contents?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2315,13 +2315,13 @@ while tracking its contents?</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target penguins_data_raw_file
-● built target penguins_data_raw_file [0.001 seconds]
-▶ start target penguins_data_raw
-● built target penguins_data_raw [0.27 seconds]
-▶ start target penguins_data
-● built target penguins_data [0.019 seconds]
-▶ end pipeline [0.366 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target penguins_data_raw_file
+• built target penguins_data_raw_file [0.003 seconds]
+• start target penguins_data_raw
+• built target penguins_data_raw [0.327 seconds]
+• start target penguins_data
+• built target penguins_data [0.022 seconds]
+• end pipeline [0.466 seconds]</code></pre>
 </div>
 </div>
 </div>
@@ -2403,15 +2403,15 @@ to upper case then write it out again:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>▶ start target hello_file
-● built target hello_file [0.001 seconds]
-▶ start target hello
-● built target hello [0 seconds]
-▶ start target hello_caps
-● built target hello_caps [0 seconds]
-▶ start target hello_caps_out
-● built target hello_caps_out [0.001 seconds]
-▶ end pipeline [0.079 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>• start target hello_file
+• built target hello_file [0.002 seconds]
+• start target hello
+• built target hello [0.001 seconds]
+• start target hello_caps
+• built target hello_caps [0 seconds]
+• start target hello_caps_out
+• built target hello_caps_out [0 seconds]
+• end pipeline [0.116 seconds]</code></pre>
 </div>
 <p>Take a look at <code>hello_caps.txt</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
@@ -2437,7 +2437,7 @@ modified?<a class="anchor" aria-label="anchor" href="#challenge-what-happens-to-
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>hello_caps_out</code> has
 changed (is “invalidated”), and re-runs the code to make it, thus
@@ -2478,7 +2478,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-branch"><p>Content from <a href="branch.html">Branching</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2576,9 +2576,9 @@ without distinction:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-▶ start target combined_model
-● built target combined_model [0.033 seconds]
-▶ end pipeline [0.115 seconds]</code></pre>
+• start target combined_model
+• built target combined_model [0.091 seconds]
+• end pipeline [0.208 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -2652,17 +2652,17 @@ for such an analysis might look like <strong>without branching</strong>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 ✔ skip target combined_model
-▶ start target interaction_model
-● built target interaction_model [0.005 seconds]
-▶ start target species_model
-● built target species_model [0.002 seconds]
-▶ start target combined_summary
-● built target combined_summary [0.008 seconds]
-▶ start target interaction_summary
-● built target interaction_summary [0.045 seconds]
-▶ start target species_summary
-● built target species_summary [0.003 seconds]
-▶ end pipeline [0.168 seconds]</code></pre>
+• start target interaction_model
+• built target interaction_model [0.006 seconds]
+• start target species_model
+• built target species_model [0.002 seconds]
+• start target combined_summary
+• built target combined_summary [0.01 seconds]
+• start target interaction_summary
+• built target interaction_summary [0.004 seconds]
+• start target species_summary
+• built target species_summary [0.004 seconds]
+• end pipeline [0.235 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -2735,16 +2735,16 @@ branching</strong>:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-▶ start target models
-● built target models [0.007 seconds]
-▶ start branch model_summaries_5ad4cec5
-● built branch model_summaries_5ad4cec5 [0.009 seconds]
-▶ start branch model_summaries_c73912d5
-● built branch model_summaries_c73912d5 [0.004 seconds]
-▶ start branch model_summaries_91696941
-● built branch model_summaries_91696941 [0.047 seconds]
-● built pattern model_summaries
-▶ end pipeline [0.172 seconds]</code></pre>
+• start target models
+• built target models [0.008 seconds]
+• start branch model_summaries_5ad4cec5
+• built branch model_summaries_5ad4cec5 [0.01 seconds]
+• start branch model_summaries_c73912d5
+• built branch model_summaries_c73912d5 [0.004 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_91696941 [0.004 seconds]
+• built pattern model_summaries
+• end pipeline [0.389 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like model_summaries_5ad4cec5, then one overall
@@ -2891,14 +2891,14 @@ use the custom function instead of <code>glance()</code>.</p>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 ✔ skip target models
-▶ start branch model_summaries_5ad4cec5
-● built branch model_summaries_5ad4cec5 [0.018 seconds]
-▶ start branch model_summaries_c73912d5
-● built branch model_summaries_c73912d5 [0.053 seconds]
-▶ start branch model_summaries_91696941
-● built branch model_summaries_91696941 [0.005 seconds]
-● built pattern model_summaries
-▶ end pipeline [0.18 seconds]</code></pre>
+• start branch model_summaries_5ad4cec5
+• built branch model_summaries_5ad4cec5 [0.019 seconds]
+• start branch model_summaries_c73912d5
+• built branch model_summaries_c73912d5 [0.009 seconds]
+• start branch model_summaries_91696941
+• built branch model_summaries_91696941 [0.005 seconds]
+• built pattern model_summaries
+• end pipeline [0.395 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (you may need to scroll to the
@@ -2964,7 +2964,7 @@ will need to define a custom function just like we did for
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>augment_with_mod_name()</code>. It
 is the same as <code>glance_with_mod_name()</code>, but use
@@ -3064,7 +3064,7 @@ pattern?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -3106,7 +3106,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-parallel"><p>Content from <a href="parallel.html">Parallel Processing</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/parallel.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3377,7 +3377,7 @@ any links that you are not going to use.
  -->
 </div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p> Last updated on 2023-07-11 | 
+<p> Last updated on 2023-08-15 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3618,7 +3618,7 @@ text and plots.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
@@ -3697,7 +3697,7 @@ any links that you are not going to use.
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
         <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.5)</a>,
-        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
+        <a href="https://github.com/carpentries/pegboard/tree/0.5.3" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
 		</footer>
@@ -3720,8 +3720,8 @@ any links that you are not going to use.
   "url": "https://joelnitta.github.io/targets-workshop/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/aio.html",
   "dateCreated": "2023-07-31",
-  "dateModified": "2023-08-08",
-  "datePublished": "2023-08-08"
+  "dateModified": "2023-08-15",
+  "datePublished": "2023-08-15"
 }
 
   </script><script>
