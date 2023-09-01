@@ -81,8 +81,8 @@ Then, add one more target to the pipeline using the `tar_quarto()` function like
 
 
 ```r
-source("R/packages.R")
 source("R/functions.R")
+source("R/packages.R")
 
 tar_plan(
   # Load raw data

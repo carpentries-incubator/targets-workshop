@@ -38,12 +38,11 @@ This is easiest to understand by trying it yourself. Let's try running the workf
 tar_make()
 ```
 
-
 ```{.output}
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.088 seconds]
+✔ skip pipeline [0.102 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -83,13 +82,12 @@ Then run it again.
 tar_make()
 ```
 
-
 ```{.output}
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.024 seconds]
-• end pipeline [0.144 seconds]
+• built target penguins_data [0.084 seconds]
+• end pipeline [0.242 seconds]
 ```
 
 What happened?
@@ -108,7 +106,7 @@ How can you inspect the contents of `penguins_data`?
 
 :::::::::::::::::::::::::::::::::: solution
 
-With `tar_read(penguins_data`) or by running `tar_load(penguins_data)` followed by `penguins_data`.
+With `tar_read(penguins_data)` or by running `tar_load(penguins_data)` followed by `penguins_data`.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -146,8 +144,6 @@ This can be done with `tar_visnetwork()`
 ```r
 tar_visnetwork()
 ```
-
-
 
 ![](fig/lifecycle-visnetwork.png){alt="Visualization of the targets worklow, showing 'penguins_data' connected by lines to 'penguins_data_raw', 'penguins_csv_file' and 'clean_penguin_data'"}
 
@@ -210,24 +206,22 @@ There are some other useful functions that can do that.
 `tar_outdated()` lists only the outdated targets; that is, targets that will be built during the next run, or depend on such a target.
 If everything is up to date, it will return a zero-length character vector (`character(0)`).
 
-`tar_progress()` shows the current status of the workflow as a dataframe.
-You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
-
 
 ```r
 tar_outdated()
 ```
 
-
 ```{.output}
 character(0)
 ```
+
+`tar_progress()` shows the current status of the workflow as a dataframe.
+You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
 
 
 ```r
 tar_progress()
 ```
-
 
 ```{.output}
 # A tibble: 3 × 2
@@ -235,7 +229,7 @@ tar_progress()
   <chr>             <chr>   
 1 penguins_csv_file skipped 
 2 penguins_data_raw skipped 
-3 penguins_data     skipped 
+3 penguins_data     built   
 ```
 
 ## Granular control of targets
@@ -254,12 +248,11 @@ Let's give this a try. Remember that our pipeline is currently up to date, so `t
 tar_make()
 ```
 
-
 ```{.output}
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.079 seconds]
+✔ skip pipeline [0.119 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -270,13 +263,12 @@ tar_invalidate(penguins_data)
 tar_make()
 ```
 
-
 ```{.output}
 ✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.023 seconds]
-• end pipeline [0.133 seconds]
+• built target penguins_data [0.095 seconds]
+• end pipeline [0.249 seconds]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).

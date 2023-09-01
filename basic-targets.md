@@ -242,8 +242,8 @@ Finally, each step in the workflow is defined with the `tar_target()` function.
 
 ```r
 library(targets)
-library(palmerpenguins)
 library(tidyverse)
+library(palmerpenguins)
 
 clean_penguin_data <- function(penguins_data_raw) {
   penguins_data_raw |>
@@ -275,15 +275,14 @@ Try running it, and you should see something like this:
 tar_make()
 ```
 
-
 ```{.output}
 • start target penguins_csv_file
-• built target penguins_csv_file [0.003 seconds]
+• built target penguins_csv_file [0.002 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.33 seconds]
+• built target penguins_data_raw [0.18 seconds]
 • start target penguins_data
-• built target penguins_data [0.012 seconds]
-• end pipeline [0.45 seconds]
+• built target penguins_data [0.014 seconds]
+• end pipeline [0.385 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!

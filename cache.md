@@ -68,7 +68,6 @@ tar_load(penguins_data)
 summary(penguins_data)
 ```
 
-
 ```{.output}
    species          bill_length_mm  bill_depth_mm  
  Length:342         Min.   :32.10   Min.   :13.10  
@@ -92,7 +91,6 @@ Let's try it with `penguins_csv_file`.
 ```r
 tar_read(penguins_csv_file)
 ```
-
 
 ```{.output}
 [1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"

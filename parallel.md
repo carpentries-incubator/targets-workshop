@@ -65,7 +65,7 @@ To enable parallel processing with `crew` you only need to load the `crew` packa
 Specifically, the following lines enable crew, and tells it to use 2 parallel workers.
 You can increase this number on more powerful machines:
 
-```R
+```r
 library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
@@ -77,10 +77,10 @@ It should now look like this:
 
 
 ```r
-source("R/packages.R")
 source("R/functions.R")
+source("R/packages.R")
 
-# We just added this!
+# Set up parallelization
 library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
@@ -135,7 +135,6 @@ glance_with_mod_name_slow <- function(model_in_list) {
   broom::glance(model) |>
     mutate(model_name = model_name)
 }
-
 augment_with_mod_name_slow <- function(model_in_list) {
   Sys.sleep(4)
   model_name <- names(model_in_list)
@@ -149,9 +148,10 @@ Then, change the plan to use the "slow" version of the functions:
 
 
 ```r
-source("R/packages.R")
 source("R/functions.R")
+source("R/packages.R")
 
+# Set up parallelization
 library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
@@ -193,13 +193,26 @@ tar_plan(
 Finally, run the pipeline with `tar_make()` as normal.
 
 
-```{.error}
-Error:
-! Error running targets::tar_make()
-  Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
-  Debugging guide: https://books.ropensci.org/targets/debugging.html
-  How to ask for help: https://books.ropensci.org/targets/help.html
-  Last error: there is no package called ‘crew’
+```{.output}
+✔ skip target penguins_data_raw_file
+✔ skip target penguins_data_raw
+✔ skip target penguins_data
+✔ skip target models
+• start branch model_predictions_5ad4cec5
+• start branch model_predictions_c73912d5
+• start branch model_predictions_91696941
+• start branch model_summaries_5ad4cec5
+• start branch model_summaries_c73912d5
+• start branch model_summaries_91696941
+• built branch model_predictions_5ad4cec5 [5.917 seconds]
+• built branch model_predictions_c73912d5 [5.959 seconds]
+• built branch model_predictions_91696941 [4.012 seconds]
+• built pattern model_predictions
+• built branch model_summaries_5ad4cec5 [4.025 seconds]
+• built branch model_summaries_c73912d5 [4.017 seconds]
+• built branch model_summaries_91696941 [4.009 seconds]
+• built pattern model_summaries
+• end pipeline [19.876 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.

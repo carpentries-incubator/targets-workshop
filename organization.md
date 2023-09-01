@@ -47,9 +47,11 @@ By using `tar_plan()`, instead of specifying targets with `tar_target()`, we can
 
 Let's edit the penguins workflow to use the `tar_plan()` syntax:
 
+<!-- The chunk below intersperses plan_2b with clean_penguin_data() to avoid writing it manually -->
 
 ```r
 library(targets)
+library(tarchetypes)
 library(palmerpenguins)
 library(tidyverse)
 
@@ -60,7 +62,9 @@ clean_penguin_data <- function(penguins_data_raw) {
       bill_length_mm = `Culmen Length (mm)`,
       bill_depth_mm = `Culmen Depth (mm)`
     ) |>
-    remove_missing(na.rm = TRUE)
+    remove_missing(na.rm = TRUE) |>
+    # Split "species" apart on spaces, and only keep the first word
+    separate(species, into = "species", extra = "drop")
 }
 
 tar_plan(
@@ -135,8 +139,8 @@ You would get an error if you tried to run the equivalent targets pipeline:
 
 ```r
 tar_plan(
-  height = 160,
-  height = height / 2.54
+    height = 160,
+    height = height / 2.54
 )
 ```
 

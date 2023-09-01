@@ -69,7 +69,9 @@ tar_plan(
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Build model
   combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data)
+    bill_depth_mm ~ bill_length_mm,
+    data = penguins_data
+  )
 )
 ```
 
@@ -79,8 +81,8 @@ tar_plan(
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.091 seconds]
-• end pipeline [0.208 seconds]
+• built target combined_model [0.022 seconds]
+• end pipeline [0.189 seconds]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -88,12 +90,9 @@ Let's have a look at the model. We will use the `glance()` function from the `br
 
 ```r
 library(broom)
-
 tar_load(combined_model)
-
 glance(combined_model)
 ```
-
 
 ```{.output}
 # A tibble: 1 × 12
@@ -128,11 +127,17 @@ tar_plan(
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
   combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    bill_depth_mm ~ bill_length_mm,
+    data = penguins_data
+  ),
   species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    bill_depth_mm ~ bill_length_mm + species,
+    data = penguins_data
+  ),
   interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguins_data),
+    bill_depth_mm ~ bill_length_mm * species,
+    data = penguins_data
+  ),
   # Get model summaries
   combined_summary = glance(combined_model),
   species_summary = glance(species_model),
@@ -151,12 +156,12 @@ tar_plan(
 • start target species_model
 • built target species_model [0.002 seconds]
 • start target combined_summary
-• built target combined_summary [0.01 seconds]
+• built target combined_summary [0.013 seconds]
 • start target interaction_summary
-• built target interaction_summary [0.004 seconds]
+• built target interaction_summary [0.006 seconds]
 • start target species_summary
-• built target species_summary [0.004 seconds]
-• end pipeline [0.235 seconds]
+• built target species_summary [0.15 seconds]
+• end pipeline [0.435 seconds]
 ```
 
 Let's look at the summary of one of the models:
@@ -165,7 +170,6 @@ Let's look at the summary of one of the models:
 ```r
 tar_read(species_summary)
 ```
-
 
 ```{.output}
 # A tibble: 1 × 12
@@ -226,15 +230,15 @@ First, let's look at the messages provided by `tar_make()`.
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target models
-• built target models [0.008 seconds]
+• built target models [0.013 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.01 seconds]
+• built branch model_summaries_5ad4cec5 [0.012 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.004 seconds]
+• built branch model_summaries_c73912d5 [0.006 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.004 seconds]
+• built branch model_summaries_91696941 [0.007 seconds]
 • built pattern model_summaries
-• end pipeline [0.389 seconds]
+• end pipeline [0.456 seconds]
 ```
 
 There is a series of smaller targets (branches) that are each named like model_summaries_5ad4cec5, then one overall `model_summaries` target.
@@ -246,15 +250,15 @@ Next, let's look in more detail about how the workflow is set up, starting with 
 
 
 ```r
-# Build models
-models <- list(
-  combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data),
-  species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-  interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-)
+  # Build models
+  models = list(
+    combined_model = lm(
+      bill_depth_mm ~ bill_length_mm, data = penguins_data),
+    species_model = lm(
+      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
+    interaction_model = lm(
+      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  ),
 ```
 
 Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
@@ -265,12 +269,12 @@ Next, take a look at the command to build the target `model_summaries`.
 
 
 ```r
-# Get model summaries
-tar_target(
-  model_summaries,
-  glance(models[[1]]),
-  pattern = map(models)
-)
+  # Get model summaries
+  tar_target(
+    model_summaries,
+    glance(models[[1]]),
+    pattern = map(models)
+  )
 ```
 
 As before, the first argument is the name of the target to build, and the second is the command to build it.
@@ -328,8 +332,8 @@ Our new pipeline looks almost the same as before, but this time we use the custo
 
 
 ```r
-source("R/packages.R")
 source("R/functions.R")
+source("R/packages.R")
 
 tar_plan(
   # Load raw data
@@ -365,17 +369,21 @@ tar_plan(
 ✔ skip target penguins_data
 ✔ skip target models
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.019 seconds]
+• built branch model_summaries_5ad4cec5 [0.023 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.009 seconds]
+• built branch model_summaries_c73912d5 [0.163 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.005 seconds]
+• built branch model_summaries_91696941 [0.007 seconds]
 • built pattern model_summaries
-• end pipeline [0.395 seconds]
+• end pipeline [0.456 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
 
+
+```r
+tar_read(model_summaries)
+```
 
 ```{.output}
 # A tibble: 3 × 13
@@ -394,7 +402,6 @@ Such a prediction can be obtained with the `augment()` function of the `broom` p
 tar_load(models)
 augment(models[[1]])
 ```
-
 
 ```{.output}
 # A tibble: 342 × 8
@@ -437,8 +444,8 @@ Add the step to the workflow:
 
 
 ```r
-source("R/packages.R")
 source("R/functions.R")
+source("R/packages.R")
 
 tar_plan(
   # Load raw data
