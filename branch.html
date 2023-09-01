@@ -297,7 +297,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Branching</h1>
-        <p> Last updated on 2023-08-15 | 
+        <p> Last updated on 2023-09-01 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -386,7 +386,9 @@ without distinction:</p>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Build model</span></span>
 <span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -396,8 +398,8 @@ without distinction:</p>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.091 seconds]
-• end pipeline [0.208 seconds]</code></pre>
+• built target combined_model [0.022 seconds]
+• end pipeline [0.189 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -409,9 +411,7 @@ quite useful for downstream analyses.</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">broom</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">tar_load</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">glance</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -453,11 +453,17 @@ for such an analysis might look like <strong>without branching</strong>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Build models</span></span>
 <span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Get model summaries</span></span>
 <span>  combined_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span>,</span>
 <span>  species_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">species_model</span><span class="op">)</span>,</span>
@@ -476,12 +482,12 @@ for such an analysis might look like <strong>without branching</strong>
 • start target species_model
 • built target species_model [0.002 seconds]
 • start target combined_summary
-• built target combined_summary [0.01 seconds]
+• built target combined_summary [0.013 seconds]
 • start target interaction_summary
-• built target interaction_summary [0.004 seconds]
+• built target interaction_summary [0.006 seconds]
 • start target species_summary
-• built target species_summary [0.004 seconds]
-• end pipeline [0.235 seconds]</code></pre>
+• built target species_summary [0.15 seconds]
+• end pipeline [0.435 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -553,15 +559,15 @@ branching</strong>:</p>
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target models
-• built target models [0.008 seconds]
+• built target models [0.013 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.01 seconds]
+• built branch model_summaries_5ad4cec5 [0.012 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.004 seconds]
+• built branch model_summaries_c73912d5 [0.006 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.004 seconds]
+• built branch model_summaries_91696941 [0.007 seconds]
 • built pattern model_summaries
-• end pipeline [0.389 seconds]</code></pre>
+• end pipeline [0.456 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like model_summaries_5ad4cec5, then one overall
@@ -577,16 +583,15 @@ starting with how we defined the models:</p>
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Build models</span></span>
-<span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>  combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<pre class="sourceCode r" tabindex="0"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Build models</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  models <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">combined_model =</span> <span class="fu">lm</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      bill_depth_mm <span class="sc">~</span> bill_length_mm, <span class="at">data =</span> penguins_data),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_model =</span> <span class="fu">lm</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      bill_depth_mm <span class="sc">~</span> bill_length_mm <span class="sc">+</span> species, <span class="at">data =</span> penguins_data),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">interaction_model =</span> <span class="fu">lm</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      bill_depth_mm <span class="sc">~</span> bill_length_mm <span class="sc">*</span> species, <span class="at">data =</span> penguins_data)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  ),</span></code></pre>
 </div>
 <p>Unlike the non-branching version, we defined the models <strong>in a
 list</strong> (instead of one target per model). This is because dynamic
@@ -599,12 +604,12 @@ we need to prepare the input for looping as a list.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Get model summaries</span></span>
-<span><span class="fu">tar_target</span><span class="op">(</span></span>
-<span>  <span class="va">model_summaries</span>,</span>
-<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">model_summaries</span>,</span>
+<span>    <span class="fu">glance</span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
 </div>
 <p>As before, the first argument is the name of the target to build, and
 the second is the command to build it.</p>
@@ -671,8 +676,8 @@ use the custom function instead of <code>glance()</code>.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
@@ -708,17 +713,23 @@ use the custom function instead of <code>glance()</code>.</p>
 ✔ skip target penguins_data
 ✔ skip target models
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.019 seconds]
+• built branch model_summaries_5ad4cec5 [0.023 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.009 seconds]
+• built branch model_summaries_c73912d5 [0.163 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.005 seconds]
+• built branch model_summaries_91696941 [0.007 seconds]
 • built pattern model_summaries
-• end pipeline [0.395 seconds]</code></pre>
+• end pipeline [0.456 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (you may need to scroll to the
 right to see it).</p>
+<div class="codewrapper sourceCode" id="cb19">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">model_summaries</span><span class="op">)</span></span></code></pre>
+</div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -733,7 +744,7 @@ right to see it).</p>
 each model. These will be needed for plotting the models in the report.
 Such a prediction can be obtained with the <code>augment()</code>
 function of the <code>broom</code> package.</p>
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -780,12 +791,12 @@ will need to define a custom function just like we did for
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>augment_with_mod_name()</code>. It
 is the same as <code>glance_with_mod_name()</code>, but use
 <code>augment()</code> instead of <code>glance()</code>:</p>
-<div class="codewrapper sourceCode" id="cb22">
+<div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -797,12 +808,12 @@ is the same as <code>glance_with_mod_name()</code>, but use
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Add the step to the workflow:</p>
-<div class="codewrapper sourceCode" id="cb23">
+<div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
@@ -880,7 +891,7 @@ pattern?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul><li>crossing: one branch per combination of elements
@@ -946,9 +957,9 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.5)</a>,
-        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.6.0)</a>,
-      and <a href="https://github.com/carpentries/varnish/tree/0.2.18" class="external-link">varnish (0.2.18)</a>.</p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.13.0)</a>,
+        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.6.1)</a>,
+      and <a href="https://github.com/carpentries/varnish" class="external-link">varnish (0.3.0)</a>.</p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -968,9 +979,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/branch.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/branch.html",
-  "dateCreated": "2023-07-31",
-  "dateModified": "2023-08-15",
-  "datePublished": "2023-08-29"
+  "dateCreated": "2023-09-01",
+  "dateModified": "2023-09-01",
+  "datePublished": "2023-09-01"
 }
 
   </script><script>

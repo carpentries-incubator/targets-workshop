@@ -295,7 +295,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Best Practices for targets Project Organization</h1>
-        <p> Last updated on 2023-08-15 | 
+        <p> Last updated on 2023-09-01 | 
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -383,11 +383,13 @@ instead of specifying targets with <code>tar_target()</code>, we can use
 a syntax like this: <code>target_name = target_command</code>.</p>
 <p>Let’s edit the penguins workflow to use the <code>tar_plan()</code>
 syntax:</p>
+<!-- The chunk below intersperses plan_2b with clean_penguin_data() to avoid writing it manually -->
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
 <span></span>
@@ -398,7 +400,9 @@ syntax:</p>
 <span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
 <span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="fu">remove_missing</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="co"># Split "species" apart on spaces, and only keep the first word</span></span>
+<span>    <span class="fu">separate</span><span class="op">(</span><span class="va">species</span>, into <span class="op">=</span> <span class="st">"species"</span>, extra <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
@@ -488,8 +492,8 @@ pipeline:</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  height <span class="op">=</span> <span class="fl">160</span>,</span>
-<span>  height <span class="op">=</span> <span class="va">height</span> <span class="op">/</span> <span class="fl">2.54</span></span>
+<span>    height <span class="op">=</span> <span class="fl">160</span>,</span>
+<span>    height <span class="op">=</span> <span class="va">height</span> <span class="op">/</span> <span class="fl">2.54</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -565,9 +569,9 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.5)</a>,
-        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.6.0)</a>,
-      and <a href="https://github.com/carpentries/varnish/tree/0.2.18" class="external-link">varnish (0.2.18)</a>.</p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.13.0)</a>,
+        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.6.1)</a>,
+      and <a href="https://github.com/carpentries/varnish" class="external-link">varnish (0.3.0)</a>.</p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -587,9 +591,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://joelnitta.github.io/targets-workshop/instructor/organization.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/organization.html",
-  "dateCreated": "2023-07-31",
-  "dateModified": "2023-08-15",
-  "datePublished": "2023-08-29"
+  "dateCreated": "2023-09-01",
+  "dateModified": "2023-09-01",
+  "datePublished": "2023-09-01"
 }
 
   </script><script>
