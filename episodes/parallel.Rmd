@@ -30,7 +30,7 @@ Episode summary: Show how to use parallel processing
 library(targets)
 library(tarchetypes)
 library(broom)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 
 # Increase width for printing tibbles
 options(width = 140)
@@ -78,7 +78,7 @@ To enable parallel processing with `crew` you only need to load the `crew` packa
 Specifically, the following lines enable crew, and tells it to use 2 parallel workers.
 You can increase this number on more powerful machines:
 
-```R
+```r
 library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
@@ -89,48 +89,9 @@ Make these changes to the penguins analysis.
 It should now look like this:
 
 ```{r}
-#| label: example-model-show-setup
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-# We just added this!
-library(crew)
-tar_option_set(
-  controller = crew_controller_local(workers = 2)
-)
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
-  ),
-  # Get model predictions
-  tar_target(
-    model_predictions,
-    augment_with_mod_name(models),
-    pattern = map(models)
-  )
-)
+#| label = "example-model-show-setup",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_9.R")[3:42]
 ```
 
 There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
@@ -143,83 +104,35 @@ Add these functions to `functions.R` (you can copy-paste the original ones, then
 ```{r}
 #| label: slow-funcs
 #| eval: false
-
-glance_with_mod_name_slow <- function(model_in_list) {
-  Sys.sleep(4)
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  broom::glance(model) |>
-    mutate(model_name = model_name)
-}
-
-augment_with_mod_name_slow <- function(model_in_list) {
-  Sys.sleep(4)
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  broom::augment(model) |>
-    mutate(model_name = model_name)
-}
+#| file:
+#|    - files/tar_functions/glance_with_mod_name_slow.R
+#|    - files/tar_functions/augment_with_mod_name_slow.R
 ```
 
 Then, change the plan to use the "slow" version of the functions:
 
 ```{r}
-#| label: example-model-show-9
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-library(crew)
-tar_option_set(
-  controller = crew_controller_local(workers = 2)
-)
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name_slow(models),
-    pattern = map(models)
-  ),
-  # Get model predictions
-  tar_target(
-    model_predictions,
-    augment_with_mod_name_slow(models),
-    pattern = map(models)
-  )
-)
+#| label = "example-model-show-9",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_10.R")[3:42]
 ```
 
 Finally, run the pipeline with `tar_make()` as normal.
 
 ```{r}
 #| label: example-model-hide-9
-#| echo: FALSE
-tar_dir({
-  # Non-slow functions
-  write_example_plan(7)
-  tar_make(reporter = "silent")
-  # Slow functions
-  write_example_plan(8)
-  tar_make()
-})
+#| warning: false
+#| message: false
+#| echo: false
+plan_10_dir <- make_tempdir()
+pushd(plan_10_dir)
+# Non-slow functions
+write_example_plan("plan_9.R")
+tar_make(reporter = "silent")
+# Slow functions
+write_example_plan("plan_10.R")
+tar_make()
+popd()
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
