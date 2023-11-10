@@ -204,15 +204,15 @@ Finally, run the pipeline with `tar_make()` as normal.
 • start branch model_summaries_5ad4cec5
 • start branch model_summaries_c73912d5
 • start branch model_summaries_91696941
-• built branch model_predictions_5ad4cec5 [5.917 seconds]
-• built branch model_predictions_c73912d5 [5.959 seconds]
-• built branch model_predictions_91696941 [4.012 seconds]
+• built branch model_predictions_5ad4cec5 [4.884 seconds]
+• built branch model_predictions_c73912d5 [4.896 seconds]
+• built branch model_predictions_91696941 [4.006 seconds]
 • built pattern model_predictions
-• built branch model_summaries_5ad4cec5 [4.025 seconds]
-• built branch model_summaries_c73912d5 [4.017 seconds]
-• built branch model_summaries_91696941 [4.009 seconds]
+• built branch model_summaries_5ad4cec5 [4.011 seconds]
+• built branch model_summaries_c73912d5 [4.011 seconds]
+• built branch model_summaries_91696941 [4.011 seconds]
 • built pattern model_summaries
-• end pipeline [19.876 seconds]
+• end pipeline [15.153 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
