@@ -56,8 +56,8 @@ tar_plan(
 
 ```{.output}
 • start target some_data
-• built target some_data [0.002 seconds]
-• end pipeline [0.12 seconds]
+• built target some_data [0.001 seconds]
+• end pipeline [0.079 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -77,7 +77,7 @@ tar_plan(
 
 ```{.output}
 ✔ skip target some_data
-✔ skip pipeline [0.103 seconds]
+✔ skip pipeline [0.066 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -98,10 +98,10 @@ tar_plan(
 
 ```{.output}
 • start target data_file
-• built target data_file [0.002 seconds]
+• built target data_file [0.001 seconds]
 • start target some_data
-• built target some_data [0 seconds]
-• end pipeline [0.133 seconds]
+• built target some_data [0.001 seconds]
+• end pipeline [0.088 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -184,12 +184,12 @@ tar_plan(
 
 ```{.output}
 • start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.003 seconds]
+• built target penguins_data_raw_file [0.002 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.365 seconds]
+• built target penguins_data_raw [0.109 seconds]
 • start target penguins_data
-• built target penguins_data [0.029 seconds]
-• end pipeline [0.56 seconds]
+• built target penguins_data [0.017 seconds]
+• end pipeline [0.227 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -264,12 +264,12 @@ tar_plan(
 • start target hello_file
 • built target hello_file [0.002 seconds]
 • start target hello
-• built target hello [0 seconds]
+• built target hello [0.001 seconds]
 • start target hello_caps
-• built target hello_caps [0.001 seconds]
+• built target hello_caps [0 seconds]
 • start target hello_caps_out
 • built target hello_caps_out [0.001 seconds]
-• end pipeline [0.156 seconds]
+• end pipeline [0.104 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.

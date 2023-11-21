@@ -81,8 +81,8 @@ tar_plan(
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target combined_model
-• built target combined_model [0.022 seconds]
-• end pipeline [0.189 seconds]
+• built target combined_model [0.041 seconds]
+• end pipeline [0.143 seconds]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -152,16 +152,16 @@ tar_plan(
 ✔ skip target penguins_data
 ✔ skip target combined_model
 • start target interaction_model
-• built target interaction_model [0.006 seconds]
+• built target interaction_model [0.005 seconds]
 • start target species_model
 • built target species_model [0.002 seconds]
 • start target combined_summary
-• built target combined_summary [0.013 seconds]
+• built target combined_summary [0.009 seconds]
 • start target interaction_summary
-• built target interaction_summary [0.006 seconds]
+• built target interaction_summary [0.004 seconds]
 • start target species_summary
-• built target species_summary [0.15 seconds]
-• end pipeline [0.435 seconds]
+• built target species_summary [0.004 seconds]
+• end pipeline [0.146 seconds]
 ```
 
 Let's look at the summary of one of the models:
@@ -230,15 +230,15 @@ First, let's look at the messages provided by `tar_make()`.
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
 • start target models
-• built target models [0.013 seconds]
+• built target models [0.007 seconds]
 • start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.012 seconds]
+• built branch model_summaries_5ad4cec5 [0.008 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.006 seconds]
+• built branch model_summaries_c73912d5 [0.004 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.007 seconds]
+• built branch model_summaries_91696941 [0.004 seconds]
 • built pattern model_summaries
-• end pipeline [0.456 seconds]
+• end pipeline [0.148 seconds]
 ```
 
 There is a series of smaller targets (branches) that are each named like model_summaries_5ad4cec5, then one overall `model_summaries` target.
@@ -371,11 +371,11 @@ tar_plan(
 • start branch model_summaries_5ad4cec5
 • built branch model_summaries_5ad4cec5 [0.023 seconds]
 • start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.163 seconds]
+• built branch model_summaries_c73912d5 [0.007 seconds]
 • start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.007 seconds]
+• built branch model_summaries_91696941 [0.013 seconds]
 • built pattern model_summaries
-• end pipeline [0.456 seconds]
+• end pipeline [0.17 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
