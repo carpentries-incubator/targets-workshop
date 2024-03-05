@@ -39,10 +39,10 @@ tar_make()
 ```
 
 ```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip pipeline [0.2 seconds]
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+✔ skipped pipeline [0.063 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -83,11 +83,11 @@ tar_make()
 ```
 
 ```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-• start target penguins_data
-• built target penguins_data [0.024 seconds]
-• end pipeline [0.124 seconds]
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+▶ dispatched target penguins_data
+● completed target penguins_data [0.013 seconds]
+▶ ended pipeline [0.091 seconds]
 ```
 
 What happened?
@@ -225,11 +225,11 @@ tar_progress()
 
 ```{.output}
 # A tibble: 3 × 2
-  name              progress
-  <chr>             <chr>   
-1 penguins_csv_file skipped 
-2 penguins_data_raw skipped 
-3 penguins_data     built   
+  name              progress 
+  <chr>             <chr>    
+1 penguins_csv_file skipped  
+2 penguins_data_raw skipped  
+3 penguins_data     completed
 ```
 
 ## Granular control of targets
@@ -249,10 +249,10 @@ tar_make()
 ```
 
 ```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip pipeline [0.08 seconds]
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+✔ skipped pipeline [0.072 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -264,11 +264,11 @@ tar_make()
 ```
 
 ```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-• start target penguins_data
-• built target penguins_data [0.018 seconds]
-• end pipeline [0.123 seconds]
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+▶ dispatched target penguins_data
+● completed target penguins_data [0.013 seconds]
+▶ ended pipeline [0.093 seconds]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).

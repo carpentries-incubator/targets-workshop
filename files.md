@@ -55,9 +55,9 @@ tar_plan(
 
 
 ```{.output}
-• start target some_data
-• built target some_data [0.001 seconds]
-• end pipeline [0.079 seconds]
+▶ dispatched target some_data
+● completed target some_data [0.001 seconds]
+▶ ended pipeline [0.05 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -76,8 +76,8 @@ tar_plan(
 
 
 ```{.output}
-✔ skip target some_data
-✔ skip pipeline [0.066 seconds]
+✔ skipped target some_data
+✔ skipped pipeline [0.045 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -97,11 +97,11 @@ tar_plan(
 
 
 ```{.output}
-• start target data_file
-• built target data_file [0.001 seconds]
-• start target some_data
-• built target some_data [0.001 seconds]
-• end pipeline [0.088 seconds]
+▶ dispatched target data_file
+● completed target data_file [0 seconds]
+▶ dispatched target some_data
+● completed target some_data [0 seconds]
+▶ ended pipeline [0.06 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -183,13 +183,13 @@ tar_plan(
 
 
 ```{.output}
-• start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.002 seconds]
-• start target penguins_data_raw
-• built target penguins_data_raw [0.109 seconds]
-• start target penguins_data
-• built target penguins_data [0.017 seconds]
-• end pipeline [0.227 seconds]
+▶ dispatched target penguins_data_raw_file
+● completed target penguins_data_raw_file [0.001 seconds]
+▶ dispatched target penguins_data_raw
+● completed target penguins_data_raw [0.206 seconds]
+▶ dispatched target penguins_data
+● completed target penguins_data [0.012 seconds]
+▶ ended pipeline [0.29 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -261,15 +261,15 @@ tar_plan(
 
 
 ```{.output}
-• start target hello_file
-• built target hello_file [0.002 seconds]
-• start target hello
-• built target hello [0.001 seconds]
-• start target hello_caps
-• built target hello_caps [0 seconds]
-• start target hello_caps_out
-• built target hello_caps_out [0.001 seconds]
-• end pipeline [0.104 seconds]
+▶ dispatched target hello_file
+● completed target hello_file [0 seconds]
+▶ dispatched target hello
+● completed target hello [0 seconds]
+▶ dispatched target hello_caps
+● completed target hello_caps [0 seconds]
+▶ dispatched target hello_caps_out
+● completed target hello_caps_out [0.001 seconds]
+▶ ended pipeline [0.068 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.

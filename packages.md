@@ -70,9 +70,9 @@ tar_plan(
 
 
 ```{.output}
-• start target adelie_data
-• built target adelie_data [0.027 seconds]
-• end pipeline [0.107 seconds]
+▶ dispatched target adelie_data
+● completed target adelie_data [0.018 seconds]
+▶ ended pipeline [0.067 seconds]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -99,9 +99,9 @@ tar_plan(
 
 
 ```{.output}
-• start target adelie_data
-• built target adelie_data [0.024 seconds]
-• end pipeline [0.101 seconds]
+▶ dispatched target adelie_data
+● completed target adelie_data [0.017 seconds]
+▶ ended pipeline [0.068 seconds]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -126,9 +126,9 @@ tar_plan(
 
 
 ```{.output}
-• start target adelie_data
-• built target adelie_data [0.015 seconds]
-• end pipeline [0.092 seconds]
+▶ dispatched target adelie_data
+● completed target adelie_data [0.009 seconds]
+▶ ended pipeline [0.059 seconds]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
