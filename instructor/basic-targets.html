@@ -353,7 +353,7 @@
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: First chance to get hands dirty by writing a very
 simple workflow</p>
@@ -387,7 +387,8 @@ project organization concept.</p>
 <p>Click “File”, then select “New Project”.</p>
 <p>This will open the New Project Wizard, a set of menus to help you set
 up the project.</p>
-<figure><img src="../fig/basic-rstudio-wizard.png" alt="Screenshot of RStudio New Project Wizard menu" class="figure mx-auto d-block"><figcaption>The New Project Wizard</figcaption></figure><p>In the Wizard, click the first option, “New Directory”, since we are
+<figure><img src="../fig/basic-rstudio-wizard.png" alt="Screenshot of RStudio New Project Wizard menu" class="figure mx-auto d-block"><div class="figcaption">The New Project Wizard</div>
+</figure><p>In the Wizard, click the first option, “New Directory”, since we are
 making a brand-new project from scratch. Click “New Project” in the next
 menu. In “Directory name”, enter a name that helps you remember the
 purpose of the project, such as “targets-demo” (follow best practices
@@ -402,7 +403,8 @@ the future, if you don’t already. They can be enabled at any later time,
 so you don’t need to worry about trying to use them immediately.</p>
 <p>Once you work through these steps, your RStudio session should look
 like this:</p>
-<figure><img src="../fig/basic-rstudio-project.png" alt="Screenshot of RStudio with a newly created project called 'targets-demo' open containing a single file, 'targets-demo.Rproj'" class="figure mx-auto d-block"><figcaption>Your newly created project</figcaption></figure><p>Our project now contains a single file, created by RStudio:
+<figure><img src="../fig/basic-rstudio-project.png" alt="Screenshot of RStudio with a newly created project called 'targets-demo' open containing a single file, 'targets-demo.Rproj'" class="figure mx-auto d-block"><div class="figcaption">Your newly created project</div>
+</figure><p>Our project now contains a single file, created by RStudio:
 <code>targets-demo.Rproj</code>. You should not edit this file by hand.
 Its purpose is to tell RStudio that this is a project folder and to
 store some RStudio settings (if you use version-control software, it is
@@ -549,8 +551,9 @@ are hard to type out and can easily lead to mistakes in the code), and
 far more columns than we need. For the purposes of this analysis, we
 only need species name, bill length, and bill depth. In the raw data,
 the rather technical term “culmen” is used to refer to the bill.</p>
-<figure><img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png" alt="" class="figure mx-auto d-block"><figcaption>Illustration of bill (culmen) length and depth.
-Artwork by <span class="citation">@allison_horst</span>.</figcaption></figure><p>Let’s clean up the data to make it easier to use for downstream
+<figure><img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png" alt="Illustration of bill (culmen) length and depth. Artwork by @allison_horst." class="figure mx-auto d-block"><div class="figcaption">Illustration of bill (culmen) length and depth.
+Artwork by <span class="citation">@allison_horst</span>.</div>
+</figure><p>Let’s clean up the data to make it easier to use for downstream
 analyses. We will also remove any rows with missing data, because this
 could cause errors for some functions later.</p>
 <div class="codewrapper sourceCode" id="cb7">
@@ -744,7 +747,7 @@ any links that you are not going to use.
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/basic-targets.html",
   "dateCreated": "2023-11-10",
   "dateModified": "2023-11-21",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>

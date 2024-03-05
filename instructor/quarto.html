@@ -350,7 +350,7 @@
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to write reports with Quarto</p>
 </div>
@@ -404,7 +404,8 @@ show that it is a comment. In Quarto, all text is assumed to be prose,
 and you use special notation to indicate which lines are R code to be
 evaluated. Once the code is evaluated, the results get inserted into a
 final, rendered document, which could be one of various formats.</p>
-<figure><img src="https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/fig/03-qmd-workflow.png" alt="" class="figure mx-auto d-block"><figcaption>Quarto workflow</figcaption></figure><p>We don’t have the time to go into the details of Quarto during this
+<figure><img src="https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/fig/03-qmd-workflow.png" alt="Quarto workflow" class="figure mx-auto d-block"><div class="figcaption">Quarto workflow</div>
+</figure><p>We don’t have the time to go into the details of Quarto during this
 lesson, but recommend the <a href="https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/" class="external-link">“Introduction
 to Reproducible Publications with RStudio” incubator (in-development)
 lesson</a> for more on this topic.</p>
@@ -496,25 +497,25 @@ file:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">MARKDOWN<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode markdown" tabindex="0"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Simpson's Paradox in Palmer Penguins"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
+<pre class="sourceCode markdown" tabindex="0"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Simpson's Paradox in Palmer Penguins"</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="in">#| label: load</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="in">#| message: false</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
 </div>
 <p>The lines in between <code>---</code> and <code>---</code> at the
 very beginning are called the “YAML header”, and contain directions
@@ -558,7 +559,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul><li><p>In the code chunk labeled <code>results-stats</code>, statistics
 from the models like <em>P</em>-value and adjusted <em>R</em> squared
@@ -666,7 +667,7 @@ any links that you are not going to use.
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/quarto.html",
   "dateCreated": "2023-11-10",
   "dateModified": "2023-11-21",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>
