@@ -56,8 +56,8 @@ tar_plan(
 
 ```{.output}
 • start target some_data
-• built target some_data [0.001 seconds]
-• end pipeline [0.079 seconds]
+• built target some_data [0.002 seconds]
+• end pipeline [0.088 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -100,8 +100,8 @@ tar_plan(
 • start target data_file
 • built target data_file [0.001 seconds]
 • start target some_data
-• built target some_data [0.001 seconds]
-• end pipeline [0.088 seconds]
+• built target some_data [0 seconds]
+• end pipeline [0.098 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -186,10 +186,10 @@ tar_plan(
 • start target penguins_data_raw_file
 • built target penguins_data_raw_file [0.002 seconds]
 • start target penguins_data_raw
-• built target penguins_data_raw [0.109 seconds]
+• built target penguins_data_raw [0.101 seconds]
 • start target penguins_data
-• built target penguins_data [0.017 seconds]
-• end pipeline [0.227 seconds]
+• built target penguins_data [0.024 seconds]
+• end pipeline [0.224 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -264,12 +264,12 @@ tar_plan(
 • start target hello_file
 • built target hello_file [0.002 seconds]
 • start target hello
-• built target hello [0.001 seconds]
+• built target hello [0 seconds]
 • start target hello_caps
 • built target hello_caps [0 seconds]
 • start target hello_caps_out
-• built target hello_caps_out [0.001 seconds]
-• end pipeline [0.104 seconds]
+• built target hello_caps_out [0 seconds]
+• end pipeline [0.105 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
