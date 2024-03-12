@@ -309,7 +309,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>The Workflow Lifecycle</h1>
-        <p>Last updated on 2023-11-21 |
+        <p>Last updated on 2024-03-12 |
         
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -380,7 +380,7 @@ running the workflow again:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.2 seconds]</code></pre>
+✔ skip pipeline [0.081 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -425,8 +425,8 @@ need the first part of the common name to distinguish them.</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.024 seconds]
-• end pipeline [0.124 seconds]</code></pre>
+• built target penguins_data [0.026 seconds]
+• end pipeline [0.128 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -660,7 +660,7 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data
-✔ skip pipeline [0.08 seconds]</code></pre>
+✔ skip pipeline [0.077 seconds]</code></pre>
 </div>
 <p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
 <div class="codewrapper sourceCode" id="cb13">
@@ -676,8 +676,8 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <pre class="output" tabindex="0"><code>✔ skip target penguins_csv_file
 ✔ skip target penguins_data_raw
 • start target penguins_data
-• built target penguins_data [0.018 seconds]
-• end pipeline [0.123 seconds]</code></pre>
+• built target penguins_data [0.038 seconds]
+• end pipeline [0.127 seconds]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -760,7 +760,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.2" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.3" class="external-link">pegboard (0.7.3)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.2" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -782,8 +782,8 @@ any links that you are not going to use.
   "url": "https://joelnitta.github.io/targets-workshop/instructor/lifecycle.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/lifecycle.html",
   "dateCreated": "2023-11-10",
-  "dateModified": "2023-11-21",
-  "datePublished": "2024-03-05"
+  "dateModified": "2024-03-12",
+  "datePublished": "2024-03-12"
 }
 
   </script><script>
