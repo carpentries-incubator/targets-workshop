@@ -438,7 +438,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(penguins_data)</code> or by running
 <code>tar_load(penguins_data)</code> followed by
@@ -465,12 +465,13 @@ Then, for each subsequent call of <code>tar_make()</code>, it calculates
 the hashes again and compares them to the stored values. It detects
 which have changed, and this is how it knows which targets are out of
 date.</p>
-<div id="callout1" class="callout">
+<div id="where-the-hashes-live" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="where-the-hashes-live">Where the hashes live<a class="anchor" aria-label="anchor" href="#where-the-hashes-live"></a></h3>
+<div id="where-the-hashes-live" class="callout-inner">
+<h3 class="callout-title">Where the hashes live<a class="anchor" aria-label="anchor" href="#where-the-hashes-live"></a>
+</h3>
 <div class="callout-content">
 <p>If you are curious about what the hashes look like, you can see them
 in the file <code>_targets/meta/meta</code>, but <strong>do not edit
@@ -537,7 +538,7 @@ date?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -546,13 +547,14 @@ now be light blue.</p>
 </div>
 </div>
 </div>
-<div id="callout2" class="callout">
+<div id="outdated-does-not-always-mean-will-be-run" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="outdated-does-not-always-mean-will-be-run">‘Outdated’ does not always mean ‘will be
-run’<a class="anchor" aria-label="anchor" href="#outdated-does-not-always-mean-will-be-run"></a></h3>
+<div id="outdated-does-not-always-mean-will-be-run" class="callout-inner">
+<h3 class="callout-title">‘Outdated’ does not always mean ‘will be
+run’<a class="anchor" aria-label="anchor" href="#outdated-does-not-always-mean-will-be-run"></a>
+</h3>
 <div class="callout-content">
 <p>Just because a target appears as light blue (is “outdated”) in the
 network visualization, this does not guarantee that it will be re-built
@@ -745,7 +747,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.2" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.3" class="external-link">sandpaper (0.16.3)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -768,7 +770,7 @@ any links that you are not going to use.
   "identifier": "https://joelnitta.github.io/targets-workshop/lifecycle.html",
   "dateCreated": "2023-11-10",
   "dateModified": "2024-03-12",
-  "datePublished": "2024-03-12"
+  "datePublished": "2024-03-19"
 }
 
   </script><script>

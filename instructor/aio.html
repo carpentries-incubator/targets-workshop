@@ -979,7 +979,7 @@ session</li>
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to get at the objects that we built</p>
 </div>
@@ -1010,7 +1010,7 @@ example, <code>penguins_data</code>), we get an error.</p>
   <h3 class="accordion-header" id="headingInstructor2">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
 <div class="accordion-body">
 <ul>
 <li>To reinforce the concept of <code>targets</code> running in a
@@ -1194,7 +1194,7 @@ any links that you are not going to use.
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Demonstrate typical cycle of running
 <code>targets</code>: make, inspect, adjust, make…</p>
@@ -1296,7 +1296,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(penguins_data)</code> or by running
 <code>tar_load(penguins_data)</code> followed by
@@ -1324,12 +1324,12 @@ Then, for each subsequent call of <code>tar_make()</code>, it calculates
 the hashes again and compares them to the stored values. It detects
 which have changed, and this is how it knows which targets are out of
 date.</p>
-<div id="callout1" class="callout">
+<div id="where-the-hashes-live" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="where-the-hashes-live">Where the hashes live<a class="anchor" aria-label="anchor" href="#where-the-hashes-live"></a>
+<div id="where-the-hashes-live" class="callout-inner">
+<h3 class="callout-title">Where the hashes live<a class="anchor" aria-label="anchor" href="#where-the-hashes-live"></a>
 </h3>
 <div class="callout-content">
 <p>If you are curious about what the hashes look like, you can see them
@@ -1398,7 +1398,7 @@ date?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -1407,12 +1407,12 @@ now be light blue.</p>
 </div>
 </div>
 </div>
-<div id="callout2" class="callout">
+<div id="outdated-does-not-always-mean-will-be-run" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="outdated-does-not-always-mean-will-be-run">‘Outdated’ does not always mean ‘will be
+<div id="outdated-does-not-always-mean-will-be-run" class="callout-inner">
+<h3 class="callout-title">‘Outdated’ does not always mean ‘will be
 run’<a class="anchor" aria-label="anchor" href="#outdated-does-not-always-mean-will-be-run"></a>
 </h3>
 <div class="callout-content">
@@ -1863,7 +1863,7 @@ project?</li>
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to load packages and maintain package
 versions</p>
@@ -1906,12 +1906,12 @@ workflow.</p>
 <p>This will be demonstrated using the pre-cleaned dataset from the
 <code>palmerpenguins</code> package. Let’s say we want to filter it down
 to just data for the Adelie penguin.</p>
-<div id="callout1" class="callout">
+<div id="save-your-progress" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="save-your-progress">Save your progress<a class="anchor" aria-label="anchor" href="#save-your-progress"></a>
+<div id="save-your-progress" class="callout-inner">
+<h3 class="callout-title">Save your progress<a class="anchor" aria-label="anchor" href="#save-your-progress"></a>
 </h3>
 <div class="callout-content">
 <p>You can only have one active <code>_targets.R</code> file at a time
@@ -2238,12 +2238,12 @@ World” and save it as “hello.txt” text file in
 <p>We will read in the contents of this file and store it as
 <code>some_data</code> in the workflow by writing the following plan and
 running <code>tar_make()</code>:</p>
-<div id="callout1" class="callout">
+<div id="save-your-progress" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="save-your-progress">Save your progress<a class="anchor" aria-label="anchor" href="#save-your-progress"></a>
+<div id="save-your-progress" class="callout-inner">
+<h3 class="callout-title">Save your progress<a class="anchor" aria-label="anchor" href="#save-your-progress"></a>
 </h3>
 <div class="callout-content">
 <p>You can only have one active <code>_targets.R</code> file at a time
@@ -2642,7 +2642,7 @@ any links that you are not going to use.
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching</p>
 </div>
@@ -3113,7 +3113,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>augment_with_mod_name()</code>. It
 is the same as <code>glance_with_mod_name()</code>, but use
@@ -3173,12 +3173,12 @@ is the same as <code>glance_with_mod_name()</code>, but use
 </div>
 </div>
 </div>
-<div id="callout1" class="callout">
+<div id="best-practices-for-branching" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="best-practices-for-branching">Best practices for branching<a class="anchor" aria-label="anchor" href="#best-practices-for-branching"></a>
+<div id="best-practices-for-branching" class="callout-inner">
+<h3 class="callout-title">Best practices for branching<a class="anchor" aria-label="anchor" href="#best-practices-for-branching"></a>
 </h3>
 <div class="callout-content">
 <p>Dynamic branching is designed to work well with
@@ -3211,7 +3211,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -3291,7 +3291,7 @@ any links that you are not going to use.
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use parallel processing</p>
 </div>
@@ -3301,12 +3301,12 @@ any links that you are not going to use.
 <p>Once a pipeline starts to include many targets, you may want to think
 about parallel processing. This takes advantage of multiple processors
 in your computer to build multiple targets at the same time.</p>
-<div id="callout1" class="callout">
+<div id="when-to-use-parallel-processing" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="when-to-use-parallel-processing">When to use parallel processing<a class="anchor" aria-label="anchor" href="#when-to-use-parallel-processing"></a>
+<div id="when-to-use-parallel-processing" class="callout-inner">
+<h3 class="callout-title">When to use parallel processing<a class="anchor" aria-label="anchor" href="#when-to-use-parallel-processing"></a>
 </h3>
 <div class="callout-content">
 <p>Parallel processing should only be used if your workflow has
@@ -3883,7 +3883,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.2" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.3" class="external-link">sandpaper (0.16.3)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
 			</div>
 		</footer>
 </div> <!-- / div.container -->
@@ -3906,8 +3906,8 @@ any links that you are not going to use.
   "url": "https://joelnitta.github.io/targets-workshop/instructor/aio.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/instructor/aio.html",
   "dateCreated": "2023-11-10",
-  "dateModified": "2024-03-12",
-  "datePublished": "2024-03-12"
+  "dateModified": "2024-03-19",
+  "datePublished": "2024-03-19"
 }
 
   </script><script>
