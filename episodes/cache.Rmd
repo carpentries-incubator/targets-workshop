@@ -10,7 +10,7 @@ exercises: 2
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 ```
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -68,25 +68,22 @@ Let's use this to load `penguins_data` and get an overview of the data with `sum
 #| echo: FALSE
 # When building the Rmd, each instance of the workflow is isolated, so need
 # to re-run
-tar_dir({
-  write_example_plan(1)
-  tar_make(reporter = "silent")
-  penguins_csv_file_hide <- tar_read(penguins_csv_file)
-  penguins_data_hide <- tar_read(penguins_data)
-})
+plan_1_dir <- make_tempdir()
+pushd(plan_1_dir)
+write_example_plan("plan_1.R")
+tar_make(reporter = "silent")
+penguins_csv_file_hide <- tar_read(penguins_csv_file)
+penguins_data_hide <- tar_read(penguins_data)
+popd()
 ```
 
 ```{r}
-#| label: targets-load-show
-#| eval: FALSE
+#| label: targets-load
+#| echo: [2, 3]
+pushd(plan_1_dir)
 tar_load(penguins_data)
 summary(penguins_data)
-```
-
-```{r}
-#| label: targets-load-hide
-#| echo: FALSE
-summary(penguins_data_hide)
+popd()
 ```
 
 Note that `tar_load()` is used for its **side-effect**---loading the desired object into the current R session.
@@ -100,14 +97,10 @@ Let's try it with `penguins_csv_file`.
 
 ```{r}
 #| label: targets-read-show
-#| eval: FALSE
+#| echo: [2]
+pushd(plan_1_dir)
 tar_read(penguins_csv_file)
-```
-
-```{r}
-#| label: targets-read-hide
-#| echo: FALSE
-penguins_csv_file_hide
+popd()
 ```
 
 We immediately see the contents of `penguins_csv_file`.

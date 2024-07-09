@@ -30,7 +30,7 @@ Episode summary: Show how to use branching
 library(targets)
 library(tarchetypes)
 library(broom)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 
 # Increase width for printing tibbles
 options(width = 140)
@@ -67,62 +67,34 @@ lm(bill_depth_mm ~ bill_length_mm, data = penguins_data)
 We can add this to our pipeline. We will call it the `combined_model` because it combines all the species together without distinction:
 
 ```{r}
-#| label: example-lm-pipeline-show
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build model
-  combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data)
-)
+#| label = "example-lm-pipeline-show",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_4.R")[2:19]
 ```
 
 ```{r}
 #| label: example-lm-pipeline-hide
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(3)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(4)
-  tar_make()
-})
+#| echo: false
+plan_4_dir <- make_tempdir()
+pushd(plan_4_dir)
+write_example_plan("plan_3.R")
+tar_make(reporter = "silent")
+write_example_plan("plan_4.R")
+tar_make()
+popd()
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 ```{r}
 #| label: example-lm-pipeline-inspect-show
-#| eval: FALSE
+#| eval: true
+#| echo: [2, 3, 4]
+pushd(plan_4_dir)
 library(broom)
-
 tar_load(combined_model)
-
 glance(combined_model)
-```
-
-```{r}
-#| label: example-lm-pipeline-inspect-hide
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(4)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_load(combined_model)
-  glance(combined_model)
-})
+popd()
 ```
 
 Notice the small *P*-value.
@@ -136,65 +108,33 @@ These could include models that add a parameter for species, or add an interacti
 Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching** (make sure to add `library(broom)` to `packages.R`):
 
 ```{r}
-#| label: example-model-show-1
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data),
-  species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-  interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguins_data),
-  # Get model summaries
-  combined_summary = glance(combined_model),
-  species_summary = glance(species_model),
-  interaction_summary = glance(interaction_model)
-)
+#| label = "example-model-show-1",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_5.R")[2:31]
 ```
 
 ```{r}
 #| label: example-model-hide-1
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(4)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(5)
-  tar_make()
-})
+#| echo: false
+plan_5_dir <- make_tempdir()
+pushd(plan_5_dir)
+# simulate already running the plan once
+write_example_plan("plan_4.R")
+tar_make(reporter = "silent")
+write_example_plan("plan_5.R")
+tar_make()
+popd()
 ```
 
 Let's look at the summary of one of the models:
 
 ```{r}
 #| label: example-model-show-2
-#| eval: FALSE
+#| eval: true
+#| echo: [2]
+pushd(plan_5_dir)
 tar_read(species_summary)
-```
-
-```{r}
-#| label: example-model-hide-2
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(5)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_read(species_summary)
-})
+popd()
 ```
 
 So this way of writing the pipeline works, but is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
@@ -208,36 +148,9 @@ It would be fairly easy to make a typo and end up with the wrong model being sum
 Let's see how to write the same plan using **dynamic branching**:
 
 ```{r}
-#| label: example-model-show-3
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance(models[[1]]),
-    pattern = map(models)
-  )
-)
+#| label = "example-model-show-3",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_6.R")[2:29]
 ```
 
 What is going on here?
@@ -246,16 +159,16 @@ First, let's look at the messages provided by `tar_make()`.
 
 ```{r}
 #| label: example-model-hide-3
-#| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(5)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(6)
-  tar_make()
-  example_branch_name <- tar_branch_names(model_summaries, 1)
-})
+#| echo: false
+plan_6_dir <- make_tempdir()
+pushd(plan_6_dir)
+# simulate already running the plan once
+write_example_plan("plan_5.R")
+tar_make(reporter = "silent")
+write_example_plan("plan_6.R")
+tar_make()
+example_branch_name <- tar_branch_names(model_summaries, 1)
+popd()
 ```
 
 There is a series of smaller targets (branches) that are each named like `r example_branch_name`, then one overall `model_summaries` target.
@@ -266,17 +179,9 @@ Since `targets` has no way of knowing ahead of time how many branches there will
 Next, let's look in more detail about how the workflow is set up, starting with how we defined the models:
 
 ```{r}
-#| label: model-def
-#| eval: false
-# Build models
-models <- list(
-  combined_model = lm(
-    bill_depth_mm ~ bill_length_mm, data = penguins_data),
-  species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-  interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-)
+#| label = "model-def",
+#| code = readLines("files/plans/plan_6.R")[14:22],
+#| eval = FALSE
 ```
 
 Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
@@ -286,14 +191,9 @@ So we need to prepare the input for looping as a list.
 Next, take a look at the command to build the target `model_summaries`.
 
 ```{r}
-#| label: model-summaries
-#| eval: false
-# Get model summaries
-tar_target(
-  model_summaries,
-  glance(models[[1]]),
-  pattern = map(models)
-)
+#| label = "model-summaries",
+#| code = readLines("files/plans/plan_6.R")[23:28],
+#| eval = FALSE
 ```
 
 As before, the first argument is the name of the target to build, and the second is the command to build it.
@@ -314,13 +214,9 @@ tar_read(model_summaries)
 ```{r}
 #| label: example-model-hide-4
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(6)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_read(model_summaries)
-})
+pushd(plan_6_dir)
+tar_read(model_summaries)
+popd()
 ```
 
 The model summary statistics are all included in a single dataframe.
@@ -343,100 +239,48 @@ Here is the function. Save this in `R/functions.R`:
 ```{r}
 #| label: example-model-show-5
 #| eval: FALSE
-glance_with_mod_name <- function(model_in_list) {
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  glance(model) |>
-    mutate(model_name = model_name)
-}
+#| file: files/tar_functions/glance_with_mod_name.R
 ```
 
 Our new pipeline looks almost the same as before, but this time we use the custom function instead of `glance()`.
 
 ```{r}
-#| label: example-model-show-6
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
-  )
-)
+#| label = "example-model-show-6",
+#| code = readLines("files/plans/plan_7.R")[2:29],
+#| eval = FALSE
 ```
 
 ```{r}
 #| label: example-model-hide-6
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan(6)
-  # Run it
-  tar_make(reporter = "silent")
-  write_example_plan(7)
-  tar_make()
-})
+pushd(plan_6_dir)
+write_example_plan("plan_7.R")
+tar_make()
+popd()
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
 
 ```{r}
-#| label: example-model-hide-7
-#| echo: false
+#| label: example-model-7
+#| echo: [2]
 #| warning: false
-tar_dir({
-  # New workflow
-  write_example_plan(7)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_read(model_summaries)
-})
+pushd(plan_6_dir)
+tar_read(model_summaries)
+popd()
 ```
 
 Next we will add one more target, a prediction of bill depth based on each model. These will be needed for plotting the models in the report.
 Such a prediction can be obtained with the `augment()` function of the `broom` package.
 
 ```{r}
-#| label: example-augment-show
-#| echo: true
-#| eval: false
+#| label: example-augment
+#| echo: [2, 3]
+#| eval: true
+pushd(plan_6_dir)
 tar_load(models)
 augment(models[[1]])
-```
-
-```{r}
-#| label: example-augment-hide
-#| echo: false
-#| warning: false
-tar_dir({
-  # New workflow
-  write_example_plan(7)
-  # Run it
-  tar_make(reporter = "silent")
-  tar_load(models)
-})
-augment(models[[1]])
+popd()
 ```
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
@@ -452,53 +296,15 @@ Define the new function as `augment_with_mod_name()`. It is the same as `glance_
 ```{r}
 #| label: example-model-augment-func
 #| eval: FALSE
-augment_with_mod_name <- function(model_in_list) {
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  augment(model) |>
-    mutate(model_name = model_name)
-}
+#| file: files/tar_functions/augment_with_mod_name.R
 ```
 
 Add the step to the workflow:
 
 ```{r}
-#| label: example-model-augment-show
-#| eval: FALSE
-source("R/packages.R")
-source("R/functions.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
-  ),
-  # Get model summaries
-  tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
-  ),
-  # Get model predictions
-  tar_target(
-    model_predictions,
-    augment_with_mod_name(models),
-    pattern = map(models)
-  )
-)
+#| label = "example-model-augment-show",
+#| code = readLines("files/plans/plan_8.R")[2:35],
+#| eval = FALSE
 ```
 
 ::::::::::::::::::::::::::::::::::
