@@ -57,7 +57,7 @@ tar_plan(
 ``` output
 ▶ dispatched target some_data
 ● completed target some_data [0.001 seconds]
-▶ ended pipeline [0.047 seconds]
+▶ ended pipeline [0.048 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -82,7 +82,7 @@ tar_plan(
 
 The target `some_data` was skipped, even though the contents of the file changed.
 
-That is because right now, targets is only tracking the **name** of the file, not its contents. We need to use a special function for that, `tar_file()` from the `tarchetypes` package. `tar_file()` will calculate the "hash" of a file---a unique digital signature that is determined by the file's contents. If the contents change, the hash will change, and this will be detected by `targets`.
+That is because right now, targets is only tracking the **name** of the file, not its contents. We need to use a special argument for that, `tar_target(format = "file")`. This will cause `targets` to calculate the "hash" of a file---a unique digital signature that is determined by the file's contents. If the contents change, the hash will change, and this will be detected by `targets`.
 
 
 ``` r
@@ -90,7 +90,7 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  tar_file(data_file, "_targets/user/data/hello.txt"),
+  tar_target(data_file, "_targets/user/data/hello.txt", format = "file"),
   some_data = readLines(data_file)
 )
 ```
@@ -101,7 +101,7 @@ tar_plan(
 ● completed target data_file [0 seconds]
 ▶ dispatched target some_data
 ● completed target some_data [0 seconds]
-▶ ended pipeline [0.065 seconds]
+▶ ended pipeline [0.068 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -186,10 +186,10 @@ tar_plan(
 ▶ dispatched target penguins_data_raw_file
 ● completed target penguins_data_raw_file [0.001 seconds]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.205 seconds]
+● completed target penguins_data_raw [0.219 seconds]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.011 seconds]
-▶ ended pipeline [0.285 seconds]
+● completed target penguins_data [0.012 seconds]
+▶ ended pipeline [0.3 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -198,7 +198,7 @@ tar_plan(
 
 ## Writing out data
 
-Writing to files is similar to loading in files: we will use the `tar_file()` function. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return nothing; these treat the output file is a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
+Writing to files is similar to loading in files: we will use `tar_target(format = "file")`. There is one important caveat: in this case, the `command` argument of `tar_target()` **must return the path to the file**. Not all functions that write files do this (some return nothing; these treat the output file is a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
 
 Let's do this for `writeLines()`, the R function that writes character data to a file. Normally, its output would be `NULL` (nothing), as we can see here:
 
@@ -252,9 +252,10 @@ tar_plan(
     readLines(!!.x)
   ),
   hello_caps = toupper(hello),
-  tar_file(
+  tar_target(
     hello_caps_out,
-    write_lines_file(hello_caps, "_targets/user/results/hello_caps.txt")
+    write_lines_file(hello_caps, "_targets/user/results/hello_caps.txt"),
+    format = "file"
   )
 )
 ```
@@ -262,14 +263,14 @@ tar_plan(
 
 ``` output
 ▶ dispatched target hello_file
-● completed target hello_file [0 seconds]
+● completed target hello_file [0.001 seconds]
 ▶ dispatched target hello
-● completed target hello [0 seconds]
+● completed target hello [0.001 seconds]
 ▶ dispatched target hello_caps
 ● completed target hello_caps [0 seconds]
 ▶ dispatched target hello_caps_out
 ● completed target hello_caps_out [0 seconds]
-▶ ended pipeline [0.066 seconds]
+▶ ended pipeline [0.063 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
@@ -294,7 +295,7 @@ So this way of writing out results makes your pipeline more robust: we have a gu
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- `tarchetypes::tar_file()` tracks the contents of a file
+- `tar_target(format = "file")` tracks the contents of a file
 - Use `tarchetypes::tar_file_read()` in combination with data loading functions like `read_csv()` to keep the pipeline in sync with your input data
 - Use `tarchetypes::tar_file()` in combination with a function that writes to a file and returns its path to write out data
 
