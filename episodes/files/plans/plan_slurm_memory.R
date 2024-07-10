@@ -9,12 +9,12 @@ source("R/functions.R")
 small_memory <- crew_controller_slurm(
   name = "small_memory",
   script_lines = "module load R",
-  slurm_memory_gigabytes_per_cpu = 10
+  slurm_memory_gigabytes_per_cpu = 1
 )
 big_memory <- crew_controller_slurm(
   name = "big_memory",
   script_lines = "module load R",
-  slurm_memory_gigabytes_per_cpu = 20
+  slurm_memory_gigabytes_per_cpu = 2
 )
 
 tar_option_set(
