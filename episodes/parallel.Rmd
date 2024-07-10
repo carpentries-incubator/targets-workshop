@@ -52,26 +52,6 @@ Most workflows that use branching can benefit from parallelism.
 Here, we assume you are running this analysis on a laptop and so will use a relatively simple backend.
 If you are interested in high-performance computing, [see the `targets` manual](https://books.ropensci.org/targets/hpc.html).
 
-### Install R packages for parallel computing
-
-For this demo, we will use the new [`crew` backend](https://wlandau.github.io/crew/).
-
-::::::::::::::::::::::::::::::::::::: {.prereq}
-
-### Install required packages
-
-You will need to install several packages to use the `crew` backend:
-
-```{r}
-#| label: install-crew
-#| eval: false
-install.packages("nanonext", repos = "https://shikokuchuo.r-universe.dev")
-install.packages("mirai", repos = "https://shikokuchuo.r-universe.dev")
-install.packages("crew", type = "source")
-```
-
-:::::::::::::::::::::::::::::::::::::
-
 ### Set up workflow
 
 To enable parallel processing with `crew` you only need to load the `crew` package, then tell `targets` to use it using `tar_option_set`.
