@@ -15,8 +15,7 @@ Follow these instructions to install the required software on your computer.
 install.packages(
   c(
     "conflicted",
-    "future.callr",
-    "future",
+    "crew",
     "palmerpenguins",
     "quarto",
     "tarchetypes",
