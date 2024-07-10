@@ -176,6 +176,7 @@
         "R",
         "backports",
         "dplyr",
+        "ellipsis",
         "generics",
         "glue",
         "lifecycle",
@@ -351,11 +352,30 @@
       ],
       "Hash": "1498e9c5b0f2a644d7c4a8534c9d20fe"
     },
+    "crew.cluster": {
+      "Package": "crew.cluster",
+      "Version": "0.3.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "R6",
+        "crew",
+        "lifecycle",
+        "ps",
+        "rlang",
+        "utils",
+        "vctrs",
+        "xml2",
+        "yaml"
+      ],
+      "Hash": "4a6a569e1f2b56ce2419d412598ab1b4"
+    },
     "curl": {
       "Package": "curl",
       "Version": "5.2.1",
       "Source": "Repository",
-      "Repository": "carpentries",
+      "Repository": "CRAN",
       "Requirements": [
         "R"
       ],
@@ -452,6 +472,17 @@
         "vctrs"
       ],
       "Hash": "54ed3ea01b11e81a86544faaecfef8e2"
+    },
+    "ellipsis": {
+      "Package": "ellipsis",
+      "Version": "0.3.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "rlang"
+      ],
+      "Hash": "bb0eec2fe32e88d9e2836c2f73ea2077"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -1028,7 +1059,7 @@
       "Package": "openssl",
       "Version": "2.2.0",
       "Source": "Repository",
-      "Repository": "carpentries",
+      "Repository": "CRAN",
       "Requirements": [
         "askpass"
       ],
@@ -1174,7 +1205,7 @@
       "Package": "ragg",
       "Version": "1.3.2",
       "Source": "Repository",
-      "Repository": "carpentries",
+      "Repository": "CRAN",
       "Requirements": [
         "systemfonts",
         "textshaping"
@@ -1399,7 +1430,7 @@
       "Package": "stringi",
       "Version": "1.8.3",
       "Source": "Repository",
-      "Repository": "carpentries",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "stats",
@@ -1436,7 +1467,7 @@
       "Package": "systemfonts",
       "Version": "1.1.0",
       "Source": "Repository",
-      "Repository": "carpentries",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "cpp11",
@@ -1497,11 +1528,10 @@
       "Package": "textshaping",
       "Version": "0.3.7",
       "Source": "Repository",
-      "Repository": "carpentries",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "cpp11",
-        "lifecycle",
         "systemfonts"
       ],
       "Hash": "997aac9ad649e0ef3b97f96cddd5622b"
@@ -1752,7 +1782,7 @@
       "Package": "xml2",
       "Version": "1.3.6",
       "Source": "Repository",
-      "Repository": "https://carpentries.r-universe.dev",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "cli",
