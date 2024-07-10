@@ -217,7 +217,7 @@ tar_dir({
 
 ## Writing out data
 
-Writing to files is similar to loading in files: we will use `tar_target(format = "file")` function. There is one important caveat: in this case, the `command` argument of `tar_target()` **must return the path to the file**. Not all functions that write files do this (some return nothing; these treat the output file is a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
+Writing to files is similar to loading in files: we will use `tar_target(format = "file")`. There is one important caveat: in this case, the `command` argument of `tar_target()` **must return the path to the file**. Not all functions that write files do this (some return nothing; these treat the output file is a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
 
 Let's do this for `writeLines()`, the R function that writes character data to a file. Normally, its output would be `NULL` (nothing), as we can see here:
 
