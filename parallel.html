@@ -413,39 +413,13 @@ running this analysis on a laptop and so will use a relatively simple
 backend. If you are interested in high-performance computing, <a href="https://books.ropensci.org/targets/hpc.html" class="external-link">see the
 <code>targets</code> manual</a>.</p>
 <div class="section level3">
-<h3 id="install-r-packages-for-parallel-computing">Install R packages for parallel computing<a class="anchor" aria-label="anchor" href="#install-r-packages-for-parallel-computing"></a></h3>
-<p>For this demo, we will use the new <a href="https://wlandau.github.io/crew/" class="external-link"><code>crew</code>
-backend</a>.</p>
-<div id="install-required-packages" class="callout prereq">
-<div class="callout-square">
-<i class="callout-icon" data-feather="check"></i>
-</div>
-<div id="install-required-packages" class="callout-inner">
-<h3 class="callout-title">Install required packages<a class="anchor" aria-label="anchor" href="#install-required-packages"></a>
-</h3>
-<div class="callout-content">
-<p>You will need to install several packages to use the
-<code>crew</code> backend:</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"nanonext"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span>
-<span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"mirai"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span>
-<span><span class="fu">install.packages</span><span class="op">(</span><span class="st">"crew"</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="section level3">
 <h3 id="set-up-workflow">Set up workflow<a class="anchor" aria-label="anchor" href="#set-up-workflow"></a></h3>
 <p>To enable parallel processing with <code>crew</code> you only need to
 load the <code>crew</code> package, then tell <code>targets</code> to
 use it using <code>tar_option_set</code>. Specifically, the following
 lines enable crew, and tells it to use 2 parallel workers. You can
 increase this number on more powerful machines:</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -456,7 +430,7 @@ increase this number on more powerful machines:</p>
 </div>
 <p>Make these changes to the penguins analysis. It should now look like
 this:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -513,7 +487,7 @@ and enable us to see the difference between running sequentially and in
 parallel.</p>
 <p>Add these functions to <code>functions.R</code> (you can copy-paste
 the original ones, then modify them):</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -533,7 +507,7 @@ the original ones, then modify them):</p>
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Then, change the plan to use the “slow” version of the functions:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
