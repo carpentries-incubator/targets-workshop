@@ -32,11 +32,11 @@ So we just finished running our first workflow.
 Now you probably want to look at its output.
 But, if we just call the name of the object (for example, `penguins_data`), we get an error.
 
-```r
+``` r
 penguins_data
 ```
 
-```{.error}
+``` error
 Error in eval(expr, envir, enclos): object 'penguins_data' not found
 ```
 
@@ -63,12 +63,12 @@ Let's use this to load `penguins_data` and get an overview of the data with `sum
 
 
 
-```r
+``` r
 tar_load(penguins_data)
 summary(penguins_data)
 ```
 
-```{.output}
+``` output
    species          bill_length_mm  bill_depth_mm  
  Length:342         Min.   :32.10   Min.   :13.10  
  Class :character   1st Qu.:39.23   1st Qu.:15.60  
@@ -88,12 +88,12 @@ It doesn't actually return a value.
 Let's try it with `penguins_csv_file`.
 
 
-```r
+``` r
 tar_read(penguins_csv_file)
 ```
 
-```{.output}
-[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+``` output
+[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.4/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
 ```
 
 We immediately see the contents of `penguins_csv_file`.
@@ -101,11 +101,11 @@ But it has not been loaded into the environment.
 If you try to run `penguins_csv_file` now, you will get an error:
 
 
-```r
+``` r
 penguins_csv_file
 ```
 
-```{.error}
+``` error
 Error in eval(expr, envir, enclos): object 'penguins_csv_file' not found
 ```
 

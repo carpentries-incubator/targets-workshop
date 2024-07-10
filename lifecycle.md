@@ -34,15 +34,15 @@ One of the features of `targets` is that it maximizes efficiency by only running
 This is easiest to understand by trying it yourself. Let's try running the workflow again:
 
 
-```r
+``` r
 tar_make()
 ```
 
-```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip pipeline [0.081 seconds]
+``` output
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+✔ skipped pipeline [0.064 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -61,7 +61,7 @@ Right now they include the common name and the scientific name, but we really on
 Edit `_targets.R` so that the `clean_penguin_data()` function looks like this:
 
 
-```r
+``` r
 clean_penguin_data <- function(penguins_data_raw) {
   penguins_data_raw |>
     select(
@@ -78,16 +78,16 @@ clean_penguin_data <- function(penguins_data_raw) {
 Then run it again.
 
 
-```r
+``` r
 tar_make()
 ```
 
-```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-• start target penguins_data
-• built target penguins_data [0.026 seconds]
-• end pipeline [0.128 seconds]
+``` output
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+▶ dispatched target penguins_data
+● completed target penguins_data [0.011 seconds]
+▶ ended pipeline [0.123 seconds]
 ```
 
 What happened?
@@ -141,7 +141,7 @@ It is good to be able to visualize the state of the workflow.
 This can be done with `tar_visnetwork()`
 
 
-```r
+``` r
 tar_visnetwork()
 ```
 
@@ -207,11 +207,11 @@ There are some other useful functions that can do that.
 If everything is up to date, it will return a zero-length character vector (`character(0)`).
 
 
-```r
+``` r
 tar_outdated()
 ```
 
-```{.output}
+``` output
 character(0)
 ```
 
@@ -219,17 +219,17 @@ character(0)
 You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
 
 
-```r
+``` r
 tar_progress()
 ```
 
-```{.output}
+``` output
 # A tibble: 3 × 2
-  name              progress
-  <chr>             <chr>   
-1 penguins_csv_file skipped 
-2 penguins_data_raw skipped 
-3 penguins_data     built   
+  name              progress 
+  <chr>             <chr>    
+1 penguins_csv_file skipped  
+2 penguins_data_raw skipped  
+3 penguins_data     completed
 ```
 
 ## Granular control of targets
@@ -244,31 +244,31 @@ Furthermore, if you want to manually "reset" a target and make it appear out-of-
 Let's give this a try. Remember that our pipeline is currently up to date, so `tar_make()` will skip everything:
 
 
-```r
+``` r
 tar_make()
 ```
 
-```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip pipeline [0.077 seconds]
+``` output
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+✔ skipped pipeline [0.07 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
 
 
-```r
+``` r
 tar_invalidate(penguins_data)
 tar_make()
 ```
 
-```{.output}
-✔ skip target penguins_csv_file
-✔ skip target penguins_data_raw
-• start target penguins_data
-• built target penguins_data [0.038 seconds]
-• end pipeline [0.127 seconds]
+``` output
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+▶ dispatched target penguins_data
+● completed target penguins_data [0.011 seconds]
+▶ ended pipeline [0.121 seconds]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).

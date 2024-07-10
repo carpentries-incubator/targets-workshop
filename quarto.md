@@ -80,7 +80,7 @@ Copy the [raw code from here](https://raw.githubusercontent.com/joelnitta/pengui
 Then, add one more target to the pipeline using the `tar_quarto()` function like this:
 
 
-```r
+``` r
 source("R/functions.R")
 source("R/packages.R")
 
@@ -140,7 +140,7 @@ How does this work?
 The answer lies **inside** the `penguin_report.qmd` file. Let's look at the start of the file:
 
 
-````markdown
+```` markdown
 ---
 title: "Simpson's Paradox in Palmer Penguins"
 format:

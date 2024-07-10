@@ -85,7 +85,7 @@ We will now start to write a `_targets.R` file. Fortunately, `targets` comes wit
 In the R console, first load the `targets` package with `library(targets)`, then run the command `tar_script()`.
 
 
-```r
+``` r
 library(targets)
 tar_script()
 ```
@@ -120,7 +120,7 @@ In real life you are probably have externally stored raw data, so **let's use th
 The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package).
 
 
-```r
+``` r
 library(palmerpenguins)
 
 # Get path to CSV file
@@ -129,8 +129,8 @@ penguins_csv_file <- path_to_file("penguins_raw.csv")
 penguins_csv_file
 ```
 
-```{.output}
-[1] "/home/runner/.local/share/renv/cache/v5/R-4.3/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+``` output
+[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.4/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
 ```
 
 We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html).
@@ -138,7 +138,7 @@ We will use the `tidyverse` set of packages for loading and manipulating the dat
 Let's load the data with `read_csv()`.
 
 
-```r
+``` r
 library(tidyverse)
 
 # Read CSV file into R
@@ -148,7 +148,7 @@ penguins_data_raw
 ```
 
 
-```{.output}
+``` output
 Rows: 344 Columns: 17
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
@@ -160,7 +160,7 @@ date (1): Date Egg
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
 
-```{.output}
+``` output
 # A tibble: 344 × 17
    studyName `Sample Number` Species         Region Island Stage `Individual ID`
    <chr>               <dbl> <chr>           <chr>  <chr>  <chr> <chr>          
@@ -191,7 +191,7 @@ Let's clean up the data to make it easier to use for downstream analyses.
 We will also remove any rows with missing data, because this could cause errors for some functions later.
 
 
-```r
+``` r
 # Clean up raw data
 penguins_data <- penguins_data_raw |>
   # Rename columns for easier typing and
@@ -207,7 +207,7 @@ penguins_data <- penguins_data_raw |>
 penguins_data
 ```
 
-```{.output}
+``` output
 # A tibble: 342 × 3
    species                             bill_length_mm bill_depth_mm
    <chr>                                        <dbl>         <dbl>
@@ -240,7 +240,7 @@ The other steps (setting the file path and loading the data) are each just one f
 Finally, each step in the workflow is defined with the `tar_target()` function.
 
 
-```r
+``` r
 library(targets)
 library(tidyverse)
 library(palmerpenguins)
@@ -271,18 +271,18 @@ Now that we have a workflow, we can run it with the `tar_make()` function.
 Try running it, and you should see something like this:
 
 
-```r
+``` r
 tar_make()
 ```
 
-```{.output}
-• start target penguins_csv_file
-• built target penguins_csv_file [0.002 seconds]
-• start target penguins_data_raw
-• built target penguins_data_raw [0.095 seconds]
-• start target penguins_data
-• built target penguins_data [0.013 seconds]
-• end pipeline [0.216 seconds]
+``` output
+▶ dispatched target penguins_csv_file
+● completed target penguins_csv_file [0.001 seconds]
+▶ dispatched target penguins_data_raw
+● completed target penguins_data_raw [0.128 seconds]
+▶ dispatched target penguins_data
+● completed target penguins_data [0.005 seconds]
+▶ ended pipeline [0.196 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!

@@ -51,7 +51,7 @@ For this demo, we will use the new [`crew` backend](https://wlandau.github.io/cr
 You will need to install several packages to use the `crew` backend:
 
 
-```r
+``` r
 install.packages("nanonext", repos = "https://shikokuchuo.r-universe.dev")
 install.packages("mirai", repos = "https://shikokuchuo.r-universe.dev")
 install.packages("crew", type = "source")
@@ -76,7 +76,7 @@ Make these changes to the penguins analysis.
 It should now look like this:
 
 
-```r
+``` r
 source("R/functions.R")
 source("R/packages.R")
 
@@ -127,7 +127,7 @@ This will simulate a long-running computation and enable us to see the differenc
 Add these functions to `functions.R` (you can copy-paste the original ones, then modify them):
 
 
-```r
+``` r
 glance_with_mod_name_slow <- function(model_in_list) {
   Sys.sleep(4)
   model_name <- names(model_in_list)
@@ -147,7 +147,7 @@ augment_with_mod_name_slow <- function(model_in_list) {
 Then, change the plan to use the "slow" version of the functions:
 
 
-```r
+``` r
 source("R/functions.R")
 source("R/packages.R")
 
@@ -193,7 +193,7 @@ tar_plan(
 Finally, run the pipeline with `tar_make()` as normal.
 
 
-```{.output}
+``` output
 ✔ skip target penguins_data_raw_file
 ✔ skip target penguins_data_raw
 ✔ skip target penguins_data

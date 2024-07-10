@@ -47,14 +47,14 @@ We will test this hypothesis with a linear model.
 For example, this is a model of bill depth dependent on bill length:
 
 
-```r
+``` r
 lm(bill_depth_mm ~ bill_length_mm, data = penguins_data)
 ```
 
 We can add this to our pipeline. We will call it the `combined_model` because it combines all the species together without distinction:
 
 
-```r
+``` r
 source("R/packages.R")
 source("R/functions.R")
 
@@ -76,25 +76,25 @@ tar_plan(
 ```
 
 
-```{.output}
-✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-• start target combined_model
-• built target combined_model [0.034 seconds]
-• end pipeline [0.136 seconds]
+``` output
+✔ skipped target penguins_data_raw_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+▶ dispatched target combined_model
+● completed target combined_model [0.048 seconds]
+▶ ended pipeline [0.127 seconds]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 
-```r
+``` r
 library(broom)
 tar_load(combined_model)
 glance(combined_model)
 ```
 
-```{.output}
+``` output
 # A tibble: 1 × 12
   r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
       <dbl>         <dbl> <dbl>     <dbl>     <dbl> <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int> <int>
@@ -112,7 +112,7 @@ These could include models that add a parameter for species, or add an interacti
 Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching** (make sure to add `library(broom)` to `packages.R`):
 
 
-```r
+``` r
 source("R/packages.R")
 source("R/functions.R")
 
@@ -146,32 +146,32 @@ tar_plan(
 ```
 
 
-```{.output}
-✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip target combined_model
-• start target interaction_model
-• built target interaction_model [0.004 seconds]
-• start target species_model
-• built target species_model [0.011 seconds]
-• start target combined_summary
-• built target combined_summary [0.008 seconds]
-• start target interaction_summary
-• built target interaction_summary [0.002 seconds]
-• start target species_summary
-• built target species_summary [0.003 seconds]
-• end pipeline [0.144 seconds]
+``` output
+✔ skipped target penguins_data_raw_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+✔ skipped target combined_model
+▶ dispatched target interaction_model
+● completed target interaction_model [0.003 seconds]
+▶ dispatched target species_model
+● completed target species_model [0.001 seconds]
+▶ dispatched target combined_summary
+● completed target combined_summary [0.006 seconds]
+▶ dispatched target interaction_summary
+● completed target interaction_summary [0.003 seconds]
+▶ dispatched target species_summary
+● completed target species_summary [0.037 seconds]
+▶ ended pipeline [0.146 seconds]
 ```
 
 Let's look at the summary of one of the models:
 
 
-```r
+``` r
 tar_read(species_summary)
 ```
 
-```{.output}
+``` output
 # A tibble: 1 × 12
   r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
       <dbl>         <dbl> <dbl>     <dbl>     <dbl> <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int> <int>
@@ -189,7 +189,7 @@ It would be fairly easy to make a typo and end up with the wrong model being sum
 Let's see how to write the same plan using **dynamic branching**:
 
 
-```r
+``` r
 source("R/packages.R")
 source("R/functions.R")
 
@@ -225,23 +225,23 @@ What is going on here?
 First, let's look at the messages provided by `tar_make()`.
 
 
-```{.output}
-✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-• start target models
-• built target models [0.006 seconds]
-• start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.008 seconds]
-• start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.002 seconds]
-• start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.003 seconds]
-• built pattern model_summaries
-• end pipeline [0.149 seconds]
+``` output
+✔ skipped target penguins_data_raw_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+▶ dispatched target models
+● completed target models [0.004 seconds]
+▶ dispatched branch model_summaries_812e3af782bee03f
+● completed branch model_summaries_812e3af782bee03f [0.006 seconds]
+▶ dispatched branch model_summaries_2b8108839427c135
+● completed branch model_summaries_2b8108839427c135 [0.002 seconds]
+▶ dispatched branch model_summaries_533cd9a636c3e05b
+● completed branch model_summaries_533cd9a636c3e05b [0.002 seconds]
+● completed pattern model_summaries
+▶ ended pipeline [0.146 seconds]
 ```
 
-There is a series of smaller targets (branches) that are each named like model_summaries_5ad4cec5, then one overall `model_summaries` target.
+There is a series of smaller targets (branches) that are each named like model_summaries_812e3af782bee03f, then one overall `model_summaries` target.
 That is the result of specifying targets using branching: each of the smaller targets are the "branches" that comprise the overall target.
 Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
 `targets` builds each branch one at a time, then combines them into the overall target.
@@ -249,7 +249,7 @@ Since `targets` has no way of knowing ahead of time how many branches there will
 Next, let's look in more detail about how the workflow is set up, starting with how we defined the models:
 
 
-```r
+``` r
   # Build models
   models = list(
     combined_model = lm(
@@ -268,7 +268,7 @@ So we need to prepare the input for looping as a list.
 Next, take a look at the command to build the target `model_summaries`.
 
 
-```r
+``` r
   # Get model summaries
   tar_target(
     model_summaries,
@@ -287,12 +287,12 @@ Finally, there is an argument we haven't seen before, `pattern`, which indicates
 Now that we understand how the branching workflow is constructed, let's inspect the output:
 
 
-```r
+``` r
 tar_read(model_summaries)
 ```
 
 
-```{.output}
+``` output
 # A tibble: 3 × 12
   r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
       <dbl>         <dbl> <dbl>     <dbl>     <dbl> <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int> <int>
@@ -319,7 +319,7 @@ You will need to write custom functions frequently when using `targets`, so it's
 Here is the function. Save this in `R/functions.R`:
 
 
-```r
+``` r
 glance_with_mod_name <- function(model_in_list) {
   model_name <- names(model_in_list)
   model <- model_in_list[[1]]
@@ -331,7 +331,7 @@ glance_with_mod_name <- function(model_in_list) {
 Our new pipeline looks almost the same as before, but this time we use the custom function instead of `glance()`.
 
 
-```r
+``` r
 source("R/functions.R")
 source("R/packages.R")
 
@@ -363,29 +363,29 @@ tar_plan(
 ```
 
 
-```{.output}
-✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip target models
-• start branch model_summaries_5ad4cec5
-• built branch model_summaries_5ad4cec5 [0.03 seconds]
-• start branch model_summaries_c73912d5
-• built branch model_summaries_c73912d5 [0.006 seconds]
-• start branch model_summaries_91696941
-• built branch model_summaries_91696941 [0.004 seconds]
-• built pattern model_summaries
-• end pipeline [0.154 seconds]
+``` output
+✔ skipped target penguins_data_raw_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+✔ skipped target models
+▶ dispatched branch model_summaries_812e3af782bee03f
+● completed branch model_summaries_812e3af782bee03f [0.011 seconds]
+▶ dispatched branch model_summaries_2b8108839427c135
+● completed branch model_summaries_2b8108839427c135 [0.006 seconds]
+▶ dispatched branch model_summaries_533cd9a636c3e05b
+● completed branch model_summaries_533cd9a636c3e05b [0.04 seconds]
+● completed pattern model_summaries
+▶ ended pipeline [0.147 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
 
 
-```r
+``` r
 tar_read(model_summaries)
 ```
 
-```{.output}
+``` output
 # A tibble: 3 × 13
   r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs model_name       
       <dbl>         <dbl> <dbl>     <dbl>     <dbl> <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int> <int> <chr>            
@@ -398,12 +398,12 @@ Next we will add one more target, a prediction of bill depth based on each model
 Such a prediction can be obtained with the `augment()` function of the `broom` package.
 
 
-```r
+``` r
 tar_load(models)
 augment(models[[1]])
 ```
 
-```{.output}
+``` output
 # A tibble: 342 × 8
    bill_depth_mm bill_length_mm .fitted .resid    .hat .sigma   .cooksd .std.resid
            <dbl>          <dbl>   <dbl>  <dbl>   <dbl>  <dbl>     <dbl>      <dbl>
@@ -431,7 +431,7 @@ Can you add the model predictions using `augment()`? You will need to define a c
 Define the new function as `augment_with_mod_name()`. It is the same as `glance_with_mod_name()`, but use `augment()` instead of `glance()`:
 
 
-```r
+``` r
 augment_with_mod_name <- function(model_in_list) {
   model_name <- names(model_in_list)
   model <- model_in_list[[1]]
@@ -443,7 +443,7 @@ augment_with_mod_name <- function(model_in_list) {
 Add the step to the workflow:
 
 
-```r
+``` r
 source("R/functions.R")
 source("R/packages.R")
 

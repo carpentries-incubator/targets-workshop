@@ -49,7 +49,7 @@ Let's edit the penguins workflow to use the `tar_plan()` syntax:
 
 <!-- The chunk below intersperses plan_2b with clean_penguin_data() to avoid writing it manually -->
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 library(palmerpenguins)
@@ -96,7 +96,7 @@ Similarly, let's put the `library()` calls in their own script in `R/` called `p
 We will also need to modify our `_targets.R` script to call these scripts with `source`:
 
 
-```r
+``` r
 source("R/packages.R")
 source("R/functions.R")
 
@@ -128,7 +128,7 @@ Another major difference is that **each target must have a unique name**.
 You may be used to writing code that looks like this:
 
 
-```r
+``` r
 # Store a person's height in cm, then convert to inches
 height <- 160
 height <- height / 2.54
@@ -137,7 +137,7 @@ height <- height / 2.54
 You would get an error if you tried to run the equivalent targets pipeline:
 
 
-```r
+``` r
 tar_plan(
     height = 160,
     height = height / 2.54
@@ -145,13 +145,42 @@ tar_plan(
 ```
 
 
-```{.error}
+``` error
 Error:
 ! Error running targets::tar_make()
-  Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
-  Debugging guide: https://books.ropensci.org/targets/debugging.html
-  How to ask for help: https://books.ropensci.org/targets/help.html
-  Last error: duplicated target names: height
+Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
+Debugging guide: https://books.ropensci.org/targets/debugging.html
+How to ask for help: https://books.ropensci.org/targets/help.html
+Last error message:
+    duplicated target names: height
+Last error traceback:
+    base::tryCatch(base::withCallingHandlers({ NULL base::saveRDS(base::do.c...
+    tryCatchList(expr, classes, parentenv, handlers)
+    tryCatchOne(tryCatchList(expr, names[-nh], parentenv, handlers[-nh]), na...
+    doTryCatch(return(expr), name, parentenv, handler)
+    tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
+    tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    doTryCatch(return(expr), name, parentenv, handler)
+    base::withCallingHandlers({ NULL base::saveRDS(base::do.call(base::do.ca...
+    base::saveRDS(base::do.call(base::do.call, base::c(base::readRDS("/tmp/R...
+    base::do.call(base::do.call, base::c(base::readRDS("/tmp/Rtmp5QX2Vf/call...
+    (function (what, args, quote = FALSE, envir = parent.frame()) { if (!is....
+    (function (targets_function, targets_arguments, options, envir = NULL, s...
+    tryCatch(out <- withCallingHandlers(targets::tar_callr_inner_try(targets...
+    tryCatchList(expr, classes, parentenv, handlers)
+    tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    doTryCatch(return(expr), name, parentenv, handler)
+    withCallingHandlers(targets::tar_callr_inner_try(targets_function = targ...
+    targets::tar_callr_inner_try(targets_function = targets_function, target...
+    pipeline_from_list(targets)
+    pipeline_from_list.default(targets)
+    pipeline_init(out)
+    pipeline_targets_init(targets, clone_targets)
+    tar_assert_unique_targets(names)
+    tar_throw_validate(message)
+    tar_error(message = paste0(...), class = c("tar_condition_validate", "ta...
+    rlang::abort(message = message, class = class, call = tar_empty_envir)
+    signal_abort(cnd, .file)
 ```
 
 **A major part of working with `targets` pipelines is writing custom functions that are the right size.**

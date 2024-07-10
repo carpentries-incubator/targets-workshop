@@ -57,7 +57,7 @@ We are about to create a new `_targets.R` file, but you probably don't want to l
 This is what using the `tar_option_set()` method looks like:
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -69,10 +69,10 @@ tar_plan(
 ```
 
 
-```{.output}
-• start target adelie_data
-• built target adelie_data [0.031 seconds]
-• end pipeline [0.109 seconds]
+``` output
+▶ dispatched target adelie_data
+● completed target adelie_data [0.017 seconds]
+▶ ended pipeline [0.064 seconds]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -84,7 +84,7 @@ The main function for defining targets, `tar_target()` includes a `packages` arg
 Here is how we could use this method, modified from the same example as above.
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -98,10 +98,10 @@ tar_plan(
 ```
 
 
-```{.output}
-• start target adelie_data
-• built target adelie_data [0.033 seconds]
-• end pipeline [0.112 seconds]
+``` output
+▶ dispatched target adelie_data
+● completed target adelie_data [0.019 seconds]
+▶ ended pipeline [0.065 seconds]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -115,7 +115,7 @@ This means you can **avoid loading packages altogether**.
 Here is how to write the plan using this method:
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -125,10 +125,10 @@ tar_plan(
 ```
 
 
-```{.output}
-• start target adelie_data
-• built target adelie_data [0.023 seconds]
-• end pipeline [0.101 seconds]
+``` output
+▶ dispatched target adelie_data
+● completed target adelie_data [0.008 seconds]
+▶ ended pipeline [0.056 seconds]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
@@ -169,7 +169,7 @@ For example, you may want to do this if you are using your own custom package th
 The way to do so is by using `tar_option_set()`, specifying the **same** package name in both `packages` and `imports`. Here is a modified version of the earlier code that demonstrates this for `dplyr` and `palmerpenguins`.
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -210,7 +210,7 @@ This will open `.Rprofile` in your editor, where you can edit it and save it.
 For example, your `.Rprofile` could include this:
 
 
-```r
+``` r
 library(conflicted)
 conflicts_prefer(dplyr::filter)
 ```

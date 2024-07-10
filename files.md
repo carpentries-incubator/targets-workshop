@@ -44,7 +44,7 @@ We are about to create a new `_targets.R` file, but you probably don't want to l
 :::::::::::::::::::::::::::::::::::::
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -54,10 +54,10 @@ tar_plan(
 ```
 
 
-```{.output}
-• start target some_data
-• built target some_data [0.002 seconds]
-• end pipeline [0.088 seconds]
+``` output
+▶ dispatched target some_data
+● completed target some_data [0.001 seconds]
+▶ ended pipeline [0.047 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -65,7 +65,7 @@ If we inspect the contents of `some_data` with `tar_read(some_data)`, it will co
 Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?". Edit this in the RStudio text editor and save it. Now run the pipeline again.
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -75,9 +75,9 @@ tar_plan(
 ```
 
 
-```{.output}
-✔ skip target some_data
-✔ skip pipeline [0.066 seconds]
+``` output
+✔ skipped target some_data
+✔ skipped pipeline [0.048 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -85,7 +85,7 @@ The target `some_data` was skipped, even though the contents of the file changed
 That is because right now, targets is only tracking the **name** of the file, not its contents. We need to use a special function for that, `tar_file()` from the `tarchetypes` package. `tar_file()` will calculate the "hash" of a file---a unique digital signature that is determined by the file's contents. If the contents change, the hash will change, and this will be detected by `targets`.
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -96,12 +96,12 @@ tar_plan(
 ```
 
 
-```{.output}
-• start target data_file
-• built target data_file [0.001 seconds]
-• start target some_data
-• built target some_data [0 seconds]
-• end pipeline [0.098 seconds]
+``` output
+▶ dispatched target data_file
+● completed target data_file [0 seconds]
+▶ dispatched target some_data
+● completed target some_data [0 seconds]
+▶ ended pipeline [0.065 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -113,7 +113,7 @@ However, also notice that this means we need to write two targets instead of one
 It turns out that this is a common pattern in `targets` workflows, so `tarchetypes` provides a shortcut to express this more concisely, `tar_file_read()`.
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -129,12 +129,12 @@ tar_plan(
 Let's inspect this pipeline with `tar_manifest()`:
 
 
-```r
+``` r
 tar_manifest()
 ```
 
 
-```{.output}
+``` output
 # A tibble: 2 × 2
   name       command                           
   <chr>      <chr>                             
@@ -167,7 +167,7 @@ How can you use `tar_file_read()` to load the CSV file while tracking its conten
 :::::::::::::::::::::::::::::::::: {.solution}
 
 
-```r
+``` r
 source("R/packages.R")
 source("R/functions.R")
 
@@ -182,14 +182,14 @@ tar_plan(
 ```
 
 
-```{.output}
-• start target penguins_data_raw_file
-• built target penguins_data_raw_file [0.002 seconds]
-• start target penguins_data_raw
-• built target penguins_data_raw [0.101 seconds]
-• start target penguins_data
-• built target penguins_data [0.024 seconds]
-• end pipeline [0.224 seconds]
+``` output
+▶ dispatched target penguins_data_raw_file
+● completed target penguins_data_raw_file [0.001 seconds]
+▶ dispatched target penguins_data_raw
+● completed target penguins_data_raw [0.205 seconds]
+▶ dispatched target penguins_data
+● completed target penguins_data [0.011 seconds]
+▶ ended pipeline [0.285 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -203,20 +203,20 @@ Writing to files is similar to loading in files: we will use the `tar_file()` fu
 Let's do this for `writeLines()`, the R function that writes character data to a file. Normally, its output would be `NULL` (nothing), as we can see here:
 
 
-```r
+``` r
 x <- writeLines("some text", "test.txt")
 x
 ```
 
 
-```{.output}
+``` output
 NULL
 ```
 
 Here is our modified function that writes character data to a file and returns the name of the file (the `...` means "pass the rest of these arguments to `writeLines()`"):
 
 
-```r
+``` r
 write_lines_file <- function(text, file, ...) {
   writeLines(text = text, con = file, ...)
   file
@@ -226,20 +226,20 @@ write_lines_file <- function(text, file, ...) {
 Let's try it out:
 
 
-```r
+``` r
 x <- write_lines_file("some text", "test.txt")
 x
 ```
 
 
-```{.output}
+``` output
 [1] "test.txt"
 ```
 
 We can now use this in a pipeline. For example let's change the text to upper case then write it out again:
 
 
-```r
+``` r
 library(targets)
 library(tarchetypes)
 
@@ -260,16 +260,16 @@ tar_plan(
 ```
 
 
-```{.output}
-• start target hello_file
-• built target hello_file [0.002 seconds]
-• start target hello
-• built target hello [0 seconds]
-• start target hello_caps
-• built target hello_caps [0 seconds]
-• start target hello_caps_out
-• built target hello_caps_out [0 seconds]
-• end pipeline [0.105 seconds]
+``` output
+▶ dispatched target hello_file
+● completed target hello_file [0 seconds]
+▶ dispatched target hello
+● completed target hello [0 seconds]
+▶ dispatched target hello_caps
+● completed target hello_caps [0 seconds]
+▶ dispatched target hello_caps_out
+● completed target hello_caps_out [0 seconds]
+▶ ended pipeline [0.066 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
