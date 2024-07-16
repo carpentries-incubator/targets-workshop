@@ -55,11 +55,9 @@ Furthermore, it can generate output from the same underlying script in multiple 
 
 ::::::::::::::::::::::::::::::::::::: {.prereq}
 
-## Install Quarto
+## Installing Quarto
 
-If you haven't done so already, you will need to [install Quarto](https://quarto.org/docs/get-started/), which is separate from R.
-
-You will also need to install the `quarto` R package with `install.packages("quarto")`.
+As of v2022.07.1, [RStudio comes with Quarto](https://docs.posit.co/ide/user/ide/guide/documents/quarto-project.html), so you don't need to install it separately. If you can't run Quarto from RStudio, we recommend installing the latest version of RStudio.
 
 :::::::::::::::::::::::::::::::::::::
 
