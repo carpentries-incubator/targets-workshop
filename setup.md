@@ -7,8 +7,7 @@ title: Setup
 Follow these instructions to install the required software on your computer.
 
 - [Download and install the latest version of R](https://www.r-project.org/).
-- [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/#download). RStudio is an application (an integrated development environment or IDE) that facilitates the use of R and offers a number of nice additional features. You will need the free Desktop version for your computer.
-- [Download and install Quarto](https://quarto.org/docs/download/). Quarto is a program for authoring documents in a variety of formats using code. It is used in this workshop to generate a dynamic report.
+- [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/#download). RStudio is an application (an integrated development environment or IDE) that facilitates the use of R and offers a number of nice additional features, including the [Quarto](https://quarto.org/) publishing system. You will need the free Desktop version for your computer.
 - Install the necessary R packages with the following command:
 
 ```r
