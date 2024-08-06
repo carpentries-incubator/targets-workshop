@@ -81,8 +81,8 @@ tar_plan(
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
 ▶ dispatched target combined_model
-● completed target combined_model [0.048 seconds]
-▶ ended pipeline [0.127 seconds]
+● completed target combined_model [0.02 seconds]
+▶ ended pipeline [0.1 seconds]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -158,10 +158,10 @@ tar_plan(
 ▶ dispatched target combined_summary
 ● completed target combined_summary [0.006 seconds]
 ▶ dispatched target interaction_summary
-● completed target interaction_summary [0.003 seconds]
+● completed target interaction_summary [0.002 seconds]
 ▶ dispatched target species_summary
-● completed target species_summary [0.037 seconds]
-▶ ended pipeline [0.146 seconds]
+● completed target species_summary [0.003 seconds]
+▶ ended pipeline [0.144 seconds]
 ```
 
 Let's look at the summary of one of the models:
@@ -230,7 +230,7 @@ First, let's look at the messages provided by `tar_make()`.
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
 ▶ dispatched target models
-● completed target models [0.004 seconds]
+● completed target models [0.005 seconds]
 ▶ dispatched branch model_summaries_812e3af782bee03f
 ● completed branch model_summaries_812e3af782bee03f [0.006 seconds]
 ▶ dispatched branch model_summaries_2b8108839427c135
@@ -238,7 +238,7 @@ First, let's look at the messages provided by `tar_make()`.
 ▶ dispatched branch model_summaries_533cd9a636c3e05b
 ● completed branch model_summaries_533cd9a636c3e05b [0.002 seconds]
 ● completed pattern model_summaries
-▶ ended pipeline [0.146 seconds]
+▶ ended pipeline [0.145 seconds]
 ```
 
 There is a series of smaller targets (branches) that are each named like model_summaries_812e3af782bee03f, then one overall `model_summaries` target.
@@ -369,13 +369,13 @@ tar_plan(
 ✔ skipped target penguins_data
 ✔ skipped target models
 ▶ dispatched branch model_summaries_812e3af782bee03f
-● completed branch model_summaries_812e3af782bee03f [0.011 seconds]
+● completed branch model_summaries_812e3af782bee03f [0.012 seconds]
 ▶ dispatched branch model_summaries_2b8108839427c135
-● completed branch model_summaries_2b8108839427c135 [0.006 seconds]
+● completed branch model_summaries_2b8108839427c135 [0.044 seconds]
 ▶ dispatched branch model_summaries_533cd9a636c3e05b
-● completed branch model_summaries_533cd9a636c3e05b [0.04 seconds]
+● completed branch model_summaries_533cd9a636c3e05b [0.004 seconds]
 ● completed pattern model_summaries
-▶ ended pipeline [0.147 seconds]
+▶ ended pipeline [0.241 seconds]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).

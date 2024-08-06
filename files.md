@@ -101,7 +101,7 @@ tar_plan(
 ● completed target data_file [0 seconds]
 ▶ dispatched target some_data
 ● completed target some_data [0 seconds]
-▶ ended pipeline [0.065 seconds]
+▶ ended pipeline [0.064 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -186,10 +186,10 @@ tar_plan(
 ▶ dispatched target penguins_data_raw_file
 ● completed target penguins_data_raw_file [0.001 seconds]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.205 seconds]
+● completed target penguins_data_raw [0.209 seconds]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.011 seconds]
-▶ ended pipeline [0.285 seconds]
+● completed target penguins_data [0.01 seconds]
+▶ ended pipeline [0.289 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -262,14 +262,14 @@ tar_plan(
 
 ``` output
 ▶ dispatched target hello_file
-● completed target hello_file [0 seconds]
+● completed target hello_file [0.001 seconds]
 ▶ dispatched target hello
 ● completed target hello [0 seconds]
 ▶ dispatched target hello_caps
 ● completed target hello_caps [0 seconds]
 ▶ dispatched target hello_caps_out
-● completed target hello_caps_out [0 seconds]
-▶ ended pipeline [0.066 seconds]
+● completed target hello_caps_out [0.001 seconds]
+▶ ended pipeline [0.067 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.

@@ -100,8 +100,8 @@ tar_plan(
 
 ``` output
 ▶ dispatched target adelie_data
-● completed target adelie_data [0.019 seconds]
-▶ ended pipeline [0.065 seconds]
+● completed target adelie_data [0.02 seconds]
+▶ ended pipeline [0.066 seconds]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -127,7 +127,7 @@ tar_plan(
 
 ``` output
 ▶ dispatched target adelie_data
-● completed target adelie_data [0.008 seconds]
+● completed target adelie_data [0.009 seconds]
 ▶ ended pipeline [0.056 seconds]
 ```
 
