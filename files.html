@@ -366,7 +366,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Working with External Files</h1>
-        <p>Last updated on 2024-07-10 |
+        <p>Last updated on 2024-09-10 |
 
         <a href="https://github.com/joelnitta/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -446,7 +446,7 @@ below. Then, rename them when you are ready to work on it again.</p>
 </h3>
 <pre class="output" tabindex="0"><code>▶ dispatched target some_data
 ● completed target some_data [0.001 seconds]
-▶ ended pipeline [0.047 seconds]</code></pre>
+▶ ended pipeline [0.065 seconds]</code></pre>
 </div>
 <p>If we inspect the contents of <code>some_data</code> with
 <code>tar_read(some_data)</code>, it will contain the string
@@ -469,7 +469,7 @@ pipeline again.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skipped target some_data
-✔ skipped pipeline [0.048 seconds]</code></pre>
+✔ skipped pipeline [0.066 seconds]</code></pre>
 </div>
 <p>The target <code>some_data</code> was skipped, even though the
 contents of the file changed.</p>
@@ -498,8 +498,8 @@ this will be detected by <code>targets</code>.</p>
 <pre class="output" tabindex="0"><code>▶ dispatched target data_file
 ● completed target data_file [0 seconds]
 ▶ dispatched target some_data
-● completed target some_data [0 seconds]
-▶ ended pipeline [0.065 seconds]</code></pre>
+● completed target some_data [0.001 seconds]
+▶ ended pipeline [0.094 seconds]</code></pre>
 </div>
 <p>This time we see that <code>targets</code> does successfully re-build
 <code>some_data</code> as expected.</p>
@@ -587,7 +587,7 @@ while tracking its contents?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -611,10 +611,10 @@ while tracking its contents?</p>
 <pre class="output" tabindex="0"><code>▶ dispatched target penguins_data_raw_file
 ● completed target penguins_data_raw_file [0.001 seconds]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.205 seconds]
+● completed target penguins_data_raw [0.231 seconds]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.011 seconds]
-▶ ended pipeline [0.285 seconds]</code></pre>
+● completed target penguins_data [0.012 seconds]
+▶ ended pipeline [0.329 seconds]</code></pre>
 </div>
 </div>
 </div>
@@ -703,8 +703,8 @@ to upper case then write it out again:</p>
 ▶ dispatched target hello_caps
 ● completed target hello_caps [0 seconds]
 ▶ dispatched target hello_caps_out
-● completed target hello_caps_out [0 seconds]
-▶ ended pipeline [0.066 seconds]</code></pre>
+● completed target hello_caps_out [0.001 seconds]
+▶ ended pipeline [0.093 seconds]</code></pre>
 </div>
 <p>Take a look at <code>hello_caps.txt</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
@@ -726,7 +726,7 @@ to upper case then write it out again:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>hello_caps_out</code> has
 changed (is “invalidated”), and re-runs the code to make it, thus
@@ -798,7 +798,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.6" class="external-link">sandpaper (0.16.6)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.4" class="external-link">varnish (1.0.4)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.7" class="external-link">sandpaper (0.16.7)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.4" class="external-link">varnish (1.0.4)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -820,8 +820,8 @@ any links that you are not going to use.
   "url": "https://joelnitta.github.io/targets-workshop/files.html",
   "identifier": "https://joelnitta.github.io/targets-workshop/files.html",
   "dateCreated": "2024-07-19",
-  "dateModified": "2024-07-10",
-  "datePublished": "2024-09-03"
+  "dateModified": "2024-09-10",
+  "datePublished": "2024-09-10"
 }
 
   </script><script>
