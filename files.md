@@ -57,7 +57,7 @@ tar_plan(
 ``` output
 ▶ dispatched target some_data
 ● completed target some_data [0.001 seconds]
-▶ ended pipeline [0.047 seconds]
+▶ ended pipeline [0.065 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -77,7 +77,7 @@ tar_plan(
 
 ``` output
 ✔ skipped target some_data
-✔ skipped pipeline [0.048 seconds]
+✔ skipped pipeline [0.066 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -100,8 +100,8 @@ tar_plan(
 ▶ dispatched target data_file
 ● completed target data_file [0 seconds]
 ▶ dispatched target some_data
-● completed target some_data [0 seconds]
-▶ ended pipeline [0.065 seconds]
+● completed target some_data [0.001 seconds]
+▶ ended pipeline [0.094 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -186,10 +186,10 @@ tar_plan(
 ▶ dispatched target penguins_data_raw_file
 ● completed target penguins_data_raw_file [0.001 seconds]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.205 seconds]
+● completed target penguins_data_raw [0.231 seconds]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.011 seconds]
-▶ ended pipeline [0.285 seconds]
+● completed target penguins_data [0.012 seconds]
+▶ ended pipeline [0.329 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -268,8 +268,8 @@ tar_plan(
 ▶ dispatched target hello_caps
 ● completed target hello_caps [0 seconds]
 ▶ dispatched target hello_caps_out
-● completed target hello_caps_out [0 seconds]
-▶ ended pipeline [0.066 seconds]
+● completed target hello_caps_out [0.001 seconds]
+▶ ended pipeline [0.093 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
