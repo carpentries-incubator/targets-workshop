@@ -71,7 +71,7 @@ tar_plan(
 
 ``` output
 ▶ dispatched target adelie_data
-● completed target adelie_data [0.019 seconds]
+● completed target adelie_data [0.018 seconds]
 ▶ ended pipeline [0.085 seconds]
 ```
 
@@ -100,8 +100,8 @@ tar_plan(
 
 ``` output
 ▶ dispatched target adelie_data
-● completed target adelie_data [0.018 seconds]
-▶ ended pipeline [0.084 seconds]
+● completed target adelie_data [0.019 seconds]
+▶ ended pipeline [0.086 seconds]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -128,7 +128,7 @@ tar_plan(
 ``` output
 ▶ dispatched target adelie_data
 ● completed target adelie_data [0.009 seconds]
-▶ ended pipeline [0.076 seconds]
+▶ ended pipeline [0.074 seconds]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
