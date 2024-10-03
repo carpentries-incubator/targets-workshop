@@ -23,3 +23,4 @@ install.packages(
     "visNetwork"
   )
 )
+```
