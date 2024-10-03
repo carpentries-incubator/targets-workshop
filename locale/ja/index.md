@@ -2,4 +2,4 @@
 site: sandpaper::sandpaper_site
 ---
 
-This is a lesson about how to use the [targets](https://docs.ropensci.org/targets/) R package for maintaining efficient data analysis workflows.
+これは、効率的なデータ分析ワークフローを維持するために [targets](https://docs.ropensci.org/targets/) R パッケージを使用する方法についてのレッスンです。

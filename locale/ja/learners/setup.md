@@ -1,14 +1,14 @@
 ---
-title: Setup
+title: セットアップ
 ---
 
-## Local setup
+## ローカルのセットアップ
 
-Follow these instructions to install the required software on your computer.
+これらの指示に従って、コンピュータに必要なソフトウェアをインストールしてください。
 
-- [Download and install the latest version of R](https://www.r-project.org/).
-- [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/#download). RStudio is an application (an integrated development environment or IDE) that facilitates the use of R and offers a number of nice additional features, including the [Quarto](https://quarto.org/) publishing system. You will need the free Desktop version for your computer.
-- Install the necessary R packages with the following command:
+- [最新バージョンの R をダウンロードしてインストール](https://www.r-project.org/)。
+- [RStudio をダウンロードしてインストール](https://www.rstudio.com/products/rstudio/download/#download)。RStudio は R の使用を容易にするアプリケーション（統合開発環境または IDE）であり、[Quarto](https://quarto.org/) 出版システムを含む多くの便利な追加機能を提供します。コンピュータ用の無料デスクトップ版が必要です。
+- 以下のコマンドを使用して必要な R パッケージをインストールしてください：
 
 ```r
 install.packages(
@@ -23,10 +23,3 @@ install.packages(
     "visNetwork"
   )
 )
-```
-
-## Alternative: In the cloud
-
-There is a [Posit Cloud](https://posit.cloud/) instance with RStudio and all necessary packages pre-installed available, so you don't need to install anything on your own computer. You may need to create an account (free).
-
-Click this link to open: <https://posit.cloud/content/6064275>
