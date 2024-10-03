@@ -1,100 +1,100 @@
 ---
-title: "Introduction"
+title: "はじめに"
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- Why should we care about reproducibility?
-- How can `targets` help us achieve reproducibility?
+- 再現性を重視すべき理由は何ですか？
+- `targets` はどのようにして再現性の達成を助けますか？
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain why reproducibility is important for science
-- Describe the features of `targets` that enhance reproducibility
+- 再現性が科学にとってなぜ重要なのかを説明する
+- 再現性を高める `targets` の機能について説明する
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: {.instructor}
 
-Episode summary: Introduce the idea of reproducibility and why / who would want to use `targets`
+エピソードの概要: 再現性の概念と `targets` を使用する理由や対象者について紹介する
 
 :::::::::::::::::::::::::::::::::::::
 
-## What is reproducibility?
+## 再現性とは何ですか？
 
-Reproducibility is the ability for others (including your future self) to reproduce your analysis.
+再現性とは、他の人（将来の自分自身を含む）があなたの分析を再現できる能力のことです。
 
-We can only have confidence in the results of scientific analyses if they can be reproduced.
+科学的な分析の結果に自信を持つためには、それらが再現可能でなければなりません。
 
-However, reproducibility is not a binary concept (not reproducible vs. reproducible); rather, there is a scale from **less** reproducible to **more** reproducible.
+しかし、再現性は二元的な概念（再現不可能 vs. 再現可能）ではなく、**再現性が低い**から**再現性が高い**までのスケールがあります。
 
-`targets` goes a long ways towards making your analyses **more reproducible**.
+`targets` は分析を **より再現性の高いもの** にするために大きく貢献します。
 
-Other practices you can use to further enhance reproducibility include controlling your computing environment with tools like Docker, conda, or renv, but we don't have time to cover those in this workshop.
+再現性をさらに高めるために使用できる他の方法としては、Docker、conda、renv などのツールを使用してコンピューティング環境を管理することがありますが、このワークショップではそれらを扱う時間がありません。
 
-## What is `targets`?
+## `targets` とは何ですか？
 
-`targets` is a workflow management package for the R programming language developed and maintained by Will Landau.
+`targets` は、Will Landau によって開発および維持されている R プログラミング言語向けのワークフローマネジメントパッケージです。
 
-The major features of `targets` include:
+`targets` の主な機能には以下が含まれます：
 
-- **Automation** of workflow
-- **Caching** of workflow steps
-- **Batch creation** of workflow steps
-- **Parallelization** at the level of the workflow
+- ワークフローの**自動化**
+- ワークフローのステップの**キャッシング**
+- ワークフローのステップの**バッチ作成**
+- ワークフローのレベルでの**並列化**
 
-This allows you to do the following:
+これにより、以下のことが可能になります：
 
-- return to a project after working on something else and immediately pick up where you left off without confusion or trying to remember what you were doing
-- change the workflow, then only re-run the parts that that are affected by the change
-- massively scale up the workflow without changing individual functions
+- 他の作業をした後にプロジェクトに戻り、混乱や何をしていたかを思い出すことなくすぐに作業を再開できる
+- ワークフローを変更した場合、変更の影響を受ける部分のみを再実行できる
+- 個々の関数を変更することなくワークフローを大規模に拡張できる
 
-... and of course, it will help others reproduce your analysis.
+... そしてもちろん、他の人があなたの分析を再現するのに役立ちます。
 
-## Who should use `targets`?
+## 誰が `targets` を使用すべきですか？
 
-`targets` is by no means the only workflow management software.
-There is a large number of similar tools, each with varying features and use-cases.
-For example, [snakemake](https://snakemake.readthedocs.io/en/stable/) is a popular workflow tool for python, and [`make`](https://www.gnu.org/software/make/) is a tool that has been around for a very long time for automating bash scripts.
-`targets` is designed to work specifically with R, so it makes the most sense to use it if you primarily use R, or intend to.
-If you mostly code with other tools, you may want to consider an alternative.
+`targets` はワークフローマネジメントソフトウェアの唯一のものではありません。
+類似のツールは数多く存在し、それぞれに異なる機能やユースケースがあります。
+例えば、[snakemake](https://snakemake.readthedocs.io/en/stable/) は Python 向けの人気のあるワークフローツールであり、[`make`](https://www.gnu.org/software/make/) は長い歴史を持つ Bash スクリプトの自動化ツールです。
+`targets` は特に R と連携するように設計されているため、主に R を使用する場合、または R を使用する予定がある場合に最も適しています。
+他のツールを主に使用する場合は、代替手段を検討することをお勧めします。
 
-The **goal** of this workshop is to **learn how to use `targets` to reproducible data analysis in R**.
+このワークショップの**目標**は、**R で再現可能なデータ分析を行うために `targets` の使い方を学ぶ**ことです。
 
-## Where to get more information
+## さらに情報を得るには
 
-`targets` is a sophisticated package and there is a lot more to learn that we can cover in this workshop.
+`targets` は高度なパッケージであり、このワークショップでカバーできる以上に学ぶことがたくさんあります。
 
-Here are some recommended resources for continuing on your `targets` journey:
+`targets` の学習を続けるためのおすすめリソースは以下の通りです：
 
-- [The `targets` R package user manual](https://books.ropensci.org/targets/) by the author of `targets`, Will Landau, should be considered required reading for anyone seriously interested in `targets`.
-- [The `targets` discussion board](https://github.com/ropensci/targets/discussions) is a great place for asking questions and getting help. Before you ask a question though, be sure to [read the policy on asking for help](https://books.ropensci.org/targets/help.html).
-- [The `targets` package webpage](https://docs.ropensci.org/targets/) includes documentation of all `targets` functions.
-- [The `tarchetypes` package webpage](https://docs.ropensci.org/tarchetypes/) includes documentation of all `tarchetypes` functions. You will almost certainly use `tarchetypes` along with `targets`, so it's good to consult both.
-- [Reproducible computation at scale in R with `targets`](https://github.com/wlandau/targets-tutorial) is a tutorial by Will Landau analyzing customer churn with Keras.
-- [Recorded talks](https://github.com/ropensci/targets#recorded-talks) and [example projects](https://github.com/ropensci/targets#example-projects) listed on the `targets` README.
+- `targets` の作者である Will Landau による [The `targets` R package user manual](https://books.ropensci.org/targets/) は、`targets` に真剣に興味がある人にとって必読とすべきです。
+- [The `targets` discussion board](https://github.com/ropensci/targets/discussions) は質問をしたり助けを得たりするのに最適な場所です。ただし、質問をする前に必ず [help のポリシーを読む](https://books.ropensci.org/targets/help.html) ことを確認してください。
+- [The `targets` package webpage](https://docs.ropensci.org/targets/) には、すべての `targets` 関数のドキュメントが含まれています。
+- [The `tarchetypes` package webpage](https://docs.ropensci.org/tarchetypes/) には、すべての `tarchetypes` 関数のドキュメントが含まれています。`tarchetypes` はほぼ確実に `targets` と一緒に使用するため、両方を参照することをお勧めします。
+- [Reproducible computation at scale in R with `targets`](https://github.com/wlandau/targets-tutorial) は、Keras を用いて顧客の離脱を分析する Will Landau によるチュートリアルです。
+- [Recorded talks](https://github.com/ropensci/targets#recorded-talks) および [example projects](https://github.com/ropensci/targets#example-projects) は、`targets` の README に記載されています。
 
-## About the example dataset
+## 例示データセットについて
 
-For this workshop, we will analyze an example dataset of measurements taken on adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago, Antarctica.
+このワークショップでは、南極のパルマー群島の島々で観察された成体の採餌アデリーペンギン、チンストラップペンギン、ジェンツーペンギンの測定データを分析します。
 
-The data are available from the `palmerpenguins` R package. You can get more information about the data by running `?palmerpenguins`.
+データは `palmerpenguins` R パッケージから入手可能です。データに関する詳細情報は `?palmerpenguins` を実行することで得られます。
 
-![The three species of penguins in the `palmerpenguins` dataset. Artwork by @allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
+![`palmerpenguins` データセットの3種のペンギン。アートワーク：@allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
 
-The goal of the analysis is to determine the relationship between bill length and depth by using linear models.
+分析の目標は、線形モデルを使用してくちばしの長さと深さの関係を明らかにすることです。
 
-We will gradually build up the analysis through this lesson, but you can see the final version at <https://github.com/joelnitta/penguins-targets>.
+このレッスンを通じて分析を段階的に構築しますが、最終版は <https://github.com/joelnitta/penguins-targets> で見ることができます。
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- We can only have confidence in the results of scientific analyses if they can be reproduced by others (including your future self)
-- `targets` helps achieve reproducibility by automating workflow
-- `targets` is designed for use with the R programming language
-- The example dataset for this workshop includes measurements taken on penguins in Antarctica
+- 科学的分析の結果に自信を持つためには、他の人（将来の自分自身を含む）がそれを再現できなければならない
+- `targets` はワークフローの自動化によって再現性の達成を助ける
+- `targets` は R プログラミング言語と連携するように設計されている
+- このワークショップの例示データセットには、南極のペンギンの測定データが含まれている
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
