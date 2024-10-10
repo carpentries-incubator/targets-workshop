@@ -11,13 +11,13 @@
 carpentry: 'incubator'
 
 # Overall title for pages.
-title: 'Introduction to targets'
+title: 'targets Rパッケージ入門'
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
 created: ~
 
 # Comma-separated list of keywords for the lesson
-keywords: 'reproducibility, data, targets, R'
+keywords: '再現可能なデータ解析, データ, targets, R'
 
 # Life cycle stage of the lesson
 # possible values: pre-alpha, alpha, beta, stable

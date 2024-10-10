@@ -1,26 +1,26 @@
 ---
-title: 'Best Practices for targets Project Organization'
+title: 'targetsプロジェクト組織のベストプラクティス'
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What are best practices for organizing `targets` projects?
-- How does the organization of a `targets` workflow differ from a script-based analysis?
+- `targets` プロジェクトを整理するためのベストプラクティスは何ですか？
+- `targets` のワークフローの組織はスクリプトベースの分析とどのように異なりますか？
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain how to organize `targets` projects for maximal reproducibility
-- Understand how to use functions in the context of `targets`
+- 最大限の再現性のために `targets` プロジェクトをどのように整理するかを説明する
+- `targets` の文脈で関数をどのように使用するかを理解する
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-Episode summary: Demonstrate best-practices for project organization
+Episode summary: プロジェクト組織のベストプラクティスを実演する
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -49,11 +49,13 @@ If you haven't done so yet, install `tarchetypes` with `install.packages("tarche
 
 :::::::::::::::::::::::::::::::::::::
 
-The purpose of the `tarchetypes` is to provide various shortcuts that make writing `targets` pipelines easier.
-We will introduce just one for now, `tar_plan()`. This is used in place of `list()` at the end of the `_targets.R` script.
-By using `tar_plan()`, instead of specifying targets with `tar_target()`, we can use a syntax like this: `target_name = target_command`.
+`tarchetypes` の目的は、`targets` パイプラインの記述を容易にするさまざまなショートカットを提供することです。
 
-Let's edit the penguins workflow to use the `tar_plan()` syntax:
+今回はそのうちの一つ、`tar_plan()` を紹介します。これは `_targets.R` スクリプトの最後にある `list()` の代わりに使用されます。
+
+`tar_plan()` を使用することで、`tar_target()` を使用してターゲットを指定する代わりに、`target_name = target_command` のような構文を使用できます。
+
+ペンギンのワークフローを `tar_plan()` 構文を使用するように編集しましょう：
 
 <!-- The chunk below intersperses plan_2b with clean_penguin_data() to avoid writing it manually -->
 ```{r}
@@ -62,26 +64,31 @@ Let's edit the penguins workflow to use the `tar_plan()` syntax:
 #| code = c(readLines("files/packages.R")[1:4], "\n", readLines("files/tar_functions/clean_penguin_data.R"), "\n", readLines("files/plans/plan_2b.R")[5:9])
 ```
 
-I think it is easier to read, do you?
+読みやすくなったと思いませんか？
 
-Notice that `tar_plan()` does not mean you have to write *all* targets this way; you can still use the `tar_target()` format within `tar_plan()`.
-That is because `=`, while short and easy to read, does not provide all of the customization that `targets` is capable of.
-This doesn't matter so much for now, but it will become important when you start to create more advanced `targets` workflows.
+`tar_plan()` を使用するからといって、すべてのターゲットをこの方法で書かなければならないわけではありません。`tar_plan()` 内で `tar_target()` フォーマットを使用することもできます。
 
-## Organizing files and folders
+これは、`=` が短く読みやすい一方で、`targets` が提供できるすべてのカスタマイズを提供しないためです。
 
-So far, we have been doing everything with a single `_targets.R` file.
-This is OK for a small workflow, but does not work very well when the workflow gets bigger.
-There are better ways to organize your code.
+今のところあまり重要ではありませんが、より高度な `targets` ワークフローを作成し始めると重要になります。
 
-First, let's create a directory called `R` to store R code *other than* `_targets.R` (remember, `_targets.R` must be placed in the overall project directory, not in a subdirectory).
-Create a new R file in `R/` called `functions.R`.
-This is where we will put our custom functions.
-Let's go ahead and put `clean_penguin_data()` in there now and save it.
+## ファイルとフォルダの整理
 
-Similarly, let's put the `library()` calls in their own script in `R/` called `packages.R` (this isn't the only way to do it though; see the ["Managing Packages" episode](https://joelnitta.github.io/targets-workshop/packages.html) for alternative approaches).
+これまで、すべてを単一の `_targets.R` ファイルで行ってきました。
 
-We will also need to modify our `_targets.R` script to call these scripts with `source`:
+これは小規模なワークフローには問題ありませんが、ワークフローが大きくなるとあまりうまく機能しません。
+
+コードを整理するためのより良い方法があります。
+
+まず、`_targets.R` 以外の R コードを保存するために `R` というディレクトリを作成しましょう（`_targets.R` はサブディレクトリではなく、プロジェクト全体のディレクトリに配置する必要があることを覚えておいてください）。
+
+`R/` 内に `functions.R` という新しい R ファイルを作成します。
+ここにカスタム関数を配置します。
+今すぐ `clean_penguin_data()` をそこに入れて保存しましょう。
+
+同様に、`library()` 呼び出しを `R/` 内の `packages.R` という独自のスクリプトに配置しましょう（ただし、これは唯一の方法ではありません。["パッケージの管理" エピソード](https://joelnitta.github.io/targets-workshop/packages.html) を参照してください）。
+
+また、`_targets.R` スクリプトをこれらのスクリプトを `source` で呼び出すように修正する必要があります：
 
 ```{r}
 #| label = "tar-plan-show-2",
@@ -89,36 +96,36 @@ We will also need to modify our `_targets.R` script to call these scripts with `
 #| code = readLines("files/plans/plan_2b.R")[2:9]
 ```
 
-Now `_targets.R` is much more streamlined: it is focused just on the workflow and immediately tells us what happens in each step.
+これで `_targets.R` はずっとスリムになりました：ワークフローに集中し、各ステップで何が起こるかをすぐに教えてくれます。
 
-Finally, let's make some directories for storing data and output---files that are not code.
-Create a new directory inside the targets cache called `user`: `_targets/user`.
-Within `user`, create two more directories, `data` and `results`.
-(If you use version control, you will probably want to ignore the `_targets` directory).
+最後に、データや出力など、コードではないファイルを保存するためのディレクトリを作成しましょう。
+ターゲットキャッシュ内に `user` という新しいディレクトリを作成します：`_targets/user`。
+`user` 内にさらに `data` と `results` の2つのディレクトリを作成します。
+（バージョン管理を使用している場合は、`_targets` ディレクトリを無視することをおそらく望むでしょう）。
 
-## A word about functions
+## 関数についての一言
 
-We mentioned custom functions earlier in the lesson, but this is an important topic that deserves further clarification.
-If you are used to analyzing data in R with a series of scripts instead of a single workflow like `targets`, you may not write many functions (using the `function()` function).
+このレッスンの前半でカスタム関数について触れましたが、これはさらに明確化が必要な重要なトピックです。
+`targets` のような単一のワークフローではなく、複数のスクリプトを使用して R でデータを分析することに慣れている場合、多くの関数（`function()` 関数を使用）を書かないかもしれません。
 
-This is a major difference from `targets`.
-It would be quite difficult to write an efficient `targets` pipeline without the use of custom functions, because each target you build has to be the output of a single command.
+これは `targets` との大きな違いです。
+カスタム関数を使用せずに効率的な `targets` パイプラインを書くのは非常に難しいでしょう。なぜなら、ビルドする各ターゲットが単一のコマンドの出力でなければならないからです。
 
-We don't have time in this curriculum to cover how to write functions in R, but the [Software Carpentry lesson](https://swcarpentry.github.io/r-novice-gapminder/10-functions) is recommended for reviewing this topic.
+このカリキュラムでは R での関数の書き方をカバーする時間がありませんが、このトピックを復習するためには [Software Carpentry のレッスン](https://swcarpentry.github.io/r-novice-gapminder/10-functions) をお勧めします。
 
-Another major difference is that **each target must have a unique name**.
-You may be used to writing code that looks like this:
+もう一つの大きな違いは、**各ターゲットが一意の名前を持たなければならない** ということです。
+以下のようなコードを書くことに慣れているかもしれません：
 
 ```{r}
 #| eval: FALSE
 #| label: example-script
 
-# Store a person's height in cm, then convert to inches
+# 人の身長をcmで保存し、インチに変換する
 height <- 160
 height <- height / 2.54
 ```
 
-You would get an error if you tried to run the equivalent targets pipeline:
+同等の `targets` パイプラインを実行しようとするとエラーが発生します：
 
 ```{r}
 #| eval: FALSE
@@ -142,19 +149,19 @@ tar_dir({
 })
 ```
 
-**A major part of working with `targets` pipelines is writing custom functions that are the right size.**
-They should not be so small that each is just a single line of code; this would make your pipeline difficult to understand and be too difficult to maintain.
-On the other hand, they should not be so big that each has large numbers of inputs and is thus overly sensitive to changes.
+**`targets` パイプラインで作業する大部分は、適切なサイズのカスタム関数を書くことです。**
+それらは単一行のコードだけになるほど小さくてはいけません；そうするとパイプラインが理解しにくくなり、維持管理が難しくなります。
+一方で、変更に過度に敏感になるほど大きくしてはいけません。
 
-Striking this balance is more of art than science, and only comes with practice. I find a good rule of thumb is no more than three inputs per target.
+このバランスを取ることは科学というよりもアートであり、練習を通じてしか習得できません。私が見つけた良い経験則は、ターゲットごとに3つを超える入力を持たないことです。
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Put code in the `R/` folder
-- Put functions in `R/functions.R`
-- Specify packages in `R/packages.R`
-- Put other miscellaneous files in `_targets/user`
-- Writing functions is a key skill for `targets` pipelines
+- コードを `R/` フォルダに配置する
+- 関数を `R/functions.R` に配置する
+- パッケージを `R/packages.R` に指定する
+- その他の雑多なファイルを `_targets/user` に配置する
+- 関数を書くことは `targets` パイプラインの重要なスキルである
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 

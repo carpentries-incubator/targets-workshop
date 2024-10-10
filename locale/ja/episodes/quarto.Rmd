@@ -1,24 +1,24 @@
 ---
-title: 'Reproducible Reports with Quarto'
+title: 'Quartoを用いた再現可能なレポート'
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How can we create reproducible reports?
+- 再現可能なレポートをどのように作成できますか？
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Be able to generate a report using `targets`
+- `targets` を使用してレポートを生成できるようになる
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-Episode summary: Show how to write reports with Quarto
+エピソードの概要: Quartoを使用したレポートの書き方を紹介
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -36,58 +36,57 @@ source("files/lesson_functions.R")
 options(width = 140)
 ```
 
-## Copy-paste vs. dynamic documents
+## コピー＆ペースト vs. 動的ドキュメント
 
-Typically, you will want to communicate the results of a data analysis to a broader audience.
+通常、データ分析の結果をより広いオーディエンスに伝えたいと考えるでしょう。
 
-You may have done this before by copying and pasting statistics, plots, and other results into a text document or presentation.
-This may be fine if you only ever do the analysis once.
-But that is rarely the case---it is much more likely that you will tweak parts of the analysis or add new data and re-run your pipeline.
-With the copy-paste method, you'd have to remember what results changed and manually make sure everything is up-to-date.
-This is a perilous exercise!
+以前は、統計、プロット、その他の結果をテキストドキュメントやプレゼンテーションにコピー＆ペーストすることでこれを行っていたかもしれません。
+これは、分析を一度だけ行う場合には問題ありません。
+しかし、それはほとんどの場合ではありません。分析の一部を調整したり、新しいデータを追加してパイプラインを再実行する可能性がはるかに高いです。
+コピー＆ペーストの方法では、どの結果が変更されたかを覚えておき、手動ですべてが最新であることを確認しなければなりません。
+これは危険な作業です！
 
-Fortunately, `targets` provides functions for keeping a document in sync with pipeline results, so you can avoid such pitfalls.
-The main tool we will use to generate documents is **Quarto**.
-Quarto can be used separately from `targets` (and is a large topic on its own), but it also happens to be an excellent way to dynamically generate reports with `targets`.
+幸いにも、`targets` はドキュメントをパイプラインの結果と同期させるための関数を提供しており、このような落とし穴を避けることができます。
+ドキュメントを生成するために使用する主なツールは **Quarto** です。
+Quarto は `targets` とは別に使用することもできます（これは独自に大きなトピックですが）、`targets` と組み合わせて動的にレポートを生成する優れた方法でもあります。
 
-Quarto allows you to insert the results of R code directly into your documents so that there is no danger of copy-and-paste mistakes.
-Furthermore, it can generate output from the same underlying script in multiple formats including PDF, HTML, and Microsoft Word.
+Quarto を使用すると、Rコードの結果をドキュメントに直接挿入できるため、コピー＆ペーストのミスの危険がありません。
+さらに、PDF、HTML、Microsoft Word など、同じ基礎となるスクリプトから複数の形式で出力を生成することができます。
 
 ::::::::::::::::::::::::::::::::::::: {.prereq}
 
-## Installing Quarto
+## Quartoのインストール
 
-As of v2022.07.1, [RStudio comes with Quarto](https://docs.posit.co/ide/user/ide/guide/documents/quarto-project.html), so you don't need to install it separately. If you can't run Quarto from RStudio, we recommend installing the latest version of RStudio.
+v2022.07.1以降、[RStudioにはQuartoが含まれています](https://docs.posit.co/ide/user/ide/guide/documents/quarto-project.html)ので、別途インストールする必要はありません。RStudioからQuartoを実行できない場合は、最新バージョンのRStudioをインストールすることをお勧めします。
 
 :::::::::::::::::::::::::::::::::::::
 
-## About Quarto files
+## Quartoファイルについて
 
-`.qmd` or `.Qmd` is the extension for Quarto files, and stands for "Quarto markdown".
-Quarto files invert the normal way of writing code and comments: in a typical R script, all text is assumed to be R code, unless you preface it with a `#` to show that it is a comment.
-In Quarto, all text is assumed to be prose, and you use special notation to indicate which lines are R code to be evaluated.
-Once the code is evaluated, the results get inserted into a final, rendered document, which could be one of various formats.
+`.qmd` または `.Qmd` はQuartoファイルの拡張子で、「Quarto markdown」の略です。
+Quartoファイルは、コードとコメントの通常の書き方を逆転させています。典型的なRスクリプトでは、すべてのテキストはコメントでない限りRコードと見なされますが、Quartoではすべてのテキストが散文と見なされ、評価されるRコードの行を示すために特別な表記を使用します。
+コードが評価されると、その結果が最終的なレンダリングされたドキュメントに挿入され、さまざまな形式の一つになる可能性があります。
 
 ![Quarto workflow](https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/fig/03-qmd-workflow.png)
 
-We don't have the time to go into the details of Quarto during this lesson, but recommend the ["Introduction to Reproducible Publications with RStudio" incubator (in-development) lesson](https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/) for more on this topic.
+このレッスンではQuartoの詳細に踏み込む時間がありませんが、このトピックについては ["RStudioによる再現可能な出版物のイントロダクション" インキュベーター（開発中）のレッスン](https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/) をお勧めします。
 
-## Recommended workflow
+## 推奨ワークフロー
 
-Dynamic documents like Quarto (or Rmarkdown, the predecessor to Quarto) can actually be used to manage data analysis pipelines.
-But that is not recommended because it doesn't scale well and lacks the sophisticated dependency tracking offered by `targets`.
+Quartoのような動的ドキュメント（またはQuartoの前身であるRmarkdown）は、実際にはデータ分析パイプラインの管理に使用できます。
+しかし、これはスケーラビリティが低く、`targets` が提供する高度な依存関係追跡が欠けているため、推奨されません。
 
-Our suggested approach is to conduct the vast majority of data analysis (in other words, the "heavy lifting") in the `targets` pipeline, then use the Quarto document to **summarize** and **plot** the results.
+私たちの推奨アプローチは、データ分析の大部分（つまり「重い作業」）を `targets` パイプラインで実行し、Quartoドキュメントを使用して結果を **要約** し、 **プロット** することです。
 
-## Report on bill size in penguins
+## ペンギンのくちばしの大きさに関するレポート
 
-Continuing our penguin bill size analysis, let's write a report evaluating each model.
+ペンギンのくちばしの大きさの分析を続けて、各モデルを評価するレポートを書きましょう。
 
-To save time, the report is already available at <https://github.com/joelnitta/penguins-targets>.
+時間を節約するために、レポートはすでに <https://github.com/joelnitta/penguins-targets> にあります。
 
-Copy the [raw code from here](https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd) and save it as a new file `penguin_report.qmd` in your project folder (you may also be able to right click in your browser and select "Save As").
+[こちらから生のコードをコピー](https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd)して、新しいファイル `penguin_report.qmd` としてプロジェクトフォルダに保存してください（ブラウザで右クリックして「名前を付けて保存」を選択することもできます）。
 
-Then, add one more target to the pipeline using the `tar_quarto()` function like this:
+次に、`tar_quarto()` 関数を使用してパイプラインにもう一つターゲットを追加します。以下のようにします：
 
 ```{r}
 #| label = "example-penguins-show-1",
@@ -117,18 +116,18 @@ tar_dir({
 })
 ```
 
-The function to generate the report is `tar_quarto()`, from the `tarchetypes` package.
+レポートを生成する関数は `tar_quarto()` で、`tarchetypes` パッケージから提供されています。
 
-As you can see, the "heavy" analysis of running the models is done in the workflow, then there is a single call to render the report at the end with `tar_quarto()`.
+ご覧のとおり、モデルの実行という「重い」分析はワークフロー内で行われ、その後 `tar_quarto()` を使用してレポートをレンダリングする一つの呼び出しが最後にあります。
 
-## How does `targets` know when to render the report?
+## `targets` はいつレポートをレンダリングするかをどのように知るのか？
 
-It is not immediately apparent just from this how `targets` knows to generate the report **at the end of the workflow** (recall that build order is not determined by the order of how targets are written in the workflow, but rather by their dependencies).
-`penguin_report` does not appear to depend on any of the other targets, since they do not show up in the `tar_quarto()` call.
+このままでは、`targets` がワークフローの **最後** にレポートを生成することをどのように知っているのかがすぐには明らかではありません（ビルド順序はターゲットがワークフロー内で書かれた順序ではなく、それらの依存関係によって決まることを思い出してください）。
+`penguin_report` は他のターゲットに依存していないように見えます。なぜなら、それらは `tar_quarto()` の呼び出しに表示されていないからです。
 
-How does this work?
+これはどのように機能するのでしょうか？
 
-The answer lies **inside** the `penguin_report.qmd` file. Let's look at the start of the file:
+答えは `penguin_report.qmd` ファイルの **内部** にあります。ファイルの開始部分を見てみましょう：
 
 ``````{markdown}
 ---
@@ -149,48 +148,48 @@ targets::tar_load(penguin_models_summary)
 library(tidyverse)
 ```
 
-This is an example analysis of penguins on the Palmer Archipelago in Antarctica.
+これは南極のパルマー諸島におけるペンギンの分析の一例です。
 
 ``````
 
-The lines in between `---` and `---` at the very beginning are called the "YAML header", and contain directions about how to render the document.
+最初の `---` と `---` の間の行は「YAMLヘッダー」と呼ばれ、ドキュメントをレンダリングする方法に関する指示が含まれています。
 
-The R code to be executed is specified by the lines between `` ```{r}  `` and `` ``` ``. This is called a "code chunk", since it is a portion of code interspersed within prose text.
+実行されるRコードは `` ```{r} `` と `` ``` `` の間の行で指定されます。これは「コードチャンク」と呼ばれ、散文テキストに挿入されたコードの一部です。
 
-Take a closer look at the R code chunk. Notice the two calls to `targets::tar_load()`. Do you remember what that function does? It loads the targets built during the workflow.
+Rコードチャンクを詳しく見てみましょう。 `targets::tar_load()` の2つの呼び出しに注目してください。この関数が何をするか覚えていますか？これはワークフロー中にビルドされたターゲットをロードします。
 
-Now things should make a bit more sense: `targets` knows that the report depends on the targets built during the workflow, `penguin_models_augmented` and `penguin_models_summary`, **because they are loaded in the report with `tar_load()`.**
+これで少し理解が深まったはずです。`targets` はレポートがワークフロー中にビルドされたターゲット、`penguin_models_augmented` および `penguin_models_summary` に依存していることを **レポート内で `tar_load()` を使用してロードしているため** 知っています。
 
-## Generating dynamic content
+## 動的コンテンツの生成
 
-The call to `tar_load()` at the start of `penguin_report.qmd` is really the key to generating an up-to-date report---once those are loaded from the workflow, we know that they are in sync with the data, and can use them to produce "polished" text and plots.
+`penguin_report.qmd` の開始部分での `tar_load()` の呼び出しは、最新のレポートを生成するための鍵です。これらがワークフローからロードされると、データと同期していることがわかり、それらを使用して「洗練された」テキストやプロットを生成することができます。
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
 
-## Challenge: Spot the dynamic contents
+## チャレンジ: 動的コンテンツを見つけよう
 
-Read through `penguin_report.qmd` and try to find instances where the targets built during the workflow (`penguin_models_augmented` and `penguin_models_summary`) are used to dynamically produce text and plots.
+`penguin_report.qmd` を読み、ワークフロー中にビルドされたターゲット (`penguin_models_augmented` および `penguin_models_summary`) がテキストやプロットを動的に生成するために使用されている箇所を見つけてみてください。
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
-- In the code chunk labeled `results-stats`, statistics from the models like *P*-value and adjusted *R* squared are extracted, then inserted into the text with in-line code like `` `r knitr::inline_expr("mod_stats$combined$r.squared")` ``.
+- `results-stats` とラベル付けされたコードチャンクでは、*P*-値や調整済み *R* 二乗値などのモデルからの統計が抽出され、`` `r knitr::inline_expr("mod_stats$combined$r.squared")` `` のようなインラインコードを使用してテキストに挿入されています。
 
-- There are two figures, one for the combined model and one for the separate model (code chunks labeled `fig-combined-plot` and `fig-separate-plot`, respectively). These are built using the points predicted from the model in `penguin_models_augmented`.
+- 2つの図があります。一つは結合モデル用、もう一つは別々のモデル用です（それぞれ `fig-combined-plot` と `fig-separate-plot` とラベル付けされたコードチャンク）。これらは `penguin_models_augmented` のモデルから予測されたポイントを使用して構築されています。
 
 ::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::
 
-You should also interactively run the code in `penguin_report.qmd` to better understand what is going on, starting with `tar_load()`. In fact, that is how this report was written: the code was run in an interactive session, and saved to the report as it was gradually tweaked to obtain the desired results.
+`penguin_report.qmd` のコードを対話的に実行して、`tar_load()` から何が起こっているのかをよりよく理解するべきです。実際、このレポートはそのように書かれました。コードが対話セッションで実行され、望ましい結果を得るために徐々に調整されながらレポートに保存されました。
 
-The best way to learn this approach to generating reports is to **try it yourself**.
+このレポート生成アプローチを学ぶ最良の方法は、**自分で試すこと** です。
 
-So your final Challenge is to construct a `targets` workflow using your own data and generate a report. Good luck!
+したがって、最終的なチャレンジは、自分のデータを使用して `targets` ワークフローを構築し、レポートを生成することです。頑張ってください！
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- `tarchetypes::tar_quarto()` is used to render Quarto documents
-- You should load targets within the Quarto document using `tar_load()` and `tar_read()`
-- It is recommended to do heavy computations in the main targets workflow, and lighter formatting and plot generation in the Quarto document
+- `tarchetypes::tar_quarto()` は Quarto ドキュメントをレンダリングするために使用されます
+- Quarto ドキュメント内で `tar_load()` および `tar_read()` を使用してターゲットをロードする必要があります
+- 重い計算は主な `targets` ワークフローで行い、軽いフォーマットやプロットの生成は Quarto ドキュメントで行うことが推奨されます
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

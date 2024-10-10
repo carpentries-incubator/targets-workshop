@@ -1,24 +1,24 @@
 ---
-title: 'Parallel Processing'
+title: '並列処理'
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How can we build targets in parallel?
+- `targets` のターゲットを並列でビルドするにはどうすればよいですか？
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Be able to build targets in parallel
+- ターゲットを並列でビルドできるようにする
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-Episode summary: Show how to use parallel processing
+エピソードの概要: 並列処理の使用方法を示す
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -36,27 +36,27 @@ source("files/lesson_functions.R")
 options(width = 140)
 ```
 
-Once a pipeline starts to include many targets, you may want to think about parallel processing.
-This takes advantage of multiple processors in your computer to build multiple targets at the same time.
+パイプラインに多くのターゲットが含まれ始めたら、並列処理を考えるかもしれません。
+これはコンピュータの複数のプロセッサを活用して、同時に複数のターゲットをビルドします。
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
-## When to use parallel processing
+## 並列処理を使用するタイミング
 
-Parallel processing should only be used if your workflow has independent tasks---if your workflow only consists of a linear sequence of targets, then there is nothing to parallelize.
-Most workflows that use branching can benefit from parallelism.
+並列処理は、ワークフローに独立したタスクがある場合にのみ使用すべきです---ワークフローがターゲットの線形シーケンスのみで構成されている場合、並列化するものはありません。
+ブランチングを使用するほとんどのワークフローは並列処理の恩恵を受けることができます。
 
 :::::::::::::::::::::::::::::::::::::
 
-`targets` includes support for high-performance computing, cloud computing, and various parallel backends.
-Here, we assume you are running this analysis on a laptop and so will use a relatively simple backend.
-If you are interested in high-performance computing, [see the `targets` manual](https://books.ropensci.org/targets/hpc.html).
+`targets` は高性能コンピューティング、クラウドコンピューティング、およびさまざまな並列バックエンドをサポートしています。
+ここでは、この分析をラップトップで実行していると仮定し、比較的シンプルなバックエンドを使用します。
+高性能コンピューティングに興味がある場合は、[`targets` マニュアル](https://books.ropensci.org/targets/hpc.html) を参照してください。
 
-### Set up workflow
+### ワークフローのセットアップ
 
-To enable parallel processing with `crew` you only need to load the `crew` package, then tell `targets` to use it using `tar_option_set`.
-Specifically, the following lines enable crew, and tells it to use 2 parallel workers.
-You can increase this number on more powerful machines:
+`crew` を使用して並列処理を有効にするには、`crew` パッケージをロードし、`tar_option_set` を使用して `targets` にそれを使用するように指示するだけです。
+具体的には、以下の行が `crew` を有効にし、2つの並列ワーカーを使用するように指示します。
+より強力なマシンでは、この数を増やすことができます：
 
 ```r
 library(crew)
@@ -65,8 +65,8 @@ tar_option_set(
 )
 ```
 
-Make these changes to the penguins analysis.
-It should now look like this:
+ペンギンの分析にこれらの変更を加えましょう。
+現在は次のようになっているはずです：
 
 ```{r}
 #| label = "example-model-show-setup",
@@ -74,12 +74,12 @@ It should now look like this:
 #| code = readLines("files/plans/plan_9.R")[3:42]
 ```
 
-There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
+このデモの目的のためにまだ1つだけ変更する必要があります：今、分析を並列で実行しても、関数が非常に高速であるため、計算時間の違いに気付かないでしょう。
 
-So let's make "slow" versions of `glance_with_mod_name()` and `augment_with_mod_name()` using the `Sys.sleep()` function, which just tells the computer to wait some number of seconds.
-This will simulate a long-running computation and enable us to see the difference between running sequentially and in parallel.
+そこで、`Sys.sleep()` 関数を使用して、`glance_with_mod_name()` と `augment_with_mod_name()` の「遅い」バージョンを作成しましょう。これはコンピュータに数秒待つよう指示します。
+これにより、長時間実行される計算をシミュレートし、順次実行と並列実行の違いを確認できます。
 
-Add these functions to `functions.R` (you can copy-paste the original ones, then modify them):
+これらの関数を `functions.R` に追加します（元のものをコピー＆ペーストしてから修正しても構いません）：
 
 ```{r}
 #| label: slow-funcs
@@ -89,7 +89,7 @@ Add these functions to `functions.R` (you can copy-paste the original ones, then
 #|    - files/tar_functions/augment_with_mod_name_slow.R
 ```
 
-Then, change the plan to use the "slow" version of the functions:
+次に、プランを「遅い」バージョンの関数を使用するように変更します：
 
 ```{r}
 #| label = "example-model-show-9",
@@ -97,7 +97,7 @@ Then, change the plan to use the "slow" version of the functions:
 #| code = readLines("files/plans/plan_10.R")[3:42]
 ```
 
-Finally, run the pipeline with `tar_make()` as normal.
+最後に、通常どおり `tar_make()` を使用してパイプラインを実行します。
 
 ```{r}
 #| label: example-model-hide-9
@@ -139,16 +139,16 @@ cat("✔ skip target penguins_data_raw_file
 • end pipeline [15.153 seconds]")
 ```
 
-Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
+各個別ターゲットをビルドするのに約4秒かかるにもかかわらず、ワークフロー全体を実行するのにかかる総時間は、個々のターゲットの合計時間よりも短いことに注目してください！ これはプロセスが並列で実行されており、**時間を節約している** ことの証明です。
 
-The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
+`targets` の独自で強力な点は、**並列で実行するためにカスタム関数を変更する必要がなかった** ことです。ワークフローを*調整*しただけです。これは、ワークフローを順次にローカルで実行するか、高性能なコンテキストで並列に実行するようにリファクタリング（修正）するのが比較的簡単であることを意味します。
 
-Now that we have demonstrated how this works, you can change your analysis plan back to the original versions of the functions you wrote.
+これがどのように機能するかを実演したので、分析プランを作成した関数の元のバージョンに戻すことができます。
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Dynamic branching creates multiple targets with a single command
-- You usually need to write custom functions so that the output of the branches includes necessary metadata 
-- Parallel computing works at the level of the workflow, not the function
+- 動的ブランチングは単一のコマンドで複数のターゲットを作成します
+- ブランチの出力に必要なメタデータを含めるために、通常カスタム関数を書く必要があります
+- 並列コンピューティングは関数ではなく、ワークフローのレベルで機能します
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

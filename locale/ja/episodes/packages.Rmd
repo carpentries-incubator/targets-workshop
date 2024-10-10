@@ -1,24 +1,24 @@
 ---
-title: 'Managing Packages'
+title: 'パッケージの管理'
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How should I manage packages for my `targets` project?
+- `targets` プロジェクトのパッケージをどのように管理すべきですか？
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Demonstrate best practices for managing packages
+- パッケージ管理のベストプラクティスを実演する
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-Episode summary: Show how to load packages and maintain package versions
+エピソードの概要: パッケージの読み込み方法とパッケージバージョンの維持方法を示す
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -32,37 +32,37 @@ library(tarchetypes)
 source("files/lesson_functions.R")
 ```
 
-## Loading packages
+## パッケージの読み込み
 
-Almost every R analysis relies on packages for functions beyond those available in base R.
+ほとんどすべての R 分析は、base R で利用可能な機能を超える関数を提供するパッケージに依存しています。
 
-There are three main ways to load packages in `targets` workflows.
+`targets` ワークフローでパッケージを読み込む主な方法は3つあります。
 
-### Method 1: `library()` {#method-1}
+### 方法1: `library()` {#method-1}
 
-This is the method you are almost certainly more familiar with, and is the method we have been using by default so far.
+これはおそらく最も馴染みのある方法であり、これまでデフォルトで使用してきた方法です。
 
-Like any other R script, include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the <!-- FIXME ADD LINK -->recommended best practice for project organization), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
+他の R スクリプトと同様に、`_targets.R` スクリプトの上部近くに `library()` 呼び出しを含めます。あるいは（<!-- FIXME ADD LINK -->プロジェクト組織の推奨ベストプラクティスとして）、すべての `library()` 呼び出しを別のスクリプトに配置することもできます---通常これは `packages.R` と呼ばれ、プロジェクトの `R/` ディレクトリに保存されます。
 
-The potential downside to this approach is that if you have a long list of packages to load, certain functions like `tar_visnetwork()`, `tar_outdated()`, etc., may take an unnecessarily long time to run because they have to load all the packages, even though they don't necessarily use them.
+このアプローチの潜在的な欠点は、読み込むパッケージのリストが長い場合、`tar_visnetwork()`、`tar_outdated()` などの特定の関数がすべてのパッケージを読み込まなければならないため、必ずしもそれらを使用しなくても不必要に長い時間がかかる可能性があることです。
 
-### Method 2: `tar_option_set()` {#method-2}
+### 方法2: `tar_option_set()` {#method-2}
 
-In this method, use the `tar_option_set()` function in `_targets.R` to specify the packages to load when running the workflow.
+この方法では、ワークフローを実行するときに読み込むパッケージを指定するために、`_targets.R` 内で `tar_option_set()` 関数を使用します。
 
-This will be demonstrated using the pre-cleaned dataset from the `palmerpenguins` package. Let's say we want to filter it down to just data for the Adelie penguin.
+これは `palmerpenguins` パッケージの事前にクリーンアップされたデータセットを使用して実演されます。例えば、アデリーペンギンのデータのみにフィルタリングしたいとしましょう。
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
-## Save your progress
+## 進捗の保存
 
-You can only have one active `_targets.R` file at a time in a given project.
+1つのプロジェクト内でアクティブな `_targets.R` ファイルは1つだけです。
 
-We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins bill analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
+新しい `_targets.R` ファイルを作成しようとしていますが、これまで作業してきたもの（ペンギンのくちばし分析）の進捗を失いたくないでしょう。そのファイルを一時的に `_targets_old.R` のような名前に変更することで、以下の新しい例の `_targets.R` ファイルを上書きしないようにできます。再び作業を再開するときに名前を戻してください。
 
 :::::::::::::::::::::::::::::::::::::
 
-This is what using the `tar_option_set()` method looks like:
+これが `tar_option_set()` メソッドを使用したときの例です：
 
 ```{r}
 #| eval: FALSE
@@ -86,13 +86,13 @@ tar_dir({
 })
 ```
 
-This method gets around the slow-downs that may sometimes be experienced with Method 1.
+この方法は、方法1で時々経験するかもしれない遅延を回避します。
 
-### Method 3: `packages` argument of `tar_target()` {#method-3}
+### 方法3: `tar_target()` の `packages` 引数 {#method-3}
 
-The main function for defining targets, `tar_target()` includes a `packages` argument that will load the specified packages **only for that target**.
+ターゲットを定義するための主要な関数である `tar_target()` には、指定したターゲットのために**のみ**指定されたパッケージを読み込む `packages` 引数があります。
 
-Here is how we could use this method, modified from the same example as above.
+これは、上記と同じ例から修正したこの方法の使用例です。
 
 ```{r}
 #| eval: FALSE
@@ -118,15 +118,15 @@ tar_dir({
 })
 ```
 
-This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
-But, it can be tedious to remember and specify packages needed on a per-target basis.
+これは、すべてのパッケージを読み込むよりもメモリ効率が良い場合があります。なぜなら、ワークフローの通常の実行中にすべてのターゲットが常に作成されるわけではないからです。
+しかし、ターゲットごとに必要なパッケージを覚えて指定するのは手間がかかることがあります。
 
-### One more option
+### もう一つのオプション
 
-Another alternative that does not actually involve loading packages is to specify the package associated with each function by using the `::` notation, for example, `dplyr::mutate()`.
-This means you can **avoid loading packages altogether**.
+実際にパッケージを読み込むことなく、`::` 記法を使用して各関数に関連付けられたパッケージを指定する方法があります。例えば、`dplyr::mutate()` です。
+これにより、**パッケージの読み込みを完全に避けることができます**。
 
-Here is how to write the plan using this method:
+この方法を使用してプランを書く方法は以下の通りです：
 
 ```{r}
 #| eval: FALSE
@@ -148,42 +148,42 @@ tar_dir({
 })
 ```
 
-The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
-The downside is that it is rather verbose because you need to type the package name every time you use one of its functions.
+このアプローチの利点は、すべての関数の起源が明確になることです。例えば、GitHub でソースを見たりすることで、すぐに関数がどこから来ているかを知ることができます。
+欠点は、関数を使用するたびにパッケージ名を入力する必要があるため、やや冗長になることです。
 
-### Which is the right way?
+### どの方法が正しいのでしょうか？
 
-**There is no "right" answer about how to load packages**---it is a matter of what works best for your particular situation.
+**パッケージの読み込み方法に「正解」はありません**---それは特定の状況に最も適した方法の問題です。
 
-Often a reasonable approach is to load your most commonly used packages with `library()` (such as `tidyverse`) in `packages.R`, then use `::` notation for less frequently used functions whose origins you may otherwise forget.
+多くの場合、最も頻繁に使用するパッケージ（例えば `tidyverse`）を `packages.R` 内で `library()` を使って読み込み、起源を忘れがちなあまり頻繁に使用しない関数には `::` 記法を使用するのが合理的なアプローチです。
 
-## Maintaining package versions
+## パッケージバージョンの維持
 
-### Tracking of custom functions vs. functions from packages
+### カスタム関数とパッケージの関数の追跡
 
-A critical thing to understand about `targets` is that **it only tracks custom functions and targets**, not functions provided by packages.
+`targets` について理解しておくべき重要な点は、**カスタム関数とターゲットのみを追跡し、パッケージによって提供される関数は追跡しない** ということです。
 
-However, the content of packages can change, and packages typically get updated on a regular basis. **The output of your workflow may depend not only on the packages you use, but their versions**.
+しかし、パッケージの内容は変更されることがあり、パッケージは通常定期的に更新されます。**ワークフローの出力は、使用するパッケージだけでなく、そのバージョンにも依存する可能性があります**。
 
-Therefore, it is a good idea to track package versions.
+したがって、パッケージバージョンを追跡することは良い考えです。
 
-### About `renv`
+### `renv` について
 
-Fortunately, you don't have to do this by hand: there are R packages available that can help automate this process. We recommend [renv](https://rstudio.github.io/renv/index.html), but there are others available as well (e.g., [groundhog](https://groundhogr.com/)). We don't have the time to cover detailed usage of `renv` in this lesson. To get started with `renv`, see the ["Introduction to renv" vignette](https://rstudio.github.io/renv/articles/renv.html).
+幸いなことに、これを手動で行う必要はありません。このプロセスを自動化するのに役立つ R パッケージが利用可能です。私たちは [renv](https://rstudio.github.io/renv/index.html) をお勧めしますが、他にも [groundhog](https://groundhogr.com/) などがあります。このレッスンでは `renv` の詳細な使用方法をカバーする時間がありません。`renv` を始めるには、["Introduction to renv" ビネット](https://rstudio.github.io/renv/articles/renv.html) を参照してください。
 
-You can generally use `renv` the same way you would for a `targets` project as any other R project. However, there is one exception: if you load packages using `tar_option_set()` or the `packages` argument of `tar_target()` ([Method 2](#method-2) or [Method 3](#method-3), respectively), `renv` will not detect them (because it expects packages to be loaded with `library()`, `require()`, etc.).
+一般的に、`renv` は他の R プロジェクトと同様に `targets` プロジェクトでも使用できます。しかし、1つの例外があります：`tar_option_set()` や `tar_target()` の `packages` 引数（それぞれ[方法2](#method-2) または[方法3](#method-3)）を使用してパッケージを読み込む場合、`renv` はそれらを検出しません（なぜなら、`renv` は `library()`、`require()` などでパッケージが読み込まれることを期待しているからです）。
 
-The solution in this case is to use the [`tar_renv()` function](https://docs.ropensci.org/targets/reference/tar_renv.html). This will write a separate file with `library()` calls for each package used in the workflow so that `renv` will properly detect them.
+この場合の解決策は、[`tar_renv()` 関数](https://docs.ropensci.org/targets/reference/tar_renv.html) を使用することです。これにより、ワークフローで使用される各パッケージの `library()` 呼び出しを含む別のファイルが書き出され、`renv` がそれらを正しく検出できるようになります。
 
-### Selective tracking of functions from packages
+### パッケージの関数の選択的追跡
 
-Because `targets` doesn't track functions from packages, if you update a package and the contents of one of its functions changes, `targets` **will not re-build the target that was generated by that function**.
+`targets` はパッケージの関数を追跡しないため、パッケージを更新してその関数の内容が変更された場合、`targets` **その関数によって生成されたターゲットを再構築しません**。
 
-However, it is possible to change this behavior on a per-package basis.
-This is best done only for a small number of packages, since adding too many would add too much computational overhead to `targets` when it has to calculate dependencies.
-For example, you may want to do this if you are using your own custom package that you update frequently.
+しかし、この動作をパッケージごとに変更することは可能です。
+これは、依存関係を計算する際に `targets` に過度な計算負荷をかけないため、少数のパッケージに対してのみ行うのが最適です。
+例えば、頻繁に更新する独自のカスタムパッケージを使用している場合にこれを行いたいかもしれません。
 
-The way to do so is by using `tar_option_set()`, specifying the **same** package name in both `packages` and `imports`. Here is a modified version of the earlier code that demonstrates this for `dplyr` and `palmerpenguins`.
+これを行う方法は、`tar_option_set()` を使用し、`packages` と `imports` の両方に**同じ**パッケージ名を指定することです。以下は、`dplyr` と `palmerpenguins` に対してこれを示す前のコードを修正したバージョンです。
 
 ```{r}
 #| eval: FALSE
@@ -201,31 +201,31 @@ tar_plan(
 )
 ```
 
-If we were to re-install either `dplyr` or `palmerpenguins` and one of the functions used from those in the pipeline changes (for example, `filter()`), any target depending on that function will be rebuilt.
+もし `dplyr` または `palmerpenguins` を再インストールし、パイプラインで使用されるそれらの関数の一つ（例えば `filter()`）が変更された場合、その関数に依存するターゲットは再構築されます。
 
-## Resolving namespace conflicts
+## 名前空間の競合の解決
 
-There is one final best-practice to mention related to packages: resolving namespace conflicts.
+パッケージに関連して言及すべき最後のベストプラクティスがあります：名前空間の競合の解決です。
 
-"Namespace" refers to the idea that a certain set of unique names are only unique **within a particular context**.
-For example, all the function names of a package have to be unique, but only within that package.
-Function names could be duplicated across packages.
+「名前空間」とは、一連の一意の名前が特定の**コンテキスト内でのみ一意である**という考え方を指します。
+例えば、パッケージのすべての関数名は一意でなければなりませんが、そのパッケージ内でのみです。
+関数名は複数のパッケージで重複する可能性があります。
 
-As you may imagine, this can cause confusion.
-For example, the `filter()` function appears in both the `stats` package and the `dplyr` package, but does completely different things in each.
-This is a **namespace conflict**: how do we know which `filter()` we are talking about?
+ご想像の通り、これは混乱を招く可能性があります。
+例えば、`filter()` 関数は `stats` パッケージと `dplyr` パッケージの両方に存在しますが、それぞれで全く異なる動作をします。
+これは**名前空間の競合**です：私たちはどの `filter()` を指しているのか、どうやって知るのでしょうか？
 
-The `conflicted` package can help prevent such confusion by stopping you if you try to use an ambiguous function, and help you be explicit about which package to use.
-We don't have time to cover the details here, but you can read more about how to use `conflicted` at its [website](https://conflicted.r-lib.org/).
+`conflicted` パッケージは、曖昧な関数を使用しようとした場合に停止させ、どのパッケージを使用するかを明確にするのを助けることで、このような混乱を防ぐのに役立ちます。
+ここでは詳細をカバーする時間がありませんが、`conflicted` の使用方法については [公式サイト](https://conflicted.r-lib.org/) を参照してください。
 
-When you use `conflicted`, you will typically run a series of commands to explicitly resolve namespace conflicts, like `conflicts_prefer(dplyr::filter)` (this would tell R that we want to use `filter` from `dplyr`, not `stats`).
+`conflicted` を使用するとき、通常は `conflicts_prefer(dplyr::filter)` のように名前空間の競合を明示的に解決する一連のコマンドを実行します（これは、`dplyr` の `filter` を使用したいことを R に伝えます、`stats` の `filter` ではありません）。
 
-To use this in a `targets` workflow, you should put all calls to `conflicts_prefer` in a special file called `.Rprofile` that is located in the main folder of your project. This will ensure that the conflicts are always resolved for each target.
+これを `targets` ワークフローで使用するには、`.Rprofile` と呼ばれる特別なファイルに `conflicts_prefer` のすべての呼び出しを配置する必要があります。このファイルはプロジェクトのメインフォルダにあります。これにより、各ターゲットに対して常に競合が解決されることが保証されます。
 
-The recommended way to edit your `.Rprofile` is to use `usethis::edit_r_profile("project")`.
-This will open `.Rprofile` in your editor, where you can edit it and save it.
+`.Rprofile` を編集する推奨方法は、`usethis::edit_r_profile("project")` を使用することです。
+これにより、エディタで `.Rprofile` が開かれ、そこで編集して保存できます。
 
-For example, your `.Rprofile` could include this:
+例えば、あなたの `.Rprofile` は以下のようになります：
 
 ```{r}
 #| eval: false
@@ -233,14 +233,14 @@ library(conflicted)
 conflicts_prefer(dplyr::filter)
 ```
 
-Note that you don't need to run `source()` to run the code in `.Rprofile`.
-It will always get run at the start of each R session automatically.
+`.Rprofile` のコードを実行するために `source()` を実行する必要はありません。
+それは各 R セッションの開始時に自動的に実行されます。
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- There are multiple ways to load packages with `targets`
-- `targets` only tracks user-defined functions, not packages
-- Use `renv` to manage package versions
-- Use the `conflicted` package to manage namespace conflicts
+- `targets` でパッケージをロードする方法は複数あります
+- `targets` はユーザー定義の関数のみを追跡し、パッケージは追跡しません
+- `renv` を使用してパッケージバージョンを管理する
+- `conflicted` パッケージを使用して名前空間の競合を管理する
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

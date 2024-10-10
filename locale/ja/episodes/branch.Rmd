@@ -1,24 +1,24 @@
 ---
-title: 'Branching'
+title: 'ブランチング'
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How can we specify many targets without typing everything out?
+- すべてを入力せずに多くのターゲットをどのように指定できますか？
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Be able to specify targets using branching
+- ブランチングを使用してターゲットを指定できるようにする
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: instructor
 
-Episode summary: Show how to use branching
+エピソードの概要: ブランチングの使用方法を示す
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -36,27 +36,27 @@ source("files/lesson_functions.R")
 options(width = 140)
 ```
 
-## Why branching?
+## なぜブランチングなのか？
 
-One of the major strengths of `targets` is the ability to define many targets from a single line of code ("branching").
-This not only saves you typing, it also **reduces the risk of errors** since there is less chance of making a typo.
+`targets` の大きな強みの一つは、**ブランチング**と呼ばれる、単一のコード行から多くのターゲットを定義できる能力です。
+これは入力を省くだけでなく、タイプミスの可能性が減るため、**エラーのリスクも低減**します。
 
-## Types of branching
+## ブランチングの種類
 
-There are two types of branching, **dynamic branching** and **static branching**.
-"Branching" refers to the idea that you can provide a single specification for how to make targets (the "pattern"), and `targets` generates multiple targets from it ("branches").
-"Dynamic" means that the branches that result from the pattern do not have to be defined ahead of time---they are a dynamic result of the code.
+ブランチングには、**動的ブランチング**と**静的ブランチング**の二種類があります。
+「ブランチング」とは、ターゲットを作成する方法（「パターン」）を単一に指定し、`targets` がそれから複数のターゲット（「ブランチ」）を生成するという考え方を指します。
+「動的」とは、パターンから生成されるブランチが事前に定義されている必要がなく、コードの結果として動的に生成されることを意味します。
 
-In this workshop, we will only cover dynamic branching since it is generally easier to write (static branching requires use of [meta-programming](https://books.ropensci.org/targets/static.html#metaprogramming), an advanced topic). For more information about each and when you might want to use one or the other (or some combination of the two), [see the `targets` package manual](https://books.ropensci.org/targets/dynamic.html).
+このワークショップでは、**動的ブランチングのみ**を扱います。静的ブランチングは[メタプログラミング](https://books.ropensci.org/targets/static.html#metaprogramming)の使用を必要とするため、これは高度なトピックです。どちらをいつ使用するか（または両方の組み合わせ）についての詳細は、[`targets` パッケージマニュアル](https://books.ropensci.org/targets/dynamic.html)を参照してください。
 
-## Example without branching
+## ブランチングなしの例
 
-To see how this works, let's continue our analysis of the `palmerpenguins` dataset.
+これがどのように機能するかを理解するために、`palmerpenguins` データセットの分析を続けましょう。
 
-**Our hypothesis is that bill depth decreases with bill length.**
-We will test this hypothesis with a linear model.
+**私たちの仮説は、くちばしの深さがくちばしの長さとともに減少するということです。**
+この仮説を線形モデルで検証します。
 
-For example, this is a model of bill depth dependent on bill length:
+例えば、これはくちばしの長さに依存するくちばしの深さのモデルです：
 
 ```{r}
 #| label: example-lm
@@ -64,7 +64,7 @@ For example, this is a model of bill depth dependent on bill length:
 lm(bill_depth_mm ~ bill_length_mm, data = penguins_data)
 ```
 
-We can add this to our pipeline. We will call it the `combined_model` because it combines all the species together without distinction:
+これをパイプラインに追加できます。すべての種を区別せずに結合しているため、`combined_model` と呼びます：
 
 ```{r}
 #| label = "example-lm-pipeline-show",
@@ -84,7 +84,7 @@ tar_make()
 popd()
 ```
 
-Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
+モデルを見てみましょう。`broom` パッケージの `glance()` 関数を使用します。これは base R の `summary()` とは異なり、出力をティブル（データフレームの tidyverse 相当）として返します。後で見るように、これは下流の分析に非常に便利です。
 
 ```{r}
 #| label: example-lm-pipeline-inspect-show
@@ -97,15 +97,14 @@ glance(combined_model)
 popd()
 ```
 
-Notice the small *P*-value.
-This seems to indicate that the model is highly significant.
+小さな *P*-値に注目してください。
+これはモデルが非常に有意であることを示しているようです。
 
-But wait a moment... is this really an appropriate model? Recall that there are three species of penguins in the dataset. It is possible that the relationship between bill depth and length **varies by species**.
+しかし、ちょっと待ってください... これは本当に適切なモデルでしょうか？ データセットには3種類のペンギンがいることを思い出してください。くちばしの深さと長さの関係が**種によって異なる**可能性があります。
 
-We should probably test some alternative models.
-These could include models that add a parameter for species, or add an interaction effect between species and bill length.
+おそらく、種に対するパラメータを追加するモデルや、種とくちばしの長さの相互作用効果を追加するモデルなど、いくつかの代替モデルをテストする必要があります。
 
-Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching** (make sure to add `library(broom)` to `packages.R`):
+これでワークフローがより複雑になっています。これは**ブランチングなし**でのそのような分析のワークフローの例です（`packages.R` に `library(broom)` を追加することを忘れないでください）：
 
 ```{r}
 #| label = "example-model-show-1",
@@ -126,7 +125,7 @@ tar_make()
 popd()
 ```
 
-Let's look at the summary of one of the models:
+モデルの一つのサマリーを見てみましょう：
 
 ```{r}
 #| label: example-model-show-2
@@ -137,15 +136,15 @@ tar_read(species_summary)
 popd()
 ```
 
-So this way of writing the pipeline works, but is repetitive: we have to call `glance()` each time we want to obtain summary statistics for each model.
-Furthermore, each summary target (`combined_summary`, etc.) is explicitly named and typed out manually.
-It would be fairly easy to make a typo and end up with the wrong model being summarized.
+この方法でパイプラインを書くと機能しますが、繰り返しが多くなります。各モデルのサマリー統計量を取得するたびに `glance()` を呼び出さなければなりません。
+さらに、各サマリータゲット（`combined_summary` など）は明示的に名前が付けられ、手動で入力されています。
+タイプミスをして間違ったモデルがサマリーされるのはかなり簡単です。
 
-## Example with branching
+## ブランチングを使用した例
 
-### First attempt
+### 最初の試み
 
-Let's see how to write the same plan using **dynamic branching**:
+**動的ブランチング**を使用して同じプランを書く方法を見てみましょう：
 
 ```{r}
 #| label = "example-model-show-3",
@@ -153,9 +152,9 @@ Let's see how to write the same plan using **dynamic branching**:
 #| code = readLines("files/plans/plan_6.R")[2:29]
 ```
 
-What is going on here?
+ここで何が起こっているのでしょうか？
 
-First, let's look at the messages provided by `tar_make()`.
+まず、`tar_make()` が提供するメッセージを見てみましょう。
 
 ```{r}
 #| label: example-model-hide-3
@@ -171,12 +170,12 @@ example_branch_name <- tar_branch_names(model_summaries, 1)
 popd()
 ```
 
-There is a series of smaller targets (branches) that are each named like `r example_branch_name`, then one overall `model_summaries` target.
-That is the result of specifying targets using branching: each of the smaller targets are the "branches" that comprise the overall target.
-Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
-`targets` builds each branch one at a time, then combines them into the overall target.
+一連の小さなターゲット（ブランチ）があり、それぞれが `r example_branch_name` のように名前付けされ、その後に全体の `model_summaries` ターゲットがあります。
+これはブランチングを使用してターゲットを指定した結果です：小さなターゲットそれぞれが全体のターゲットを構成する「ブランチ」です。
+`targets` は、事前にどれだけのブランチが存在するか、またそれらが何を表しているかを知らないため、数字と文字の一連（「ハッシュ」）を使用して各ブランチに名前を付けます。
+`targets` は各ブランチを一つずつビルドし、それらを全体のターゲットに結合します。
 
-Next, let's look in more detail about how the workflow is set up, starting with how we defined the models:
+次に、ワークフローがどのように設定されているか、モデルの定義から詳しく見てみましょう：
 
 ```{r}
 #| label = "model-def",
@@ -184,11 +183,11 @@ Next, let's look in more detail about how the workflow is set up, starting with 
 #| eval = FALSE
 ```
 
-Unlike the non-branching version, we defined the models **in a list** (instead of one target per model).
-This is because dynamic branching is similar to the `base::apply()` or [`purrrr::map()`](https://purrr.tidyverse.org/reference/map.html) method of looping: it applies a function to each element of a list.
-So we need to prepare the input for looping as a list.
+ブランチングなしのバージョンとは異なり、モデルを**リスト内**で定義しました（モデルごとに一つのターゲットではなく）。
+これは動的ブランチングが `base::apply()` や [`purrrr::map()`](https://purrr.tidyverse.org/reference/map.html) のループ方法に似ているためです：リストの各要素に関数を適用します。
+したがって、ループの入力としてリストを準備する必要があります。
 
-Next, take a look at the command to build the target `model_summaries`.
+次に、ターゲット `model_summaries` をビルドするコマンドを見てみましょう。
 
 ```{r}
 #| label = "model-summaries",
@@ -196,14 +195,14 @@ Next, take a look at the command to build the target `model_summaries`.
 #| eval = FALSE
 ```
 
-As before, the first argument is the name of the target to build, and the second is the command to build it.
+以前と同様に、最初の引数はビルドするターゲットの名前で、二つ目の引数はそれをビルドするコマンドです。
 
-Here, we apply the `glance()` function to each element of `models` (the `[[1]]` is necessary because when the function gets applied, each element is actually a nested list, and we need to remove one layer of nesting).
+ここでは、`glance()` 関数を `models` の各要素に適用しています（`[[1]]` が必要なのは、関数が適用されるとき、各要素が実際にはネストされたリストであり、ネストを一層取り除く必要があるためです）。
 
-Finally, there is an argument we haven't seen before, `pattern`, which indicates that this target should be built using dynamic branching.
-`map` means to apply the command to each element of the input list (`models`) sequentially.
+最後に、これまで見たことのない引数 `pattern` があります。これは、このターゲットが動的ブランチングを使用してビルドされるべきことを示します。
+`map` は、入力リスト（`models`）の各要素に対して関数を順次適用することを意味します。
 
-Now that we understand how the branching workflow is constructed, let's inspect the output:
+ブランチングワークフローの構築方法を理解したので、出力を検査してみましょう：
 
 ```{r}
 #| label: example-model-show-4
@@ -219,22 +218,22 @@ tar_read(model_summaries)
 popd()
 ```
 
-The model summary statistics are all included in a single dataframe.
+モデルのサマリー統計量がすべて一つのデータフレームに含まれています。
 
-But there's one problem: **we can't tell which row came from which model!** It would be unwise to assume that they are in the same order as the list of models.
+しかし、一つ問題があります：**どの行がどのモデルから来たのか分かりません！** モデルのリストと同じ順序であると仮定するのは賢明ではありません。
 
-This is due to the way dynamic branching works: by default, there is no information about the provenance of each target preserved in the output.
+これは動的ブランチングの動作方法によるものです：デフォルトでは、各ターゲットの由来に関する情報が出力に保持されません。
 
-How can we fix this?
+これをどう修正すれば良いでしょうか？
 
-### Second attempt
+### 第二の試み
 
-The key to obtaining useful output from branching pipelines is to include the necessary information in the output of each individual branch.
-Here, we want to know the kind of model that corresponds to each row of the model summaries.
-To do that, we need to write a **custom function**.
-You will need to write custom functions frequently when using `targets`, so it's good to get used to it!
+ブランチングパイプラインから有用な出力を得るための鍵は、各ブランチの出力に必要な情報を含めることです。
+ここでは、モデルサマリーの各行に対応するモデルの種類を知りたいと考えています。
+これを行うために、**カスタム関数**を書く必要があります。
+`targets` を使用する際にはカスタム関数を頻繁に書く必要があるため、慣れておくと良いでしょう！
 
-Here is the function. Save this in `R/functions.R`:
+以下がその関数です。これを `R/functions.R` に保存してください：
 
 ```{r}
 #| label: example-model-show-5
@@ -242,7 +241,7 @@ Here is the function. Save this in `R/functions.R`:
 #| file: files/tar_functions/glance_with_mod_name.R
 ```
 
-Our new pipeline looks almost the same as before, but this time we use the custom function instead of `glance()`.
+新しいパイプラインは以前とほぼ同じですが、今回は `glance()` の代わりにカスタム関数を使用しています。
 
 ```{r}
 #| label = "example-model-show-6",
@@ -259,7 +258,7 @@ tar_make()
 popd()
 ```
 
-And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (you may need to scroll to the right to see it).
+今回は、`model_summaries` をロードすると、各行がどのモデルに対応しているかを知ることができます（右にスクロールする必要があるかもしれません）。
 
 ```{r}
 #| label: example-model-7
@@ -270,8 +269,8 @@ tar_read(model_summaries)
 popd()
 ```
 
-Next we will add one more target, a prediction of bill depth based on each model. These will be needed for plotting the models in the report.
-Such a prediction can be obtained with the `augment()` function of the `broom` package.
+次に、モデルに基づくくちばしの深さの予測を追加します。これはレポートでモデルをプロットする際に必要になります。
+この予測は `broom` パッケージの `augment()` 関数を使用して取得できます。
 
 ```{r}
 #| label: example-augment
@@ -285,13 +284,13 @@ popd()
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
 
-## Challenge: Add model predictions to the workflow
+## チャレンジ: ワークフローにモデル予測を追加する
 
-Can you add the model predictions using `augment()`? You will need to define a custom function just like we did for `glance()`.
+`augment()` を使用してモデル予測を追加できますか？ `glance()` と同様にカスタム関数を定義する必要があります。
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
-Define the new function as `augment_with_mod_name()`. It is the same as `glance_with_mod_name()`, but use `augment()` instead of `glance()`:
+新しい関数を `augment_with_mod_name()` として定義します。これは `glance_with_mod_name()` と同じですが、`glance()` の代わりに `augment()` を使用します：
 
 ```{r}
 #| label: example-model-augment-func
@@ -299,7 +298,7 @@ Define the new function as `augment_with_mod_name()`. It is the same as `glance_
 #| file: files/tar_functions/augment_with_mod_name.R
 ```
 
-Add the step to the workflow:
+ワークフローにステップを追加します：
 
 ```{r}
 #| label = "example-model-augment-show",
@@ -313,31 +312,31 @@ Add the step to the workflow:
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
-## Best practices for branching
+## ブランチングのベストプラクティス
 
-Dynamic branching is designed to work well with **dataframes** (tibbles).
+動的ブランチングは**データフレーム**（ティブル）と相性が良いように設計されています。
 
-So if possible, write your custom functions to accept dataframes as input and return them as output, and always include any necessary metadata as a column or columns.
+可能であれば、カスタム関数をデータフレームを入力として受け取り、データフレームを出力として返すように書き、必要なメタデータを列として常に含めるようにしてください。
 
 :::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
 
-## Challenge: What other kinds of patterns are there?
+## チャレンジ: 他にどんな種類のパターンがありますか？
 
-So far, we have only used a single function in conjunction with the `pattern` argument, `map()`, which applies the function to each element of its input in sequence.
+これまで、`pattern` 引数と組み合わせて `map()` を使用し、入力の各要素に対して関数を順次適用する単一の関数のみを使用しました。
 
-Can you think of any other ways you might want to apply a branching pattern?
+ブランチングパターンを適用する他の方法を考えてみてください。
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
-Some other ways of applying branching patterns include:
+ブランチングパターンを適用する他の方法には以下のようなものがあります：
 
-- crossing: one branch per combination of elements (`cross()` function)
-- slicing: one branch for each of a manually selected set of elements (`slice()` function)
-- sampling: one branch for each of a randomly selected set of elements (`sample()` function)
+- crossing: 要素の組み合わせごとに一つのブランチを作成する（`cross()` 関数）
+- slicing: 手動で選択した要素ごとに一つのブランチを作成する（`slice()` 関数）
+- sampling: ランダムに選択した要素ごとに一つのブランチを作成する（`sample()` 関数）
 
-You can [find out more about different branching patterns in the `targets` manual](https://books.ropensci.org/targets/dynamic.html#patterns).
+ブランチングパターンの詳細については [`targets` マニュアル](https://books.ropensci.org/targets/dynamic.html#patterns) を参照してください。
 
 ::::::::::::::::::::::::::::::::::
 
@@ -345,7 +344,8 @@ You can [find out more about different branching patterns in the `targets` manua
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Dynamic branching creates multiple targets with a single command
-- You usually need to write custom functions so that the output of the branches includes necessary metadata 
+- 動的ブランチングは単一のコマンドで複数のターゲットを作成します
+
+- ブランチの出力に必要なメタデータを含めるために、通常カスタム関数を書く必要があります 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

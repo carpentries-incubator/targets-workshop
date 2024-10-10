@@ -1,27 +1,27 @@
 ---
-title: 'The Workflow Lifecycle'
+title: 'ワークフローのライフサイクル'
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What happens if we re-run a workflow?
-- How does `targets` know what steps to re-run?
-- How can we inspect the state of the workflow?
+- ワークフローを再実行するとどうなりますか？
+- `targets` はどのようにして再実行すべきステップを認識しますか？
+- ワークフローの状態をどのように検査できますか？
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain how `targets` helps increase efficiency
-- Be able to inspect a workflow to see what parts are outdated
+- `targets` が効率性を向上させる方法を説明する
+- ワークフローの古くなった部分を確認する方法を習得する
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: {.instructor}
 
-Episode summary: Demonstrate typical cycle of running `targets`: make, inspect, adjust, make...
+エピソードの概要: `targets` の典型的なサイクルである make、inspect、adjust、make を実演する
 
 :::::::::::::::::::::::::::::::::::::
 
@@ -35,11 +35,11 @@ library(visNetwork)
 source("files/lesson_functions.R")
 ```
 
-## Re-running the workflow
+## ワークフローの再実行
 
-One of the features of `targets` is that it maximizes efficiency by only running the parts of the workflow that need to be run.
+`targets` の特徴の一つは、実行が必要なワークフローの部分のみを実行することで効率性を最大化することです。
 
-This is easiest to understand by trying it yourself. Let's try running the workflow again:
+これは実際に試してみると理解しやすいです。ワークフローをもう一度実行してみましょう：
 
 ```{r}
 #| label: targets-run
@@ -52,20 +52,20 @@ tar_make()
 popd()
 ```
 
-Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
+最初にパイプラインを実行したとき、`targets` がビルドされている各ターゲットのリストを出力したことを覚えていますか？
 
-This time, it tells us it is skipping those targets; they have already been built, so there's no need to run that code again.
+今回は、それらのターゲットをスキップしていると教えてくれます。すでにビルドされているため、同じコードを再度実行する必要がないからです。
 
-Remember, the fastest code is the code you don't have to run!
+覚えておいてください、最速のコードは実行しなくて済むコードです！
 
-## Re-running the workflow after modification
+## 変更後のワークフローの再実行
 
-What happens when we change one part of the workflow then run it again?
+ワークフローの一部を変更してから再度実行するとどうなりますか？
 
-Say that we decide the species names should be shorter.
-Right now they include the common name and the scientific name, but we really only need the first part of the common name to distinguish them.
+例えば、種名を短くすることに決めたとしましょう。
+現在は一般名と学名が含まれていますが、区別するために一般名の最初の部分のみが必要です。
 
-Edit `_targets.R` so that the `clean_penguin_data()` function looks like this:
+`_targets.R` を編集して、`clean_penguin_data()` 関数を以下のようにします：
 
 ```{r}
 #| label: new-func
@@ -73,7 +73,7 @@ Edit `_targets.R` so that the `clean_penguin_data()` function looks like this:
 #| file: files/tar_functions/clean_penguin_data.R
 ```
 
-Then run it again.
+そして、再度実行します。
 
 ```{r}
 #| label: targets-run-2
@@ -87,55 +87,55 @@ tar_make()
 popd()
 ```
 
-What happened?
+何が起こったでしょうか？
 
-This time, it skipped `penguins_csv_file` and `penguins_data_raw` and only ran `penguins_data`.
+今回は、`penguins_csv_file` と `penguins_data_raw` をスキップし、`penguins_data` のみを実行しました。
 
-Of course, since our example workflow is so short we don't even notice the amount of time saved.
-But imagine using this in a series of computationally intensive analysis steps.
-The ability to automatically skip steps results in a massive increase in efficiency.
+もちろん、私たちの例示ワークフローは非常に短いため、節約された時間を感じ取ることはほとんどありません。
+しかし、計算集約的な一連の分析ステップでこれを使用することを想像してみてください。
+ステップを自動的にスキップする能力は、効率性を大幅に向上させます。
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-## Challenge 1: Inspect the output
+## チャレンジ 1: 出力を検査する
 
-How can you inspect the contents of `penguins_data`?
+`penguins_data` の内容をどのように検査できますか？
 
 :::::::::::::::::::::::::::::::::: solution
 
-With `tar_read(penguins_data)` or by running `tar_load(penguins_data)` followed by `penguins_data`.
+`tar_read(penguins_data)` を使用するか、`tar_load(penguins_data)` を実行した後に `penguins_data` を実行します。
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::::
 
-## Under the hood
+## 内部動作
 
-How does `targets` keep track of which targets are up-to-date vs. outdated?
+`targets` は、どのターゲットが最新であり、どれが古くなっているかをどのように追跡していますか？
 
-For each target in the workflow (items in the list at the end of the `_targets.R` file) and any custom functions used in the workflow, `targets` calculates a **hash value**, or unique combination of letters and digits that represents an object in the computer's memory.
-You can think of the hash value (or "hash" for short) as **a unique fingerprint** for a target or function.
+ワークフロー内の各ターゲット（`_targets.R` ファイルの最後のリスト内の項目）およびワークフローで使用されるカスタム関数ごとに、`targets` は**ハッシュ値**、つまりコンピュータのメモリ内のオブジェクトを表す一意の文字と数字の組み合わせを計算します。
+ハッシュ値（略して「ハッシュ」）をターゲットや関数の**一意の指紋**と考えることができます。
 
-The first time your run `tar_make()`, `targets` calculates the hashes for each target and function as it runs the code and stores them in the targets cache (the `_targets` folder).
-Then, for each subsequent call of `tar_make()`, it calculates the hashes again and compares them to the stored values.
-It detects which have changed, and this is how it knows which targets are out of date.
+最初に `tar_make()` を実行すると、`targets` はコードを実行しながら各ターゲットと関数のハッシュを計算し、それらを targets キャッシュ（`_targets` フォルダ）に保存します。
+その後、`tar_make()` を呼び出すたびに、再度ハッシュを計算し、保存された値と比較します。
+どれが変更されたかを検出し、これがどのターゲットが古くなっているかを知る方法です。
 
 :::::::::::::::::::::::::::::::::::::::: callout
 
-## Where the hashes live
+## ハッシュが存在する場所
 
-If you are curious about what the hashes look like, you can see them in the file `_targets/meta/meta`, but **do not edit this file by hand**---that would ruin your workflow!
+ハッシュがどのように見えるか気になる場合は、ファイル `_targets/meta/meta` に見ることができますが、**このファイルを手動で編集しないでください**---ワークフローが壊れてしまいます！
 
 ::::::::::::::::::::::::::::::::::::::::
 
-This information is used in combination with the dependency relationships (in other words, how each target depends on the others) to re-run the workflow in the most efficient way possible: code is only run for targets that need to be re-built, and others are skipped.
+この情報は、依存関係の関係（つまり、各ターゲットが他のターゲットにどのように依存しているか）と組み合わせて使用され、ワークフローを可能な限り効率的に再実行します：再構築が必要なターゲットに対してのみコードが実行され、他のターゲットはスキップされます。
 
-## Visualizing the workflow
+## ワークフローの可視化
 
-Typically, you will be making edits to various places in your code, adding new targets, and running the workflow periodically.
-It is good to be able to visualize the state of the workflow.
+通常、コードのさまざまな場所を編集し、新しいターゲットを追加し、定期的にワークフローを実行することになります。
+ワークフローの状態を可視化できることは良いことです。
 
-This can be done with `tar_visnetwork()`
+これは `tar_visnetwork()` を使用して行うことができます。
 
 ```{r}
 #| label: targets-run-hide-3
@@ -150,36 +150,36 @@ tar_visnetwork()
 popd()
 ```
 
-![](fig/lifecycle-visnetwork.png){alt="Visualization of the targets worklow, showing 'penguins_data' connected by lines to 'penguins_data_raw', 'penguins_csv_file' and 'clean_penguin_data'"}
+![](fig/lifecycle-visnetwork.png){alt="ワークフローの可視化、'penguins_data' が 'penguins_data_raw', 'penguins_csv_file' および 'clean_penguin_data' に接続されている様子"}
 
-You should see the network show up in the plot area of RStudio.
+ネットワークが RStudio のプロット領域に表示されるはずです。
 
-It is an HTML widget, so you can zoom in and out (this isn't important for the current example since it is so small, but is useful for larger, "real-life" workflows).
+これは HTML ウィジェットなので、ズームインやズームアウトが可能です（現在の例では非常に小さいため重要ではありませんが、より大きな「実際の」ワークフローでは役立ちます）。
 
-Here, we see that all of the targets are dark green, indicating that they are up-to-date and would be skipped if we were to run the workflow again.
+ここでは、すべてのターゲットが濃い緑色で表示されており、次にワークフローを実行したときにスキップされることを示しています。
 
 ::::::::::::::::::::::::::::::::::::: prereq 
 
-## Installing visNetwork
+## visNetwork のインストール
 
-You may encounter an error message `The package "visNetwork" is required.`
+`The package "visNetwork" is required.` というエラーメッセージが表示される場合があります。
 
-In this case, install it first with `install.packages("visNetwork")`.
+この場合、まず `install.packages("visNetwork")` を実行してインストールしてください。
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-## Challenge 2: What else can the visualization tell us?
+## チャレンジ 2: 可視化は他に何を教えてくれますか？
 
-Modify the workflow in `_targets.R`, then run `tar_visnetwork()` again **without** running `tar_make()`.
-What color indicates that a target is out of date?
+`_targets.R` でワークフローを変更し、`tar_make()` を実行せずに再度 `tar_visnetwork()` を実行してください。
+ターゲットが古くなっていることを示す色は何ですか？
 
 :::::::::::::::::::::::::::::::::: solution
 
-Light blue indicates the target is out of date.
+薄い青色がターゲットが古くなっていることを示します。
 
-Depending on how you modified the code, any or all of the targets may now be light blue.
+コードをどのように変更したかによりますが、ターゲットのいくつかまたはすべてが薄い青色になる場合があります。
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -187,29 +187,29 @@ Depending on how you modified the code, any or all of the targets may now be lig
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## 'Outdated' does not always mean 'will be run'
+## '古くなっている' は必ずしも '実行される' ことを意味しない
 
-Just because a target appears as light blue (is "outdated") in the network visualization, this does not guarantee that it will be re-built during the next run. Rather, it means that **at least of one the targets that it depends on has changed**.
+ターゲットがネットワークの可視化で薄い青色（「古くなっている」）として表示されているからといって、次回の実行時に必ず再構築されるわけではありません。これは、**依存しているターゲットの少なくとも一つが変更されたことを意味します**。
 
-For example, if the workflow state looked like this:
+例えば、ワークフローの状態が以下のようになっているとします：
 
 `A -> B* -> C -> D`
 
-where the `*` indicates that `B` has changed compared to the last time the workflow was run, the network visualization will show `B`, `C`, and `D` all as light blue.
+ここで `*` は `B` が最後にワークフローを実行したときと比較して変更されたことを示します。ネットワークの可視化では `B`, `C`, `D` がすべて薄い青色で表示されます。
 
-But if re-running the workflow results in the exact same value for `C` as before, `D` will not be re-run (will be "skipped").
+しかし、ワークフローを再実行して `C` が以前と全く同じ値になる場合、`D` は再実行されず（「スキップ」されます）。
 
-Most of the time, a single change will cascade to the rest of the downstream targets and cause them to be re-built, but this is not always the case. `targets` has no way of knowing ahead of time what the actual output will be, so it cannot provide a network visualization that completely predicts the future!
+ほとんどの場合、単一の変更が下流のターゲット全体に影響を及ぼし、再構築を引き起こしますが、必ずしもそうではありません。`targets` は事前に実際の出力がどうなるかを知る方法がないため、将来を完全に予測するネットワーク可視化を提供することはできません！
 
 :::::::::::::::::::::::::::::::::::::::::::::::
 
-## Other ways to check workflow status
+## ワークフローの状態を確認する他の方法
 
-The visualization is very useful, but sometimes you may be working on a server that doesn't provide graphical output, or you just want a quick textual summary of the workflow.
-There are some other useful functions that can do that.
+可視化は非常に便利ですが、時にはグラフィカルな出力を提供しないサーバー上で作業している場合や、ワークフローの迅速なテキストサマリーを望む場合があります。
+それを行うための他の有用な関数があります。
 
-`tar_outdated()` lists only the outdated targets; that is, targets that will be built during the next run, or depend on such a target.
-If everything is up to date, it will return a zero-length character vector (`character(0)`).
+`tar_outdated()` は古くなったターゲットのみをリストします。つまり、次回の実行時にビルドされるターゲット、またはそのようなターゲットに依存するターゲットです。
+すべてが最新の場合、ゼロ長の文字ベクトル (`character(0)`) を返します。
 
 ```{r}
 #| label: targets-outdated
@@ -219,8 +219,8 @@ tar_outdated()
 popd()
 ```
 
-`tar_progress()` shows the current status of the workflow as a dataframe.
-You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
+`tar_progress()` はワークフローの現在の状態をデータフレームとして表示します。
+ワークフローの有用なサマリーを取得するためにデータフレームをさらに操作することが役立つ場合があります。例えば、`dplyr` を使用するなど（このデータ操作はこのレッスンの範囲外ですが、インストラクターがその使用を示すかもしれません）。
 
 ```{r}
 #| label: targets-progress
@@ -230,16 +230,16 @@ tar_progress()
 popd()
 ```
 
-## Granular control of targets
+## ターゲットの細かい制御
 
-It is possible to only make a particular target instead of running the entire workflow.
+特定のターゲットのみをビルドし、ワークフロー全体を実行しないことが可能です。
 
-To do this, type the name of the target you wish to build after `tar_make()` (note that any targets required by the one you specify will also be built).
-For example, `tar_make(penguins_data_raw)` would **only** build `penguins_data_raw`, not `penguins_data`.
+これを行うには、`tar_make()` の後にビルドしたいターゲットの名前を入力します（指定したターゲットに必要な他のターゲットもビルドされることに注意してください）。
+例えば、`tar_make(penguins_data_raw)` は `penguins_data_raw` のみをビルドし、`penguins_data` はビルドしません。
 
-Furthermore, if you want to manually "reset" a target and make it appear out-of-date, you can do so with `tar_invalidate()`. This means that target (and any that depend on it) will be re-run next time.
+さらに、ターゲットを手動で「リセット」し、古くなったように見せるには、`tar_invalidate()` を使用できます。これは、次回の実行時にそのターゲット（およびそれに依存するターゲット）が再実行されることを意味します。
 
-Let's give this a try. Remember that our pipeline is currently up to date, so `tar_make()` will skip everything:
+これを試してみましょう。現在、私たちのパイプラインは最新の状態なので、`tar_make()` はすべてをスキップします：
 
 ```{r}
 #| label: targets-progress-show-2
@@ -250,7 +250,7 @@ tar_make()
 popd()
 ```
 
-Let's invalidate `penguins_data` and run it again:
+`penguins_data` を無効化し、再度実行してみましょう：
 
 ```{r}
 #| label: targets-progress-show-3
@@ -262,20 +262,19 @@ tar_make()
 popd()
 ```
 
-If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
+もしすべてをリセットして新たに開始したい場合は、`tar_invalidate(everything())` を使用して `_targets` フォルダ全体を削除することができます（`tar_invalidate()` はターゲット名を指定するために `tidyselect` 式を受け入れます）。
+しかし、これはすべてを再実行する必要があることを意味するため、軽率に行わないでください！
 
-**Caution should be exercised** when using granular methods like this, though, since you may end up with your workflow in an unexpected state. The surest way to maintain an up-to-date workflow is to run `tar_make()` frequently.
+## 実際の運用での動作
 
-## How this all works in practice
-
-In practice, you will likely be switching between running the workflow with `tar_make()`, loading the targets you built with `tar_load()`, and editing your custom functions by running code in an interactive R session. It takes some time to get used to it, but soon you will feel that your code isn't "real" until it is embedded in a `targets` workflow.
+実際には、`tar_make()` を使用してワークフローを実行し、`tar_load()` を使用してビルドしたターゲットをロードし、インタラクティブな R セッションでコードを実行してカスタム関数を編集することを行き来することが多いでしょう。慣れるまで時間がかかりますが、すぐに `targets` ワークフローに組み込まれていないコードは「本物ではない」と感じるようになるでしょう。
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- `targets` only runs the steps that have been affected by a change to the code
-- `tar_visnetwork()` shows the current state of the workflow as a network
-- `tar_progress()` shows the current state of the workflow as a data frame
-- `tar_outdated()` lists outdated targets
-- `tar_invalidate()` can be used to invalidate (re-run) specific targets
+- `targets` はコードの変更に影響を受けたステップのみを実行します
+- `tar_visnetwork()` はワークフローの現在の状態をネットワークとして表示します
+- `tar_progress()` はワークフローの現在の状態をデータフレームとして表示します
+- `tar_outdated()` は古くなったターゲットをリストします
+- `tar_invalidate()` は特定のターゲットを無効化（再実行）するために使用できます
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
