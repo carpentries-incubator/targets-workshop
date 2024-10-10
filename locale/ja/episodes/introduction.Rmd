@@ -38,7 +38,7 @@ exercises: 2
 
 ## `targets` とは何ですか？
 
-`targets` は、Will Landau によって開発および維持されている R プログラミング言語向けのワークフローマネジメントパッケージです。
+`targets` は、Will Landau 氏によって開発および維持されている R プログラミング言語向けのワークフローマネジメントパッケージです。
 
 `targets` の主な機能には以下が含まれます：
 
@@ -71,11 +71,11 @@ exercises: 2
 
 `targets` の学習を続けるためのおすすめリソースは以下の通りです：
 
-- `targets` の作者である Will Landau による [The `targets` R package user manual](https://books.ropensci.org/targets/) は、`targets` に真剣に興味がある人にとって必読とすべきです。
-- [The `targets` discussion board](https://github.com/ropensci/targets/discussions) は質問をしたり助けを得たりするのに最適な場所です。ただし、質問をする前に必ず [help のポリシーを読む](https://books.ropensci.org/targets/help.html) ことを確認してください。
-- [The `targets` package webpage](https://docs.ropensci.org/targets/) には、すべての `targets` 関数のドキュメントが含まれています。
-- [The `tarchetypes` package webpage](https://docs.ropensci.org/tarchetypes/) には、すべての `tarchetypes` 関数のドキュメントが含まれています。`tarchetypes` はほぼ確実に `targets` と一緒に使用するため、両方を参照することをお勧めします。
-- [Reproducible computation at scale in R with `targets`](https://github.com/wlandau/targets-tutorial) は、Keras を用いて顧客の離脱を分析する Will Landau によるチュートリアルです。
+- `targets` の作者である Will Landau氏 による [The targets R package user manual](https://books.ropensci.org/targets/) は、`targets` に真剣に興味がある人にとって必読とすべきです。
+- [targets discussion board](https://github.com/ropensci/targets/discussions) は質問をしたり助けを得たりするのに最適な場所です。ただし、質問をする前に必ず [help のポリシーを読む](https://books.ropensci.org/targets/help.html) ことを確認してください。
+- [targetsのウエブサイト](https://docs.ropensci.org/targets/) には、すべての `targets` 関数のドキュメントが含まれています。
+- [tarchetypesのウエブサイト](https://docs.ropensci.org/tarchetypes/) には、すべての `tarchetypes` 関数のドキュメントが含まれています。`tarchetypes` はほぼ確実に `targets` と一緒に使用するため、両方を参照することをお勧めします。
+- [Reproducible computation at scale in R with targets](https://github.com/wlandau/targets-tutorial) は、Keras を用いて顧客の離脱を分析する Will Landau氏 によるチュートリアルです。
 - [Recorded talks](https://github.com/ropensci/targets#recorded-talks) および [example projects](https://github.com/ropensci/targets#example-projects) は、`targets` の README に記載されています。
 
 ## 例示データセットについて
