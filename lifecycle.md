@@ -42,7 +42,7 @@ tar_make()
 ✔ skipped target penguins_csv_file
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
-✔ skipped pipeline [0.092 seconds]
+✔ skipped pipeline [0.128 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -86,8 +86,8 @@ tar_make()
 ✔ skipped target penguins_csv_file
 ✔ skipped target penguins_data_raw
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.059 seconds]
-▶ ended pipeline [0.158 seconds]
+● completed target penguins_data [0.012 seconds]
+▶ ended pipeline [0.263 seconds]
 ```
 
 What happened?
@@ -252,7 +252,7 @@ tar_make()
 ✔ skipped target penguins_csv_file
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
-✔ skipped pipeline [0.133 seconds]
+✔ skipped pipeline [0.211 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -267,8 +267,8 @@ tar_make()
 ✔ skipped target penguins_csv_file
 ✔ skipped target penguins_data_raw
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.057 seconds]
-▶ ended pipeline [0.154 seconds]
+● completed target penguins_data [0.013 seconds]
+▶ ended pipeline [0.238 seconds]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
