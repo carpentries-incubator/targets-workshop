@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.4.1",
+    "Version": "4.4.2",
     "Repositories": [
       {
         "Name": "carpentries",
@@ -356,10 +356,7 @@
       "Package": "curl",
       "Version": "5.2.1",
       "Source": "Repository",
-      "Repository": "https://carpentries.r-universe.dev",
-      "RemoteUrl": "https://github.com/jeroen/curl",
-      "RemoteRef": "5.2.1",
-      "RemoteSha": "d9f2a6f50932307c89fb7b03bd1a0ef4783fc26f",
+      "Repository": "CRAN",
       "Requirements": [
         "R"
       ],
