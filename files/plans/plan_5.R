@@ -16,16 +16,21 @@ tar_plan(
     bill_depth_mm ~ bill_length_mm,
     data = penguins_data
   ),
-  species_model = lm(
-    bill_depth_mm ~ bill_length_mm + species,
-    data = penguins_data
+  adelie_model = lm(
+    bill_depth_mm ~ bill_length_mm,
+    data = filter(penguins_data, species == "Adelie")
   ),
-  interaction_model = lm(
-    bill_depth_mm ~ bill_length_mm * species,
-    data = penguins_data
+  chinstrap_model = lm(
+    bill_depth_mm ~ bill_length_mm,
+    data = filter(penguins_data, species == "Chinstrap")
+  ),
+  gentoo_model = lm(
+    bill_depth_mm ~ bill_length_mm,
+    data = filter(penguins_data, species == "Gentoo")
   ),
   # Get model summaries
   combined_summary = glance(combined_model),
-  species_summary = glance(species_model),
-  interaction_summary = glance(interaction_model)
+  adelie_summary = glance(adelie_model),
+  chinstrap_summary = glance(chinstrap_model),
+  gentoo_summary = glance(gentoo_model)
 )
