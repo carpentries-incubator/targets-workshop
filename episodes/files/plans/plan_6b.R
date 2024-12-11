@@ -18,11 +18,11 @@ tar_plan(
     species
   ),
   # Build combined model with all species together
-  combined_summary = model_glance(penguins_data),
+  combined_summary = model_glance_orig(penguins_data),
   # Build one model per species
   tar_target(
     species_summary,
-    model_glance(penguins_data_grouped),
+    model_glance_orig(penguins_data_grouped),
     pattern = map(penguins_data_grouped)
   )
 )
