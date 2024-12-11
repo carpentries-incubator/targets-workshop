@@ -1,6 +1,6 @@
 ---
 title: 'Branching'
-teaching: 10
+teaching: 30
 exercises: 2
 ---
 
@@ -152,7 +152,7 @@ Before moving on, let's define another **custom function** function: `model_glan
 You will need to write custom functions frequently when using `targets`, so it's good to get used to it!
 
 As the name `model_glance()` suggests (it is good to write functions with names that indicate their purpose), this will build a model then immediately run `glance()` on it.
-The reason for doing so is that we get a **dataframe as a result**, which as previously mentioned is very helpful for branching, as we will see in the next section.
+The reason for doing so is that we get a **dataframe as a result**, which is very helpful for branching, as we will see in the next section.
 Save this in `R/functions.R`:
 
 ```{r}
@@ -310,13 +310,41 @@ Add the step to the workflow:
 
 ```{r}
 #| label = "example-model-augment-show",
-#| code = readLines("files/plans/plan_8.R")[2:35],
+#| code = readLines("files/plans/plan_7.R")[2:36],
 #| eval = FALSE
 ```
 
 ::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::
+
+### Further simplify the workflow
+
+You may have noticed that we can further simplify the workflow: there is no need to have separate `penguins_data` and `penguins_data_grouped` dataframes.
+In general it is best to keep the number of named objects as small as possible to make it easier to reason about your code.
+Let's combine the cleaning and grouping step into a single command:
+
+```{r}
+#| label = "example-model-show-8",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_8.R")[2:35]
+```
+
+And run it once more:
+
+```{r}
+#| label: example-model-show-8
+#| echo: false
+pushd(plan_6_dir)
+# simulate already running the plan once
+write_example_plan("plan_7.R")
+tar_make(reporter = "silent")
+# run version of plan that uses `model_glance_orig()` (doesn't include species
+# names in output)
+write_example_plan("plan_8.R")
+tar_make()
+popd()
+```
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 

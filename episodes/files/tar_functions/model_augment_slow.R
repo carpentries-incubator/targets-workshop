@@ -1,4 +1,5 @@
-model_augment <- function(penguins_data) {
+model_augment_slow <- function(penguins_data) {
+  Sys.sleep(4)
   # Make model
   model <- lm(
     bill_depth_mm ~ bill_length_mm,

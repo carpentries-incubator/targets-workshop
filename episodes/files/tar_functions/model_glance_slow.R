@@ -1,4 +1,5 @@
-model_augment <- function(penguins_data) {
+model_glance_slow <- function(penguins_data) {
+  Sys.sleep(4)
   # Make model
   model <- lm(
     bill_depth_mm ~ bill_length_mm,
@@ -11,6 +12,6 @@ model_augment <- function(penguins_data) {
     species_name <- "combined"
   }
   # Get model summary and add species name
-  augment(model) |>
+  glance(model) |>
     mutate(species = species_name, .before = 1)
 }
