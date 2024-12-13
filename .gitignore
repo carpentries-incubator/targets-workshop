@@ -54,3 +54,7 @@ renv/sandbox/
 
 # vscode settings
 .vscode
+
+# paper
+paper.pdf
+paper.crossref
