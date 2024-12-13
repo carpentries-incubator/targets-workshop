@@ -8,14 +8,14 @@ authors:
   - name: Joel H. Nitta
     orcid: 0000-0003-4719-7472
     affiliation: 1
-  - name: Author Without ORCID
+  - name: Author
     affiliation: 2
 affiliations:
- - name: Chiba University
+ - name: Graduate School of Global and Transdisciplinary Studies, College of Liberal Arts and Sciences, Chiba University, Chiba, Japan
    index: 1
  - name: Institution 2
    index: 2
-date: 13 August 2017
+date: 13 December 2024
 bibliography: paper.bib
 
 ---
