@@ -8,12 +8,13 @@ authors:
   - name: Joel H. Nitta
     orcid: 0000-0003-4719-7472
     affiliation: 1
-  - name: Author
+  - name: Michael R. Milton
+    orcid: https://orcid.org/0000-0002-8965-2595
     affiliation: 2
 affiliations:
  - name: Graduate School of Global and Transdisciplinary Studies, College of Liberal Arts and Sciences, Chiba University, Chiba, Japan
    index: 1
- - name: Institution 2
+ - name: Walter and Eliza Hall Institute of Medical Research, Parkville, Victoria, Australia
    index: 2
 date: 13 December 2024
 bibliography: paper.bib
@@ -26,7 +27,7 @@ Reproducibility is critical for sustainable science [@Diaba-Nuhoho2021a].
 While reproducibility of data analysis can be greatly improved by using code, the results of loosely or poorly organized code may be difficult or impossible to reproduce [@Trisovic2022].
 Furthermore, as a project grows in complexity, it becomes difficult to manually track which steps of an analysis need to be re-run due to changes in the code base.
 The `targets` R package [@Landau2021] automates data analysis workflows in R, thus greatly improving both reproducibility and efficiency, and is rapidly becoming the de-facto workflow manager package in R.
-However, `targets` adopts a functions-focused approach that is different from the way most beginners write R code, and little documentation exists to help onboard researchers seeking to use `targets`.
+However, `targets` adopts a functions-focused approach that is different from the way most beginners write R code, and little training material exists to help onboard researchers seeking to use `targets`.
 
 Here, we present a one-day workshop based on the highly successful [Carpentries](https://www.carpentries.org) format to teach `targets` to beginners [@Wilson2016].
 Although no specialized knowledge of any field is required, the workshop is designed for researchers at the advanced undergraduate level and above, and presumes a basic working knowledge of R.
@@ -73,8 +74,8 @@ He reached out to his colleague and fellow R practitioner Dr. Athanasia Mowincke
 JHN realized this was the motivation he needed to draft a Carpentries-style curriculum to teach `targets`.
 Prior to the workshop, JHN and AM collaborated through GitHub to craft the curriculum that was used at the workshop and is the basis for the current curriculum.
 
-The next major phase of curriculum development occurred in 2023, when MM taught the workshop at XXX.
-Based on the needs of participants there, MM added an episode for using targets in the context of high-performance computing, as well as contributing improvements to the code base of the lesson to simplify authoring `targets` code chunks.
+The next major phase of curriculum development occurred in 2023, when MM taught the workshop at the Walter and Eliza Hall Institute of Medical Research.
+Based on the needs of participants there, MM added an episode for using `targets` in the context of high-performance computing, as well as contributing improvements to the code base of the lesson to simplify authoring `targets` code chunks.
 
 The workshop was taught by JHN twice more during 2024 at Chiba University, Japan.
 Solicitation of feedback from participants, including comments on what went well vs. could be improved, has lead to gradual improvements in the curriculum.
