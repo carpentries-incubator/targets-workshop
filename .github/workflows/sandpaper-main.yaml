@@ -29,14 +29,6 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RENV_PATHS_ROOT: ~/.local/share/renv/
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - "8888:3306"
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
 
       - name: "Checkout Lesson"
@@ -60,9 +52,6 @@ jobs:
         uses: carpentries/actions/setup-lesson-deps@main
         with:
           cache-version: ${{ secrets.CACHE_VERSION }}
-
-      - name: Setup slurm
-        uses: koesterlab/setup-slurm-action@v1
 
       - name: "Deploy Site"
         run: |

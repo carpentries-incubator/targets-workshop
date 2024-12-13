@@ -103,13 +103,13 @@
     },
     "backports": {
       "Package": "backports",
-      "Version": "1.5.0",
+      "Version": "1.4.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R"
       ],
-      "Hash": "e1e1b9d75c37401117b636b7ae50827a"
+      "Hash": "c39fbec8a30d23e721980b8afb31984c"
     },
     "base64enc": {
       "Package": "base64enc",
@@ -352,25 +352,6 @@
       ],
       "Hash": "1498e9c5b0f2a644d7c4a8534c9d20fe"
     },
-    "crew.cluster": {
-      "Package": "crew.cluster",
-      "Version": "0.3.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "R6",
-        "crew",
-        "lifecycle",
-        "ps",
-        "rlang",
-        "utils",
-        "vctrs",
-        "xml2",
-        "yaml"
-      ],
-      "Hash": "4a6a569e1f2b56ce2419d412598ab1b4"
-    },
     "curl": {
       "Package": "curl",
       "Version": "5.2.1",
@@ -509,10 +490,10 @@
     },
     "farver": {
       "Package": "farver",
-      "Version": "2.1.2",
+      "Version": "2.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "680887028577f3fa2a81e410ed0d6e42"
+      "Hash": "8106d78941f34855c440ddb946b8f7a5"
     },
     "fastmap": {
       "Package": "fastmap",
@@ -730,14 +711,14 @@
     },
     "highr": {
       "Package": "highr",
-      "Version": "0.11",
+      "Version": "0.10",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "xfun"
       ],
-      "Hash": "d65ba49117ca223614f71b60d85b8ab7"
+      "Hash": "06230136b2d2b9ba5805e1963fa6e890"
     },
     "hms": {
       "Package": "hms",
@@ -1281,7 +1262,7 @@
       "Package": "renv",
       "Version": "1.0.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
