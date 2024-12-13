@@ -56,8 +56,8 @@ tar_plan(
 
 ``` output
 ▶ dispatched target some_data
-● completed target some_data [0 seconds, 64 bytes]
-▶ ended pipeline [0.089 seconds]
+● completed target some_data [0.001 seconds, 64 bytes]
+▶ ended pipeline [0.094 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -77,7 +77,7 @@ tar_plan(
 
 ``` output
 ✔ skipped target some_data
-✔ skipped pipeline [0.087 seconds]
+✔ skipped pipeline [0.089 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -101,7 +101,7 @@ tar_plan(
 ● completed target data_file [0.001 seconds, 26 bytes]
 ▶ dispatched target some_data
 ● completed target some_data [0 seconds, 78 bytes]
-▶ ended pipeline [0.109 seconds]
+▶ ended pipeline [0.111 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -186,10 +186,10 @@ tar_plan(
 ▶ dispatched target penguins_data_raw_file
 ● completed target penguins_data_raw_file [0.001 seconds, 53.098 kilobytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.099 seconds, 10.403 kilobytes]
+● completed target penguins_data_raw [0.096 seconds, 10.403 kilobytes]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.015 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.369 seconds]
+● completed target penguins_data [0.014 seconds, 1.495 kilobytes]
+▶ ended pipeline [0.368 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -262,14 +262,14 @@ tar_plan(
 
 ``` output
 ▶ dispatched target hello_file
-● completed target hello_file [0 seconds, 26 bytes]
+● completed target hello_file [0.001 seconds, 26 bytes]
 ▶ dispatched target hello
 ● completed target hello [0 seconds, 78 bytes]
 ▶ dispatched target hello_caps
-● completed target hello_caps [0.001 seconds, 78 bytes]
+● completed target hello_caps [0 seconds, 78 bytes]
 ▶ dispatched target hello_caps_out
 ● completed target hello_caps_out [0 seconds, 26 bytes]
-▶ ended pipeline [0.111 seconds]
+▶ ended pipeline [0.107 seconds]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
