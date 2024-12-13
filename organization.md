@@ -145,15 +145,48 @@ tar_plan(
 ```
 
 
+``` output
+
+```
+
+``` output
+── Debugging ───────────────────────────────────────────────────────────────────
+```
+
+``` output
+
+```
+
+``` output
+── How to ──────────────────────────────────────────────────────────────────────
+```
+
+``` output
+
+```
+
+``` output
+── Last error message ──────────────────────────────────────────────────────────
+```
+
+``` output
+
+```
+
+``` output
+── Last error traceback ────────────────────────────────────────────────────────
+```
+
 ``` error
 Error:
-! Error running targets::tar_make()
-Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
-Debugging guide: https://books.ropensci.org/targets/debugging.html
-How to ask for help: https://books.ropensci.org/targets/help.html
-Last error message:
+! targets::tar_make() error
+    • tar_errored()
+    • tar_meta(fields = any_of("error"), complete_only = TRUE)
+    • tar_workspace()
+    • tar_workspaces()
+    • Debug: https://books.ropensci.org/targets/debugging.html
+    • Help: https://books.ropensci.org/targets/help.html
     duplicated target names: height
-Last error traceback:
     base::tryCatch(base::withCallingHandlers({ NULL base::saveRDS(base::do.c...
     tryCatchList(expr, classes, parentenv, handlers)
     tryCatchOne(tryCatchList(expr, names[-nh], parentenv, handlers[-nh]), na...
@@ -163,7 +196,7 @@ Last error traceback:
     doTryCatch(return(expr), name, parentenv, handler)
     base::withCallingHandlers({ NULL base::saveRDS(base::do.call(base::do.ca...
     base::saveRDS(base::do.call(base::do.call, base::c(base::readRDS("/tmp/R...
-    base::do.call(base::do.call, base::c(base::readRDS("/tmp/Rtmp1SI1S8/call...
+    base::do.call(base::do.call, base::c(base::readRDS("/tmp/RtmpBcneVt/call...
     (function (what, args, quote = FALSE, envir = parent.frame()) { if (!is....
     (function (targets_function, targets_arguments, options, envir = NULL, s...
     tryCatch(out <- withCallingHandlers(targets::tar_callr_inner_try(targets...
@@ -179,7 +212,7 @@ Last error traceback:
     tar_assert_unique_targets(names)
     tar_throw_validate(message)
     tar_error(message = paste0(...), class = c("tar_condition_validate", "ta...
-    rlang::abort(message = message, class = class, call = tar_empty_envir)
+    rlang::abort(message = message, class = class, call = tar_envir_base)
     signal_abort(cnd, .file)
 ```
 
