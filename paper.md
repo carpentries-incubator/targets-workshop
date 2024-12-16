@@ -66,7 +66,7 @@ Table 1: Summary of the `targets` workshop curriculum contents.
 # Story of the workshop
 
 The workshop developed out of the repeated need to teach `targets` to researchers.
-JHN started teaching `targets` without the use of a curriculum in 2022 for the [AsiaR meetup](https://www.youtube.com/watch?v=XMvinGSG72k&t=1346s) and [Bio"Pack"athon meetup](https://www.youtube.com/watch?v=qwZsMKUMu6U).
+JHN started teaching `targets` without the use of a curriculum in 2022 for the [AsiaR meetup](https://www.youtube.com/watch?v=XMvinGSG72k&t=1346s),  [Bio"Pack"athon meetup](https://www.youtube.com/watch?v=qwZsMKUMu6U), and [ISCB Academy](https://github.com/ISCB-Academy/bioinfo-targets).
 When it became clear that the demand for `targets` instruction was only increasing, he realized it benefit not only himself but others to have a standardized curriculum.
 
 The next major impetus for curriculum creation occurred when JHN visited Norway in Summer of 2023 to teach an unrelated [workshop on spatial phylogenetics](https://www.forbio.uio.no/events/courses/2023/Workshop%20in%20Spatial%20Phylogenetics).
