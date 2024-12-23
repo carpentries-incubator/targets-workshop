@@ -30,6 +30,11 @@ Episode summary: Show how to write reports with Quarto
 library(targets)
 library(tarchetypes)
 library(quarto) # don't actually need to load, but put here so renv catches it
+
+if (interactive()) {
+  setwd("episodes")
+}
+
 source("files/lesson_functions.R")
 
 # Increase width for printing tibbles
