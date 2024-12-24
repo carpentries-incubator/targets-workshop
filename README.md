@@ -2,7 +2,7 @@
 
 This is a pre-alpha lesson about the [targets](https://github.com/ropensci/targets) R package built using [The Carpentries Workbench][workbench].
 
-The lesson website is here: https://joelnitta.github.io/targets-workshop/
+The lesson website is here: https://carpentries-incubator.github.io/targets-workshop/
 
 [workbench]: https://carpentries.github.io/sandpaper-docs/
 

@@ -29,7 +29,7 @@ Episode summary: Show how to load packages and maintain package versions
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+source("files/lesson_functions.R")
 ```
 
 ## Loading packages
@@ -81,14 +81,7 @@ tar_plan(
 #| echo: FALSE
 #| label: load-pkg-hide
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_option_set(packages = c("dplyr", "palmerpenguins"))
-     tar_plan(
-       adelie_data = filter(penguins, species == "Adelie")
-     )
-  })
+  write_example_plan(chunk = "load-pkg-show")
   tar_make()
 })
 ```
@@ -120,17 +113,7 @@ tar_plan(
 #| echo: FALSE
 #| label: load-pkg-hide-2
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_plan(
-     tar_target(
-       adelie_data,
-       filter(penguins, species == "Adelie"),
-       packages = c("dplyr", "palmerpenguins")
-     )
-)
-  })
+  write_example_plan(chunk="load-pkg-show-2")
   tar_make()
 })
 ```
@@ -160,13 +143,7 @@ tar_plan(
 #| echo: FALSE
 #| label: load-pkg-hide-3
 tar_dir({
-  tar_script({
-     library(targets)
-     library(tarchetypes)
-     tar_plan(
-      adelie_data = dplyr::filter(palmerpenguins::penguins, species == "Adelie")
-     )
-  })
+  write_example_plan(chunk = "load-pkg-show-3")
   tar_make()
 })
 ```

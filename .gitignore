@@ -51,3 +51,6 @@ po/*~
 
 # renv detritus
 renv/sandbox/
+
+# vscode settings
+.vscode
