@@ -24,7 +24,7 @@ tar_plan(
     pattern = map(penguins_data)
   ),
   # Get predictions of combined model with all species together
-  combined_predictions = model_glance(penguins_data),
+  combined_predictions = model_augment(penguins_data),
   # Get predictions of one model per species
   tar_target(
     species_predictions,
