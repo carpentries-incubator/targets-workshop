@@ -110,10 +110,6 @@ Finally, run the pipeline with `tar_make()` as normal.
 #| message: false
 #| echo: false
 
-# FIXME: parallel code uses all available CPUs and hangs when rendering website
-# with sandpaper::build_lesson(), even though it only uses 2 when run
-# interactively
-#
 plan_10_dir <- make_tempdir()
 pushd(plan_10_dir)
 write_example_plan("plan_9.R")
@@ -121,29 +117,6 @@ tar_make(reporter = "silent")
 write_example_plan("plan_10.R")
 tar_make()
 popd()
-
-# Solution for now is to hard-code output
-cat("✔ skipped target penguins_data_raw_file
-✔ skipped target penguins_data_raw
-✔ skipped target penguins_data
-✔ skipped target combined_summary
-▶ dispatched branch species_summary_1598bb4431372f32
-▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_1598bb4431372f32 [4.815 seconds, 367 bytes]
-▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_6b9109ba2e9d27fd [4.813 seconds, 370 bytes]
-▶ dispatched target combined_predictions
-● completed branch species_summary_625f9fbc7f62298a [4.01 seconds, 367 bytes]
-● completed pattern species_summary 
-▶ dispatched branch species_predictions_1598bb4431372f32
-● completed target combined_predictions [4.012 seconds, 370 bytes]
-▶ dispatched branch species_predictions_6b9109ba2e9d27fd
-● completed branch species_predictions_1598bb4431372f32 [4.014 seconds, 11.585 kilobytes]
-▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_6b9109ba2e9d27fd [4.01 seconds, 6.25 kilobytes]
-● completed branch species_predictions_625f9fbc7f62298a [4.007 seconds, 9.628 kilobytes]
-● completed pattern species_predictions 
-▶ ended pipeline [19.363 seconds]")
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
