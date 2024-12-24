@@ -1,6 +1,6 @@
 ---
 title: 'Parallel Processing'
-teaching: 10
+teaching: 15
 exercises: 2
 ---
 
@@ -74,54 +74,74 @@ tar_plan(
     path_to_file("penguins_raw.csv"),
     read_csv(!!.x, show_col_types = FALSE)
   ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  # Clean and group data
+  tar_group_by(
+    penguins_data,
+    clean_penguin_data(penguins_data_raw),
+    species
   ),
-  # Get model summaries
+  # Get summary of combined model with all species together
+  combined_summary = model_glance(penguins_data),
+  # Get summary of one model per species
   tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
+    species_summary,
+    model_glance(penguins_data),
+    pattern = map(penguins_data)
   ),
-  # Get model predictions
+  # Get predictions of combined model with all species together
+  combined_predictions = model_augment(penguins_data),
+  # Get predictions of one model per species
   tar_target(
-    model_predictions,
-    augment_with_mod_name(models),
-    pattern = map(models)
+    species_predictions,
+    model_augment(penguins_data),
+    pattern = map(penguins_data)
   )
 )
+NA
 ```
 
 There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
 
-So let's make "slow" versions of `glance_with_mod_name()` and `augment_with_mod_name()` using the `Sys.sleep()` function, which just tells the computer to wait some number of seconds.
+So let's make "slow" versions of `model_glance()` and `model_augment()` using the `Sys.sleep()` function, which just tells the computer to wait some number of seconds.
 This will simulate a long-running computation and enable us to see the difference between running sequentially and in parallel.
 
 Add these functions to `functions.R` (you can copy-paste the original ones, then modify them):
 
 
 ``` r
-glance_with_mod_name_slow <- function(model_in_list) {
+model_glance_slow <- function(penguins_data) {
   Sys.sleep(4)
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  broom::glance(model) |>
-    mutate(model_name = model_name)
+  # Make model
+  model <- lm(
+    bill_depth_mm ~ bill_length_mm,
+    data = penguins_data)
+  # Get species name
+  species_name <- unique(penguins_data$species)
+  # If this is the combined dataset with multiple
+  # species, changed name to 'combined'
+  if (length(species_name) > 1) {
+    species_name <- "combined"
+  }
+  # Get model summary and add species name
+  glance(model) |>
+    mutate(species = species_name, .before = 1)
 }
-augment_with_mod_name_slow <- function(model_in_list) {
+model_augment_slow <- function(penguins_data) {
   Sys.sleep(4)
-  model_name <- names(model_in_list)
-  model <- model_in_list[[1]]
-  broom::augment(model) |>
-    mutate(model_name = model_name)
+  # Make model
+  model <- lm(
+    bill_depth_mm ~ bill_length_mm,
+    data = penguins_data)
+  # Get species name
+  species_name <- unique(penguins_data$species)
+  # If this is the combined dataset with multiple
+  # species, changed name to 'combined'
+  if (length(species_name) > 1) {
+    species_name <- "combined"
+  }
+  # Get model summary and add species name
+  augment(model) |>
+    mutate(species = species_name, .before = 1)
 }
 ```
 
@@ -145,55 +165,58 @@ tar_plan(
     path_to_file("penguins_raw.csv"),
     read_csv(!!.x, show_col_types = FALSE)
   ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  # Clean and group data
+  tar_group_by(
+    penguins_data,
+    clean_penguin_data(penguins_data_raw),
+    species
   ),
-  # Get model summaries
+  # Get summary of combined model with all species together
+  combined_summary = model_glance_slow(penguins_data),
+  # Get summary of one model per species
   tar_target(
-    model_summaries,
-    glance_with_mod_name_slow(models),
-    pattern = map(models)
+    species_summary,
+    model_glance_slow(penguins_data),
+    pattern = map(penguins_data)
   ),
-  # Get model predictions
+  # Get predictions of combined model with all species together
+  combined_predictions = model_augment_slow(penguins_data),
+  # Get predictions of one model per species
   tar_target(
-    model_predictions,
-    augment_with_mod_name_slow(models),
-    pattern = map(models)
+    species_predictions,
+    model_augment_slow(penguins_data),
+    pattern = map(penguins_data)
   )
 )
+NA
 ```
 
 Finally, run the pipeline with `tar_make()` as normal.
 
 
 ``` output
-✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip target models
-• start branch model_predictions_5ad4cec5
-• start branch model_predictions_c73912d5
-• start branch model_predictions_91696941
-• start branch model_summaries_5ad4cec5
-• start branch model_summaries_c73912d5
-• start branch model_summaries_91696941
-• built branch model_predictions_5ad4cec5 [4.884 seconds]
-• built branch model_predictions_c73912d5 [4.896 seconds]
-• built branch model_predictions_91696941 [4.006 seconds]
-• built pattern model_predictions
-• built branch model_summaries_5ad4cec5 [4.011 seconds]
-• built branch model_summaries_c73912d5 [4.011 seconds]
-• built branch model_summaries_91696941 [4.011 seconds]
-• built pattern model_summaries
-• end pipeline [15.153 seconds]
+✔ skipped target penguins_data_raw_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+▶ dispatched target combined_summary
+▶ dispatched branch species_summary_1598bb4431372f32
+● completed target combined_summary [4.669 seconds, 371 bytes]
+▶ dispatched branch species_summary_6b9109ba2e9d27fd
+● completed branch species_summary_1598bb4431372f32 [4.67 seconds, 368 bytes]
+▶ dispatched branch species_summary_625f9fbc7f62298a
+● completed branch species_summary_6b9109ba2e9d27fd [4.009 seconds, 372 bytes]
+▶ dispatched target combined_predictions
+● completed branch species_summary_625f9fbc7f62298a [4.012 seconds, 369 bytes]
+● completed pattern species_summary 
+▶ dispatched branch species_predictions_1598bb4431372f32
+● completed target combined_predictions [4.014 seconds, 25.911 kilobytes]
+▶ dispatched branch species_predictions_6b9109ba2e9d27fd
+● completed branch species_predictions_1598bb4431372f32 [4.013 seconds, 11.585 kilobytes]
+▶ dispatched branch species_predictions_625f9fbc7f62298a
+● completed branch species_predictions_6b9109ba2e9d27fd [4.011 seconds, 6.252 kilobytes]
+● completed branch species_predictions_625f9fbc7f62298a [4.01 seconds, 9.629 kilobytes]
+● completed pattern species_predictions 
+▶ ended pipeline [18.813 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.

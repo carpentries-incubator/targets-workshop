@@ -89,37 +89,37 @@ tar_plan(
     path_to_file("penguins_raw.csv"),
     read_csv(!!.x, show_col_types = FALSE)
   ),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Build models
-  models = list(
-    combined_model = lm(
-      bill_depth_mm ~ bill_length_mm, data = penguins_data),
-    species_model = lm(
-      bill_depth_mm ~ bill_length_mm + species, data = penguins_data),
-    interaction_model = lm(
-      bill_depth_mm ~ bill_length_mm * species, data = penguins_data)
+  # Clean and group data
+  tar_group_by(
+    penguins_data,
+    clean_penguin_data(penguins_data_raw),
+    species
   ),
-  # Get model summaries
+  # Get summary of combined model with all species together
+  combined_summary = model_glance(penguins_data),
+  # Get summary of one model per species
   tar_target(
-    model_summaries,
-    glance_with_mod_name(models),
-    pattern = map(models)
+    species_summary,
+    model_glance(penguins_data),
+    pattern = map(penguins_data)
   ),
-  # Get model predictions
+  # Get predictions of combined model with all species together
+  combined_predictions = model_augment(penguins_data),
+  # Get predictions of one model per species
   tar_target(
-    model_predictions,
-    augment_with_mod_name(models),
-    pattern = map(models)
+    species_predictions,
+    model_augment(penguins_data),
+    pattern = map(penguins_data)
   ),
   # Generate report
   tar_quarto(
     penguin_report,
     path = "penguin_report.qmd",
-    quiet = FALSE,
-    packages = c("targets", "tidyverse")
+    quiet = FALSE
   )
 )
+NA
+NA
 ```
 
 
@@ -137,8 +137,7 @@ How does this work?
 
 The answer lies **inside** the `penguin_report.qmd` file. Let's look at the start of the file:
 
-
-```` markdown
+````{.markdown}
 ---
 title: "Simpson's Paradox in Palmer Penguins"
 format:
@@ -151,13 +150,18 @@ execute:
 ```{r}
 #| label: load
 #| message: false
-targets::tar_load(penguin_models_augmented)
-targets::tar_load(penguin_models_summary)
+targets::tar_load(
+  c(combined_summary,
+    species_summary,
+    combined_predictions,
+    species_predictions
+  )
+)
 
 library(tidyverse)
 ```
 
-This is an example analysis of penguins on the Palmer Archipelago in Antarctica.
+The goal of this analysis is to determine how bill length and depth are related in three species of penguins from Antarctica.
 
 ````
 
@@ -165,9 +169,9 @@ The lines in between `---` and `---` at the very beginning are called the "YAML 
 
 The R code to be executed is specified by the lines between `` ```{r}  `` and `` ``` ``. This is called a "code chunk", since it is a portion of code interspersed within prose text.
 
-Take a closer look at the R code chunk. Notice the two calls to `targets::tar_load()`. Do you remember what that function does? It loads the targets built during the workflow.
+Take a closer look at the R code chunk. Notice the use of `targets::tar_load()`. Do you remember what that function does? It loads the targets built during the workflow.
 
-Now things should make a bit more sense: `targets` knows that the report depends on the targets built during the workflow, `penguin_models_augmented` and `penguin_models_summary`, **because they are loaded in the report with `tar_load()`.**
+Now things should make a bit more sense: `targets` knows that the report depends on the targets built during the workflow like `combined_summary` and `species_summary` **because they are loaded in the report with `tar_load()`.**
 
 ## Generating dynamic content
 
@@ -177,13 +181,13 @@ The call to `tar_load()` at the start of `penguin_report.qmd` is really the key 
 
 ## Challenge: Spot the dynamic contents
 
-Read through `penguin_report.qmd` and try to find instances where the targets built during the workflow (`penguin_models_augmented` and `penguin_models_summary`) are used to dynamically produce text and plots.
+Read through `penguin_report.qmd` and try to find instances where the targets built during the workflow (`combined_summary`, etc.) are used to dynamically produce text and plots.
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
-- In the code chunk labeled `results-stats`, statistics from the models like *P*-value and adjusted *R* squared are extracted, then inserted into the text with in-line code like `` `r mod_stats$combined$r.squared` ``.
+- In the code chunk labeled `results-stats`, statistics from the models like *R* squared are extracted, then inserted into the text with in-line code like `` `r combined_r2` ``.
 
-- There are two figures, one for the combined model and one for the separate model (code chunks labeled `fig-combined-plot` and `fig-separate-plot`, respectively). These are built using the points predicted from the model in `penguin_models_augmented`.
+- There are two figures, one for the combined model and one for the separate models (code chunks labeled `fig-combined-plot` and `fig-separate-plot`, respectively). These are built using the points predicted from the model in `combined_predictions` and `species_predictions`.
 
 ::::::::::::::::::::::::::::::::::
 
