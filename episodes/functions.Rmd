@@ -31,7 +31,12 @@ Episode summary: A very brief introduction to functions, when you have learners 
 #| message: FALSE
 #| warning: FALSE
 library(targets)
-source("https://raw.githubusercontent.com/joelnitta/targets-workshop/main/episodes/files/functions.R?token=$(date%20+%s)") # nolint
+
+if (interactive()) {
+  setwd("episodes")
+}
+
+source("files/lesson_functions.R")
 ```
 
 ## Create a function
