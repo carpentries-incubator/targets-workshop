@@ -10,7 +10,7 @@ clean_penguin_data <- function(penguins_data_raw) {
       bill_length_mm = `Culmen Length (mm)`,
       bill_depth_mm = `Culmen Depth (mm)`
     ) |>
-    remove_missing(na.rm = TRUE)
+    drop_na()
 }
 
 list(
