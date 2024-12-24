@@ -23,7 +23,7 @@ tar_plan(
     species
   ),
   # Get summary of combined model with all species together
-  combined_summary = model_glance(penguins_data),
+  combined_summary = model_glance_slow(penguins_data),
   # Get summary of one model per species
   tar_target(
     species_summary,
@@ -31,7 +31,7 @@ tar_plan(
     pattern = map(penguins_data)
   ),
   # Get predictions of combined model with all species together
-  combined_predictions = model_glance_slow(penguins_data),
+  combined_predictions = model_augment_slow(penguins_data),
   # Get predictions of one model per species
   tar_target(
     species_predictions,
