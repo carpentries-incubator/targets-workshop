@@ -202,7 +202,7 @@ penguins_data <- penguins_data_raw |>
     bill_depth_mm = `Culmen Depth (mm)`
   ) |>
   # Delete rows with missing data
-  remove_missing(na.rm = TRUE)
+  drop_na()
 
 penguins_data
 ```
@@ -252,7 +252,7 @@ clean_penguin_data <- function(penguins_data_raw) {
       bill_length_mm = `Culmen Length (mm)`,
       bill_depth_mm = `Culmen Depth (mm)`
     ) |>
-    remove_missing(na.rm = TRUE)
+    drop_na()
 }
 
 list(
@@ -279,10 +279,10 @@ tar_make()
 ▶ dispatched target penguins_csv_file
 ● completed target penguins_csv_file [0.001 seconds, 190 bytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.188 seconds, 10.403 kilobytes]
+● completed target penguins_data_raw [0.201 seconds, 10.403 kilobytes]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.007 seconds, 1.609 kilobytes]
-▶ ended pipeline [0.341 seconds]
+● completed target penguins_data [0.007 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.366 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
