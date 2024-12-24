@@ -111,7 +111,6 @@ Then, add one more target to the pipeline using the `tar_quarto()` function like
 
 tar_dir({
   library(quarto)
-  write_example_plan(9)
   readr::read_lines("https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd") |>
     readr::write_lines("penguin_report.qmd")
   # Run it
@@ -135,36 +134,25 @@ How does this work?
 
 The answer lies **inside** the `penguin_report.qmd` file. Let's look at the start of the file:
 
-``````{markdown}
----
-title: "Simpson's Paradox in Palmer Penguins"
-format:
-  html:
-    toc: true
-execute: 
-  echo: false
----
-
 ```{r}
-#| label: load
-#| message: false
-targets::tar_load(penguin_models_augmented)
-targets::tar_load(penguin_models_summary)
+#| label: show-penguin-report-qmd
+#| echo: FALSE
+#| results: 'asis'
 
-library(tidyverse)
+penguin_qmd <- readr::read_lines("https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd")
+
+cat("````{.markdown}\n")
+cat(penguin_qmd[1:24], sep = "\n")
+cat("\n````")
 ```
-
-This is an example analysis of penguins on the Palmer Archipelago in Antarctica.
-
-``````
 
 The lines in between `---` and `---` at the very beginning are called the "YAML header", and contain directions about how to render the document.
 
 The R code to be executed is specified by the lines between `` ```{r}  `` and `` ``` ``. This is called a "code chunk", since it is a portion of code interspersed within prose text.
 
-Take a closer look at the R code chunk. Notice the two calls to `targets::tar_load()`. Do you remember what that function does? It loads the targets built during the workflow.
+Take a closer look at the R code chunk. Notice the use of `targets::tar_load()`. Do you remember what that function does? It loads the targets built during the workflow.
 
-Now things should make a bit more sense: `targets` knows that the report depends on the targets built during the workflow, `penguin_models_augmented` and `penguin_models_summary`, **because they are loaded in the report with `tar_load()`.**
+Now things should make a bit more sense: `targets` knows that the report depends on the targets built during the workflow like `combined_summary` and `species_summary` **because they are loaded in the report with `tar_load()`.**
 
 ## Generating dynamic content
 
@@ -174,13 +162,13 @@ The call to `tar_load()` at the start of `penguin_report.qmd` is really the key 
 
 ## Challenge: Spot the dynamic contents
 
-Read through `penguin_report.qmd` and try to find instances where the targets built during the workflow (`penguin_models_augmented` and `penguin_models_summary`) are used to dynamically produce text and plots.
+Read through `penguin_report.qmd` and try to find instances where the targets built during the workflow (`combined_summary`, etc.) are used to dynamically produce text and plots.
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
-- In the code chunk labeled `results-stats`, statistics from the models like *P*-value and adjusted *R* squared are extracted, then inserted into the text with in-line code like `` `r knitr::inline_expr("mod_stats$combined$r.squared")` ``.
+- In the code chunk labeled `results-stats`, statistics from the models like *R* squared are extracted, then inserted into the text with in-line code like `` `r knitr::inline_expr("combined_r2")` ``.
 
-- There are two figures, one for the combined model and one for the separate model (code chunks labeled `fig-combined-plot` and `fig-separate-plot`, respectively). These are built using the points predicted from the model in `penguin_models_augmented`.
+- There are two figures, one for the combined model and one for the separate models (code chunks labeled `fig-combined-plot` and `fig-separate-plot`, respectively). These are built using the points predicted from the model in `combined_predictions` and `species_predictions`.
 
 ::::::::::::::::::::::::::::::::::
 
