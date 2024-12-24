@@ -53,6 +53,8 @@ Only to then discover that there was an error in the code, and when you fix it, 
 Through writing functions you can reduce this back and forth, and create a more efficient workflow for yourself.
 When you find the bug, you fix it in a single place, the function you made, and each subsequent call of that function will now be fixed.
 
+Furthermore, `targets` makes extensive use of custom functions, so a basic understanding of how they work is very important to successfully using it.
+
 ### Writing a function
 
 There is not much difference between writing your own function and writing other code in R, you are still coding with R!
