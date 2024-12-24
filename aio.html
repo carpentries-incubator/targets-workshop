@@ -1276,7 +1276,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(penguins_data)</code> or by running
 <code>tar_load(penguins_data)</code> followed by
@@ -1374,7 +1374,7 @@ date?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -2596,7 +2596,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-branch"><p>Content from <a href="branch.html">Branching</a></p>
 <hr>
-<p>Last updated on 2024-12-13 |
+<p>Last updated on 2024-12-24 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2697,8 +2697,8 @@ without distinction:</p>
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
 ▶ dispatched target combined_model
-● completed target combined_model [0.024 seconds, 11.201 kilobytes]
-▶ ended pipeline [0.273 seconds]</code></pre>
+● completed target combined_model [0.035 seconds, 11.201 kilobytes]
+▶ ended pipeline [0.279 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -2727,9 +2727,10 @@ model is highly significant.</p>
 there are three species of penguins in the dataset. It is possible that
 the relationship between bill depth and length <strong>varies by
 species</strong>.</p>
-<p>We should probably test some alternative models. These could include
-models that add a parameter for species, or add an interaction effect
-between species and bill length.</p>
+<p>Let’s try making one model <em>per</em> species (three models total)
+to see how that does (this is technically not the correct statistical
+approach, but our focus here is to learn <code>targets</code>, not
+statistics).</p>
 <p>Now our workflow is getting more complicated. This is what a workflow
 for such an analysis might look like <strong>without branching</strong>
 (make sure to add <code><a href="https://broom.tidymodels.org/" class="external-link">library(broom)</a></code> to
@@ -2755,18 +2756,23 @@ for such an analysis might look like <strong>without branching</strong>
 <span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">penguins_data</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">penguins_data</span></span>
+<span>  adelie_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu">filter</span><span class="op">(</span><span class="va">penguins_data</span>, <span class="va">species</span> <span class="op">==</span> <span class="st">"Adelie"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">penguins_data</span></span>
+<span>  chinstrap_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu">filter</span><span class="op">(</span><span class="va">penguins_data</span>, <span class="va">species</span> <span class="op">==</span> <span class="st">"Chinstrap"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  gentoo_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu">filter</span><span class="op">(</span><span class="va">penguins_data</span>, <span class="va">species</span> <span class="op">==</span> <span class="st">"Gentoo"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Get model summaries</span></span>
 <span>  combined_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">combined_model</span><span class="op">)</span>,</span>
-<span>  species_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">species_model</span><span class="op">)</span>,</span>
-<span>  interaction_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">interaction_model</span><span class="op">)</span></span>
+<span>  adelie_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">adelie_model</span><span class="op">)</span>,</span>
+<span>  chinstrap_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">chinstrap_model</span><span class="op">)</span>,</span>
+<span>  gentoo_summary <span class="op">=</span> <span class="fu">glance</span><span class="op">(</span><span class="va">gentoo_model</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -2776,39 +2782,64 @@ for such an analysis might look like <strong>without branching</strong>
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
 ✔ skipped target combined_model
-▶ dispatched target interaction_model
-● completed target interaction_model [0.003 seconds, 19.283 kilobytes]
-▶ dispatched target species_model
-● completed target species_model [0.001 seconds, 15.439 kilobytes]
+▶ dispatched target adelie_model
+● completed target adelie_model [0.008 seconds, 6.475 kilobytes]
+▶ dispatched target gentoo_model
+● completed target gentoo_model [0.002 seconds, 5.88 kilobytes]
+▶ dispatched target chinstrap_model
+● completed target chinstrap_model [0.002 seconds, 4.535 kilobytes]
 ▶ dispatched target combined_summary
 ● completed target combined_summary [0.006 seconds, 348 bytes]
-▶ dispatched target interaction_summary
-● completed target interaction_summary [0.003 seconds, 348 bytes]
-▶ dispatched target species_summary
-● completed target species_summary [0.003 seconds, 347 bytes]
-▶ ended pipeline [0.28 seconds]</code></pre>
+▶ dispatched target adelie_summary
+● completed target adelie_summary [0.003 seconds, 348 bytes]
+▶ dispatched target gentoo_summary
+● completed target gentoo_summary [0.003 seconds, 348 bytes]
+▶ dispatched target chinstrap_summary
+● completed target chinstrap_summary [0.004 seconds, 348 bytes]
+▶ ended pipeline [0.29 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">adelie_summary</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code># A tibble: 1 × 12
-  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
-      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
-1     0.769         0.767 0.953      375. 3.65e-107     3  -467.  944.  963.     307.         338   342</code></pre>
+  r.squared adj.r.squared sigma statistic     p.value    df logLik   AIC   BIC deviance df.residual  nobs
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+1     0.153         0.148  1.12      27.0 0.000000667     1  -231.  468.  477.     188.         149   151</code></pre>
 </div>
 <p>So this way of writing the pipeline works, but is repetitive: we have
 to call <code>glance()</code> each time we want to obtain summary
 statistics for each model. Furthermore, each summary target
-(<code>combined_summary</code>, etc.) is explicitly named and typed out
+(<code>adelie_summary</code>, etc.) is explicitly named and typed out
 manually. It would be fairly easy to make a typo and end up with the
 wrong model being summarized.</p>
+<p>Before moving on, let’s define another <strong>custom
+function</strong> function: <code>model_glance()</code>. You will need
+to write custom functions frequently when using <code>targets</code>, so
+it’s good to get used to it!</p>
+<p>As the name <code>model_glance()</code> suggests (it is good to write
+functions with names that indicate their purpose), this will build a
+model then immediately run <code>glance()</code> on it. The reason for
+doing so is that we get a <strong>dataframe as a result</strong>, which
+is very helpful for branching, as we will see in the next section. Save
+this in <code>R/functions.R</code>:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_glance_orig</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
+</div>
 </section><section><h2 class="section-heading" id="example-with-branching">Example with branching<a class="anchor" aria-label="anchor" href="#example-with-branching"></a>
 </h2>
 <hr class="half-width">
@@ -2816,8 +2847,9 @@ wrong model being summarized.</p>
 <h3 id="first-attempt">First attempt<a class="anchor" aria-label="anchor" href="#first-attempt"></a>
 </h3>
 <p>Let’s see how to write the same plan using <strong>dynamic
-branching</strong>:</p>
-<div class="codewrapper sourceCode" id="cb10">
+branching</strong> (after running it, we will go through the new version
+in detail to understand each step):</p>
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2833,22 +2865,22 @@ branching</strong>:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Build models</span></span>
-<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Group data</span></span>
+<span>  <span class="fu">tar_group_by</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_grouped</span>,</span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="va">species</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="co"># Build combined model with all species together</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Build one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance</span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span><span class="cn">NA</span></span></code></pre>
 </div>
 <p>What is going on here?</p>
 <p>First, let’s look at the messages provided by
@@ -2859,20 +2891,22 @@ branching</strong>:</p>
 <pre class="output" tabindex="0"><code>✔ skipped target penguins_data_raw_file
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
-▶ dispatched target models
-● completed target models [0.005 seconds, 43.009 kilobytes]
-▶ dispatched branch model_summaries_812e3af782bee03f
-● completed branch model_summaries_812e3af782bee03f [0.006 seconds, 348 bytes]
-▶ dispatched branch model_summaries_2b8108839427c135
-● completed branch model_summaries_2b8108839427c135 [0.003 seconds, 347 bytes]
-▶ dispatched branch model_summaries_533cd9a636c3e05b
-● completed branch model_summaries_533cd9a636c3e05b [0.003 seconds, 348 bytes]
-● completed pattern model_summaries
-▶ ended pipeline [0.302 seconds]</code></pre>
+▶ dispatched target combined_summary
+● completed target combined_summary [0.008 seconds, 348 bytes]
+▶ dispatched target penguins_data_grouped
+● completed target penguins_data_grouped [0.007 seconds, 1.527 kilobytes]
+▶ dispatched branch species_summary_7fe6634f7c7f6a77
+● completed branch species_summary_7fe6634f7c7f6a77 [0.006 seconds, 348 bytes]
+▶ dispatched branch species_summary_c580675a85977909
+● completed branch species_summary_c580675a85977909 [0.004 seconds, 348 bytes]
+▶ dispatched branch species_summary_af3bb92d1b0f36d3
+● completed branch species_summary_af3bb92d1b0f36d3 [0.006 seconds, 348 bytes]
+● completed pattern species_summary
+▶ ended pipeline [0.303 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
-like model_summaries_812e3af782bee03f, then one overall
-<code>model_summaries</code> target. That is the result of specifying
+like species_summary_7fe6634f7c7f6a77, then one overall
+<code>species_summary</code> target. That is the result of specifying
 targets using branching: each of the smaller targets are the “branches”
 that comprise the overall target. Since <code>targets</code> has no way
 of knowing ahead of time how many branches there will be or what they
@@ -2880,71 +2914,70 @@ represent, it names each one using this series of numbers and letters
 (the “hash”). <code>targets</code> builds each branch one at a time,
 then combines them into the overall target.</p>
 <p>Next, let’s look in more detail about how the workflow is set up,
-starting with how we defined the models:</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode r" tabindex="0"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>  <span class="co"># Build models</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  models <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    <span class="at">combined_model =</span> <span class="fu">lm</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>      bill_depth_mm <span class="sc">~</span> bill_length_mm, <span class="at">data =</span> penguins_data),</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    <span class="at">species_model =</span> <span class="fu">lm</span>(</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>      bill_depth_mm <span class="sc">~</span> bill_length_mm <span class="sc">+</span> species, <span class="at">data =</span> penguins_data),</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>    <span class="at">interaction_model =</span> <span class="fu">lm</span>(</span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>      bill_depth_mm <span class="sc">~</span> bill_length_mm <span class="sc">*</span> species, <span class="at">data =</span> penguins_data)</span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>  ),</span></code></pre>
-</div>
-<p>Unlike the non-branching version, we defined the models <strong>in a
-list</strong> (instead of one target per model). This is because dynamic
-branching is similar to the <code>base::apply()</code> or <a href="https://purrr.tidyverse.org/reference/map.html" class="external-link"><code>purrrr::map()</code></a>
-method of looping: it applies a function to each element of a list. So
-we need to prepare the input for looping as a list.</p>
-<p>Next, take a look at the command to build the target
-<code>model_summaries</code>.</p>
+starting with how we set up the data:</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span>  <span class="co"># Get model summaries</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance</span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre>
+<pre class="sourceCode r" tabindex="0"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>  <span class="co"># Group data</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">tar_group_by</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    penguins_data_grouped,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    penguins_data,</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    species</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  ),</span></code></pre>
 </div>
-<p>As before, the first argument is the name of the target to build, and
-the second is the command to build it.</p>
-<p>Here, we apply the <code>glance()</code> function to each element of
-<code>models</code> (the <code>[[1]]</code> is necessary because when
-the function gets applied, each element is actually a nested list, and
-we need to remove one layer of nesting).</p>
-<p>Finally, there is an argument we haven’t seen before,
-<code>pattern</code>, which indicates that this target should be built
-using dynamic branching. <code>map</code> means to apply the command to
-each element of the input list (<code>models</code>) sequentially.</p>
-<p>Now that we understand how the branching workflow is constructed,
-let’s inspect the output:</p>
+<p>Unlike the non-branching version, we added a step that <strong>groups
+the data</strong>. This is because dynamic branching is similar to the
+<a href="https://dplyr.tidyverse.org/articles/grouping.html" class="external-link"><code>tidyverse</code>
+approach</a> of applying the same function to a grouped dataframe. So we
+use the <code>tar_group_by()</code> function to specify the groups in
+our input data: one group per species.</p>
+<p>Next, take a look at the command to build the target
+<code>species_summary</code>.</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">model_summaries</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span>  <span class="co"># Build one model per species</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
+</div>
+<p>As before, the first argument to <code>tar_target()</code> is the
+name of the target to build, and the second is the command to build
+it.</p>
+<p>Here, we apply our custom <code>model_glance()</code> function to
+each group (in other words, each species) in
+<code>penguins_data_grouped</code>.</p>
+<p>Finally, there is an argument we haven’t seen before,
+<code>pattern</code>, which indicates that this target should be built
+using dynamic branching. <code>map</code> means to apply the function to
+each group of the input data (<code>penguins_data_grouped</code>)
+sequentially.</p>
+<p>Now that we understand how the branching workflow is constructed,
+let’s inspect the output:</p>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code># A tibble: 3 × 12
-  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs
-      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
-1    0.0552        0.0525 1.92       19.9 1.12e-  5     1  -708. 1422. 1433.    1256.         340   342
-2    0.769         0.767  0.953     375.  3.65e-107     3  -467.  944.  963.     307.         338   342
-3    0.770         0.766  0.955     225.  8.52e-105     5  -466.  947.  974.     306.         336   342</code></pre>
+  r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC deviance df.residual  nobs
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+1     0.153         0.148 1.12       27.0 6.67e- 7     1 -231.   468.  477.    188.          149   151
+2     0.427         0.418 0.866      49.2 1.53e- 9     1  -85.7  177.  184.     49.5          66    68
+3     0.414         0.409 0.754      85.5 1.02e-15     1 -139.   284.  292.     68.8         121   123</code></pre>
 </div>
 <p>The model summary statistics are all included in a single
 dataframe.</p>
 <p>But there’s one problem: <strong>we can’t tell which row came from
-which model!</strong> It would be unwise to assume that they are in the
-same order as the list of models.</p>
+which species!</strong> It would be unwise to assume that they are in
+the same order as the input data.</p>
 <p>This is due to the way dynamic branching works: by default, there is
 no information about the provenance of each target preserved in the
 output.</p>
@@ -2955,122 +2988,82 @@ output.</p>
 </h3>
 <p>The key to obtaining useful output from branching pipelines is to
 include the necessary information in the output of each individual
-branch. Here, we want to know the kind of model that corresponds to each
-row of the model summaries. To do that, we need to write a
-<strong>custom function</strong>. You will need to write custom
-functions frequently when using <code>targets</code>, so it’s good to
-get used to it!</p>
-<p>Here is the function. Save this in <code>R/functions.R</code>:</p>
-<div class="codewrapper sourceCode" id="cb16">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">glance_with_mod_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
-<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre>
-</div>
-<p>Our new pipeline looks almost the same as before, but this time we
-use the custom function instead of <code>glance()</code>.</p>
+branch. Here, we want to know the species that corresponds to each row
+of the model summaries.</p>
+<p>We can achieve this by modifying our <code>model_glance</code>
+function. Be sure to save it after modifying it to include a column for
+species:</p>
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="co"># Load raw data</span></span>
-<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
-<span>    <span class="va">penguins_data_raw</span>,</span>
-<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
-<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Clean data</span></span>
-<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Build models</span></span>
-<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">model_glance</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Make model</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Get species name</span></span>
+<span>  <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="fu">unique</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">$</span><span class="va">species</span><span class="op">)</span></span>
+<span>  <span class="co"># If this is the combined dataset with multiple</span></span>
+<span>  <span class="co"># species, changed name to 'combined'</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">length</span><span class="op">(</span><span class="va">species_name</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="st">"combined"</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="co"># Get model summary and add species name</span></span>
+<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>species <span class="op">=</span> <span class="va">species_name</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
+<p>Our new pipeline looks exactly the same as before; we have made a
+modification, but to a <strong>function</strong>, not the pipeline.</p>
+<p>Since <code>targets</code> tracks the contents of each custom
+function, it realizes that it needs to recompute
+<code>species_summary</code> and runs this target again with the newly
+modified function.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>✔ skipped target penguins_data_raw_file
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
-✔ skipped target models
-▶ dispatched branch model_summaries_812e3af782bee03f
-● completed branch model_summaries_812e3af782bee03f [0.012 seconds, 374 bytes]
-▶ dispatched branch model_summaries_2b8108839427c135
-● completed branch model_summaries_2b8108839427c135 [0.007 seconds, 371 bytes]
-▶ dispatched branch model_summaries_533cd9a636c3e05b
-● completed branch model_summaries_533cd9a636c3e05b [0.004 seconds, 377 bytes]
-● completed pattern model_summaries
-▶ ended pipeline [0.281 seconds]</code></pre>
+▶ dispatched target combined_summary
+● completed target combined_summary [0.021 seconds, 371 bytes]
+✔ skipped target penguins_data_grouped
+▶ dispatched branch species_summary_7fe6634f7c7f6a77
+● completed branch species_summary_7fe6634f7c7f6a77 [0.011 seconds, 368 bytes]
+▶ dispatched branch species_summary_c580675a85977909
+● completed branch species_summary_c580675a85977909 [0.006 seconds, 372 bytes]
+▶ dispatched branch species_summary_af3bb92d1b0f36d3
+● completed branch species_summary_af3bb92d1b0f36d3 [0.006 seconds, 369 bytes]
+● completed pattern species_summary
+▶ ended pipeline [0.305 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
-tell which model corresponds to which row (you may need to scroll to the
-right to see it).</p>
+tell which model corresponds to which row (the <code>.before = 1</code>
+in <code>mutate()</code> ensures that it shows up before the other
+columns).</p>
 <div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">model_summaries</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code># A tibble: 3 × 13
-  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC deviance df.residual  nobs model_name
-      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt; &lt;chr&gt;
-1    0.0552        0.0525 1.92       19.9 1.12e-  5     1  -708. 1422. 1433.    1256.         340   342 combined_model
-2    0.769         0.767  0.953     375.  3.65e-107     3  -467.  944.  963.     307.         338   342 species_model
-3    0.770         0.766  0.955     225.  8.52e-105     5  -466.  947.  974.     306.         336   342 interaction_model</code></pre>
+  species   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC deviance df.residual  nobs
+  &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+1 Adelie        0.153         0.148 1.12       27.0 6.67e- 7     1 -231.   468.  477.    188.          149   151
+2 Chinstrap     0.427         0.418 0.866      49.2 1.53e- 9     1  -85.7  177.  184.     49.5          66    68
+3 Gentoo        0.414         0.409 0.754      85.5 1.02e-15     1 -139.   284.  292.     68.8         121   123</code></pre>
 </div>
 <p>Next we will add one more target, a prediction of bill depth based on
 each model. These will be needed for plotting the models in the report.
 Such a prediction can be obtained with the <code>augment()</code>
-function of the <code>broom</code> package.</p>
-<div class="codewrapper sourceCode" id="cb21">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
-<span><span class="fu">augment</span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code># A tibble: 342 × 8
-   bill_depth_mm bill_length_mm .fitted .resid    .hat .sigma   .cooksd .std.resid
-           &lt;dbl&gt;          &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
- 1          18.7           39.1    17.6  1.14  0.00521   1.92 0.000924      0.594
- 2          17.4           39.5    17.5 -0.127 0.00485   1.93 0.0000107    -0.0663
- 3          18             40.3    17.5  0.541 0.00421   1.92 0.000168      0.282
- 4          19.3           36.7    17.8  1.53  0.00806   1.92 0.00261       0.802
- 5          20.6           39.3    17.5  3.06  0.00503   1.92 0.00641       1.59
- 6          17.8           38.9    17.6  0.222 0.00541   1.93 0.0000364     0.116
- 7          19.6           39.2    17.6  2.05  0.00512   1.92 0.00293       1.07
- 8          18.1           34.1    18.0  0.114 0.0124    1.93 0.0000223     0.0595
- 9          20.2           42      17.3  2.89  0.00329   1.92 0.00373       1.50
-10          17.1           37.8    17.7 -0.572 0.00661   1.92 0.000296     -0.298
-# ℹ 332 more rows</code></pre>
-</div>
+function of the <code>broom</code> package, and we create a custom
+function that outputs predicted points as a dataframe much like we did
+for the model summaries.</p>
 <div id="challenge-add-model-predictions-to-the-workflow" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -3091,22 +3084,32 @@ will need to define a custom function just like we did for
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<p>Define the new function as <code>augment_with_mod_name()</code>. It
-is the same as <code>glance_with_mod_name()</code>, but use
-<code>augment()</code> instead of <code>glance()</code>:</p>
-<div class="codewrapper sourceCode" id="cb23">
+<p>Define the new function as <code>model_augment()</code>. It is the
+same as <code>model_glance()</code>, but use <code>augment()</code>
+instead of <code>glance()</code>:</p>
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">augment_with_mod_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
-<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">model_augment</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Make model</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Get species name</span></span>
+<span>  <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="fu">unique</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">$</span><span class="va">species</span><span class="op">)</span></span>
+<span>  <span class="co"># If this is the combined dataset with multiple</span></span>
+<span>  <span class="co"># species, changed name to 'combined'</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">length</span><span class="op">(</span><span class="va">species_name</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="st">"combined"</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="co"># Get model summary and add species name</span></span>
 <span>  <span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>species <span class="op">=</span> <span class="va">species_name</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Add the step to the workflow:</p>
-<div class="codewrapper sourceCode" id="cb24">
+<div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -3122,32 +3125,110 @@ is the same as <code>glance_with_mod_name()</code>, but use
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Build models</span></span>
-<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Group data</span></span>
+<span>  <span class="fu">tar_group_by</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_grouped</span>,</span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="va">species</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="co"># Get summary of combined model with all species together</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get summary of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model predictions</span></span>
+<span>  <span class="co"># Get predictions of combined model with all species together</span></span>
+<span>  combined_predictions <span class="op">=</span> <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get predictions of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_predictions</span>,</span>
-<span>    <span class="fu">augment_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_predictions</span>,</span>
+<span>    <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="further-simplify-the-workflow">Further simplify the workflow<a class="anchor" aria-label="anchor" href="#further-simplify-the-workflow"></a>
+</h3>
+<p>You may have noticed that we can further simplify the workflow: there
+is no need to have separate <code>penguins_data</code> and
+<code>penguins_data_grouped</code> dataframes. In general it is best to
+keep the number of named objects as small as possible to make it easier
+to reason about your code. Let’s combine the cleaning and grouping step
+into a single command:</p>
+<div class="codewrapper sourceCode" id="cb23">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
+<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tar_plan</span><span class="op">(</span></span>
+<span>  <span class="co"># Load raw data</span></span>
+<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Clean and group data</span></span>
+<span>  <span class="fu">tar_group_by</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>    <span class="va">species</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get summary of combined model with all species together</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get summary of one model per species</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="co"># Get predictions of combined model with all species together</span></span>
+<span>  combined_predictions <span class="op">=</span> <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get predictions of one model per species</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">species_predictions</span>,</span>
+<span>    <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="cn">NA</span></span></code></pre>
+</div>
+<p>And run it once more:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>✔ skipped target penguins_data_raw_file
+✔ skipped target penguins_data_raw
+▶ dispatched target penguins_data
+● completed target penguins_data [0.023 seconds, 1.527 kilobytes]
+▶ dispatched target combined_summary
+● completed target combined_summary [0.015 seconds, 371 bytes]
+▶ dispatched branch species_summary_1598bb4431372f32
+● completed branch species_summary_1598bb4431372f32 [0.011 seconds, 368 bytes]
+▶ dispatched branch species_summary_6b9109ba2e9d27fd
+● completed branch species_summary_6b9109ba2e9d27fd [0.006 seconds, 372 bytes]
+▶ dispatched branch species_summary_625f9fbc7f62298a
+● completed branch species_summary_625f9fbc7f62298a [0.006 seconds, 369 bytes]
+● completed pattern species_summary
+▶ dispatched target combined_predictions
+● completed target combined_predictions [0.007 seconds, 25.908 kilobytes]
+▶ dispatched branch species_predictions_1598bb4431372f32
+● completed branch species_predictions_1598bb4431372f32 [0.009 seconds, 11.581 kilobytes]
+▶ dispatched branch species_predictions_6b9109ba2e9d27fd
+● completed branch species_predictions_6b9109ba2e9d27fd [0.005 seconds, 6.248 kilobytes]
+▶ dispatched branch species_predictions_625f9fbc7f62298a
+● completed branch species_predictions_625f9fbc7f62298a [0.005 seconds, 9.626 kilobytes]
+● completed pattern species_predictions
+▶ ended pipeline [0.379 seconds]</code></pre>
 </div>
 <div id="best-practices-for-branching" class="callout">
 <div class="callout-square">
@@ -3157,9 +3238,11 @@ is the same as <code>glance_with_mod_name()</code>, but use
 <h3 class="callout-title">Best practices for branching</h3>
 <div class="callout-content">
 <p>Dynamic branching is designed to work well with
-<strong>dataframes</strong> (tibbles).</p>
-<p>So if possible, write your custom functions to accept dataframes as
-input and return them as output, and always include any necessary
+<strong>dataframes</strong> (it can also use <a href="https://books.ropensci.org/targets/dynamic.html#list-iteration" class="external-link">lists</a>,
+but that is more advanced, so we recommend using dataframes when
+possible).</p>
+<p>It is recommended to write your custom functions to accept dataframes
+as input and return them as output, and always include any necessary
 metadata as a column or columns.</p>
 </div>
 </div>
@@ -3225,7 +3308,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-parallel"><p>Content from <a href="parallel.html">Parallel Processing</a></p>
 <hr>
-<p>Last updated on 2024-12-13 |
+<p>Last updated on 2024-12-24 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/parallel.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3317,60 +3400,79 @@ this:</p>
 <span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
 <span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Clean data</span></span>
-<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Build models</span></span>
-<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Clean and group data</span></span>
+<span>  <span class="fu">tar_group_by</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>    <span class="va">species</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="co"># Get summary of combined model with all species together</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get summary of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model predictions</span></span>
+<span>  <span class="co"># Get predictions of combined model with all species together</span></span>
+<span>  combined_predictions <span class="op">=</span> <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get predictions of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_predictions</span>,</span>
-<span>    <span class="fu">augment_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_predictions</span>,</span>
+<span>    <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span><span class="cn">NA</span></span></code></pre>
 </div>
 <p>There is still one more thing we need to modify only for the purposes
 of this demo: if we ran the analysis in parallel now, you wouldn’t
 notice any difference in compute time because the functions are so
 fast.</p>
-<p>So let’s make “slow” versions of <code>glance_with_mod_name()</code>
-and <code>augment_with_mod_name()</code> using the
-<code>Sys.sleep()</code> function, which just tells the computer to wait
-some number of seconds. This will simulate a long-running computation
-and enable us to see the difference between running sequentially and in
-parallel.</p>
+<p>So let’s make “slow” versions of <code>model_glance()</code> and
+<code>model_augment()</code> using the <code>Sys.sleep()</code>
+function, which just tells the computer to wait some number of seconds.
+This will simulate a long-running computation and enable us to see the
+difference between running sequentially and in parallel.</p>
 <p>Add these functions to <code>functions.R</code> (you can copy-paste
 the original ones, then modify them):</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">glance_with_mod_name_slow</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="va">model_glance_slow</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">Sys.sleep</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
-<span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
-<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
+<span>  <span class="co"># Make model</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Get species name</span></span>
+<span>  <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="fu">unique</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">$</span><span class="va">species</span><span class="op">)</span></span>
+<span>  <span class="co"># If this is the combined dataset with multiple</span></span>
+<span>  <span class="co"># species, changed name to 'combined'</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">length</span><span class="op">(</span><span class="va">species_name</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="st">"combined"</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="co"># Get model summary and add species name</span></span>
+<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>species <span class="op">=</span> <span class="va">species_name</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="va">augment_with_mod_name_slow</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">model_augment_slow</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">Sys.sleep</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
-<span>  <span class="va">model_name</span> <span class="op">&lt;-</span> <span class="fu">names</span><span class="op">(</span><span class="va">model_in_list</span><span class="op">)</span></span>
-<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_in_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">mutate</span><span class="op">(</span>model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span>
+<span>  <span class="co"># Make model</span></span>
+<span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lm</span><span class="op">(</span></span>
+<span>    <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Get species name</span></span>
+<span>  <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="fu">unique</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">$</span><span class="va">species</span><span class="op">)</span></span>
+<span>  <span class="co"># If this is the combined dataset with multiple</span></span>
+<span>  <span class="co"># species, changed name to 'combined'</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">length</span><span class="op">(</span><span class="va">species_name</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="st">"combined"</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="co"># Get model summary and add species name</span></span>
+<span>  <span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>species <span class="op">=</span> <span class="va">species_name</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Then, change the plan to use the “slow” version of the functions:</p>
@@ -3394,54 +3496,57 @@ the original ones, then modify them):</p>
 <span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
 <span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Clean data</span></span>
-<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Build models</span></span>
-<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Clean and group data</span></span>
+<span>  <span class="fu">tar_group_by</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>    <span class="va">species</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="co"># Get summary of combined model with all species together</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance_slow</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get summary of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance_with_mod_name_slow</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance_slow</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model predictions</span></span>
+<span>  <span class="co"># Get predictions of combined model with all species together</span></span>
+<span>  combined_predictions <span class="op">=</span> <span class="fu">model_augment_slow</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get predictions of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_predictions</span>,</span>
-<span>    <span class="fu">augment_with_mod_name_slow</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_predictions</span>,</span>
+<span>    <span class="fu">model_augment_slow</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span><span class="cn">NA</span></span></code></pre>
 </div>
 <p>Finally, run the pipeline with <code>tar_make()</code> as normal.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip target models
-• start branch model_predictions_5ad4cec5
-• start branch model_predictions_c73912d5
-• start branch model_predictions_91696941
-• start branch model_summaries_5ad4cec5
-• start branch model_summaries_c73912d5
-• start branch model_summaries_91696941
-• built branch model_predictions_5ad4cec5 [4.884 seconds]
-• built branch model_predictions_c73912d5 [4.896 seconds]
-• built branch model_predictions_91696941 [4.006 seconds]
-• built pattern model_predictions
-• built branch model_summaries_5ad4cec5 [4.011 seconds]
-• built branch model_summaries_c73912d5 [4.011 seconds]
-• built branch model_summaries_91696941 [4.011 seconds]
-• built pattern model_summaries
-• end pipeline [15.153 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipped target penguins_data_raw_file
+✔ skipped target penguins_data_raw
+✔ skipped target penguins_data
+▶ dispatched target combined_summary
+▶ dispatched branch species_summary_1598bb4431372f32
+● completed target combined_summary [4.669 seconds, 371 bytes]
+▶ dispatched branch species_summary_6b9109ba2e9d27fd
+● completed branch species_summary_1598bb4431372f32 [4.67 seconds, 368 bytes]
+▶ dispatched branch species_summary_625f9fbc7f62298a
+● completed branch species_summary_6b9109ba2e9d27fd [4.009 seconds, 372 bytes]
+▶ dispatched target combined_predictions
+● completed branch species_summary_625f9fbc7f62298a [4.012 seconds, 369 bytes]
+● completed pattern species_summary
+▶ dispatched branch species_predictions_1598bb4431372f32
+● completed target combined_predictions [4.014 seconds, 25.911 kilobytes]
+▶ dispatched branch species_predictions_6b9109ba2e9d27fd
+● completed branch species_predictions_1598bb4431372f32 [4.013 seconds, 11.585 kilobytes]
+▶ dispatched branch species_predictions_625f9fbc7f62298a
+● completed branch species_predictions_6b9109ba2e9d27fd [4.011 seconds, 6.252 kilobytes]
+● completed branch species_predictions_625f9fbc7f62298a [4.01 seconds, 9.629 kilobytes]
+● completed pattern species_predictions
+▶ ended pipeline [18.813 seconds]</code></pre>
 </div>
 <p>Notice that although the time required to build each individual
 target is about 4 seconds, the total time to run the entire workflow is
@@ -3480,7 +3585,7 @@ any links that you are not going to use.
  -->
 </div></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p>Last updated on 2024-12-13 |
+<p>Last updated on 2024-12-24 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3602,37 +3707,37 @@ able to right click in your browser and select “Save As”).</p>
 <span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
 <span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Clean data</span></span>
-<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Build models</span></span>
-<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Clean and group data</span></span>
+<span>  <span class="fu">tar_group_by</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>    <span class="va">species</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="co"># Get summary of combined model with all species together</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get summary of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model predictions</span></span>
+<span>  <span class="co"># Get predictions of combined model with all species together</span></span>
+<span>  combined_predictions <span class="op">=</span> <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get predictions of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_predictions</span>,</span>
-<span>    <span class="fu">augment_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_predictions</span>,</span>
+<span>    <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Generate report</span></span>
 <span>  <span class="fu">tar_quarto</span><span class="op">(</span></span>
 <span>    <span class="va">penguin_report</span>,</span>
 <span>    path <span class="op">=</span> <span class="st">"penguin_report.qmd"</span>,</span>
-<span>    quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"targets"</span>, <span class="st">"tidyverse"</span><span class="op">)</span></span>
+<span>    quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span><span class="cn">NA</span></span>
+<span><span class="cn">NA</span></span></code></pre>
 </div>
 <p>The function to generate the report is <code>tar_quarto()</code>,
 from the <code>tarchetypes</code> package.</p>
@@ -3668,13 +3773,18 @@ file:</p>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="in">#| label: load</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="in">targets::tar_load(</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="in">  c(combined_summary,</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="in">    species_summary,</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="in">    combined_predictions,</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="in">    species_predictions</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="in">  )</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>The goal of this analysis is to determine how bill length and depth are related in three species of penguins from Antarctica.</span></code></pre>
 </div>
 <p>The lines in between <code>---</code> and <code>---</code> at the
 very beginning are called the “YAML header”, and contain directions
@@ -3682,14 +3792,14 @@ about how to render the document.</p>
 <p>The R code to be executed is specified by the lines between
 <code>```{r}</code> and <code>```</code>. This is called a “code chunk”,
 since it is a portion of code interspersed within prose text.</p>
-<p>Take a closer look at the R code chunk. Notice the two calls to
+<p>Take a closer look at the R code chunk. Notice the use of
 <code>targets::tar_load()</code>. Do you remember what that function
 does? It loads the targets built during the workflow.</p>
 <p>Now things should make a bit more sense: <code>targets</code> knows
-that the report depends on the targets built during the workflow,
-<code>penguin_models_augmented</code> and
-<code>penguin_models_summary</code>, <strong>because they are loaded in
-the report with <code>tar_load()</code>.</strong></p>
+that the report depends on the targets built during the workflow like
+<code>combined_summary</code> and <code>species_summary</code>
+<strong>because they are loaded in the report with
+<code>tar_load()</code>.</strong></p>
 </section><section><h2 class="section-heading" id="generating-dynamic-content">Generating dynamic content<a class="anchor" aria-label="anchor" href="#generating-dynamic-content"></a>
 </h2>
 <hr class="half-width">
@@ -3707,8 +3817,7 @@ text and plots.</p>
 <div class="callout-content">
 <p>Read through <code>penguin_report.qmd</code> and try to find
 instances where the targets built during the workflow
-(<code>penguin_models_augmented</code> and
-<code>penguin_models_summary</code>) are used to dynamically produce
+(<code>combined_summary</code>, etc.) are used to dynamically produce
 text and plots.</p>
 </div>
 </div>
@@ -3722,14 +3831,14 @@ text and plots.</p>
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
-from the models like <em>P</em>-value and adjusted <em>R</em> squared
-are extracted, then inserted into the text with in-line code like
-<code>`r mod_stats$combined$r.squared`</code>.</p></li>
+from the models like <em>R</em> squared are extracted, then inserted
+into the text with in-line code like
+<code>`r combined_r2`</code>.</p></li>
 <li><p>There are two figures, one for the combined model and one for the
-separate model (code chunks labeled <code>fig-combined-plot</code> and
+separate models (code chunks labeled <code>fig-combined-plot</code> and
 <code>fig-separate-plot</code>, respectively). These are built using the
-points predicted from the model in
-<code>penguin_models_augmented</code>.</p></li>
+points predicted from the model in <code>combined_predictions</code> and
+<code>species_predictions</code>.</p></li>
 </ul>
 </div>
 </div>
@@ -3817,7 +3926,7 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
-  "dateCreated": "2024-12-13",
+  "dateCreated": "2024-12-24",
   "dateModified": "2024-12-24",
   "datePublished": "2024-12-24"
 }

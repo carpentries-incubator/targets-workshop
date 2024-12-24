@@ -118,11 +118,11 @@
   Introduction to targets
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 90%" class="percentage">
-    90%
+<aside class="col-md-12 lesson-progress"><div style="width: 92%" class="percentage">
+    92%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 90%" aria-valuenow="90" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 92%" aria-valuenow="92" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -367,7 +367,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Reproducible Reports with Quarto</h1>
-        <p>Last updated on 2024-12-13 |
+        <p>Last updated on 2024-12-24 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -484,37 +484,37 @@ able to right click in your browser and select “Save As”).</p>
 <span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
 <span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Clean data</span></span>
-<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Build models</span></span>
-<span>  models <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
-<span>    combined_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    species_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>    interaction_model <span class="op">=</span> <span class="fu">lm</span><span class="op">(</span></span>
-<span>      <span class="va">bill_depth_mm</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">*</span> <span class="va">species</span>, data <span class="op">=</span> <span class="va">penguins_data</span><span class="op">)</span></span>
+<span>  <span class="co"># Clean and group data</span></span>
+<span>  <span class="fu">tar_group_by</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
+<span>    <span class="va">species</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model summaries</span></span>
+<span>  <span class="co"># Get summary of combined model with all species together</span></span>
+<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get summary of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_summaries</span>,</span>
-<span>    <span class="fu">glance_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_summary</span>,</span>
+<span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get model predictions</span></span>
+<span>  <span class="co"># Get predictions of combined model with all species together</span></span>
+<span>  combined_predictions <span class="op">=</span> <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Get predictions of one model per species</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">model_predictions</span>,</span>
-<span>    <span class="fu">augment_with_mod_name</span><span class="op">(</span><span class="va">models</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">models</span><span class="op">)</span></span>
+<span>    <span class="va">species_predictions</span>,</span>
+<span>    <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="co"># Generate report</span></span>
 <span>  <span class="fu">tar_quarto</span><span class="op">(</span></span>
 <span>    <span class="va">penguin_report</span>,</span>
 <span>    path <span class="op">=</span> <span class="st">"penguin_report.qmd"</span>,</span>
-<span>    quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    packages <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"targets"</span>, <span class="st">"tidyverse"</span><span class="op">)</span></span>
+<span>    quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span><span class="cn">NA</span></span>
+<span><span class="cn">NA</span></span></code></pre>
 </div>
 <p>The function to generate the report is <code>tar_quarto()</code>,
 from the <code>tarchetypes</code> package.</p>
@@ -548,13 +548,18 @@ file:</p>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="in">#| label: load</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_augmented)</span></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="in">targets::tar_load(penguin_models_summary)</span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>This is an example analysis of penguins on the Palmer Archipelago in Antarctica.</span></code></pre>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="in">targets::tar_load(</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="in">  c(combined_summary,</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="in">    species_summary,</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="in">    combined_predictions,</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="in">    species_predictions</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="in">  )</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>The goal of this analysis is to determine how bill length and depth are related in three species of penguins from Antarctica.</span></code></pre>
 </div>
 <p>The lines in between <code>---</code> and <code>---</code> at the
 very beginning are called the “YAML header”, and contain directions
@@ -562,14 +567,14 @@ about how to render the document.</p>
 <p>The R code to be executed is specified by the lines between
 <code>```{r}</code> and <code>```</code>. This is called a “code chunk”,
 since it is a portion of code interspersed within prose text.</p>
-<p>Take a closer look at the R code chunk. Notice the two calls to
+<p>Take a closer look at the R code chunk. Notice the use of
 <code>targets::tar_load()</code>. Do you remember what that function
 does? It loads the targets built during the workflow.</p>
 <p>Now things should make a bit more sense: <code>targets</code> knows
-that the report depends on the targets built during the workflow,
-<code>penguin_models_augmented</code> and
-<code>penguin_models_summary</code>, <strong>because they are loaded in
-the report with <code>tar_load()</code>.</strong></p>
+that the report depends on the targets built during the workflow like
+<code>combined_summary</code> and <code>species_summary</code>
+<strong>because they are loaded in the report with
+<code>tar_load()</code>.</strong></p>
 </section><section><h2 class="section-heading" id="generating-dynamic-content">Generating dynamic content<a class="anchor" aria-label="anchor" href="#generating-dynamic-content"></a></h2>
 <hr class="half-width"><p>The call to <code>tar_load()</code> at the start of
 <code>penguin_report.qmd</code> is really the key to generating an
@@ -585,8 +590,7 @@ text and plots.</p>
 <div class="callout-content">
 <p>Read through <code>penguin_report.qmd</code> and try to find
 instances where the targets built during the workflow
-(<code>penguin_models_augmented</code> and
-<code>penguin_models_summary</code>) are used to dynamically produce
+(<code>combined_summary</code>, etc.) are used to dynamically produce
 text and plots.</p>
 </div>
 </div>
@@ -599,14 +603,14 @@ text and plots.</p>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul><li><p>In the code chunk labeled <code>results-stats</code>, statistics
-from the models like <em>P</em>-value and adjusted <em>R</em> squared
-are extracted, then inserted into the text with in-line code like
-<code>`r mod_stats$combined$r.squared`</code>.</p></li>
+from the models like <em>R</em> squared are extracted, then inserted
+into the text with in-line code like
+<code>`r combined_r2`</code>.</p></li>
 <li><p>There are two figures, one for the combined model and one for the
-separate model (code chunks labeled <code>fig-combined-plot</code> and
+separate models (code chunks labeled <code>fig-combined-plot</code> and
 <code>fig-separate-plot</code>, respectively). These are built using the
-points predicted from the model in
-<code>penguin_models_augmented</code>.</p></li>
+points predicted from the model in <code>combined_predictions</code> and
+<code>species_predictions</code>.</p></li>
 </ul></div>
 </div>
 </div>
@@ -701,8 +705,8 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/quarto.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/quarto.html",
-  "dateCreated": "2024-12-13",
-  "dateModified": "2024-12-13",
+  "dateCreated": "2024-12-24",
+  "dateModified": "2024-12-24",
   "datePublished": "2024-12-24"
 }
 
