@@ -333,7 +333,7 @@ Let's combine the cleaning and grouping step into a single command:
 And run it once more:
 
 ```{r}
-#| label: example-model-show-8
+#| label: example-model-hide-8
 #| echo: false
 pushd(plan_6_dir)
 # simulate already running the plan once
@@ -350,9 +350,9 @@ popd()
 
 ## Best practices for branching
 
-Dynamic branching is designed to work well with **dataframes** (tibbles).
+Dynamic branching is designed to work well with **dataframes** (it can also use [lists](https://books.ropensci.org/targets/dynamic.html#list-iteration), but that is more advanced, so we recommend using dataframes when possible).
 
-So if possible, write your custom functions to accept dataframes as input and return them as output, and always include any necessary metadata as a column or columns.
+It is recommended to write your custom functions to accept dataframes as input and return them as output, and always include any necessary metadata as a column or columns.
 
 :::::::::::::::::::::::::::::::::::::
 
