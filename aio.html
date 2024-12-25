@@ -267,7 +267,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="cache.html">3. Loading Workflow Objects</a>
+        <a href="functions.html">3. A brief introduction to functions</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -279,7 +279,7 @@
 <div class="accordion accordion-flush" id="accordionFlush5">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading5">
-        <a href="lifecycle.html">4. The Workflow Lifecycle</a>
+        <a href="cache.html">4. Loading Workflow Objects</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -291,7 +291,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="organization.html">5. Best Practices for targets Project Organization</a>
+        <a href="lifecycle.html">5. The Workflow Lifecycle</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -303,7 +303,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="packages.html">6. Managing Packages</a>
+        <a href="organization.html">6. Best Practices for targets Project Organization</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -315,7 +315,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="files.html">7. Working with External Files</a>
+        <a href="packages.html">7. Managing Packages</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -327,7 +327,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="branch.html">8. Branching</a>
+        <a href="files.html">8. Working with External Files</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -339,7 +339,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="parallel.html">9. Parallel Processing</a>
+        <a href="branch.html">9. Branching</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -351,7 +351,19 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="quarto.html">10. Reproducible Reports with Quarto</a>
+        <a href="parallel.html">10. Parallel Processing</a>
+    </div>
+<!--/div.accordion-header-->
+
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush12">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading12">
+        <a href="quarto.html">11. Reproducible Reports with Quarto</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -588,7 +600,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p>Last updated on 2024-12-24 |
+<p>Last updated on 2024-12-25 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -771,7 +783,9 @@ you downloaded to your computer when you installed the package).</p>
 and manipulating the data. We don’t have time to cover all the details
 about using <code>tidyverse</code> now, but if you want to learn more
 about it, please see the <a href="https://datacarpentry.org/R-ecology-lesson/03-dplyr.html" class="external-link">“Manipulating,
-analyzing and exporting data with tidyverse” lesson</a>.</p>
+analyzing and exporting data with tidyverse” lesson</a>, or the
+Carpentry incubator lesson <a href="https://carpentries-incubator.github.io/r-tidyverse-4-datasets/" class="external-link">R
+and the tidyverse for working with datasets</a>.</p>
 <p>Let’s load the data with <code>read_csv()</code>.</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -930,12 +944,12 @@ something like this:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>▶ dispatched target penguins_csv_file
-● completed target penguins_csv_file [0.001 seconds, 190 bytes]
+● completed target penguins_csv_file [0.002 seconds, 190 bytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.201 seconds, 10.403 kilobytes]
+● completed target penguins_data_raw [0.191 seconds, 10.403 kilobytes]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.007 seconds, 1.614 kilobytes]
-▶ ended pipeline [0.366 seconds]</code></pre>
+● completed target penguins_data [0.006 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.346 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
@@ -964,6 +978,306 @@ worklow</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
+</section></section><section id="aio-functions"><p>Content from <a href="functions.html">A brief introduction to functions</a></p>
+<hr>
+<p>Last updated on 2024-12-25 |
+
+        <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/functions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What are functions?</li>
+<li>Why should we know how to write them?</li>
+<li>What are the main components of a function?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Understand the usefulness of custom functions</li>
+<li>Understand the basic concepts around writing functions</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section><h2 class="section-heading" id="create-a-function">Create a function<a class="anchor" aria-label="anchor" href="#create-a-function"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="about-functions">About functions<a class="anchor" aria-label="anchor" href="#about-functions"></a>
+</h3>
+<p>Functions in R are something we are used to thinking of as something
+that comes from a package. You find, install and use specialized
+functions from packages to get your work done.</p>
+<p>But you can, and arguably should, be writing your own functions too!
+Functions are a great way of making it easy to repeat the same operation
+but with different settings. How many times have you copy-pasted the
+exact same code in your script, only to change a couple of things (a
+variable, an input etc.) before running it again? Only to then discover
+that there was an error in the code, and when you fix it, you need to
+remember to do so in all the places where you copied that code.</p>
+<p>Through writing functions you can reduce this back and forth, and
+create a more efficient workflow for yourself. When you find the bug,
+you fix it in a single place, the function you made, and each subsequent
+call of that function will now be fixed.</p>
+<p>Furthermore, <code>targets</code> makes extensive use of custom
+functions, so a basic understanding of how they work is very important
+to successfully using it.</p>
+</div>
+<div class="section level3">
+<h3 id="writing-a-function">Writing a function<a class="anchor" aria-label="anchor" href="#writing-a-function"></a>
+</h3>
+<p>There is not much difference between writing your own function and
+writing other code in R, you are still coding with R! Let’s imagine we
+want to convert the millimeter measurements in the Penguins data to
+centimeters.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    bill_length_cm <span class="op">=</span> <span class="va">bill_length_mm</span> <span class="op">/</span> <span class="fl">10</span>,</span>
+<span>    bill_depth_cm <span class="op">=</span> <span class="va">bill_depth_mm</span> <span class="op">/</span> <span class="fl">10</span></span>
+<span>  <span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 344 × 10
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
+# ℹ 334 more rows
+# ℹ 4 more variables: sex &lt;fct&gt;, year &lt;int&gt;, bill_length_cm &lt;dbl&gt;,
+#   bill_depth_cm &lt;dbl&gt;</code></pre>
+</div>
+<p>This is not a complicated operation, but we might want to make a
+convenient custom function that can do this conversion for us
+anyways.</p>
+<p>To write a function, you need to use the <code>function()</code>
+function. With this function we provide what will be the input arguments
+of the function inside its parentheses, and what the function will
+subsequently do with those input arguments in curly braces
+<code>{}</code> after the function parentheses. The object name we
+assign this to, will become the function’s name.</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">argument1</span>, <span class="va">argument2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># the things the function will do</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># call the function</span></span>
+<span><span class="fu">my_function</span><span class="op">(</span><span class="fl">1</span>, <span class="st">"something"</span><span class="op">)</span></span></code></pre>
+</div>
+<p>For our mm to cm conversion the function would look like so:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mm2cm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">/</span> <span class="fl">10</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># use it</span></span>
+<span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    bill_length_cm <span class="op">=</span> <span class="fu">mm2cm</span><span class="op">(</span><span class="va">bill_length_mm</span><span class="op">)</span>,</span>
+<span>    bill_depth_cm <span class="op">=</span> <span class="fu">mm2cm</span><span class="op">(</span><span class="va">bill_depth_mm</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># A tibble: 344 × 10
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
+# ℹ 334 more rows
+# ℹ 4 more variables: sex &lt;fct&gt;, year &lt;int&gt;, bill_length_cm &lt;dbl&gt;,
+#   bill_depth_cm &lt;dbl&gt;</code></pre>
+</div>
+<p>Our custom function will now transform any numerical input by
+dividing it by 10.</p>
+</div>
+<div class="section level3">
+<h3 id="make-a-function-from-existing-code">Make a function from existing code<a class="anchor" aria-label="anchor" href="#make-a-function-from-existing-code"></a>
+</h3>
+<p>Many times, we might already have a piece of code that we’d like to
+use to create a function. For instance, we’ve copy-pasted a section of
+code several times and realize that this piece of code is repetitive, so
+a function is in order. Or, you are converting your workflow to
+<code>targets</code>, and need to change your script into a series of
+functions that <code>targets</code> will call.</p>
+<p>Recall the code snippet we had to clean our Penguins data:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins_data_raw</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>    bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>    bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<p>We need to adapt this code to become a function, and this function
+needs a single argument, which is the dataset it should clean.</p>
+<p>It should look like this:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">penguins_data_raw</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">select</span><span class="op">(</span></span>
+<span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
+</div>
+<div id="rstudio-function-extraction" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="rstudio-function-extraction" class="callout-inner">
+<h3 class="callout-title">RStudio function extraction</h3>
+<div class="callout-content">
+<p>RStudio also has a handy helper to extract a function from a piece of
+code. Once you have basic familiarity with functions, it may help you
+figure out the necessary input when turning code into a function.</p>
+<p>To use it, highlight the piece of code you want to make into a
+function. In our case that is the entire pipeline from
+<code>penguins_data_raw</code> to the <code>drop_na()</code> statement.
+Once you have done this, in RStudio go to the “Code” section in the top
+bar, and select “Extract function” from the list. A prompt will open
+asking you to hit enter, and you should have the following code in your
+script where the cursor was.</p>
+<p>This function will not work however, because it contains more stuff
+than is needed as an argument. This is because tidyverse uses
+non-standard evaluation, and we can write unquoted column names inside
+the <code>select()</code>. The function extractor thinks that all
+unquoted (or back-ticked) text in the code is a reference to an object.
+You will need to do some manual cleaning to get the function working,
+which is why its more convenient if you have a little experience with
+functions already.</p>
+</div>
+</div>
+</div>
+<div id="challenge-write-a-function-that-takes-a-numerical-vector-and-returns-its-mean-divided-by-10." class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-write-a-function-that-takes-a-numerical-vector-and-returns-its-mean-divided-by-10." class="callout-inner">
+<h3 class="callout-title">Challenge: Write a function that takes a numerical vector and returns its mean divided by 10.</h3>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">vecmean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span></span>
+<span><span class="op">}</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Congratulations, you’ve started a whole new journey into functions!
+This was a very brief introduction to functions, and you will likely
+need to get more help in learning about them. There is an episode in the
+R Novice lesson from Carpentries that is <a href="https://swcarpentry.github.io/r-novice-gapminder/10-functions.html" class="external-link">all
+about functions</a> which you might want to read.</p>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points</h3>
+<div class="callout-content">
+<ul>
+<li>Functions are crucial when repeating the same code many times with
+minor differences</li>
+<li>RStudio’s “Extract function” tool can help you get started with
+converting code into functions</li>
+<li>Functions are an essential part of how <code>targets</code>
+works.</li>
+</ul>
+</div>
+</div>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</div>
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
 <p>Last updated on 2024-12-13 |
@@ -1276,7 +1590,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(penguins_data)</code> or by running
 <code>tar_load(penguins_data)</code> followed by
@@ -1374,7 +1688,7 @@ date?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -2415,7 +2729,7 @@ while tracking its contents?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2556,7 +2870,7 @@ to upper case then write it out again:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>hello_caps_out</code> has
 changed (is “invalidated”), and re-runs the code to make it, thus
@@ -3082,7 +3396,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -3267,7 +3581,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -3827,7 +4141,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
@@ -3927,8 +4241,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
   "dateCreated": "2024-12-24",
-  "dateModified": "2024-12-24",
-  "datePublished": "2024-12-24"
+  "dateModified": "2024-12-25",
+  "datePublished": "2024-12-25"
 }
 
   </script><script>
