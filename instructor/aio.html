@@ -268,7 +268,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="functions.html">3. A brief introduction to functions</a>
+        <a href="functions.html">3. A Brief Introduction to Functions</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -470,7 +470,7 @@ reproducibility</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Introduce the idea of reproducibility and why / who
 would want to use <code>targets</code></p>
@@ -616,10 +616,10 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p>Last updated on 2024-12-25 |
+<p>Last updated on 2024-12-26 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 12 minutes</p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 40 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -659,7 +659,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: First chance to get hands dirty by writing a very
 simple workflow</p>
@@ -722,67 +722,15 @@ clicking on the <code>.Rproj</code> file in your file explorer (try it
 by quitting RStudio then navigating in your file browser to your
 Desktop, opening the “targets-demo” folder, and double clicking
 <code>targets-demo.Rproj</code>).</p>
-<p>OK, now that our project is set up, we are ready to start using
-<code>targets</code>!</p>
+<p>OK, now that our project is set up, we are (almost) ready to start
+using <code>targets</code>!</p>
 </div>
-</section><section><h2 class="section-heading" id="create-a-_targets-r-file">Create a <code>_targets.R</code> file<a class="anchor" aria-label="anchor" href="#create-a-_targets-r-file"></a>
+</section><section><h2 class="section-heading" id="background-non-targets-version">Background: non-<code>targets</code> version<a class="anchor" aria-label="anchor" href="#background-non-targets-version"></a>
 </h2>
 <hr class="half-width">
-<p>Every <code>targets</code> project must include a special file,
-called <code>_targets.R</code> in the main project folder (the “project
-root”). The <code>_targets.R</code> file includes the specification of
-the workflow: directions for R to run your analysis, kind of like a
-recipe. By using the <code>_targets.R</code> file, you won’t have to
-remember to run specific scripts in a certain order. Instead, R will do
-it for you (more reproducibility points)!</p>
-<div class="section level3">
-<h3 id="anatomy-of-a-_targets-r-file">Anatomy of a <code>_targets.R</code> file<a class="anchor" aria-label="anchor" href="#anatomy-of-a-_targets-r-file"></a>
-</h3>
-<p>We will now start to write a <code>_targets.R</code> file.
-Fortunately, <code>targets</code> comes with a function to help us do
-this.</p>
-<p>In the R console, first load the <code>targets</code> package with
-<code><a href="https://docs.ropensci.org/targets/" class="external-link">library(targets)</a></code>, then run the command
-<code>tar_script()</code>.</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
-<span><span class="fu">tar_script</span><span class="op">(</span><span class="op">)</span></span></code></pre>
-</div>
-<p>Nothing will happen in the console, but in the file viewer, you
-should see a new file, <code>_targets.R</code> appear. Open it using the
-File menu or by clicking on it.</p>
-<p>We can see this default <code>_targets.R</code> file includes three
-main parts:</p>
-<ul>
-<li>Loading packages with <code>library()</code>
-</li>
-<li>Defining a custom function with <code>function()</code>
-</li>
-<li>Defining a list with <code>list()</code>.</li>
-</ul>
-<p>The last part, the list, is the most important part of the
-<code>_targets.R</code> file. It defines the steps in the workflow. The
-<code>_targets.R</code> file must always end with this list.</p>
-<p>Furthermore, each item in the list is a call of the
-<code>tar_target()</code> function. The first argument of
-<code>tar_target()</code> is name of the target to build, and the second
-argument is the command used to build it. Note that the name of the
-target is <strong>unquoted</strong>, that is, it is written without any
-surrounding quotation marks.</p>
-</div>
-</section><section><h2 class="section-heading" id="set-up-_targets-r-file-to-run-example-analysis">Set up <code>_targets.R</code> file to run example analysis<a class="anchor" aria-label="anchor" href="#set-up-_targets-r-file-to-run-example-analysis"></a>
-</h2>
-<hr class="half-width">
-<div class="section level3">
-<h3 id="background-non-targets-version">Background: non-<code>targets</code> version<a class="anchor" aria-label="anchor" href="#background-non-targets-version"></a>
-</h3>
-<p>We will use this template to start building our analysis of bill
-shape in penguins. First though, to get familiar with the functions and
-packages we’ll use, let’s run the code like you would in a “normal” R
-script without using <code>targets</code>.</p>
+<p>First though, to get familiar with the functions and packages we’ll
+use, let’s run the code like you would in a “normal” R script without
+using <code>targets</code>.</p>
 <p>Recall that we are using the <code>palmerpenguins</code> R package to
 obtain the data. This package actually includes two variations of the
 dataset: one is an external CSV file with the raw data, and another is
@@ -793,7 +741,7 @@ data</strong> as the starting point for our analysis too.</p>
 <code>palmerpenguins</code> provides the path to the raw data CSV file
 (it is inside the <code>palmerpenguins</code> R package source code that
 you downloaded to your computer when you installed the package).</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -817,7 +765,7 @@ analyzing and exporting data with tidyverse” lesson</a>, or the
 Carpentry incubator lesson <a href="https://carpentries-incubator.github.io/r-tidyverse-4-datasets/" class="external-link">R
 and the tidyverse for working with datasets</a>.</p>
 <p>Let’s load the data with <code>read_csv()</code>.</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -873,7 +821,7 @@ Artwork by <span class="citation">@allison_horst</span>.</div>
 </figure><p>Let’s clean up the data to make it easier to use for downstream
 analyses. We will also remove any rows with missing data, because this
 could cause errors for some functions later.</p>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -909,25 +857,184 @@ could cause errors for some functions later.</p>
 10 Adelie Penguin (Pygoscelis adeliae)           37.8          17.1
 # ℹ 332 more rows</code></pre>
 </div>
-<p>That’s better!</p>
+<p>We have not run the full analysis yet, but this is enough to get us
+started with the transition to using <code>targets</code>.</p>
+</section><section><h2 class="section-heading" id="targets-version">
+<code>targets</code> version<a class="anchor" aria-label="anchor" href="#targets-version"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="about-the-_targets-r-file">About the <code>_targets.R</code> file<a class="anchor" aria-label="anchor" href="#about-the-_targets-r-file"></a>
+</h3>
+<p>One major difference between a typical R data analysis and a
+<code>targets</code> project is that the latter must include a special
+file, called <code>_targets.R</code> in the main project folder (the
+“project root”).</p>
+<p>The <code>_targets.R</code> file includes the specification of the
+workflow: these are the directions for R to run your analysis, kind of
+like a recipe. By using the <code>_targets.R</code> file, <strong>you
+won’t have to remember to run specific scripts in a certain
+order</strong>; instead, R will do it for you! This is a <strong>huge
+win</strong>, both for your future self and anybody else trying to
+reproduce your analysis.</p>
 </div>
 <div class="section level3">
-<h3 id="targets-version">
-<code>targets</code> version<a class="anchor" aria-label="anchor" href="#targets-version"></a>
+<h3 id="writing-the-initial-_targets-r-file">Writing the initial <code>_targets.R</code> file<a class="anchor" aria-label="anchor" href="#writing-the-initial-_targets-r-file"></a>
 </h3>
-<p>What does this look like using <code>targets</code>?</p>
-<p>The biggest difference is that we need to <strong>put each step of
-the workflow into the list at the end</strong>.</p>
-<p>We also define a custom function for the data cleaning step. That is
-because the list of targets at the end <strong>should look like a
-high-level summary of your analysis</strong>. You want to avoid lengthy
-chunks of code when defining the targets; instead, put that code in the
-custom functions. The other steps (setting the file path and loading the
-data) are each just one function call so there’s not much point in
-putting those into their own custom functions.</p>
-<p>Finally, each step in the workflow is defined with the
-<code>tar_target()</code> function.</p>
+<p>We will now start to write a <code>_targets.R</code> file.
+Fortunately, <code>targets</code> comes with a function to help us do
+this.</p>
+<p>In the R console, first load the <code>targets</code> package with
+<code><a href="https://docs.ropensci.org/targets/" class="external-link">library(targets)</a></code>, then run the command
+<code>tar_script()</code>.</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="fu">tar_script</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<p>Nothing will happen in the console, but in the file viewer, you
+should see a new file, <code>_targets.R</code> appear. Open it using the
+File menu or by clicking on it.</p>
 <div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="co"># This is an example _targets.R file. Every</span></span>
+<span><span class="co"># {targets} pipeline needs one.</span></span>
+<span><span class="co"># Use tar_script() to create _targets.R and tar_edit()</span></span>
+<span><span class="co"># to open it again for editing.</span></span>
+<span><span class="co"># Then, run tar_make() to run the pipeline</span></span>
+<span><span class="co"># and tar_read(data_summary) to view the results.</span></span>
+<span></span>
+<span><span class="co"># Define custom functions and other global objects.</span></span>
+<span><span class="co"># This is where you write source(\"R/functions.R\")</span></span>
+<span><span class="co"># if you keep your functions in external scripts.</span></span>
+<span><span class="va">summarize_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">colMeans</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Set target-specific options such as packages:</span></span>
+<span><span class="co"># tar_option_set(packages = "utils") # nolint</span></span>
+<span></span>
+<span><span class="co"># End this file with a list of target objects.</span></span>
+<span><span class="fu">list</span><span class="op">(</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">data</span>, <span class="fu">data.frame</span><span class="op">(</span>x <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu">sample.int</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">data_summary</span>, <span class="fu">summarize_data</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span> <span class="co"># Call your custom functions.</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>Don’t worry about the details of this file. Instead, notice that that
+it includes three main parts:</p>
+<ul>
+<li>Loading packages with <code>library()</code>
+</li>
+<li>Defining a custom function with <code>function()</code>
+</li>
+<li>Defining a list with <code>list()</code>.</li>
+</ul>
+<p>You may not have used <code>function()</code> before. If not, that’s
+OK; we will cover this in more detail in the <a href="functions.html">next episode</a>, so we will ignore it for
+now.</p>
+<p>The last part, the list, is the <strong>most important part</strong>
+of the <code>_targets.R</code> file. It defines the steps in the
+workflow. The <code>_targets.R</code> file <strong>must always end with
+this list</strong>.</p>
+<p>Furthermore, each item in the list is a call of the
+<code>tar_target()</code> function. The first argument of
+<code>tar_target()</code> is name of the target to build, and the second
+argument is the command used to build it. Note that the name of the
+target is <strong>unquoted</strong>, that is, it is written without any
+surrounding quotation marks.</p>
+</div>
+</section><section><h2 class="section-heading" id="modifying-_targets-r-to-run-the-example-analysis">Modifying <code>_targets.R</code> to run the example analysis<a class="anchor" aria-label="anchor" href="#modifying-_targets-r-to-run-the-example-analysis"></a>
+</h2>
+<hr class="half-width">
+<p>First, let’s load all of the packages we need for our workflow. Add
+<code><a href="https://tidyverse.tidyverse.org" class="external-link">library(tidyverse)</a></code> and <code><a href="https://allisonhorst.github.io/palmerpenguins/" class="external-link">library(palmerpenguins)</a></code>
+to the top of <code>_targets.R</code> after
+<code><a href="https://docs.ropensci.org/targets/" class="external-link">library(targets)</a></code>.</p>
+<p>Next, we can delete the <code>function()</code> statement since we
+won’t be using that just yet (we will come back to custom functions
+soon!).</p>
+<p>The last, and trickiest, part is correctly defining the workflow in
+the list at the end of the file.</p>
+<p>From <a href="#background-non-targets-version">the
+non-<code>targets</code> version</a>, you can see we have three steps so
+far:</p>
+<ol style="list-style-type: decimal">
+<li>Define the path to the CSV file with the raw penguins data.</li>
+<li>Read the CSV file.</li>
+<li>Clean the raw data.</li>
+</ol>
+<p>Each of these will be one item in the list. Furthermore, we need to
+write each item using the <code>tar_target()</code> function. Recall
+that we write the <code>tar_target()</code> function by writing the
+<strong>name of the target to build</strong> first and the
+<strong>command to build it</strong> second.</p>
+<div id="choosing-good-target-names" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="choosing-good-target-names" class="callout-inner">
+<h3 class="callout-title">Choosing good target names</h3>
+<div class="callout-content">
+<p>The name of each target could be anything you like, but it is
+strongly recommended to <strong>choose names that reflect what the
+target actually contains</strong>.</p>
+<p>For example, <code>penguins_data_raw</code> for the raw data loaded
+from the CSV file and not <code>x</code>.</p>
+<p>Your future self will thank you!</p>
+</div>
+</div>
+</div>
+<div id="challenge-use-tar_target" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-use-tar_target" class="callout-inner">
+<h3 class="callout-title">Challenge: Use <code>tar_target()</code>
+</h3>
+<div class="callout-content">
+<p>Can you use <code>tar_target()</code> to define the first step in the
+workflow (setting the path to the CSV file with the penguins data)?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_target</span><span class="op">(</span>name <span class="op">=</span> <span class="va">penguins_csv_file</span>, command <span class="op">=</span> <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+<p>The first two arguments of <code>tar_target()</code> are the
+<strong>name</strong> of the target, followed by the
+<strong>command</strong> to build it.</p>
+<p>These arguments are used so frequently we will typically omit the
+argument names, instead writing it like this:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Now that we’ve seen how to define the first target, let’s continue
+and add the rest.</p>
+<p>Once you’ve done that, this is how <code>_targets.R</code> should
+look:</p>
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -935,21 +1042,22 @@ putting those into their own custom functions.</p>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">penguins_data_raw</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">select</span><span class="op">(</span></span>
-<span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
-<span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
-<span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
 <span><span class="fu">list</span><span class="op">(</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data_raw</span>, <span class="fu">read_csv</span><span class="op">(</span></span>
-<span>    <span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data</span>, <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data_raw</span>,</span>
+<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_data</span>,</span>
+<span>    <span class="va">penguins_data_raw</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">select</span><span class="op">(</span></span>
+<span>        species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>        bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>        bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <p>I have set <code>show_col_types = FALSE</code> in
@@ -957,14 +1065,13 @@ putting those into their own custom functions.</p>
 column types were set correctly by default (character for species and
 numeric for bill length and depth), so we don’t need to see the warning
 it would otherwise issue.</p>
-</div>
 </section><section><h2 class="section-heading" id="run-the-workflow">Run the workflow<a class="anchor" aria-label="anchor" href="#run-the-workflow"></a>
 </h2>
 <hr class="half-width">
 <p>Now that we have a workflow, we can run it with the
 <code>tar_make()</code> function. Try running it, and you should see
 something like this:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -974,15 +1081,45 @@ something like this:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>▶ dispatched target penguins_csv_file
-● completed target penguins_csv_file [0.002 seconds, 190 bytes]
+● completed target penguins_csv_file [0.001 seconds, 190 bytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.191 seconds, 10.403 kilobytes]
+● completed target penguins_data_raw [0.18 seconds, 10.403 kilobytes]
 ▶ dispatched target penguins_data
 ● completed target penguins_data [0.006 seconds, 1.614 kilobytes]
-▶ ended pipeline [0.346 seconds]</code></pre>
+▶ ended pipeline [0.323 seconds]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
+<div id="the-workflow-cannot-be-run-interactively" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="the-workflow-cannot-be-run-interactively" class="callout-inner">
+<h3 class="callout-title">The workflow cannot be run interactively</h3>
+<div class="callout-content">
+<p>You may be used to running R code interactively by selecting lines
+and pressing the “Run” button (or using the keyboard shortcut) in
+RStudio or your IDE of choice.</p>
+<p>You <em>could</em> run the list at the of <code>_targets.R</code>
+this way, but it will not execute the workflow (it will return a list
+instead).</p>
+<p><strong>The only way to run the workflow is with
+<code>tar_make()</code>.</strong></p>
+<p>You do not need to select and run anything interactively in
+<code>_targets.R</code>. In fact, you do not even need to have the
+<code>_targets.R</code> file open to run the workflow with
+<code>tar_make()</code>—try it for yourself!</p>
+<p>Similarly, <strong>you must not write <code>tar_make()</code> in the
+<code>_targets.R</code> file</strong>; you should only use
+<code>tar_make()</code> as a direct command at the R console.</p>
+</div>
+</div>
+</div>
+<p>Remember, now that we are using <code>targets</code>, <strong>the
+only thing you need to do to replicate your analysis is run
+<code>tar_make()</code></strong>.</p>
+<p>This is true no matter how long or complicated your analysis
+becomes.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1008,12 +1145,12 @@ worklow</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</section></section><section id="aio-functions"><p>Content from <a href="functions.html">A brief introduction to functions</a></p>
+</section></section><section id="aio-functions"><p>Content from <a href="functions.html">A Brief Introduction to Functions</a></p>
 <hr>
-<p>Last updated on 2024-12-25 |
+<p>Last updated on 2024-12-26 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/functions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 21 minutes</p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 40 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -1058,12 +1195,9 @@ have learners who have no experience with them.</p>
 </div>
 </div>
 </div>
-<section><h2 class="section-heading" id="create-a-function">Create a function<a class="anchor" aria-label="anchor" href="#create-a-function"></a>
+<section><h2 class="section-heading" id="about-functions">About functions<a class="anchor" aria-label="anchor" href="#about-functions"></a>
 </h2>
 <hr class="half-width">
-<div class="section level3">
-<h3 id="about-functions">About functions<a class="anchor" aria-label="anchor" href="#about-functions"></a>
-</h3>
 <p>Functions in R are something we are used to thinking of as something
 that comes from a package. You find, install and use specialized
 functions from packages to get your work done.</p>
@@ -1081,40 +1215,21 @@ call of that function will now be fixed.</p>
 <p>Furthermore, <code>targets</code> makes extensive use of custom
 functions, so a basic understanding of how they work is very important
 to successfully using it.</p>
-</div>
 <div class="section level3">
 <h3 id="writing-a-function">Writing a function<a class="anchor" aria-label="anchor" href="#writing-a-function"></a>
 </h3>
 <p>There is not much difference between writing your own function and
 writing other code in R, you are still coding with R! Let’s imagine we
-want to convert the millimeter measurements in the Penguins data to
+want to convert the millimeter measurements in the penguins data to
 centimeters.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    bill_length_cm <span class="op">=</span> <span class="va">bill_length_mm</span> <span class="op">/</span> <span class="fl">10</span>,</span>
 <span>    bill_depth_cm <span class="op">=</span> <span class="va">bill_depth_mm</span> <span class="op">/</span> <span class="fl">10</span></span>
@@ -1149,7 +1264,7 @@ of the function inside its parentheses, and what the function will
 subsequently do with those input arguments in curly braces
 <code>{}</code> after the function parentheses. The object name we
 assign this to, will become the function’s name.</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1160,15 +1275,22 @@ assign this to, will become the function’s name.</p>
 <span><span class="fu">my_function</span><span class="op">(</span><span class="fl">1</span>, <span class="st">"something"</span><span class="op">)</span></span></code></pre>
 </div>
 <p>For our mm to cm conversion the function would look like so:</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm2cm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">/</span> <span class="fl">10</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co"># use it</span></span>
-<span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
+<span><span class="op">}</span></span></code></pre>
+</div>
+<p>Our custom function will now transform any numerical input by
+dividing it by 10.</p>
+<p>Let’s try it out:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    bill_length_cm <span class="op">=</span> <span class="fu">mm2cm</span><span class="op">(</span><span class="va">bill_length_mm</span><span class="op">)</span>,</span>
 <span>    bill_depth_cm <span class="op">=</span> <span class="fu">mm2cm</span><span class="op">(</span><span class="va">bill_depth_mm</span><span class="op">)</span></span>
@@ -1194,8 +1316,8 @@ assign this to, will become the function’s name.</p>
 # ℹ 4 more variables: sex &lt;fct&gt;, year &lt;int&gt;, bill_length_cm &lt;dbl&gt;,
 #   bill_depth_cm &lt;dbl&gt;</code></pre>
 </div>
-<p>Our custom function will now transform any numerical input by
-dividing it by 10.</p>
+<p>Congratulations, you’ve created and used your first custom
+function!</p>
 </div>
 <div class="section level3">
 <h3 id="make-a-function-from-existing-code">Make a function from existing code<a class="anchor" aria-label="anchor" href="#make-a-function-from-existing-code"></a>
@@ -1206,8 +1328,8 @@ code several times and realize that this piece of code is repetitive, so
 a function is in order. Or, you are converting your workflow to
 <code>targets</code>, and need to change your script into a series of
 functions that <code>targets</code> will call.</p>
-<p>Recall the code snippet we had to clean our Penguins data:</p>
-<div class="codewrapper sourceCode" id="cb8">
+<p>Recall the code snippet we had to clean our penguins data:</p>
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1222,7 +1344,7 @@ functions that <code>targets</code> will call.</p>
 <p>We need to adapt this code to become a function, and this function
 needs a single argument, which is the dataset it should clean.</p>
 <p>It should look like this:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1236,6 +1358,9 @@ needs a single argument, which is the dataset it should clean.</p>
 <span>    <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
+<p>Add this function to <code>_targets.R</code> after the part where you
+load packages with <code>library()</code> and before the list at the
+end.</p>
 <div id="rstudio-function-extraction" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -1282,7 +1407,7 @@ functions already.</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1294,11 +1419,82 @@ functions already.</p>
 </div>
 </div>
 </div>
-<p>Congratulations, you’ve started a whole new journey into functions!
-This was a very brief introduction to functions, and you will likely
-need to get more help in learning about them. There is an episode in the
-R Novice lesson from Carpentries that is <a href="https://swcarpentry.github.io/r-novice-gapminder/10-functions.html" class="external-link">all
-about functions</a> which you might want to read.</p>
+</div>
+</section><section><h2 class="section-heading" id="using-functions-in-the-workflow">Using functions in the workflow<a class="anchor" aria-label="anchor" href="#using-functions-in-the-workflow"></a>
+</h2>
+<hr class="half-width">
+<p>Now that we’ve defined our custom data cleaning function, we can put
+it to use in the workflow.</p>
+<p>Can you see how this might be done?</p>
+<p>We need to delete the corresponding code from the last
+<code>tar_target()</code> and replace it with a call to the new
+function.</p>
+<p>Modify the workflow to look like this:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">targets</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">palmerpenguins</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">clean_penguin_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">penguins_data_raw</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">select</span><span class="op">(</span></span>
+<span>      species <span class="op">=</span> <span class="va">Species</span>,</span>
+<span>      bill_length_mm <span class="op">=</span> <span class="va">`Culmen Length (mm)`</span>,</span>
+<span>      bill_depth_mm <span class="op">=</span> <span class="va">`Culmen Depth (mm)`</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">list</span><span class="op">(</span></span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data_raw</span>, <span class="fu">read_csv</span><span class="op">(</span></span>
+<span>    <span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data</span>, <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>We should run the workflow again with <code>tar_make()</code> to make
+sure it is up-to-date:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_make</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+▶ dispatched target penguins_data
+● completed target penguins_data [0.093 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.242 seconds]</code></pre>
+</div>
+<p>We will learn more soon about the messages that
+<code>targets()</code> prints out.</p>
+</section><section><h2 class="section-heading" id="functions-make-it-easier-to-reason-about-code">Functions make it easier to reason about code<a class="anchor" aria-label="anchor" href="#functions-make-it-easier-to-reason-about-code"></a>
+</h2>
+<hr class="half-width">
+<p>Notice that now the list of targets at the end is starting to look
+like a high-level summary of your analysis.</p>
+<p>This is another advantage of using custom functions:
+<strong>functions allows us to separate the details of each workflow
+step from the overall workflow</strong>.</p>
+<p>To understand the overall workflow, you don’t need to know all of the
+details about how the data were cleaned; you just need to know that
+there was a cleaning step. On the other hand, if you do need to go back
+and delve into the specifics of the data cleaning, you only need to pay
+attention to what happens inside that function, and you can ignore the
+rest of the workflow. <strong>This makes it easier to reason about the
+code</strong>, and will lead to fewer bugs and ultimately save you time
+and mental energy.</p>
+<p>Here we have only scratched the surface of functions, and you will
+likely need to get more help in learning about them. For more
+information, we recommend reading this episode in the R Novice lesson
+from Carpentries that is <a href="https://swcarpentry.github.io/r-novice-gapminder/10-functions.html" class="external-link">all
+about functions</a>.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1321,10 +1517,9 @@ works.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</div>
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p>Last updated on 2024-12-13 |
+<p>Last updated on 2024-12-26 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 12 minutes</p>
@@ -1374,8 +1569,8 @@ session</li>
 <section><h2 class="section-heading" id="where-does-the-workflow-happen">Where does the workflow happen?<a class="anchor" aria-label="anchor" href="#where-does-the-workflow-happen"></a>
 </h2>
 <hr class="half-width">
-<p>So we just finished running our first workflow. Now you probably want
-to look at its output. But, if we just call the name of the object (for
+<p>So we just finished running our workflow. Now you probably want to
+look at its output. But, if we just call the name of the object (for
 example, <code>penguins_data</code>), we get an error.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2304,7 +2499,7 @@ project?</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to load packages and maintain package
 versions</p>
@@ -3075,7 +3270,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching</p>
 </div>
@@ -3537,7 +3732,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -3722,7 +3917,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -3800,7 +3995,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use parallel processing</p>
 </div>
@@ -4091,7 +4286,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to write reports with Quarto</p>
 </div>
@@ -4308,7 +4503,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
@@ -4407,9 +4602,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/aio.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/aio.html",
-  "dateCreated": "2024-12-24",
-  "dateModified": "2024-12-25",
-  "datePublished": "2024-12-25"
+  "dateCreated": "2024-12-26",
+  "dateModified": "2024-12-26",
+  "datePublished": "2024-12-26"
 }
 
   </script><script>
