@@ -1,7 +1,7 @@
 ---
-title: 'A brief introduction to functions'
-teaching: 20
-exercises: 1
+title: 'A Brief Introduction to Functions'
+teaching: 30
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -27,9 +27,7 @@ Episode summary: A very brief introduction to functions, when you have learners 
 
 
 
-## Create a function
-
-### About functions
+## About functions
 
 Functions in R are something we are used to thinking of as something that comes from a package. You find, install and use specialized functions from packages to get your work done.
 
@@ -46,28 +44,13 @@ Furthermore, `targets` makes extensive use of custom functions, so a basic under
 ### Writing a function
 
 There is not much difference between writing your own function and writing other code in R, you are still coding with R!
-Let's imagine we want to convert the millimeter measurements in the Penguins data to centimeters.
+Let's imagine we want to convert the millimeter measurements in the penguins data to centimeters.
 
 
 ``` r
 library(palmerpenguins)
 library(tidyverse)
-```
 
-``` output
-── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-``` r
 penguins |>
   mutate(
     bill_length_cm = bill_length_mm / 10,
@@ -116,7 +99,14 @@ For our mm to cm conversion the function would look like so:
 mm2cm <- function(x) {
   x / 10
 }
-# use it
+```
+
+Our custom function will now transform any numerical input by dividing it by 10. 
+
+Let's try it out:
+
+
+``` r
 penguins |>
   mutate(
     bill_length_cm = mm2cm(bill_length_mm),
@@ -143,7 +133,7 @@ penguins |>
 #   bill_depth_cm <dbl>
 ```
 
-Our custom function will now transform any numerical input by dividing it by 10. 
+Congratulations, you've created and used your first custom function!
 
 ### Make a function from existing code
 
@@ -151,7 +141,7 @@ Many times, we might already have a piece of code that we'd like to use to creat
 For instance, we've copy-pasted a section of code several times and realize that this piece of code is repetitive, so a function is in order.
 Or, you are converting your workflow to `targets`, and need to change your script into a series of functions that `targets` will call.
 
-Recall the code snippet we had to clean our Penguins data:
+Recall the code snippet we had to clean our penguins data:
 
 
 ``` r
@@ -179,6 +169,8 @@ clean_penguin_data <- function(penguins_data_raw) {
     drop_na()
 }
 ```
+
+Add this function to `_targets.R` after the part where you load packages with `library()` and before the list at the end.
 
 ::::::::::::::::: callout
 
@@ -216,9 +208,69 @@ vecmean <- function(x) {
 
 :::::::::::::::::::::::::::::::::::::
 
-Congratulations, you've started a whole new journey into functions!
-This was a very brief introduction to functions, and you will likely need to get more help in learning about them.
-There is an episode in the R Novice lesson from Carpentries that is [all about functions](https://swcarpentry.github.io/r-novice-gapminder/10-functions.html) which you might want to read.
+## Using functions in the workflow
+
+Now that we've defined our custom data cleaning function, we can put it to use in the workflow.
+
+Can you see how this might be done?
+
+We need to delete the corresponding code from the last `tar_target()` and replace it with a call to the new function.
+
+Modify the workflow to look like this:
+
+
+``` r
+library(targets)
+library(tidyverse)
+library(palmerpenguins)
+
+clean_penguin_data <- function(penguins_data_raw) {
+  penguins_data_raw |>
+    select(
+      species = Species,
+      bill_length_mm = `Culmen Length (mm)`,
+      bill_depth_mm = `Culmen Depth (mm)`
+    ) |>
+    drop_na()
+}
+
+list(
+  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_target(penguins_data_raw, read_csv(
+    penguins_csv_file, show_col_types = FALSE)),
+  tar_target(penguins_data, clean_penguin_data(penguins_data_raw))
+)
+```
+
+We should run the workflow again with `tar_make()` to make sure it is up-to-date:
+
+
+``` r
+tar_make()
+```
+
+``` output
+✔ skipped target penguins_csv_file
+✔ skipped target penguins_data_raw
+▶ dispatched target penguins_data
+● completed target penguins_data [0.093 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.242 seconds]
+```
+
+We will learn more soon about the messages that `targets()` prints out.
+
+## Functions make it easier to reason about code
+
+Notice that now the list of targets at the end is starting to look like a high-level summary of your analysis.
+
+This is another advantage of using custom functions: **functions allows us to separate the details of each workflow step from the overall workflow**.
+
+To understand the overall workflow, you don't need to know all of the details about how the data were cleaned; you just need to know that there was a cleaning step.
+On the other hand, if you do need to go back and delve into the specifics of the data cleaning, you only need to pay attention to what happens inside that function, and you can ignore the rest of the workflow.
+**This makes it easier to reason about the code**, and will lead to fewer bugs and ultimately save you time and mental energy.
+
+Here we have only scratched the surface of functions, and you will likely need to get more help in learning about them.
+For more information, we recommend reading this episode in the R Novice lesson from Carpentries that is [all about functions](https://swcarpentry.github.io/r-novice-gapminder/10-functions.html).
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 

@@ -28,7 +28,7 @@ Episode summary: Show how to get at the objects that we built
 
 ## Where does the workflow happen?
 
-So we just finished running our first workflow.
+So we just finished running our workflow.
 Now you probably want to look at its output.
 But, if we just call the name of the object (for example, `penguins_data`), we get an error.
 
