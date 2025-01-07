@@ -358,10 +358,10 @@ tar_make()
 ▶ dispatched target penguins_csv_file
 ● completed target penguins_csv_file [0.001 seconds, 190 bytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.18 seconds, 10.403 kilobytes]
+● completed target penguins_data_raw [0.126 seconds, 10.403 kilobytes]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.006 seconds, 1.614 kilobytes]
-▶ ended pipeline [0.323 seconds]
+● completed target penguins_data [0.005 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.27 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
