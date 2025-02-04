@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.4.2",
+    "Version": "4.4.0",
     "Repositories": [
       {
         "Name": "carpentries",
@@ -307,7 +307,7 @@
       "Package": "cpp11",
       "Version": "0.5.1",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://cloud.r-project.org",
       "Requirements": [
         "R"
       ],
@@ -493,7 +493,7 @@
       "Package": "fontawesome",
       "Version": "0.5.3",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://cloud.r-project.org",
       "Requirements": [
         "R",
         "htmltools",
@@ -837,7 +837,7 @@
       "Package": "knitr",
       "Version": "1.49",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://cloud.r-project.org",
       "Requirements": [
         "R",
         "evaluate",
@@ -864,7 +864,7 @@
       "Package": "later",
       "Version": "1.4.1",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://cloud.r-project.org",
       "Requirements": [
         "Rcpp",
         "rlang"
@@ -1504,7 +1504,7 @@
       "Package": "textshaping",
       "Version": "0.4.1",
       "Source": "Repository",
-      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteType": "repository",
       "RemoteUrl": "https://github.com/r-lib/textshaping",
       "RemoteRef": "v0.4.1",
       "RemoteSha": "44178e8f68df1df4e932aecaec2672d1eeb89149",
@@ -1514,7 +1514,7 @@
         "lifecycle",
         "systemfonts"
       ],
-      "Hash": "573e0d015b7fc3e555f83e254cad7533"
+      "Hash": "b6fe11b849fbabe7840ad6e7cc550cde"
     },
     "tibble": {
       "Package": "tibble",
