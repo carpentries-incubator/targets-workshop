@@ -250,11 +250,10 @@ tar_make()
 ```
 
 ``` output
-✔ skipped target penguins_csv_file
-✔ skipped target penguins_data_raw
+✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.007 seconds, 1.614 kilobytes]
-▶ ended pipeline [0.087 seconds]
+● completed target penguins_data [0.008 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.144 seconds]
 ```
 
 We will learn more soon about the messages that `targets()` prints out.
