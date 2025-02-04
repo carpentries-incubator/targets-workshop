@@ -377,7 +377,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>The Workflow Lifecycle</h1>
-        <p>Last updated on 2025-01-07 |
+        <p>Last updated on 2025-02-04 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -432,7 +432,7 @@ running the workflow again:</p>
 <pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
-✔ skipped pipeline [0.066 seconds]</code></pre>
+✔ skipped pipeline [0.073 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -476,8 +476,8 @@ need the first part of the common name to distinguish them.</p>
 <pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
 ✔ skipped target penguins_data_raw
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.016 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.102 seconds]</code></pre>
+● completed target penguins_data [0.017 seconds, 1.495 kilobytes]
+▶ ended pipeline [0.105 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -702,7 +702,7 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
-✔ skipped pipeline [0.083 seconds]</code></pre>
+✔ skipped pipeline [0.088 seconds]</code></pre>
 </div>
 <p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
 <div class="codewrapper sourceCode" id="cb13">
@@ -719,7 +719,7 @@ date, so <code>tar_make()</code> will skip everything:</p>
 ✔ skipped target penguins_data_raw
 ▶ dispatched target penguins_data
 ● completed target penguins_data [0.017 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.101 seconds]</code></pre>
+▶ ended pipeline [0.106 seconds]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -822,8 +822,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/lifecycle.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/lifecycle.html",
   "dateCreated": "2025-01-21",
-  "dateModified": "2025-01-07",
-  "datePublished": "2025-01-28"
+  "dateModified": "2025-02-04",
+  "datePublished": "2025-02-04"
 }
 
   </script><script>
