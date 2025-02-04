@@ -97,7 +97,6 @@ tar_plan(
     pattern = map(penguins_data)
   )
 )
-NA
 ```
 
 There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
@@ -188,7 +187,6 @@ tar_plan(
     pattern = map(penguins_data)
   )
 )
-NA
 ```
 
 Finally, run the pipeline with `tar_make()` as normal.
@@ -200,11 +198,11 @@ Finally, run the pipeline with `tar_make()` as normal.
 ✔ skipped target penguins_data
 ▶ dispatched target combined_summary
 ▶ dispatched branch species_summary_1598bb4431372f32
-● completed target combined_summary [4.663 seconds, 371 bytes]
+● completed target combined_summary [4.649 seconds, 371 bytes]
 ▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_1598bb4431372f32 [4.661 seconds, 368 bytes]
+● completed branch species_summary_1598bb4431372f32 [4.653 seconds, 368 bytes]
 ▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_6b9109ba2e9d27fd [4.01 seconds, 372 bytes]
+● completed branch species_summary_6b9109ba2e9d27fd [4.011 seconds, 372 bytes]
 ▶ dispatched target combined_predictions
 ● completed branch species_summary_625f9fbc7f62298a [4.01 seconds, 369 bytes]
 ● completed pattern species_summary 
@@ -213,10 +211,10 @@ Finally, run the pipeline with `tar_make()` as normal.
 ▶ dispatched branch species_predictions_6b9109ba2e9d27fd
 ● completed branch species_predictions_1598bb4431372f32 [4.012 seconds, 11.585 kilobytes]
 ▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_6b9109ba2e9d27fd [4.007 seconds, 6.252 kilobytes]
+● completed branch species_predictions_6b9109ba2e9d27fd [4.009 seconds, 6.252 kilobytes]
 ● completed branch species_predictions_625f9fbc7f62298a [4.009 seconds, 9.629 kilobytes]
 ● completed pattern species_predictions 
-▶ ended pipeline [18.892 seconds]
+▶ ended pipeline [18.829 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.

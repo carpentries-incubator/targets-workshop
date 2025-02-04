@@ -118,8 +118,6 @@ tar_plan(
     quiet = FALSE
   )
 )
-NA
-NA
 ```
 
 
