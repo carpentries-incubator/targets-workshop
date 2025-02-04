@@ -76,7 +76,7 @@ It should now look like this:
 ```{r}
 #| label = "example-model-show-setup",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_9.R")[3:42]
+#| code = readLines("files/plans/plan_9.R")[3:41]
 ```
 
 There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
@@ -99,7 +99,7 @@ Then, change the plan to use the "slow" version of the functions:
 ```{r}
 #| label = "example-model-show-9",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_10.R")[3:42]
+#| code = readLines("files/plans/plan_10.R")[3:41]
 ```
 
 Finally, run the pipeline with `tar_make()` as normal.
