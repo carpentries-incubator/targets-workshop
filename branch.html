@@ -472,8 +472,8 @@ without distinction:</p>
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
 ▶ dispatched target combined_model
-● completed target combined_model [0.148 seconds, 11.201 kilobytes]
-▶ ended pipeline [0.257 seconds]</code></pre>
+● completed target combined_model [0.023 seconds, 11.201 kilobytes]
+▶ ended pipeline [0.118 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -560,18 +560,18 @@ for such an analysis might look like <strong>without branching</strong>
 ▶ dispatched target adelie_model
 ● completed target adelie_model [0.008 seconds, 6.475 kilobytes]
 ▶ dispatched target gentoo_model
-● completed target gentoo_model [0.003 seconds, 5.88 kilobytes]
+● completed target gentoo_model [0.002 seconds, 5.88 kilobytes]
 ▶ dispatched target chinstrap_model
-● completed target chinstrap_model [0.002 seconds, 4.535 kilobytes]
+● completed target chinstrap_model [0.001 seconds, 4.535 kilobytes]
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.006 seconds, 348 bytes]
+● completed target combined_summary [0.005 seconds, 348 bytes]
 ▶ dispatched target adelie_summary
 ● completed target adelie_summary [0.003 seconds, 348 bytes]
 ▶ dispatched target gentoo_summary
 ● completed target gentoo_summary [0.003 seconds, 348 bytes]
 ▶ dispatched target chinstrap_summary
 ● completed target chinstrap_summary [0.003 seconds, 348 bytes]
-▶ ended pipeline [0.314 seconds]</code></pre>
+▶ ended pipeline [0.262 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -651,8 +651,7 @@ in detail to understand each step):</p>
 <span>    <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span>,</span>
 <span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data_grouped</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="cn">NA</span></span></code></pre>
+<span><span class="op">)</span></span></code></pre>
 </div>
 <p>What is going on here?</p>
 <p>First, let’s look at the messages provided by
@@ -664,17 +663,17 @@ in detail to understand each step):</p>
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.016 seconds, 348 bytes]
+● completed target combined_summary [0.013 seconds, 348 bytes]
 ▶ dispatched target penguins_data_grouped
-● completed target penguins_data_grouped [0.008 seconds, 1.527 kilobytes]
+● completed target penguins_data_grouped [0.006 seconds, 1.527 kilobytes]
 ▶ dispatched branch species_summary_7fe6634f7c7f6a77
-● completed branch species_summary_7fe6634f7c7f6a77 [0.005 seconds, 348 bytes]
+● completed branch species_summary_7fe6634f7c7f6a77 [0.004 seconds, 348 bytes]
 ▶ dispatched branch species_summary_c580675a85977909
 ● completed branch species_summary_c580675a85977909 [0.003 seconds, 348 bytes]
 ▶ dispatched branch species_summary_af3bb92d1b0f36d3
-● completed branch species_summary_af3bb92d1b0f36d3 [0.004 seconds, 348 bytes]
+● completed branch species_summary_af3bb92d1b0f36d3 [0.003 seconds, 348 bytes]
 ● completed pattern species_summary
-▶ ended pipeline [0.308 seconds]</code></pre>
+▶ ended pipeline [0.262 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like species_summary_7fe6634f7c7f6a77, then one overall
@@ -798,16 +797,16 @@ modified function.</p>
 ✔ skipped target penguins_data_raw
 ✔ skipped target penguins_data
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.027 seconds, 371 bytes]
+● completed target combined_summary [0.023 seconds, 371 bytes]
 ✔ skipped target penguins_data_grouped
 ▶ dispatched branch species_summary_7fe6634f7c7f6a77
-● completed branch species_summary_7fe6634f7c7f6a77 [0.011 seconds, 368 bytes]
+● completed branch species_summary_7fe6634f7c7f6a77 [0.01 seconds, 368 bytes]
 ▶ dispatched branch species_summary_c580675a85977909
-● completed branch species_summary_c580675a85977909 [0.007 seconds, 372 bytes]
+● completed branch species_summary_c580675a85977909 [0.006 seconds, 372 bytes]
 ▶ dispatched branch species_summary_af3bb92d1b0f36d3
-● completed branch species_summary_af3bb92d1b0f36d3 [0.006 seconds, 369 bytes]
+● completed branch species_summary_af3bb92d1b0f36d3 [0.005 seconds, 369 bytes]
 ● completed pattern species_summary
-▶ ended pipeline [0.334 seconds]</code></pre>
+▶ ended pipeline [0.272 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (the <code>.before = 1</code>
@@ -969,8 +968,7 @@ into a single command:</p>
 <span>    <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
 <span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="cn">NA</span></span></code></pre>
+<span><span class="op">)</span></span></code></pre>
 </div>
 <p>And run it once more:</p>
 <div class="codewrapper">
@@ -979,26 +977,26 @@ into a single command:</p>
 <pre class="output" tabindex="0"><code>✔ skipped target penguins_data_raw_file
 ✔ skipped target penguins_data_raw
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.025 seconds, 1.527 kilobytes]
+● completed target penguins_data [0.022 seconds, 1.527 kilobytes]
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.013 seconds, 371 bytes]
+● completed target combined_summary [0.012 seconds, 371 bytes]
 ▶ dispatched branch species_summary_1598bb4431372f32
 ● completed branch species_summary_1598bb4431372f32 [0.01 seconds, 368 bytes]
 ▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_6b9109ba2e9d27fd [0.006 seconds, 372 bytes]
+● completed branch species_summary_6b9109ba2e9d27fd [0.005 seconds, 372 bytes]
 ▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_625f9fbc7f62298a [0.006 seconds, 369 bytes]
+● completed branch species_summary_625f9fbc7f62298a [0.005 seconds, 369 bytes]
 ● completed pattern species_summary
 ▶ dispatched target combined_predictions
-● completed target combined_predictions [0.007 seconds, 25.908 kilobytes]
+● completed target combined_predictions [0.006 seconds, 25.908 kilobytes]
 ▶ dispatched branch species_predictions_1598bb4431372f32
-● completed branch species_predictions_1598bb4431372f32 [0.01 seconds, 11.581 kilobytes]
+● completed branch species_predictions_1598bb4431372f32 [0.008 seconds, 11.581 kilobytes]
 ▶ dispatched branch species_predictions_6b9109ba2e9d27fd
-● completed branch species_predictions_6b9109ba2e9d27fd [0.006 seconds, 6.248 kilobytes]
+● completed branch species_predictions_6b9109ba2e9d27fd [0.003 seconds, 6.248 kilobytes]
 ▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_625f9fbc7f62298a [0.006 seconds, 9.626 kilobytes]
+● completed branch species_predictions_625f9fbc7f62298a [0.003 seconds, 9.626 kilobytes]
 ● completed pattern species_predictions
-▶ ended pipeline [0.384 seconds]</code></pre>
+▶ ended pipeline [0.331 seconds]</code></pre>
 </div>
 <div id="best-practices-for-branching" class="callout">
 <div class="callout-square">
@@ -1129,7 +1127,7 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/branch.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/branch.html",
-  "dateCreated": "2025-01-21",
+  "dateCreated": "2025-02-04",
   "dateModified": "2025-02-04",
   "datePublished": "2025-02-04"
 }
