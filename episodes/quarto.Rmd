@@ -73,7 +73,7 @@ Quarto files invert the normal way of writing code and comments: in a typical R 
 In Quarto, all text is assumed to be prose, and you use special notation to indicate which lines are R code to be evaluated.
 Once the code is evaluated, the results get inserted into a final, rendered document, which could be one of various formats.
 
-![Quarto workflow](https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/fig/03-qmd-workflow.png)
+![Quarto workflow](fig/03-qmd-workflow.png)
 
 We don't have the time to go into the details of Quarto during this lesson, but recommend the ["Introduction to Reproducible Publications with RStudio" incubator (in-development) lesson](https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio-Quarto/) for more on this topic.
 
