@@ -170,7 +170,7 @@ Let's see how to write the same plan using **dynamic branching** (after running 
 ```{r}
 #| label = "example-model-show-3",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_6.R")[2:29]
+#| code = readLines("files/plans/plan_6.R")[2:28]
 ```
 
 What is going on here?
@@ -327,7 +327,7 @@ Let's combine the cleaning and grouping step into a single command:
 ```{r}
 #| label = "example-model-show-8",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_8.R")[2:35]
+#| code = readLines("files/plans/plan_8.R")[2:34]
 ```
 
 And run it once more:
