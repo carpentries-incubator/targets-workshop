@@ -208,32 +208,7 @@ Most of the time, a single change will cascade to the rest of the downstream tar
 
 :::::::::::::::::::::::::::::::::::::::::::::::
 
-## Other ways to check workflow status
-
-The visualization is very useful, but sometimes you may be working on a server that doesn't provide graphical output, or you just want a quick textual summary of the workflow.
-There are some other useful functions that can do that.
-
-`tar_outdated()` lists only the outdated targets; that is, targets that will be built during the next run, or depend on such a target.
-If everything is up to date, it will return a zero-length character vector (`character(0)`).
-
-```{r}
-#| label: targets-outdated
-#| echo: [2]
-pushd(plan_2_dir)
-tar_outdated()
-popd()
-```
-
-`tar_progress()` shows the current status of the workflow as a dataframe.
-You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
-
-```{r}
-#| label: targets-progress
-#| echo: [2]
-pushd(plan_2_dir)
-tar_progress()
-popd()
-```
+If you are interested in learning about other ways to check pipeline status, [see the Appendix](extras.Rmd#other-ways-to-check-workflow-status).
 
 ## Granular control of targets
 
@@ -279,8 +254,6 @@ In practice, you will likely be switching between running the workflow with `tar
 
 - `targets` only runs the steps that have been affected by a change to the code
 - `tar_visnetwork()` shows the current state of the workflow as a network
-- `tar_progress()` shows the current state of the workflow as a data frame
-- `tar_outdated()` lists outdated targets
 - `tar_invalidate()` can be used to invalidate (re-run) specific targets
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

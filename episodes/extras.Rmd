@@ -1,0 +1,237 @@
+---
+title: 'Appendix: Advanced `targets`'
+teaching: 30
+exercises: 10
+---
+
+```{r}
+#| label: setup
+#| echo: FALSE
+#| message: FALSE
+#| warning: FALSE
+library(targets)
+
+if (interactive()) {
+  setwd("episodes")
+}
+
+source("files/lesson_functions.R")
+```
+
+:::::::::::::::::::::::::::::::::::::: questions 
+
+- How can `targets` pipelines be written more concisely?
+- What does the `tarchetypes` package do?
+- What alternatives are there to `tar_load()` and `tar_visnetwork()`?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Explain the relationship between the `tarchetypes` and `targets` packages
+- Be able to write more compact pipelines by using `tarchtypes` functions
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+If you've made it this far, congratulations! You know everything you need to start using `targets`.
+However, there are some more advanced features that can increase the efficiency of your workflow even more, or come in helpful in niche cases.
+We cover these here as extra content that does not need to be presented during the main lesson, but can be included as desired based on the level of the participants.
+
+Other than [the reminder about the `tarchetypes` package](#a-reminder-about-the-tarchetypes-package), which should be first, the sections below can be covered in any order.
+
+## A reminder about the `tarchetypes` package
+
+Many (but not all) of the advanced features below are provided by the [`tarchetypes` package](https://docs.ropensci.org/tarchetypes/).
+We encountered `tarchetypes` earlier in the main lesson, [for example when generating the report with `tar_quarto()`](quarto.Rmd).
+
+None of the `tarchetypes` functions are strictly necessary to use `targets`; rather, they provide shortcuts to make your code more concise and readable. These are sometimes called "syntactic sugar" because they simplify the syntax of your code (making it "sweeter") without changing its underlying behavior.
+
+When an advanced feature derives from `tarchetypes`, we will let you know.
+Remember that it is a separate package from `targets`, so if you have not already done so, you will need to install `tarchetypes` with `install.packages("tarchetypes")`, then add it to the packages that you load at the start of your workflow.
+
+## An alternate way to inspect target objects
+
+In the main lesson, [we learned about `tar_load()`](cache.Rmd#tar_load) as a way to load targets objects into your R environment.
+
+`tar_read()` is similar to `tar_load()` in that it is used to retrieve objects built by the workflow, but unlike `tar_load()`, it returns them directly as output.
+
+Let's try it with `penguins_data`.
+
+```{r}
+#| label: example-model-hide-9
+#| warning: false
+#| message: false
+#| echo: false
+
+plan_9_dir <- make_tempdir()
+pushd(plan_9_dir)
+write_example_plan("plan_9.R")
+tar_make(reporter = "silent")
+popd()
+```
+
+```{r}
+#| label: targets-read-show
+#| echo: [2]
+
+pushd(plan_9_dir)
+tar_read(penguins_data)
+popd()
+```
+
+We immediately see the contents of `penguins_data`.
+**But it has not been loaded into the environment.**
+
+You can see this if you restart your R session to clear your environment: after restarting, load your packages and functions with `source("_targets.R")`, then view the contents of `penguins_data` with `tar_read(penguins_data)`. So far so good.
+
+But if you try to run `penguins_data` now, you will get an error:
+
+```{r}
+#| label: error-2
+penguins_csv_file
+```
+
+Again, this is because whereas `tar_load()` loads the object into the environment, `tar_read()` immediately prints out the contents to the screen without saving it into your working environment.
+
+So `tar_read()` is generally better for a quick check, whereas `tar_load()` is better for actually working with data.
+
+## Other ways to check workflow status
+
+In the main lesson, [we learned about `tar_visnetwork()`](lifecycle.Rmd#visualizing-the-workflow) as a way to visualize the status of the pipeline.
+
+While this approach is very useful, sometimes you may be working on a server that doesn't provide graphical output, or you just want a quick textual summary of the workflow.
+There are some other useful functions that can do that.
+
+`tar_outdated()` lists only the outdated targets; that is, targets that will be built during the next run, or depend on such a target.
+If everything is up to date, it will return a zero-length character vector (`character(0)`).
+
+```{r}
+#| label: targets-outdated
+#| echo: [2]
+pushd(plan_9_dir)
+tar_outdated()
+popd()
+```
+
+`tar_progress()` shows the current status of the workflow as a dataframe.
+You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
+
+```{r}
+#| label: targets-progress
+#| echo: [2]
+pushd(plan_9_dir)
+tar_progress()
+popd()
+```
+
+## Storing user data files in the cache
+
+Although in the main lesson [we said that you should **never** modify contents of the `_targets` folder by hand](cache.Rmd#the-targets-cache), there is actually one exception: a special subfolder called `_targets/user`.
+This folder does not exist by default.
+You can create it if you like, and put whatever you want inside.
+
+Generally, `_targets/user` is a good place to store files that are not code, like data and output.
+
+The main reason that you may want to put such files in `_targets/user` is that it makes your project more portable.
+For example, if you want to share your code, targets workflow, and input data with a colleague, you could zip the `_targets` folder and send it to them, while sharing the code via a version control system like [Git](https://swcarpentry.github.io/git-novice/).
+
+Assuming the workflow was up-to-date when you sent it, your colleague should be able to decompress `_targets/` within the project and access all the built workflow steps just as if they had run it themselves.
+
+Of course, if you put data files in `_targets/user`, be sure not to "reset" your workflow by deleting the `_targets` folder!
+
+## A simpler way to write workflow plans
+
+The default way to specify targets in the plan is with the `tar_target()` function.
+But this way of writing plans can be a bit verbose.
+
+There is an alternative provided by the `tarchetypes` package, `tar_plan()`. `tar_plan()` is used in place of `list()` at the end of the `_targets.R` script.
+
+By using `tar_plan()`, instead of specifying targets with `tar_target()`, we can use a syntax like this: `target_name = target_command`.
+
+Let's edit the penguins workflow to use the `tar_plan()` syntax:
+
+<!-- The chunk below intersperses plan_2b with clean_penguin_data() to avoid writing it manually -->
+```{r}
+#| label = "tar-plan-show-1",
+#| eval = FALSE,
+#| code = c(readLines("files/packages.R")[1:4], "\n", readLines("files/tar_functions/clean_penguin_data.R"), "\n", readLines("files/plans/plan_2b.R")[5:9])
+```
+
+I think it is easier to read, do you?
+
+Notice that `tar_plan()` does not mean you have to write *all* targets this way; you can still use the `tar_target()` format within `tar_plan()`.
+That is because `=`, while short and easy to read, does not provide all of the customization that `targets` is capable of.
+This doesn't matter so much for now, but it will become important when you start to create more advanced `targets` workflows.
+
+## A more compact way to load data from files
+
+Recall that in the main lesson, [we loaded in data from a CSV file in two steps](files.Rmd#treating-external-files-as-a-dependency): first we specified the location (path) of the file, including `format = "file"` in the call to `tar_target()`, then we loaded the data from the file with `read_csv()`.
+These two steps were necessary because the first one allowed us to track the contents of the file, and the second actually read in the data.
+
+It turns out that this is a common pattern in `targets` workflows, so `tarchetypes` provides a shortcut to express this with a **single command**, `tar_file_read()`.
+
+```{r}
+#| label: example-file-show-4
+#| eval: FALSE
+library(targets)
+library(tarchetypes)
+
+tar_plan(
+  tar_file_read(
+    hello,
+    "_targets/user/data/hello.txt",
+    readLines(!!.x)
+  )
+)
+```
+
+Let's inspect this pipeline with `tar_manifest()`:
+
+```{r}
+#| label: example-file-show-5
+#| eval: FALSE
+tar_manifest()
+```
+
+```{r}
+#| label: example-file-hide-5
+#| echo: FALSE
+tar_dir({
+  # Emulate what the learner is doing
+  fs::dir_create("_targets/user/data")
+  # Old (longer) version:
+  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
+  # Make it again with the shorter version
+  write_example_plan(chunk = "example-file-show-4")
+  tar_manifest()
+})
+```
+
+Notice that even though we only specified one target in the pipeline (`hello`, with `tar_file_read()`), the pipeline actually includes **two** targets, `hello_file` and `hello`.
+
+That is because `tar_file_read()` is a special function called a **target factory**, so-called because it makes **multiple** targets at once. One of the main purposes of the `tarchetypes` package is to provide target factories to make writing pipelines easier and less error-prone.
+
+### Non-standard evaluation
+
+What is the deal with the `!!.x`? That may look unfamiliar even if you are used to using R. It is known as "non-standard evaluation," and gets used in some special contexts. We don't have time to go into the details now, but just remember that you will need to use this special notation with `tar_file_read()`. If you forget how to write it (this happens frequently!) look at the examples in the help file by running `?tar_file_read`.
+
+### Other data loading functions
+
+Although we used `readLines()` as an example here, you can use the same pattern for other functions that load data from external files, such as `readr::read_csv()`, `xlsx::read_excel()`, and others (for example, `read_csv(!!.x)`, `read_excel(!!.x)`, etc.).
+
+This is generally recommended so that your pipeline stays up to date with your input data.
+
+## Learning more
+
+We have still only scratched the surface of the advanced functionality available in `targets` and `tarchetypes`.
+
+If you want to learn more about advanced targets workflows, we highly recommend reading the [targets user manual](https://books.ropensci.org/targets/) and browsing the [tarchetypes package webpage](https://docs.ropensci.org/tarchetypes/).
+
+::::::::::::::::::::::::::::::::::::: keypoints 
+
+- `tar_read()` outputs the contents an object built by the workflow
+- `tar_progress()` shows the current state of the workflow as a data frame
+- `tar_outdated()` lists outdated targets
+- `tar_file_read()` is a target factory that automatically generates workflow steps to track the contents of a file, then read it into R
+
+::::::::::::::::::::::::::::::::::::::::::::::::

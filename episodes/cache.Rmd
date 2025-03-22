@@ -59,8 +59,8 @@ Where are the results of our workflow?
 We don't see the workflow results because `targets` **runs the workflow in a separate R session** that we can't interact with.
 This is for reproducibility---the objects built by the workflow should only depend on the code in your project, not any commands you may have interactively given to R.
 
-Fortunately, `targets` has two functions that can be used to load objects built by the workflow into our current session, `tar_load()` and `tar_read()`.
-Let's see how these work.
+Fortunately, `targets` has a function that can load objects built by the workflow into our current session, `tar_load()`.
+Let's see how this works.
 
 ## tar_load()
 
@@ -94,33 +94,7 @@ popd()
 Note that `tar_load()` is used for its **side-effect**---loading the desired object into the current R session.
 It doesn't actually return a value.
 
-## tar_read()
-
-`tar_read()` is similar to `tar_load()` in that it is used to retrieve objects built by the workflow, but unlike `tar_load()`, it returns them directly as output.
-
-Let's try it with `penguins_csv_file`.
-
-```{r}
-#| label: targets-read-show
-#| echo: [2]
-pushd(plan_1_dir)
-tar_read(penguins_csv_file)
-popd()
-```
-
-We immediately see the contents of `penguins_csv_file`.
-But it has not been loaded into the environment.
-If you try to run `penguins_csv_file` now, you will get an error:
-
-```{r}
-#| label: error-2
-penguins_csv_file
-```
-
-## When to use which function
-
-`tar_load()` tends to be more useful when you want to load objects and do things with them.
-`tar_read()` is more useful when you just want to immediately inspect an object.
+If you want to learn more about an alternate method to inspect objects built by the pipeline, [see the Appendix](extras.Rmd#an-alternate-way-to-inspect-target-objects).
 
 ## The targets cache
 
@@ -132,22 +106,18 @@ You may have noticed a new folder has appeared in your project, called `_targets
 This is the **targets cache**.
 It contains all of the workflow output; that is how we can load the targets built by the workflow even after quitting then restarting R.
 
-**You should not edit the contents of the cache by hand** (with one exception).
-Doing so would make your analysis non-reproducible.
+**You should never edit the contents of the cache by hand**.\*
+Doing so would make your analysis non-reproducible!
 
-The one exception to this rule is a special subfolder called `_targets/user`.
-This folder does not exist by default.
-You can create it if you want, and put whatever you want inside.
+Note that it is possible to "reset" your workflow by simply deleting the entire `_targets` folder.
+Of course, this means you will need to run everything over again, so don't do this lightly!
 
-Generally, `_targets/user` is a good place to store files that are not code, like data and output.
-
-Note that if you don't have anything in `_targets/user` that you need to keep around, it is possible to "reset" your workflow by simply deleting the entire `_targets` folder. Of course, this means you will need to run everything over again, so don't do this lightly!
+\*: There is one exception, [described in the Appendix](extras.Rmd#storing-user-data-files-in-the-cache).
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `targets` workflows are run in a separate, non-interactive R session
 - `tar_load()` loads a workflow object into the current R session
-- `tar_read()` reads a workflow object and returns its value
 - The `_targets` folder is the cache and generally should not be edited by hand
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
