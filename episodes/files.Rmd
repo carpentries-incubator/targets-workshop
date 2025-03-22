@@ -28,6 +28,11 @@ Episode summary: Show how to read and write external files
 #| echo: FALSE
 #| message: FALSE
 #| warning: FALSE
+
+if (interactive()) {
+  setwd("episodes")
+}
+
 library(targets)
 library(tarchetypes)
 source("files/lesson_functions.R")

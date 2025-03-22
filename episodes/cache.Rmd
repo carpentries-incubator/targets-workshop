@@ -9,6 +9,11 @@ exercises: 2
 #| echo: FALSE
 #| message: FALSE
 #| warning: FALSE
+
+if (interactive()) {
+  setwd("episodes")
+}
+
 library(targets)
 source("files/lesson_functions.R")
 ```

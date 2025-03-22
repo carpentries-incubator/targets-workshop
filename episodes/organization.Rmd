@@ -29,6 +29,11 @@ Episode summary: Demonstrate best-practices for project organization
 #| echo: FALSE
 #| message: FALSE
 #| warning: FALSE
+
+if (interactive()) {
+  setwd("episodes")
+}
+
 library(targets)
 library(tarchetypes)
 source("files/lesson_functions.R")

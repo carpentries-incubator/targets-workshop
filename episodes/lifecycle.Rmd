@@ -30,6 +30,11 @@ Episode summary: Demonstrate typical cycle of running `targets`: make, inspect, 
 #| echo: FALSE
 #| message: FALSE
 #| warning: FALSE
+
+if (interactive()) {
+  setwd("episodes")
+}
+
 library(targets)
 library(visNetwork)
 source("files/lesson_functions.R")
