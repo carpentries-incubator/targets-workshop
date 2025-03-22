@@ -157,4 +157,3 @@ Striking this balance is more of art than science, and only comes with practice.
 - Writing functions is a key skill for `targets` pipelines
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
