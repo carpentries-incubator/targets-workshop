@@ -377,7 +377,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>The Workflow Lifecycle</h1>
-        <p>Last updated on 2025-03-18 |
+        <p>Last updated on 2025-03-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -420,7 +420,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Demonstrate typical cycle of running
 <code>targets</code>: make, inspect, adjust, make…</p>
@@ -443,10 +443,8 @@ running the workflow again:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
-✔ skipped target penguins_data_raw
-✔ skipped target penguins_data
-✔ skipped pipeline [0.127 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+✔ skipped pipeline [0.177 seconds]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -487,11 +485,10 @@ need the first part of the common name to distinguish them.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
-✔ skipped target penguins_data_raw
+<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.025 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.177 seconds]</code></pre>
+● completed target penguins_data [0.029 seconds, 1.495 kilobytes]
+▶ ended pipeline [0.2 seconds]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -517,7 +514,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>With <code>tar_read(penguins_data)</code> or by running
 <code>tar_load(penguins_data)</code> followed by
@@ -611,7 +608,7 @@ date?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>Depending on how you modified the code, any or all of the targets may
@@ -713,10 +710,8 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
-✔ skipped target penguins_data_raw
-✔ skipped target penguins_data
-✔ skipped pipeline [0.141 seconds]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+✔ skipped pipeline [0.164 seconds]</code></pre>
 </div>
 <p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
 <div class="codewrapper sourceCode" id="cb13">
@@ -729,11 +724,10 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped target penguins_csv_file
-✔ skipped target penguins_data_raw
+<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.024 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.191 seconds]</code></pre>
+● completed target penguins_data [0.029 seconds, 1.495 kilobytes]
+▶ ended pipeline [0.207 seconds]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -835,9 +829,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/lifecycle.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/lifecycle.html",
-  "dateCreated": "2025-02-04",
-  "dateModified": "2025-03-18",
-  "datePublished": "2025-03-18"
+  "dateCreated": "2025-03-22",
+  "dateModified": "2025-03-22",
+  "datePublished": "2025-03-22"
 }
 
   </script><script>
