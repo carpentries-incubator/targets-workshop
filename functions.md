@@ -253,7 +253,7 @@ tar_make()
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
 ● completed target penguins_data [0.006 seconds, 1.613 kilobytes]
-▶ ended pipeline [0.083 seconds]
+▶ ended pipeline [0.077 seconds]
 ```
 
 We will learn more soon about the messages that `targets()` prints out.

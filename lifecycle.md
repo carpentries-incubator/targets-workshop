@@ -83,8 +83,8 @@ tar_make()
 ``` output
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.015 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.103 seconds]
+● completed target penguins_data [0.011 seconds, 1.495 kilobytes]
+▶ ended pipeline [0.147 seconds]
 ```
 
 What happened?
@@ -247,7 +247,7 @@ tar_make()
 
 ``` output
 ✔ skipping targets (1 so far)...
-✔ skipped pipeline [0.075 seconds]
+✔ skipped pipeline [0.081 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -261,8 +261,8 @@ tar_make()
 ``` output
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.016 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.103 seconds]
+● completed target penguins_data [0.011 seconds, 1.495 kilobytes]
+▶ ended pipeline [0.142 seconds]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
