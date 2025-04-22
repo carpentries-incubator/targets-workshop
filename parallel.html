@@ -364,7 +364,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Parallel Processing</h1>
-        <p>Last updated on 2025-04-01 |
+        <p>Last updated on 2025-04-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/parallel.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -581,26 +581,43 @@ the original ones, then modify them):</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
+✔ skipping targets (1 so far)...
 ▶ dispatched target combined_summary
 ▶ dispatched branch species_summary_1598bb4431372f32
-● completed target combined_summary [4.65 seconds, 371 bytes]
+● completed target combined_summary [4.748 seconds, 369 bytes]
 ▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_1598bb4431372f32 [4.65 seconds, 368 bytes]
+● completed branch species_summary_1598bb4431372f32 [4.75 seconds, 366 bytes]
 ▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_6b9109ba2e9d27fd [4.139 seconds, 372 bytes]
+● completed branch species_summary_6b9109ba2e9d27fd [4.145 seconds, 370 bytes]
 ▶ dispatched target combined_predictions
-● completed branch species_summary_625f9fbc7f62298a [4.136 seconds, 369 bytes]
+● completed branch species_summary_625f9fbc7f62298a [4.145 seconds, 367 bytes]
 ● completed pattern species_summary
 ▶ dispatched branch species_predictions_1598bb4431372f32
-● completed target combined_predictions [4.133 seconds, 25.911 kilobytes]
+● completed target combined_predictions [4.134 seconds, 25.91 kilobytes]
 ▶ dispatched branch species_predictions_6b9109ba2e9d27fd
-● completed branch species_predictions_1598bb4431372f32 [4.135 seconds, 11.585 kilobytes]
+● completed branch species_predictions_1598bb4431372f32 [4.128 seconds, 11.585 kilobytes]
 ▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_6b9109ba2e9d27fd [4.113 seconds, 6.252 kilobytes]
-● completed branch species_predictions_625f9fbc7f62298a [4.113 seconds, 9.629 kilobytes]
+● completed branch species_predictions_6b9109ba2e9d27fd [4.131 seconds, 6.249 kilobytes]
+● completed branch species_predictions_625f9fbc7f62298a [4.123 seconds, 9.628 kilobytes]
 ● completed pattern species_predictions
-▶ ended pipeline [19.195 seconds]</code></pre>
+▶ ended pipeline [19.444 seconds]</code></pre>
 </div>
 <p>Notice that although the time required to build each individual
 target is about 4 seconds, the total time to run the entire workflow is
@@ -697,8 +714,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/parallel.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/parallel.html",
   "dateCreated": "2025-03-22",
-  "dateModified": "2025-04-01",
-  "datePublished": "2025-04-15"
+  "dateModified": "2025-04-22",
+  "datePublished": "2025-04-22"
 }
 
   </script><script>

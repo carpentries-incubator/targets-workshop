@@ -374,7 +374,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Branching</h1>
-        <p>Last updated on 2025-04-01 |
+        <p>Last updated on 2025-04-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -414,7 +414,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching</p>
 </div>
@@ -481,17 +481,34 @@ without distinction:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
+✔ skipping targets (1 so far)...
 ▶ dispatched target combined_model
-● completed target combined_model [0.025 seconds, 11.201 kilobytes]
-▶ ended pipeline [0.118 seconds]</code></pre>
+● completed target combined_model [0.079 seconds, 11.2 kilobytes]
+▶ ended pipeline [0.339 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
 <code>summary()</code>, this function returns output as a tibble (the
 tidyverse equivalent of a dataframe), which as we will see later is
 quite useful for downstream analyses.</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -521,7 +538,7 @@ statistics).</p>
 for such an analysis might look like <strong>without branching</strong>
 (make sure to add <code><a href="https://broom.tidymodels.org/" class="external-link">library(broom)</a></code> to
 <code>packages.R</code>):</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -564,25 +581,42 @@ for such an analysis might look like <strong>without branching</strong>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
+✔ skipping targets (1 so far)...
 ▶ dispatched target adelie_model
-● completed target adelie_model [0.007 seconds, 6.476 kilobytes]
+● completed target adelie_model [0.011 seconds, 6.475 kilobytes]
 ▶ dispatched target gentoo_model
-● completed target gentoo_model [0.001 seconds, 5.88 kilobytes]
+● completed target gentoo_model [0.002 seconds, 5.878 kilobytes]
 ▶ dispatched target chinstrap_model
-● completed target chinstrap_model [0.002 seconds, 4.535 kilobytes]
+● completed target chinstrap_model [0.002 seconds, 4.534 kilobytes]
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.006 seconds, 348 bytes]
+● completed target combined_summary [0.007 seconds, 346 bytes]
 ▶ dispatched target adelie_summary
-● completed target adelie_summary [0.003 seconds, 348 bytes]
+● completed target adelie_summary [0.003 seconds, 346 bytes]
 ▶ dispatched target gentoo_summary
-● completed target gentoo_summary [0.003 seconds, 348 bytes]
+● completed target gentoo_summary [0.004 seconds, 346 bytes]
 ▶ dispatched target chinstrap_summary
-● completed target chinstrap_summary [0.003 seconds, 348 bytes]
-▶ ended pipeline [0.168 seconds]</code></pre>
+● completed target chinstrap_summary [0.004 seconds, 346 bytes]
+▶ ended pipeline [0.274 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -612,7 +646,7 @@ model then immediately run <code>glance()</code> on it. The reason for
 doing so is that we get a <strong>dataframe as a result</strong>, which
 is very helpful for branching, as we will see in the next section. Save
 this in <code>R/functions.R</code>:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -629,7 +663,7 @@ this in <code>R/functions.R</code>:</p>
 <p>Let’s see how to write the same plan using <strong>dynamic
 branching</strong> (after running it, we will go through the new version
 in detail to understand each step):</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -667,19 +701,36 @@ in detail to understand each step):</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
+✔ skipping targets (1 so far)...
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.008 seconds, 348 bytes]
+● completed target combined_summary [0.011 seconds, 346 bytes]
 ▶ dispatched target penguins_data_grouped
-● completed target penguins_data_grouped [0.006 seconds, 1.527 kilobytes]
+● completed target penguins_data_grouped [0.013 seconds, 1.525 kilobytes]
 ▶ dispatched branch species_summary_7fe6634f7c7f6a77
-● completed branch species_summary_7fe6634f7c7f6a77 [0.005 seconds, 348 bytes]
+● completed branch species_summary_7fe6634f7c7f6a77 [0.008 seconds, 346 bytes]
 ▶ dispatched branch species_summary_c580675a85977909
-● completed branch species_summary_c580675a85977909 [0.003 seconds, 348 bytes]
+● completed branch species_summary_c580675a85977909 [0.004 seconds, 346 bytes]
 ▶ dispatched branch species_summary_af3bb92d1b0f36d3
-● completed branch species_summary_af3bb92d1b0f36d3 [0.003 seconds, 348 bytes]
+● completed branch species_summary_af3bb92d1b0f36d3 [0.005 seconds, 346 bytes]
 ● completed pattern species_summary
-▶ ended pipeline [0.173 seconds]</code></pre>
+▶ ended pipeline [0.333 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like species_summary_7fe6634f7c7f6a77, then one overall
@@ -692,15 +743,15 @@ represent, it names each one using this series of numbers and letters
 then combines them into the overall target.</p>
 <p>Next, let’s look in more detail about how the workflow is set up,
 starting with how we set up the data:</p>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode r" tabindex="0"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>  <span class="co"># Group data</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">tar_group_by</span>(</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    penguins_data_grouped,</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    penguins_data,</span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    species</span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  ),</span></code></pre>
+<pre class="sourceCode r" tabindex="0"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>  <span class="co"># Group data</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="fu">tar_group_by</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>    penguins_data_grouped,</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>    penguins_data,</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>    species</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>  ),</span></code></pre>
 </div>
 <p>Unlike the non-branching version, we added a step that <strong>groups
 the data</strong>. This is because dynamic branching is similar to the
@@ -710,7 +761,7 @@ use the <code>tar_group_by()</code> function to specify the groups in
 our input data: one group per species.</p>
 <p>Next, take a look at the command to build the target
 <code>species_summary</code>.</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -734,7 +785,7 @@ each group of the input data (<code>penguins_data_grouped</code>)
 sequentially.</p>
 <p>Now that we understand how the branching workflow is constructed,
 let’s inspect the output:</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -769,7 +820,7 @@ of the model summaries.</p>
 <p>We can achieve this by modifying our <code>model_glance</code>
 function. Be sure to save it after modifying it to include a column for
 species:</p>
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -799,23 +850,30 @@ modified function.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
+✔ skipping targets (1 so far)...
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.016 seconds, 371 bytes]
+● completed target combined_summary [0.024 seconds, 369 bytes]
 ▶ dispatched branch species_summary_7fe6634f7c7f6a77
-● completed branch species_summary_7fe6634f7c7f6a77 [0.047 seconds, 368 bytes]
+● completed branch species_summary_7fe6634f7c7f6a77 [0.012 seconds, 366 bytes]
 ▶ dispatched branch species_summary_c580675a85977909
-● completed branch species_summary_c580675a85977909 [0.005 seconds, 372 bytes]
+● completed branch species_summary_c580675a85977909 [0.007 seconds, 370 bytes]
 ▶ dispatched branch species_summary_af3bb92d1b0f36d3
-● completed branch species_summary_af3bb92d1b0f36d3 [0.086 seconds, 369 bytes]
+● completed branch species_summary_af3bb92d1b0f36d3 [0.008 seconds, 367 bytes]
 ● completed pattern species_summary
-▶ ended pipeline [0.264 seconds]</code></pre>
+▶ ended pipeline [0.347 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (the <code>.before = 1</code>
 in <code>mutate()</code> ensures that it shows up before the other
 columns).</p>
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -855,12 +913,12 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
 instead of <code>glance()</code>:</p>
-<div class="codewrapper sourceCode" id="cb21">
+<div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -882,7 +940,7 @@ instead of <code>glance()</code>:</p>
 <span><span class="op">}</span></span></code></pre>
 </div>
 <p>Add the step to the workflow:</p>
-<div class="codewrapper sourceCode" id="cb22">
+<div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -935,7 +993,7 @@ is no need to have separate <code>penguins_data</code> and
 keep the number of named objects as small as possible to make it easier
 to reason about your code. Let’s combine the cleaning and grouping step
 into a single command:</p>
-<div class="codewrapper sourceCode" id="cb23">
+<div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -977,28 +1035,45 @@ into a single command:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipping targets (1 so far)...
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
+✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.017 seconds, 1.527 kilobytes]
+● completed target penguins_data [0.03 seconds, 1.525 kilobytes]
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.012 seconds, 371 bytes]
+● completed target combined_summary [0.017 seconds, 369 bytes]
 ▶ dispatched branch species_summary_1598bb4431372f32
-● completed branch species_summary_1598bb4431372f32 [0.09 seconds, 368 bytes]
+● completed branch species_summary_1598bb4431372f32 [0.013 seconds, 366 bytes]
 ▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_6b9109ba2e9d27fd [0.005 seconds, 372 bytes]
+● completed branch species_summary_6b9109ba2e9d27fd [0.007 seconds, 370 bytes]
 ▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_625f9fbc7f62298a [0.005 seconds, 369 bytes]
+● completed branch species_summary_625f9fbc7f62298a [0.007 seconds, 367 bytes]
 ● completed pattern species_summary
 ▶ dispatched target combined_predictions
-● completed target combined_predictions [0.007 seconds, 25.908 kilobytes]
+● completed target combined_predictions [0.01 seconds, 25.907 kilobytes]
 ▶ dispatched branch species_predictions_1598bb4431372f32
-● completed branch species_predictions_1598bb4431372f32 [0.008 seconds, 11.581 kilobytes]
+● completed branch species_predictions_1598bb4431372f32 [0.011 seconds, 11.581 kilobytes]
 ▶ dispatched branch species_predictions_6b9109ba2e9d27fd
-● completed branch species_predictions_6b9109ba2e9d27fd [0.004 seconds, 6.248 kilobytes]
+● completed branch species_predictions_6b9109ba2e9d27fd [0.016 seconds, 6.245 kilobytes]
 ▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_625f9fbc7f62298a [0.003 seconds, 9.625 kilobytes]
+● completed branch species_predictions_625f9fbc7f62298a [0.005 seconds, 9.624 kilobytes]
 ● completed pattern species_predictions
-▶ ended pipeline [0.314 seconds]</code></pre>
+▶ ended pipeline [0.434 seconds]</code></pre>
 </div>
 <div id="best-practices-for-branching" class="callout">
 <div class="callout-square">
@@ -1037,7 +1112,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul><li>crossing: one branch per combination of elements
@@ -1130,8 +1205,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/branch.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/branch.html",
   "dateCreated": "2025-03-22",
-  "dateModified": "2025-04-01",
-  "datePublished": "2025-04-15"
+  "dateModified": "2025-04-22",
+  "datePublished": "2025-04-22"
 }
 
   </script><script>
