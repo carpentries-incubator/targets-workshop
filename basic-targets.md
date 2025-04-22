@@ -84,7 +84,20 @@ The `path_to_file()` function in `palmerpenguins` provides the path to the raw d
 
 ``` r
 library(palmerpenguins)
+```
 
+``` output
+
+Attaching package: 'palmerpenguins'
+```
+
+``` output
+The following objects are masked from 'package:datasets':
+
+    penguins, penguins_raw
+```
+
+``` r
 # Get path to CSV file
 penguins_csv_file <- path_to_file("penguins_raw.csv")
 
@@ -92,7 +105,7 @@ penguins_csv_file
 ```
 
 ``` output
-[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.4/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.5/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
 ```
 
 We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html), or the Carpentry incubator lesson [R and the tidyverse for working with datasets](https://carpentries-incubator.github.io/r-tidyverse-4-datasets/).
@@ -355,13 +368,20 @@ tar_make()
 ```
 
 ``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
 ▶ dispatched target penguins_csv_file
-● completed target penguins_csv_file [0.001 seconds, 190 bytes]
+● completed target penguins_csv_file [0.001 seconds, 189 bytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.201 seconds, 10.403 kilobytes]
+● completed target penguins_data_raw [0.109 seconds, 10.4 kilobytes]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.006 seconds, 1.613 kilobytes]
-▶ ended pipeline [0.287 seconds]
+● completed target penguins_data [0.009 seconds, 1.612 kilobytes]
+▶ ended pipeline [0.359 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!

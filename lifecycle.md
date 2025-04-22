@@ -34,13 +34,29 @@ One of the features of `targets` is that it maximizes efficiency by only running
 This is easiest to understand by trying it yourself. Let's try running the workflow again:
 
 
+``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+```
+
 ``` r
 tar_make()
 ```
 
 ``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
 ✔ skipping targets (1 so far)...
-✔ skipped pipeline [0.063 seconds]
+✔ skipped pipeline [0.202 seconds]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -76,15 +92,31 @@ clean_penguin_data <- function(penguins_data_raw) {
 Then run it again.
 
 
+``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+```
+
 ``` r
 tar_make()
 ```
 
 ``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.015 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.103 seconds]
+● completed target penguins_data [0.017 seconds, 1.494 kilobytes]
+▶ ended pipeline [0.257 seconds]
 ```
 
 What happened?
@@ -209,6 +241,15 @@ tar_outdated()
 ```
 
 ``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+```
+
+``` output
 character(0)
 ```
 
@@ -246,8 +287,15 @@ tar_make()
 ```
 
 ``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
 ✔ skipping targets (1 so far)...
-✔ skipped pipeline [0.075 seconds]
+✔ skipped pipeline [0.233 seconds]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -259,10 +307,17 @@ tar_make()
 ```
 
 ``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.016 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.103 seconds]
+● completed target penguins_data [0.019 seconds, 1.494 kilobytes]
+▶ ended pipeline [0.224 seconds]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).

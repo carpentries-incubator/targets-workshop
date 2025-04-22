@@ -245,15 +245,31 @@ list(
 We should run the workflow again with `tar_make()` to make sure it is up-to-date:
 
 
+``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+```
+
 ``` r
 tar_make()
 ```
 
 ``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.006 seconds, 1.613 kilobytes]
-▶ ended pipeline [0.083 seconds]
+● completed target penguins_data [0.007 seconds, 1.612 kilobytes]
+▶ ended pipeline [0.238 seconds]
 ```
 
 We will learn more soon about the messages that `targets()` prints out.
