@@ -57,7 +57,7 @@ tar_plan(
 ``` output
 ▶ dispatched target some_data
 ● completed target some_data [0.001 seconds, 63 bytes]
-▶ ended pipeline [0.082 seconds]
+▶ ended pipeline [0.079 seconds]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -77,7 +77,7 @@ tar_plan(
 
 ``` output
 ✔ skipping targets (1 so far)...
-✔ skipped pipeline [0.069 seconds]
+✔ skipped pipeline [0.066 seconds]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -98,10 +98,10 @@ tar_plan(
 
 ``` output
 ▶ dispatched target data_file
-● completed target data_file [0.001 seconds, 26 bytes]
+● completed target data_file [0 seconds, 26 bytes]
 ▶ dispatched target some_data
-● completed target some_data [0.001 seconds, 77 bytes]
-▶ ended pipeline [0.107 seconds]
+● completed target some_data [0 seconds, 77 bytes]
+▶ ended pipeline [0.096 seconds]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -193,10 +193,10 @@ The following objects are masked from ‘package:datasets’:
 ▶ dispatched target penguins_data_raw_file
 ● completed target penguins_data_raw_file [0.001 seconds, 53.098 kilobytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.112 seconds, 10.4 kilobytes]
+● completed target penguins_data_raw [0.097 seconds, 10.4 kilobytes]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.019 seconds, 1.494 kilobytes]
-▶ ended pipeline [0.395 seconds]
+● completed target penguins_data [0.013 seconds, 1.494 kilobytes]
+▶ ended pipeline [0.216 seconds]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -269,11 +269,11 @@ tar_plan(
 
 ``` output
 ▶ dispatched target hello_file
-● completed target hello_file [0.001 seconds, 26 bytes]
+● completed target hello_file [0 seconds, 26 bytes]
 ▶ dispatched target hello
 ● completed target hello [0.001 seconds, 77 bytes]
 ▶ dispatched target hello_caps
-● completed target hello_caps [0 seconds, 77 bytes]
+● completed target hello_caps [0.003 seconds, 77 bytes]
 ▶ dispatched target hello_caps_out
 ● completed target hello_caps_out [0.001 seconds, 26 bytes]
 ▶ ended pipeline [0.119 seconds]
