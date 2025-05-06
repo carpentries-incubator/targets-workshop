@@ -209,26 +209,15 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipping targets (1 so far)...
-▶ dispatched target combined_summary
-▶ dispatched branch species_summary_1598bb4431372f32
-● completed target combined_summary [4.707 seconds, 369 bytes]
-▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_1598bb4431372f32 [4.699 seconds, 366 bytes]
-▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_6b9109ba2e9d27fd [4.144 seconds, 370 bytes]
-▶ dispatched target combined_predictions
-● completed branch species_summary_625f9fbc7f62298a [4.144 seconds, 367 bytes]
-● completed pattern species_summary 
-▶ dispatched branch species_predictions_1598bb4431372f32
-● completed target combined_predictions [4.13 seconds, 25.91 kilobytes]
-▶ dispatched branch species_predictions_6b9109ba2e9d27fd
-● completed branch species_predictions_1598bb4431372f32 [4.132 seconds, 11.585 kilobytes]
-▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_6b9109ba2e9d27fd [4.115 seconds, 6.249 kilobytes]
-● completed branch species_predictions_625f9fbc7f62298a [4.115 seconds, 9.628 kilobytes]
-● completed pattern species_predictions 
-▶ ended pipeline [19.343 seconds]
++ combined_summary dispatched
++ species_summary declared [3 branches]
++ species_predictions declared [3 branches]
+✔ combined_summary completed [4s, 369 B]
++ combined_predictions dispatched
+✔ species_summary completed [13.1s, 1.10 kB]
+✔ combined_predictions completed [4s, 25.91 kB]
+✔ species_predictions completed [12.4s, 27.45 kB]
+✔ ended pipeline [19.5s, 8 completed, 3 skipped]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
