@@ -266,10 +266,9 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipping targets (1 so far)...
-▶ dispatched target penguins_data
-● completed target penguins_data [0.008 seconds, 1.612 kilobytes]
-▶ ended pipeline [0.101 seconds]
++ penguins_data dispatched
+✔ penguins_data completed [6ms, 1.61 kB]
+✔ ended pipeline [104ms, 1 completed, 2 skipped]
 ```
 
 We will learn more soon about the messages that `targets()` prints out.
