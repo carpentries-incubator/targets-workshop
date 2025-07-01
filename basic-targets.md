@@ -376,12 +376,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 ▶ dispatched target penguins_csv_file
-● completed target penguins_csv_file [0.001 seconds, 189 bytes]
+● completed target penguins_csv_file [0.001 seconds, 190 bytes]
 ▶ dispatched target penguins_data_raw
-● completed target penguins_data_raw [0.098 seconds, 10.4 kilobytes]
+● completed target penguins_data_raw [0.1 seconds, 10.403 kilobytes]
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.007 seconds, 1.612 kilobytes]
-▶ ended pipeline [0.223 seconds]
+● completed target penguins_data [0.008 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.231 seconds]
 ```
 
 Congratulations, you've run your first workflow with `targets`!

@@ -268,8 +268,8 @@ The following objects are masked from ‘package:datasets’:
 
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.008 seconds, 1.612 kilobytes]
-▶ ended pipeline [0.117 seconds]
+● completed target penguins_data [0.008 seconds, 1.614 kilobytes]
+▶ ended pipeline [0.12 seconds]
 ```
 
 We will learn more soon about the messages that `targets()` prints out.

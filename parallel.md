@@ -212,23 +212,23 @@ The following objects are masked from ‘package:datasets’:
 ✔ skipping targets (1 so far)...
 ▶ dispatched target combined_summary
 ▶ dispatched branch species_summary_1598bb4431372f32
-● completed target combined_summary [4.714 seconds, 369 bytes]
+● completed target combined_summary [4.754 seconds, 371 bytes]
 ▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_1598bb4431372f32 [4.711 seconds, 366 bytes]
+● completed branch species_summary_1598bb4431372f32 [4.737 seconds, 368 bytes]
 ▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_6b9109ba2e9d27fd [4.143 seconds, 370 bytes]
+● completed branch species_summary_6b9109ba2e9d27fd [4.156 seconds, 372 bytes]
 ▶ dispatched target combined_predictions
-● completed branch species_summary_625f9fbc7f62298a [4.144 seconds, 367 bytes]
+● completed branch species_summary_625f9fbc7f62298a [4.146 seconds, 369 bytes]
 ● completed pattern species_summary 
 ▶ dispatched branch species_predictions_1598bb4431372f32
-● completed target combined_predictions [4.13 seconds, 25.91 kilobytes]
+● completed target combined_predictions [4.137 seconds, 25.911 kilobytes]
 ▶ dispatched branch species_predictions_6b9109ba2e9d27fd
-● completed branch species_predictions_1598bb4431372f32 [4.13 seconds, 11.585 kilobytes]
+● completed branch species_predictions_1598bb4431372f32 [4.139 seconds, 11.585 kilobytes]
 ▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_6b9109ba2e9d27fd [4.119 seconds, 6.249 kilobytes]
-● completed branch species_predictions_625f9fbc7f62298a [4.116 seconds, 9.628 kilobytes]
+● completed branch species_predictions_6b9109ba2e9d27fd [4.117 seconds, 6.252 kilobytes]
+● completed branch species_predictions_625f9fbc7f62298a [4.124 seconds, 9.629 kilobytes]
 ● completed pattern species_predictions 
-▶ ended pipeline [19.376 seconds]
+▶ ended pipeline [19.499 seconds]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
