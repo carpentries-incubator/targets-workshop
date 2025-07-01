@@ -374,7 +374,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Branching</h1>
-        <p>Last updated on 2025-06-24 |
+        <p>Last updated on 2025-07-01 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -487,8 +487,8 @@ The following objects are masked from ‘package:datasets’:
 
 ✔ skipping targets (1 so far)...
 ▶ dispatched target combined_model
-● completed target combined_model [0.026 seconds, 11.2 kilobytes]
-▶ ended pipeline [0.151 seconds]</code></pre>
+● completed target combined_model [0.032 seconds, 11.201 kilobytes]
+▶ ended pipeline [0.164 seconds]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -587,20 +587,20 @@ The following objects are masked from ‘package:datasets’:
 
 ✔ skipping targets (1 so far)...
 ▶ dispatched target adelie_model
-● completed target adelie_model [0.009 seconds, 6.475 kilobytes]
+● completed target adelie_model [0.009 seconds, 6.476 kilobytes]
 ▶ dispatched target gentoo_model
-● completed target gentoo_model [0.001 seconds, 5.878 kilobytes]
+● completed target gentoo_model [0.002 seconds, 5.879 kilobytes]
 ▶ dispatched target chinstrap_model
-● completed target chinstrap_model [0.002 seconds, 4.534 kilobytes]
+● completed target chinstrap_model [0.002 seconds, 4.535 kilobytes]
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.007 seconds, 346 bytes]
+● completed target combined_summary [0.007 seconds, 348 bytes]
 ▶ dispatched target adelie_summary
-● completed target adelie_summary [0.003 seconds, 346 bytes]
+● completed target adelie_summary [0.003 seconds, 348 bytes]
 ▶ dispatched target gentoo_summary
-● completed target gentoo_summary [0.003 seconds, 346 bytes]
+● completed target gentoo_summary [0.003 seconds, 348 bytes]
 ▶ dispatched target chinstrap_summary
-● completed target chinstrap_summary [0.002 seconds, 346 bytes]
-▶ ended pipeline [0.172 seconds]</code></pre>
+● completed target chinstrap_summary [0.003 seconds, 348 bytes]
+▶ ended pipeline [0.177 seconds]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb10">
@@ -707,17 +707,17 @@ The following objects are masked from ‘package:datasets’:
 
 ✔ skipping targets (1 so far)...
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.01 seconds, 346 bytes]
+● completed target combined_summary [0.009 seconds, 348 bytes]
 ▶ dispatched target penguins_data_grouped
-● completed target penguins_data_grouped [0.012 seconds, 1.525 kilobytes]
+● completed target penguins_data_grouped [0.012 seconds, 1.527 kilobytes]
 ▶ dispatched branch species_summary_7fe6634f7c7f6a77
-● completed branch species_summary_7fe6634f7c7f6a77 [0.006 seconds, 346 bytes]
+● completed branch species_summary_7fe6634f7c7f6a77 [0.005 seconds, 348 bytes]
 ▶ dispatched branch species_summary_c580675a85977909
-● completed branch species_summary_c580675a85977909 [0.003 seconds, 346 bytes]
+● completed branch species_summary_c580675a85977909 [0.003 seconds, 348 bytes]
 ▶ dispatched branch species_summary_af3bb92d1b0f36d3
-● completed branch species_summary_af3bb92d1b0f36d3 [0.003 seconds, 346 bytes]
+● completed branch species_summary_af3bb92d1b0f36d3 [0.003 seconds, 348 bytes]
 ● completed pattern species_summary
-▶ ended pipeline [0.182 seconds]</code></pre>
+▶ ended pipeline [0.187 seconds]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like species_summary_7fe6634f7c7f6a77, then one overall
@@ -846,15 +846,15 @@ The following objects are masked from ‘package:datasets’:
 
 ✔ skipping targets (1 so far)...
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.021 seconds, 369 bytes]
+● completed target combined_summary [0.022 seconds, 371 bytes]
 ▶ dispatched branch species_summary_7fe6634f7c7f6a77
-● completed branch species_summary_7fe6634f7c7f6a77 [0.01 seconds, 366 bytes]
+● completed branch species_summary_7fe6634f7c7f6a77 [0.009 seconds, 368 bytes]
 ▶ dispatched branch species_summary_c580675a85977909
-● completed branch species_summary_c580675a85977909 [0.005 seconds, 370 bytes]
+● completed branch species_summary_c580675a85977909 [0.006 seconds, 372 bytes]
 ▶ dispatched branch species_summary_af3bb92d1b0f36d3
-● completed branch species_summary_af3bb92d1b0f36d3 [0.006 seconds, 367 bytes]
+● completed branch species_summary_af3bb92d1b0f36d3 [0.006 seconds, 369 bytes]
 ● completed pattern species_summary
-▶ ended pipeline [0.187 seconds]</code></pre>
+▶ ended pipeline [0.196 seconds]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (the <code>.before = 1</code>
@@ -900,7 +900,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -1041,26 +1041,26 @@ The following objects are masked from ‘package:datasets’:
 
 ✔ skipping targets (1 so far)...
 ▶ dispatched target penguins_data
-● completed target penguins_data [0.026 seconds, 1.525 kilobytes]
+● completed target penguins_data [0.027 seconds, 1.527 kilobytes]
 ▶ dispatched target combined_summary
-● completed target combined_summary [0.012 seconds, 369 bytes]
+● completed target combined_summary [0.014 seconds, 371 bytes]
 ▶ dispatched branch species_summary_1598bb4431372f32
-● completed branch species_summary_1598bb4431372f32 [0.009 seconds, 366 bytes]
+● completed branch species_summary_1598bb4431372f32 [0.011 seconds, 368 bytes]
 ▶ dispatched branch species_summary_6b9109ba2e9d27fd
-● completed branch species_summary_6b9109ba2e9d27fd [0.006 seconds, 370 bytes]
+● completed branch species_summary_6b9109ba2e9d27fd [0.005 seconds, 372 bytes]
 ▶ dispatched branch species_summary_625f9fbc7f62298a
-● completed branch species_summary_625f9fbc7f62298a [0.012 seconds, 367 bytes]
+● completed branch species_summary_625f9fbc7f62298a [0.013 seconds, 369 bytes]
 ● completed pattern species_summary
 ▶ dispatched target combined_predictions
-● completed target combined_predictions [0.007 seconds, 25.907 kilobytes]
+● completed target combined_predictions [0.008 seconds, 25.908 kilobytes]
 ▶ dispatched branch species_predictions_1598bb4431372f32
 ● completed branch species_predictions_1598bb4431372f32 [0.009 seconds, 11.581 kilobytes]
 ▶ dispatched branch species_predictions_6b9109ba2e9d27fd
-● completed branch species_predictions_6b9109ba2e9d27fd [0.005 seconds, 6.245 kilobytes]
+● completed branch species_predictions_6b9109ba2e9d27fd [0.004 seconds, 6.248 kilobytes]
 ▶ dispatched branch species_predictions_625f9fbc7f62298a
-● completed branch species_predictions_625f9fbc7f62298a [0.004 seconds, 9.624 kilobytes]
+● completed branch species_predictions_625f9fbc7f62298a [0.004 seconds, 9.625 kilobytes]
 ● completed pattern species_predictions
-▶ ended pipeline [0.256 seconds]</code></pre>
+▶ ended pipeline [0.27 seconds]</code></pre>
 </div>
 <div id="best-practices-for-branching" class="callout">
 <div class="callout-square">
@@ -1099,7 +1099,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul><li>crossing: one branch per combination of elements
@@ -1192,8 +1192,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/branch.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/branch.html",
   "dateCreated": "2025-03-22",
-  "dateModified": "2025-06-24",
-  "datePublished": "2025-06-24"
+  "dateModified": "2025-07-01",
+  "datePublished": "2025-07-01"
 }
 
   </script><script>
