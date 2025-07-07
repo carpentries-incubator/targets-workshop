@@ -53,7 +53,19 @@ This allows you to do the following:
 - change the workflow, then only re-run the parts that that are affected by the change
 - massively scale up the workflow without changing individual functions
 
-... and of course, it will help others reproduce your analysis.
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Reproducibility in `targets`
+
+Q: How do the above features result in better reproducibility?
+
+:::::::::::::::: solution
+
+Because the whole workflow is automated, there are no user-dependent steps.
+Thus, a future user will be able to get the same results.
+
+:::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Who should use `targets`?
 
