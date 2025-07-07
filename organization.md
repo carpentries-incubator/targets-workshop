@@ -145,75 +145,11 @@ tar_plan(
 ```
 
 
-``` output
-
-```
-
-``` output
-── Debugging ───────────────────────────────────────────────────────────────────
-```
-
-``` output
-
-```
-
-``` output
-── How to ──────────────────────────────────────────────────────────────────────
-```
-
-``` output
-
-```
-
-``` output
-── Last error message ──────────────────────────────────────────────────────────
-```
-
-``` output
-
-```
-
-``` output
-── Last error traceback ────────────────────────────────────────────────────────
-```
-
 ``` error
 Error:
-! targets::tar_make() error
-    • tar_errored()
-    • tar_meta(fields = any_of("error"), complete_only = TRUE)
-    • tar_workspace()
-    • tar_workspaces()
-    • Debug: https://books.ropensci.org/targets/debugging.html
-    • Help: https://books.ropensci.org/targets/help.html
-    duplicated target names: height
-    base::tryCatch(base::withCallingHandlers({ NULL base::saveRDS(base::do.c...
-    tryCatchList(expr, classes, parentenv, handlers)
-    tryCatchOne(tryCatchList(expr, names[-nh], parentenv, handlers[-nh]), na...
-    doTryCatch(return(expr), name, parentenv, handler)
-    tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
-    tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    doTryCatch(return(expr), name, parentenv, handler)
-    base::withCallingHandlers({ NULL base::saveRDS(base::do.call(base::do.ca...
-    base::saveRDS(base::do.call(base::do.call, base::c(base::readRDS("/tmp/R...
-    base::do.call(base::do.call, base::c(base::readRDS("/tmp/RtmprRUlVB/call...
-    (function (what, args, quote = FALSE, envir = parent.frame()) { if (!is....
-    (function (targets_function, targets_arguments, options, envir = NULL, s...
-    tryCatch(out <- withCallingHandlers(targets::tar_callr_inner_try(targets...
-    tryCatchList(expr, classes, parentenv, handlers)
-    tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    doTryCatch(return(expr), name, parentenv, handler)
-    withCallingHandlers(targets::tar_callr_inner_try(targets_function = targ...
-    targets::tar_callr_inner_try(targets_function = targets_function, target...
-    pipeline_from_list(targets)
-    pipeline_from_list.default(targets)
-    pipeline_init(out)
-    pipeline_targets_init(targets, clone_targets)
-    tar_assert_unique_targets(names)
-    tar_throw_validate(message)
-    tar_error(message = paste0(...), class = c("tar_condition_validate", "ta...
-    rlang::abort(message = message, class = class, call = tar_envir_base)
-    signal_abort(cnd, .file)
+! Error in tar_make():
+  duplicated target names: height
+  See https://books.ropensci.org/targets/debugging.html
 ```
 
 **A major part of working with `targets` pipelines is writing custom functions that are the right size.**

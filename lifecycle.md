@@ -55,8 +55,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipping targets (1 so far)...
-✔ skipped pipeline [0.093 seconds]
+✔ skipped pipeline [68ms, 3 skipped]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -113,10 +112,9 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipping targets (1 so far)...
-▶ dispatched target penguins_data
-● completed target penguins_data [0.015 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.146 seconds]
++ penguins_data dispatched
+✔ penguins_data completed [11ms, 1.50 kB]
+✔ ended pipeline [174ms, 1 completed, 2 skipped]
 ```
 
 What happened?
@@ -294,8 +292,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipping targets (1 so far)...
-✔ skipped pipeline [0.111 seconds]
+✔ skipped pipeline [86ms, 3 skipped]
 ```
 
 Let's invalidate `penguins_data` and run it again:
@@ -314,10 +311,9 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipping targets (1 so far)...
-▶ dispatched target penguins_data
-● completed target penguins_data [0.015 seconds, 1.495 kilobytes]
-▶ ended pipeline [0.143 seconds]
++ penguins_data dispatched
+✔ penguins_data completed [11ms, 1.50 kB]
+✔ ended pipeline [175ms, 1 completed, 2 skipped]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
