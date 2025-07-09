@@ -56,6 +56,7 @@ In this section we will assume that our HPC uses Slurm as its job scheduler, but
 In the Parallel Processing section, we used the following configuration:
 ```{R}
 #| label: one-machine-crew
+#| eval: false
 tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
