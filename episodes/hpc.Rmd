@@ -80,7 +80,7 @@ Here we are only using three:
 
   * `workers` sets the number of jobs that are submitted to Slurm to process targets.
   * `script_lines` adds some lines to the Slurm submit script used by Targets. This is useful for loading Environment Modules as we have done here.
-  * `slurm_memory_gigabytes_per_cpu` specifies the amount of memory we need.
+  * `slurm_memory_gigabytes_required` specifies the amount of memory we need.
 
 Let's run the modified workflow:
 

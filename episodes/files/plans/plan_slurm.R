@@ -12,7 +12,7 @@ tar_option_set(
   controller = crew_controller_slurm(
     workers = 3,
     script_lines = "module load R",
-    slurm_memory_gigabytes_per_cpu = 1
+    slurm_memory_gigabytes_required = 1
   )
 )
 
