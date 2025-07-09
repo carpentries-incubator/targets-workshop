@@ -15,21 +15,25 @@ tar_option_set(
     crew_controller_slurm(
       name = "cpu_worker",
       workers = 1,
+      options_cluster = crew_options_slurm(
       script_lines = "module load R",
-      slurm_memory_gigabytes_per_cpu = 1,
-      slurm_cpus_per_task = 1
+        memory_gigabytes_per_cpu = 1,
+        cpus_per_task = 1
+      )
     ),
 
     crew_controller_slurm(
       name = "gpu_worker",
       workers = 1,
-      script_lines = c(
-        "#SBATCH --partition=gpuq",
-        "#SBATCH --gres=gpu:1",
-        "module load R"
-      ),
-      slurm_memory_gigabytes_per_cpu = 1,
-      slurm_cpus_per_task = 1
+      options_cluster = crew_options_slurm(
+        script_lines = c(
+          "#SBATCH --partition=gpuq",
+          "#SBATCH --gres=gpu:1",
+          "module load R"
+        ),
+        memory_gigabytes_per_cpu = 1,
+        cpus_per_task = 1
+      )
     )
   )
 )
