@@ -1,6 +1,6 @@
 ---
 title: 'Parallel Processing'
-teaching: 10
+teaching: 15
 exercises: 2
 ---
 
@@ -30,6 +30,11 @@ Episode summary: Show how to use parallel processing
 library(targets)
 library(tarchetypes)
 library(broom)
+
+if (interactive()) {
+  setwd("episodes")
+}
+
 source("files/lesson_functions.R")
 
 # Increase width for printing tibbles
@@ -52,26 +57,6 @@ Most workflows that use branching can benefit from parallelism.
 Here, we assume you are running this analysis on a laptop and so will use a relatively simple backend.
 If you are interested in high-performance computing, [see the `targets` manual](https://books.ropensci.org/targets/hpc.html).
 
-### Install R packages for parallel computing
-
-For this demo, we will use the new [`crew` backend](https://wlandau.github.io/crew/).
-
-::::::::::::::::::::::::::::::::::::: {.prereq}
-
-### Install required packages
-
-You will need to install several packages to use the `crew` backend:
-
-```{r}
-#| label: install-crew
-#| eval: false
-install.packages("nanonext", repos = "https://shikokuchuo.r-universe.dev")
-install.packages("mirai", repos = "https://shikokuchuo.r-universe.dev")
-install.packages("crew", type = "source")
-```
-
-:::::::::::::::::::::::::::::::::::::
-
 ### Set up workflow
 
 To enable parallel processing with `crew` you only need to load the `crew` package, then tell `targets` to use it using `tar_option_set`.
@@ -91,12 +76,12 @@ It should now look like this:
 ```{r}
 #| label = "example-model-show-setup",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_9.R")[3:42]
+#| code = readLines("files/plans/plan_9.R")[3:41]
 ```
 
 There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
 
-So let's make "slow" versions of `glance_with_mod_name()` and `augment_with_mod_name()` using the `Sys.sleep()` function, which just tells the computer to wait some number of seconds.
+So let's make "slow" versions of `model_glance()` and `model_augment()` using the `Sys.sleep()` function, which just tells the computer to wait some number of seconds.
 This will simulate a long-running computation and enable us to see the difference between running sequentially and in parallel.
 
 Add these functions to `functions.R` (you can copy-paste the original ones, then modify them):
@@ -105,8 +90,8 @@ Add these functions to `functions.R` (you can copy-paste the original ones, then
 #| label: slow-funcs
 #| eval: false
 #| file:
-#|    - files/tar_functions/glance_with_mod_name_slow.R
-#|    - files/tar_functions/augment_with_mod_name_slow.R
+#|    - files/tar_functions/model_glance_slow.R
+#|    - files/tar_functions/model_augment_slow.R
 ```
 
 Then, change the plan to use the "slow" version of the functions:
@@ -114,7 +99,7 @@ Then, change the plan to use the "slow" version of the functions:
 ```{r}
 #| label = "example-model-show-9",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_10.R")[3:42]
+#| code = readLines("files/plans/plan_10.R")[3:41]
 ```
 
 Finally, run the pipeline with `tar_make()` as normal.
@@ -125,38 +110,13 @@ Finally, run the pipeline with `tar_make()` as normal.
 #| message: false
 #| echo: false
 
-# FIXME: parallel code uses all available CPUs and hangs when rendering website
-# with sandpaper::build_lesson(), even though it only uses 2 when run
-# interactively
-#
-# plan_10_dir <- make_tempdir()
-# pushd(plan_10_dir)
-# write_example_plan("plan_9.R")
-# tar_make(reporter = "silent")
-# write_example_plan("plan_10.R")
-# tar_make()
-# popd()
-
-# Solution for now is to hard-code output
-cat("✔ skip target penguins_data_raw_file
-✔ skip target penguins_data_raw
-✔ skip target penguins_data
-✔ skip target models
-• start branch model_predictions_5ad4cec5
-• start branch model_predictions_c73912d5
-• start branch model_predictions_91696941
-• start branch model_summaries_5ad4cec5
-• start branch model_summaries_c73912d5
-• start branch model_summaries_91696941
-• built branch model_predictions_5ad4cec5 [4.884 seconds]
-• built branch model_predictions_c73912d5 [4.896 seconds]
-• built branch model_predictions_91696941 [4.006 seconds]
-• built pattern model_predictions
-• built branch model_summaries_5ad4cec5 [4.011 seconds]
-• built branch model_summaries_c73912d5 [4.011 seconds]
-• built branch model_summaries_91696941 [4.011 seconds]
-• built pattern model_summaries
-• end pipeline [15.153 seconds]")
+plan_10_dir <- make_tempdir()
+pushd(plan_10_dir)
+write_example_plan("plan_9.R")
+tar_make(reporter = "silent")
+write_example_plan("plan_10.R")
+tar_make()
+popd()
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.

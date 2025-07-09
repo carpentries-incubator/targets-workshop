@@ -1,7 +1,7 @@
 ---
 title: 'First targets Workflow'
-teaching: 10
-exercises: 2
+teaching: 30
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -34,6 +34,11 @@ Episode summary: First chance to get hands dirty by writing a very simple workfl
 #| message: FALSE
 #| warning: FALSE
 library(targets)
+
+if (interactive()) {
+  setwd("episodes")
+}
+
 source("files/lesson_functions.R")
 ```
 
@@ -76,49 +81,10 @@ Once you work through these steps, your RStudio session should look like this:
 
 Our project now contains a single file, created by RStudio: `targets-demo.Rproj`. You should not edit this file by hand. Its purpose is to tell RStudio that this is a project folder and to store some RStudio settings (if you use version-control software, it is OK to commit this file). Also, you can open the project by double clicking on the `.Rproj` file in your file explorer (try it by quitting RStudio then navigating in your file browser to your Desktop, opening the "targets-demo" folder, and double clicking `targets-demo.Rproj`).
 
-OK, now that our project is set up, we are ready to start using `targets`!
+OK, now that our project is set up, we are (almost) ready to start using `targets`!
 
-## Create a `_targets.R` file
+## Background: non-`targets` version
 
-Every `targets` project must include a special file, called `_targets.R` in the main project folder (the "project root").
-The `_targets.R` file includes the specification of the workflow: directions for R to run your analysis, kind of like a recipe.
-By using the `_targets.R` file, you won't have to remember to run specific scripts in a certain order.
-Instead, R will do it for you (more reproducibility points)!
-
-### Anatomy of a `_targets.R` file
-
-We will now start to write a `_targets.R` file. Fortunately, `targets` comes with a function to help us do this.
-
-In the R console, first load the `targets` package with `library(targets)`, then run the command `tar_script()`.
-
-```{r}
-#| label: start-targets-show
-#| eval: FALSE
-library(targets)
-tar_script()
-```
-
-Nothing will happen in the console, but in the file viewer, you should see a new file, `_targets.R` appear. Open it using the File menu or by clicking on it.
-
-We can see this default `_targets.R` file includes three main parts:
-
-- Loading packages with `library()`
-- Defining a custom function with `function()`
-- Defining a list with `list()`.
-
-The last part, the list, is the most important part of the `_targets.R` file.
-It defines the steps in the workflow.
-The `_targets.R` file must always end with this list.
-
-Furthermore, each item in the list is a call of the `tar_target()` function.
-The first argument of `tar_target()` is name of the target to build, and the second argument is the command used to build it.
-Note that the name of the target is **unquoted**, that is, it is written without any surrounding quotation marks.
-
-## Set up `_targets.R` file to run example analysis
-
-### Background: non-`targets` version
-
-We will use this template to start building our analysis of bill shape in penguins.
 First though, to get familiar with the functions and packages we'll use, let's run the code like you would in a "normal" R script without using `targets`.
 
 Recall that we are using the `palmerpenguins` R package to obtain the data.
@@ -137,7 +103,7 @@ penguins_csv_file <- path_to_file("penguins_raw.csv")
 penguins_csv_file
 ```
 
-We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html).
+We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html), or the Carpentry incubator lesson [R and the tidyverse for working with datasets](https://carpentries-incubator.github.io/r-tidyverse-4-datasets/).
 
 Let's load the data with `read_csv()`.
 
@@ -185,30 +151,139 @@ penguins_data <- penguins_data_raw |>
     bill_depth_mm = `Culmen Depth (mm)`
   ) |>
   # Delete rows with missing data
-  remove_missing(na.rm = TRUE)
+  drop_na()
 
 penguins_data
 ```
 
-That's better!
+We have not run the full analysis yet, but this is enough to get us started with the transition to using `targets`.
 
-### `targets` version
+## `targets` version
 
-What does this look like using `targets`?
+### About the `_targets.R` file
 
-The biggest difference is that we need to **put each step of the workflow into the list at the end**.
+One major difference between a typical R data analysis and a `targets` project is that the latter must include a special file, called `_targets.R` in the main project folder (the "project root").
 
-We also define a custom function for the data cleaning step.
-That is because the list of targets at the end **should look like a high-level summary of your analysis**.
-You want to avoid lengthy chunks of code when defining the targets; instead, put that code in the custom functions.
-The other steps (setting the file path and loading the data) are each just one function call so there's not much point in putting those into their own custom functions.
+The `_targets.R` file includes the specification of the workflow: these are the directions for R to run your analysis, kind of like a recipe.
+By using the `_targets.R` file, **you won't have to remember to run specific scripts in a certain order**; instead, R will do it for you!
+This is a **huge win**, both for your future self and anybody else trying to reproduce your analysis.
 
-Finally, each step in the workflow is defined with the `tar_target()` function.
+### Writing the initial `_targets.R` file
+
+We will now start to write a `_targets.R` file. Fortunately, `targets` comes with a function to help us do this.
+
+In the R console, first load the `targets` package with `library(targets)`, then run the command `tar_script()`.
+
+```{r}
+#| label: start-targets-show
+#| eval: FALSE
+library(targets)
+tar_script()
+```
+
+Nothing will happen in the console, but in the file viewer, you should see a new file, `_targets.R` appear. Open it using the File menu or by clicking on it.
+
+```{r}
+#| label: start-targets-hide
+#| eval: true
+#| echo: false
+#| results: "asis"
+plan_0_dir <- make_tempdir()
+pushd(plan_0_dir)
+tar_script()
+default_script <- readr::read_lines("_targets.R")
+popd()
+
+cat("```{.r}\n")
+cat(default_script, sep = "\n")
+cat("```")
+```
+
+Don't worry about the details of this file.
+Instead, notice that that it includes three main parts:
+
+- Loading packages with `library()`
+- Defining a custom function with `function()`
+- Defining a list with `list()`.
+
+You may not have used `function()` before.
+If not, that's OK; we will cover this in more detail in the [next episode](episodes/functions.Rmd), so we will ignore it for now.
+
+The last part, the list, is the **most important part** of the `_targets.R` file.
+It defines the steps in the workflow.
+The `_targets.R` file **must always end with this list**.
+
+Furthermore, each item in the list is a call of the `tar_target()` function.
+The first argument of `tar_target()` is name of the target to build, and the second argument is the command used to build it.
+Note that the name of the target is **unquoted**, that is, it is written without any surrounding quotation marks.
+
+## Modifying `_targets.R` to run the example analysis
+
+First, let's load all of the packages we need for our workflow.
+Add `library(tidyverse)` and `library(palmerpenguins)` to the top of `_targets.R` after `library(targets)`.
+
+Next, we can delete the `function()` statement since we won't be using that just yet (we will come back to custom functions soon!).
+
+The last, and trickiest, part is correctly defining the workflow in the list at the end of the file.
+
+From [the non-`targets` version](#background-non-targets-version), you can see we have three steps so far:
+
+1. Define the path to the CSV file with the raw penguins data.
+2. Read the CSV file.
+3. Clean the raw data.
+
+Each of these will be one item in the list.
+Furthermore, we need to write each item using the `tar_target()` function.
+Recall that we write the `tar_target()` function by writing the **name of the target to build** first and the **command to build it** second.
+
+::::::::::::::::::::::::::::::::::::: {.callout}
+
+## Choosing good target names
+
+The name of each target could be anything you like, but it is strongly recommended to **choose names that reflect what the target actually contains**.
+
+For example, `penguins_data_raw` for the raw data loaded from the CSV file and not `x`.
+
+Your future self will thank you!
+
+::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: {.challenge}
+
+## Challenge: Use `tar_target()`
+
+Can you use `tar_target()` to define the first step in the workflow (setting the path  to the CSV file with the penguins data)?
+
+:::::::::::::::::::::::::::::::::: {.solution}
+
+```{r}
+#| label: challenge-solution-1
+#| eval: false
+tar_target(name = penguins_csv_file, command = path_to_file("penguins_raw.csv"))
+```
+
+The first two arguments of `tar_target()` are the **name** of the target, followed by the **command** to build it.
+
+These arguments are used so frequently we will typically omit the argument names, instead writing it like this:
+
+```{r}
+#| label: challenge-solution-2
+#| eval: false
+tar_target(penguins_csv_file, path_to_file("penguins_raw.csv"))
+```
+
+::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::
+
+Now that we've seen how to define the first target, let's continue and add the rest.
+
+Once you've done that, this is how `_targets.R` should look:
 
 ```{r}
 #| label = "targets-show-workflow",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_1.R")[2:21]
+#| code = readLines("files/plans/plan_0.R")[2:22]
 ```
 
 I have set `show_col_types = FALSE` in `read_csv()` because we know from the earlier code that the column types were set correctly by default (character for species and numeric for bill length and depth), so we don't need to see the warning it would otherwise issue.
@@ -223,12 +298,33 @@ Try running it, and you should see something like this:
 #| eval: true
 #| echo: [3]
 pushd(make_tempdir())
-write_example_plan("plan_1.R")
+write_example_plan("plan_0.R")
 tar_make()
 popd()
 ```
 
 Congratulations, you've run your first workflow with `targets`!
+
+::::::::::::::::::::::::::::::::::::: {.callout}
+
+## The workflow cannot be run interactively
+
+You may be used to running R code interactively by selecting lines and pressing the "Run" button (or using the keyboard shortcut) in RStudio or your IDE of choice.
+
+You *could* run the list at the of `_targets.R` this way, but it will not execute the workflow (it will return a list instead).
+
+**The only way to run the workflow is with `tar_make()`.**
+
+You do not need to select and run anything interactively in `_targets.R`.
+In fact, you do not even need to have the `_targets.R` file open to run the workflow with `tar_make()`---try it for yourself!
+
+Similarly, **you must not write `tar_make()` in the `_targets.R` file**; you should only use `tar_make()` as a direct command at the R console.
+
+::::::::::::::::::::::::::::::::::::::::::
+
+Remember, now that we are using `targets`, **the only thing you need to do to replicate your analysis is run `tar_make()`**.
+
+This is true no matter how long or complicated your analysis becomes.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
