@@ -50,19 +50,6 @@ This differs from the execution we have learned so far, which spawns extra R pro
 
 ## Configuring Targets for Slurm
 
-::: {.prereq}
-
-### Install required packages
-
-You will need to install `crew.cluster` to enable the HPC integration:
-
-```{r}
-#| label: 'install-crew.cluster'
-#| eval: false
-install.packages("crew.cluster")
-```
-:::
-
 To adapt Targets to use the Slurm HPC scheduler, we change the `controller`.
 In this section we will assume that our HPC uses Slurm as its job scheduler, but you can use other schedulers such as PBS/TORQUE, Sun Grid Engine (SGE) or LSF.
 
