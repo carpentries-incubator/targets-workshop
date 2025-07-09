@@ -28,14 +28,14 @@ tar_option_set(
 list(
   tar_target(
     name = big_memory_task,
-    command = Sys.getenv("SLURM_MEM_PER_CPU"),
+    command = Sys.getenv("SLURM_MEM_PER_NODE"),
     resources = tar_resources(
       crew = tar_resources_crew(controller = "big_memory")
     )
   ),
   tar_target(
     name = small_memory_task,
-    command = Sys.getenv("SLURM_MEM_PER_CPU"),
+    command = Sys.getenv("SLURM_MEM_PER_NODE"),
     resources = tar_resources(
       crew = tar_resources_crew(controller = "small_memory")
     )

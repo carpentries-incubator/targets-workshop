@@ -36,6 +36,7 @@ if (!nzchar(Sys.which("sbatch"))){
 library(targets)
 library(tarchetypes)
 library(quarto) # don't actually need to load, but put here so renv catches it
+library(crew.cluster)
 source("files/lesson_functions.R") # nolint
 
 # Increase width for printing tibbles
@@ -66,14 +67,7 @@ To configure this for Slurm, we swap out the controller with [`crew_controller_s
 ```{R}
 #| label = "slurm-crew",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_slurm.R")[11:17]
-```
-
-We also need to load the `crew.cluster` package:
-```{R}
-#| label = "slurm-crew-library",
-#| eval = FALSE,
-#| code = readLines("files/plans/plan_slurm.R")[1]
+#| code = readLines("files/plans/plan_slurm.R")[5:14]
 ```
 
 ::: callout
@@ -91,7 +85,7 @@ Here we are only using three:
 
 Let's run the modified workflow:
 
-```{R, eval=FALSE}
+```{R}
 #| label = "slurm-workflow-show",
 #| eval = FALSE,
 #| code = readLines("files/plans/plan_slurm.R")
@@ -210,14 +204,14 @@ To do this, we firstly define each worker configuration by adding the `name` arg
 
 ```{R}
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_slurm_memory.R")[8:19]
+#| code = readLines("files/plans/plan_slurm_memory.R")[9:22]
 ```
 
 Next, we tell Targets about these controllers using `tar_option_set` as before, with one difference: we have to combine them in a controller group:
 
 ```{R}
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_slurm_memory.R")[20:23]
+#| code = readLines("files/plans/plan_slurm_memory.R")[24:26]
 tar_option_set(
   controller = crew_controller_group(small_memory, big_memory)
 )
@@ -227,7 +221,7 @@ Then we specify each controller by name in each target definition:
 
 ```{R}
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_slurm_memory.R")[24:39]
+#| code = readLines("files/plans/plan_slurm_memory.R")[28:43]
 ```
 
 When we run the pipeline, we can see the differing results:
@@ -280,7 +274,7 @@ You can find an example of this above.
 ```{R}
 #| label = 'heterogeneous-controllers-show',
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_slurm_gpu.R")[13:35]
+#| code = readLines("files/plans/plan_slurm_gpu.R")[13:39]
 ```
 ```{R}
 #| label: heterogeneous-controllers-hide

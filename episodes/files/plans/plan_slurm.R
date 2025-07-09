@@ -1,8 +1,8 @@
-library(crew.cluster)
 
 source("R/packages.R")
 source("R/functions.R")
 
+library(crew.cluster)
 tar_option_set(
   controller = crew_controller_slurm(
     workers = 3,
