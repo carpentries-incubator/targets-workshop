@@ -212,7 +212,7 @@ The following objects are masked from ‘package:datasets’:
 + combined_summary dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ combined_summary completed [4.1s, 371 B]
+✔ combined_summary completed [4s, 371 B]
 + combined_predictions dispatched
 ✔ species_summary completed [12.9s, 1.11 kB]
 ✔ combined_predictions completed [4s, 25.91 kB]
