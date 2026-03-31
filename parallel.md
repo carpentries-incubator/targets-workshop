@@ -214,10 +214,10 @@ The following objects are masked from ‘package:datasets’:
 + species_predictions declared [3 branches]
 ✔ combined_summary completed [4s, 371 B]
 + combined_predictions dispatched
-✔ species_summary completed [12.9s, 1.11 kB]
+✔ species_summary completed [13s, 1.11 kB]
 ✔ combined_predictions completed [4s, 25.91 kB]
 ✔ species_predictions completed [12s, 27.45 kB]
-✔ ended pipeline [19.4s, 8 completed, 3 skipped]
+✔ ended pipeline [18.9s, 8 completed, 3 skipped]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
