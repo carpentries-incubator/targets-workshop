@@ -371,7 +371,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Branching</h1>
-        <p>Last updated on 2026-04-14 |
+        <p>Last updated on 2026-04-28 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -411,7 +411,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching</p>
 </div>
@@ -496,8 +496,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_model dispatched
-✔ combined_model completed [24ms, 11.20 kB]
-✔ ended pipeline [205ms, 1 completed, 3 skipped]</code></pre>
+✔ combined_model completed [33ms, 11.20 kB]
+✔ ended pipeline [217ms, 1 completed, 3 skipped]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -597,9 +597,9 @@ The following objects are masked from ‘package:datasets’:
 + adelie_model dispatched
 ✔ adelie_model completed [18ms, 6.47 kB]
 + gentoo_model dispatched
-✔ gentoo_model completed [1ms, 5.88 kB]
+✔ gentoo_model completed [2ms, 5.88 kB]
 + chinstrap_model dispatched
-✔ chinstrap_model completed [1ms, 4.53 kB]
+✔ chinstrap_model completed [2ms, 4.53 kB]
 + combined_summary dispatched
 ✔ combined_summary completed [8ms, 348 B]
 + adelie_summary dispatched
@@ -608,7 +608,7 @@ The following objects are masked from ‘package:datasets’:
 ✔ gentoo_summary completed [3ms, 348 B]
 + chinstrap_summary dispatched
 ✔ chinstrap_summary completed [3ms, 349 B]
-✔ ended pipeline [352ms, 7 completed, 4 skipped]</code></pre>
+✔ ended pipeline [359ms, 7 completed, 4 skipped]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb10">
@@ -714,12 +714,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [10ms, 348 B]
+✔ combined_summary completed [11ms, 348 B]
 + penguins_data_grouped dispatched
 ✔ penguins_data_grouped completed [14ms, 1.53 kB]
 + species_summary declared [3 branches]
-✔ species_summary completed [12ms, 1.04 kB]
-✔ ended pipeline [329ms, 5 completed, 3 skipped]</code></pre>
+✔ species_summary completed [11ms, 1.04 kB]
+✔ ended pipeline [327ms, 5 completed, 3 skipped]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like species_summary_7fe6634f7c7f6a77, then one overall
@@ -850,7 +850,7 @@ The following objects are masked from ‘package:datasets’:
 ✔ combined_summary completed [37ms, 371 B]
 + species_summary declared [3 branches]
 ✔ species_summary completed [22ms, 1.11 kB]
-✔ ended pipeline [348ms, 4 completed, 4 skipped]</code></pre>
+✔ ended pipeline [352ms, 4 completed, 4 skipped]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (the <code>.before = 1</code>
@@ -898,7 +898,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -1038,16 +1038,16 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [75ms, 1.53 kB]
+✔ penguins_data completed [81ms, 1.53 kB]
 + combined_summary dispatched
-✔ combined_summary completed [24ms, 371 B]
+✔ combined_summary completed [23ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [20ms, 1.11 kB]
+✔ species_summary completed [22ms, 1.11 kB]
 + combined_predictions dispatched
-✔ combined_predictions completed [7ms, 25.91 kB]
+✔ combined_predictions completed [8ms, 25.91 kB]
 + species_predictions declared [3 branches]
-✔ species_predictions completed [21ms, 27.45 kB]
-✔ ended pipeline [438ms, 9 completed, 2 skipped]</code></pre>
+✔ species_predictions completed [23ms, 27.45 kB]
+✔ ended pipeline [444ms, 9 completed, 2 skipped]</code></pre>
 </div>
 <div id="best-practices-for-branching" class="callout">
 <div class="callout-square">
@@ -1089,7 +1089,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul><li>crossing: one branch per combination of elements
@@ -1184,8 +1184,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/branch.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/branch.html",
   "dateCreated": "2025-07-07",
-  "dateModified": "2026-04-14",
-  "datePublished": "2026-04-21"
+  "dateModified": "2026-04-28",
+  "datePublished": "2026-04-28"
 }
 
   </script><script>
