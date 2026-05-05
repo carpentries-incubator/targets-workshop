@@ -37,7 +37,8 @@ penguins_data
 ```
 
 ``` error
-Error: object 'penguins_data' not found
+Error:
+! object 'penguins_data' not found
 ```
 
 Where are the results of our workflow?
@@ -114,7 +115,8 @@ penguins_csv_file
 ```
 
 ``` error
-Error: object 'penguins_csv_file' not found
+Error:
+! object 'penguins_csv_file' not found
 ```
 
 ## When to use which function
