@@ -374,7 +374,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>The Workflow Lifecycle</h1>
-        <p>Last updated on 2026-04-28 |
+        <p>Last updated on 2026-05-05 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -457,7 +457,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [133ms, 3 skipped]</code></pre>
+✔ skipped pipeline [131ms, 3 skipped]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -517,7 +517,7 @@ The following objects are masked from ‘package:datasets’:
 
 + penguins_data dispatched
 ✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [252ms, 1 completed, 2 skipped]</code></pre>
+✔ ended pipeline [245ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -763,7 +763,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [145ms, 3 skipped]</code></pre>
+✔ skipped pipeline [146ms, 3 skipped]</code></pre>
 </div>
 <p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
 <div class="codewrapper sourceCode" id="cb16">
@@ -784,8 +784,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [26ms, 1.49 kB]
-✔ ended pipeline [250ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [22ms, 1.49 kB]
+✔ ended pipeline [244ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -890,8 +890,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/lifecycle.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/lifecycle.html",
   "dateCreated": "2025-07-07",
-  "dateModified": "2026-04-28",
-  "datePublished": "2026-04-28"
+  "dateModified": "2026-05-05",
+  "datePublished": "2026-05-05"
 }
 
   </script><script>

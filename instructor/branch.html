@@ -371,7 +371,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Branching</h1>
-        <p>Last updated on 2026-04-28 |
+        <p>Last updated on 2026-05-05 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -496,8 +496,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_model dispatched
-✔ combined_model completed [33ms, 11.20 kB]
-✔ ended pipeline [217ms, 1 completed, 3 skipped]</code></pre>
+✔ combined_model completed [18ms, 11.20 kB]
+✔ ended pipeline [203ms, 1 completed, 3 skipped]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -608,7 +608,7 @@ The following objects are masked from ‘package:datasets’:
 ✔ gentoo_summary completed [3ms, 348 B]
 + chinstrap_summary dispatched
 ✔ chinstrap_summary completed [3ms, 349 B]
-✔ ended pipeline [359ms, 7 completed, 4 skipped]</code></pre>
+✔ ended pipeline [354ms, 7 completed, 4 skipped]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb10">
@@ -719,7 +719,7 @@ The following objects are masked from ‘package:datasets’:
 ✔ penguins_data_grouped completed [14ms, 1.53 kB]
 + species_summary declared [3 branches]
 ✔ species_summary completed [11ms, 1.04 kB]
-✔ ended pipeline [327ms, 5 completed, 3 skipped]</code></pre>
+✔ ended pipeline [325ms, 5 completed, 3 skipped]</code></pre>
 </div>
 <p>There is a series of smaller targets (branches) that are each named
 like species_summary_7fe6634f7c7f6a77, then one overall
@@ -847,10 +847,10 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [37ms, 371 B]
+✔ combined_summary completed [38ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [22ms, 1.11 kB]
-✔ ended pipeline [352ms, 4 completed, 4 skipped]</code></pre>
+✔ species_summary completed [20ms, 1.11 kB]
+✔ ended pipeline [339ms, 4 completed, 4 skipped]</code></pre>
 </div>
 <p>And this time, when we load the <code>model_summaries</code>, we can
 tell which model corresponds to which row (the <code>.before = 1</code>
@@ -1038,16 +1038,16 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [81ms, 1.53 kB]
+✔ penguins_data completed [74ms, 1.53 kB]
 + combined_summary dispatched
 ✔ combined_summary completed [23ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [22ms, 1.11 kB]
+✔ species_summary completed [23ms, 1.11 kB]
 + combined_predictions dispatched
 ✔ combined_predictions completed [8ms, 25.91 kB]
 + species_predictions declared [3 branches]
-✔ species_predictions completed [23ms, 27.45 kB]
-✔ ended pipeline [444ms, 9 completed, 2 skipped]</code></pre>
+✔ species_predictions completed [21ms, 27.45 kB]
+✔ ended pipeline [432ms, 9 completed, 2 skipped]</code></pre>
 </div>
 <div id="best-practices-for-branching" class="callout">
 <div class="callout-square">
@@ -1184,8 +1184,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/branch.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/branch.html",
   "dateCreated": "2025-07-07",
-  "dateModified": "2026-04-28",
-  "datePublished": "2026-04-28"
+  "dateModified": "2026-05-05",
+  "datePublished": "2026-05-05"
 }
 
   </script><script>
