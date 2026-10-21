@@ -430,7 +430,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching</p>
 </div>
@@ -512,8 +512,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_model dispatched
-✔ combined_model completed [48ms, 11.20 kB]
-✔ ended pipeline [255ms, 1 completed, 3 skipped]</code></pre>
+✔ combined_model completed [30ms, 11.20 kB]
+✔ ended pipeline [237ms, 1 completed, 3 skipped]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -616,19 +616,20 @@ The following objects are masked from ‘package:datasets’:
 + combined_summary dispatched
 ✔ combined_summary completed [37ms, 350 B]
 + adelie_summary dispatched
-✔ adelie_summary completed [2ms, 351 B]
+✔ adelie_summary completed [3ms, 351 B]
 + gentoo_summary dispatched
 ✔ gentoo_summary completed [3ms, 351 B]
 + chinstrap_summary dispatched
 ✔ chinstrap_summary completed [3ms, 351 B]
-✔ ended pipeline [452ms, 7 completed, 4 skipped]</code></pre>
+✔ ended pipeline [428ms, 7 completed, 4 skipped]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">adelie_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">adelie_summary</span><span class="op">)</span></span>
+<span><span class="va">adelie_summary</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -720,12 +721,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [39ms, 350 B]
+✔ combined_summary completed [38ms, 350 B]
 + species_name dispatched
-✔ species_name completed [3ms, 76 B]
+✔ species_name completed [4ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [32ms, 1.05 kB]
-✔ ended pipeline [428ms, 5 completed, 3 skipped]</code></pre>
+✔ species_summary completed [30ms, 1.05 kB]
+✔ ended pipeline [406ms, 5 completed, 3 skipped]</code></pre>
 </div>
 <p>The messages say that <code>species_summary</code> was “declared”
 with 3 branches, then completed. That is the result of specifying
@@ -781,7 +782,8 @@ let’s inspect the output:</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span>
+<span><span class="va">species_summary</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -852,8 +854,8 @@ The following objects are masked from ‘package:datasets’:
 + combined_summary dispatched
 ✔ combined_summary completed [67ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [116ms, 1.11 kB]
-✔ ended pipeline [450ms, 4 completed, 4 skipped]</code></pre>
+✔ species_summary completed [94ms, 1.11 kB]
+✔ ended pipeline [427ms, 4 completed, 4 skipped]</code></pre>
 </div>
 <p>And this time, when we load <code>species_summary</code>, we can tell
 which species corresponds to which row (the <code>.before = 1</code> in
@@ -863,7 +865,8 @@ columns).</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span>
+<span><span class="va">species_summary</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -901,7 +904,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -1005,7 +1008,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul><li>crossing: one branch per combination of elements

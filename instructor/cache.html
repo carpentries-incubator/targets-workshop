@@ -247,8 +247,6 @@
       <div class="accordion-body">
         <ul><li><a href="#where-does-the-workflow-happen">Where does the workflow happen?</a></li>
 <li><a href="#tar_load">tar_load()</a></li>
-<li><a href="#tar_read">tar_read()</a></li>
-<li><a href="#when-to-use-which-function">When to use which function</a></li>
 <li><a href="#the-targets-cache">The targets cache</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -478,10 +476,9 @@ and using it as a teaching moment (errors are pedagogy!).</li>
 interact with. This is for reproducibility—the objects built by the
 workflow should only depend on the code in your project, not any
 commands you may have interactively given to R.</p>
-<p>Fortunately, <code>targets</code> has two functions that can be used
-to load objects built by the workflow into our current session,
-<code>tar_load()</code> and <code>tar_read()</code>. Let’s see how these
-work.</p>
+<p>Fortunately, <code>targets</code> has a function that can be used to
+load objects built by the workflow into our current session,
+<code>tar_load()</code>. Let’s see how it works.</p>
 </section><section><h2 class="section-heading" id="tar_load">tar_load()<a class="anchor" aria-label="anchor" href="#tar_load"></a></h2>
 <hr class="half-width"><p><code>tar_load()</code> loads an object built by the workflow into
 the current session. Its first argument is the name of the object you
@@ -518,47 +515,11 @@ The following objects are masked from ‘package:datasets’:
 <p>Note that <code>tar_load()</code> is used for its
 <strong>side-effect</strong>—loading the desired object into the current
 R session. It doesn’t actually return a value.</p>
-</section><section><h2 class="section-heading" id="tar_read">tar_read()<a class="anchor" aria-label="anchor" href="#tar_read"></a></h2>
-<hr class="half-width"><p><code>tar_read()</code> is similar to <code>tar_load()</code> in that
-it is used to retrieve objects built by the workflow, but unlike
-<code>tar_load()</code>, it returns them directly as output.</p>
-<p>Let’s try it with <code>penguins_csv_file</code>.</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
-</div>
-<p>We immediately see the contents of <code>penguins_csv_file</code>.
-But it has not been loaded into the environment. If you try to run
-<code>penguins_csv_file</code> now, you will get an error:</p>
-<div class="codewrapper sourceCode" id="cb8">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">penguins_csv_file</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error:
-! object 'penguins_csv_file' not found</code></pre>
-</div>
-</section><section><h2 class="section-heading" id="when-to-use-which-function">When to use which function<a class="anchor" aria-label="anchor" href="#when-to-use-which-function"></a></h2>
-<hr class="half-width"><p><code>tar_load()</code> tends to be more useful when you want to load
-objects and do things with them. <code>tar_read()</code> is more useful
-when you just want to immediately inspect an object.</p>
 </section><section><h2 class="section-heading" id="the-targets-cache">The targets cache<a class="anchor" aria-label="anchor" href="#the-targets-cache"></a></h2>
 <hr class="half-width"><p>If you close your R session, then re-start it and use
-<code>tar_load()</code> or <code>tar_read()</code>, you will notice that
-it can still load the workflow objects. In other words, the workflow
-output is <strong>saved across R sessions</strong>. How is this
-possible?</p>
+<code>tar_load()</code>, you will notice that it can still load the
+workflow objects. In other words, the workflow output is <strong>saved
+across R sessions</strong>. How is this possible?</p>
 <p>You may have noticed a new folder has appeared in your project,
 called <code>_targets</code>. This is the <strong>targets
 cache</strong>. It contains all of the workflow output; that is how we
@@ -577,6 +538,77 @@ that you need to keep around, it is possible to “reset” your workflow by
 simply deleting the entire <code>_targets</code> folder. Of course, this
 means you will need to run everything over again, so don’t do this
 lightly!</p>
+<div id="optional-challenge-tar_read" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="optional-challenge-tar_read" class="callout-inner">
+<h3 class="callout-title">Optional challenge:
+<code>tar_read()</code>
+</h3>
+<div class="callout-content">
+<p><em>This challenge is optional.</em></p>
+<p>If you look at the comment at the top of the <code>_targets.R</code>
+file that <code>tar_script()</code> created for you, you will see that
+it mentions another function, <code>tar_read()</code>. Like
+<code>tar_load()</code>, it retrieves an object built by the
+workflow.</p>
+<p>Try <code>tar_read(penguins_csv_file)</code>, and then try running
+<code>penguins_csv_file</code>. What do you see? What is the difference
+between <strong>loading</strong> the contents of a target into your R
+session as an object, and <strong>reading</strong> them? When might you
+want to use one rather than the other?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<p><code>tar_read()</code> returns the value of the target, so we
+immediately see it (the exact path will vary depending on your
+machine):</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
+</div>
+<p>But it has not been loaded into the environment, so if we try to run
+<code>penguins_csv_file</code>, we get an error:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins_csv_file</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error:
+! object 'penguins_csv_file' not found</code></pre>
+</div>
+<p>In contrast, <code>tar_load()</code> creates an object in your R
+session with the same name as the target, and returns nothing visible.
+Afterwards, you can use that object as many times as you like.</p>
+<p><code>tar_load()</code> tends to be more useful when you want to load
+objects and do things with them. <code>tar_read()</code> is more useful
+when you just want to immediately inspect a target, or to store its
+value in an object with a different name (for example,
+<code>my_data &lt;- tar_read(penguins_data)</code>).</p>
+</div>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -590,9 +622,6 @@ non-interactive R session</li>
 <li>
 <code>tar_load()</code> loads a workflow object into the current R
 session</li>
-<li>
-<code>tar_read()</code> reads a workflow object and returns its
-value</li>
 <li>The <code>_targets</code> folder is the cache and generally should
 not be edited by hand</li>
 </ul></div>

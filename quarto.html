@@ -620,7 +620,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul><li><p>In the code chunk labeled <code>results-stats</code>, statistics
 from the models like <em>R</em> squared are extracted, then inserted
@@ -656,7 +656,7 @@ workflow using your own data and generate a report. Good luck!</p>
 <code>tarchetypes::tar_quarto()</code> is used to render Quarto
 documents</li>
 <li>You should load targets within the Quarto document using
-<code>tar_load()</code> and <code>tar_read()</code>
+<code>tar_load()</code>
 </li>
 <li>It is recommended to do heavy computations in the main targets
 workflow, and lighter formatting and plot generation in the Quarto

@@ -491,9 +491,6 @@ non-interactive R session</li>
 <li>
 <code>tar_load()</code> loads a workflow object into the current R
 session</li>
-<li>
-<code>tar_read()</code> reads a workflow object and returns its
-value</li>
 <li>The <code>_targets</code> folder is the cache and generally should
 not be edited by hand</li>
 </ul></section><section id="lifecycle"><h2 class="section-heading"><a href="lifecycle.html">The Workflow Lifecycle</a></h2>
@@ -568,7 +565,7 @@ function</li>
 <code>tarchetypes::tar_quarto()</code> is used to render Quarto
 documents</li>
 <li>You should load targets within the Quarto document using
-<code>tar_load()</code> and <code>tar_read()</code>
+<code>tar_load()</code>
 </li>
 <li>It is recommended to do heavy computations in the main targets
 workflow, and lighter formatting and plot generation in the Quarto

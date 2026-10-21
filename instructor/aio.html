@@ -704,7 +704,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: First chance to get hands dirty by writing a very
 simple workflow</p>
@@ -1071,7 +1071,7 @@ workflow (setting the path to the CSV file with the penguins data)?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1259,7 +1259,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: A very brief introduction to functions, when you
 have learners who have no experience with them.</p>
@@ -1480,7 +1480,7 @@ numerical vector and returns its mean divided by 10.</h3>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1697,10 +1697,9 @@ and using it as a teaching moment (errors are pedagogy!).</li>
 interact with. This is for reproducibility—the objects built by the
 workflow should only depend on the code in your project, not any
 commands you may have interactively given to R.</p>
-<p>Fortunately, <code>targets</code> has two functions that can be used
-to load objects built by the workflow into our current session,
-<code>tar_load()</code> and <code>tar_read()</code>. Let’s see how these
-work.</p>
+<p>Fortunately, <code>targets</code> has a function that can be used to
+load objects built by the workflow into our current session,
+<code>tar_load()</code>. Let’s see how it works.</p>
 </section><section><h2 class="section-heading" id="tar_load">tar_load()<a class="anchor" aria-label="anchor" href="#tar_load"></a>
 </h2>
 <hr class="half-width">
@@ -1739,53 +1738,13 @@ The following objects are masked from ‘package:datasets’:
 <p>Note that <code>tar_load()</code> is used for its
 <strong>side-effect</strong>—loading the desired object into the current
 R session. It doesn’t actually return a value.</p>
-</section><section><h2 class="section-heading" id="tar_read">tar_read()<a class="anchor" aria-label="anchor" href="#tar_read"></a>
-</h2>
-<hr class="half-width">
-<p><code>tar_read()</code> is similar to <code>tar_load()</code> in that
-it is used to retrieve objects built by the workflow, but unlike
-<code>tar_load()</code>, it returns them directly as output.</p>
-<p>Let’s try it with <code>penguins_csv_file</code>.</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
-</div>
-<p>We immediately see the contents of <code>penguins_csv_file</code>.
-But it has not been loaded into the environment. If you try to run
-<code>penguins_csv_file</code> now, you will get an error:</p>
-<div class="codewrapper sourceCode" id="cb8">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">penguins_csv_file</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error:
-! object 'penguins_csv_file' not found</code></pre>
-</div>
-</section><section><h2 class="section-heading" id="when-to-use-which-function">When to use which function<a class="anchor" aria-label="anchor" href="#when-to-use-which-function"></a>
-</h2>
-<hr class="half-width">
-<p><code>tar_load()</code> tends to be more useful when you want to load
-objects and do things with them. <code>tar_read()</code> is more useful
-when you just want to immediately inspect an object.</p>
 </section><section><h2 class="section-heading" id="the-targets-cache">The targets cache<a class="anchor" aria-label="anchor" href="#the-targets-cache"></a>
 </h2>
 <hr class="half-width">
 <p>If you close your R session, then re-start it and use
-<code>tar_load()</code> or <code>tar_read()</code>, you will notice that
-it can still load the workflow objects. In other words, the workflow
-output is <strong>saved across R sessions</strong>. How is this
-possible?</p>
+<code>tar_load()</code>, you will notice that it can still load the
+workflow objects. In other words, the workflow output is <strong>saved
+across R sessions</strong>. How is this possible?</p>
 <p>You may have noticed a new folder has appeared in your project,
 called <code>_targets</code>. This is the <strong>targets
 cache</strong>. It contains all of the workflow output; that is how we
@@ -1804,6 +1763,77 @@ that you need to keep around, it is possible to “reset” your workflow by
 simply deleting the entire <code>_targets</code> folder. Of course, this
 means you will need to run everything over again, so don’t do this
 lightly!</p>
+<div id="optional-challenge-tar_read" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="optional-challenge-tar_read" class="callout-inner">
+<h3 class="callout-title">Optional challenge:
+<code>tar_read()</code>
+</h3>
+<div class="callout-content">
+<p><em>This challenge is optional.</em></p>
+<p>If you look at the comment at the top of the <code>_targets.R</code>
+file that <code>tar_script()</code> created for you, you will see that
+it mentions another function, <code>tar_read()</code>. Like
+<code>tar_load()</code>, it retrieves an object built by the
+workflow.</p>
+<p>Try <code>tar_read(penguins_csv_file)</code>, and then try running
+<code>penguins_csv_file</code>. What do you see? What is the difference
+between <strong>loading</strong> the contents of a target into your R
+session as an object, and <strong>reading</strong> them? When might you
+want to use one rather than the other?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<p><code>tar_read()</code> returns the value of the target, so we
+immediately see it (the exact path will vary depending on your
+machine):</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">penguins_csv_file</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"</code></pre>
+</div>
+<p>But it has not been loaded into the environment, so if we try to run
+<code>penguins_csv_file</code>, we get an error:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins_csv_file</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error:
+! object 'penguins_csv_file' not found</code></pre>
+</div>
+<p>In contrast, <code>tar_load()</code> creates an object in your R
+session with the same name as the target, and returns nothing visible.
+Afterwards, you can use that object as many times as you like.</p>
+<p><code>tar_load()</code> tends to be more useful when you want to load
+objects and do things with them. <code>tar_read()</code> is more useful
+when you just want to immediately inspect a target, or to store its
+value in an object with a different name (for example,
+<code>my_data &lt;- tar_read(penguins_data)</code>).</p>
+</div>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1818,9 +1848,6 @@ non-interactive R session</li>
 <li>
 <code>tar_load()</code> loads a workflow object into the current R
 session</li>
-<li>
-<code>tar_read()</code> reads a workflow object and returns its
-value</li>
 <li>The <code>_targets</code> folder is the cache and generally should
 not be edited by hand</li>
 </ul>
@@ -1915,7 +1942,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [109ms, 3 skipped]</code></pre>
+✔ skipped pipeline [135ms, 3 skipped]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -1976,8 +2003,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [30ms, 1.49 kB]
-✔ ended pipeline [186ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [36ms, 1.49 kB]
+✔ ended pipeline [229ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -2006,8 +2033,7 @@ skip steps results in a massive increase in efficiency.</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<p>With <code>tar_read(penguins_data)</code> or by running
-<code>tar_load(penguins_data)</code> followed by
+<p>By running <code>tar_load(penguins_data)</code> followed by
 <code>penguins_data</code>.</p>
 </div>
 </div>
@@ -2180,8 +2206,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [186ms, 10.40 kB]
-✔ ended pipeline [343ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data_raw completed [216ms, 10.40 kB]
+✔ ended pipeline [411ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was re-run (the extra message is
 from <code>read_csv()</code>, which now reports the column types because
@@ -2225,7 +2251,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [124ms, 3 skipped]</code></pre>
+✔ skipped pipeline [155ms, 3 skipped]</code></pre>
 </div>
 <p>Now let’s invalidate <code>penguins_data_raw</code> and build only
 that target:</p>
@@ -2256,8 +2282,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [177ms, 10.40 kB]
-✔ ended pipeline [346ms, 1 completed, 1 skipped]</code></pre>
+✔ penguins_data_raw completed [212ms, 10.40 kB]
+✔ ended pipeline [426ms, 1 completed, 1 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was built (you will see the same
 <code>read_csv()</code> message again, since we are still not using
@@ -2285,8 +2311,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [30ms, 1.49 kB]
-✔ ended pipeline [185ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [36ms, 1.49 kB]
+✔ ended pipeline [232ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -2395,7 +2421,7 @@ reproducibility</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Demonstrate best-practices for project
 organization</p>
@@ -3019,11 +3045,11 @@ below. Then, rename them when you are ready to work on it again.</p>
 </h3>
 <pre class="output" tabindex="0"><code>+ some_data dispatched
 ✔ some_data completed [1ms, 64 B]
-✔ ended pipeline [389ms, 1 completed, 0 skipped]</code></pre>
+✔ ended pipeline [330ms, 1 completed, 0 skipped]</code></pre>
 </div>
-<p>If we inspect the contents of <code>some_data</code> with
-<code>tar_read(some_data)</code>, it will contain the string
-<code>"Hello World"</code> as expected.</p>
+<p>If we load <code>some_data</code> with
+<code>tar_load(some_data)</code> and inspect it, it will contain the
+string <code>"Hello World"</code> as expected.</p>
 <p>Now say we edit “hello.txt”, perhaps add some text: “Hello World. How
 are you?”. Edit this in the RStudio text editor and save it. Now run the
 pipeline again.</p>
@@ -3041,7 +3067,7 @@ pipeline again.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped pipeline [336ms, 1 skipped]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipped pipeline [267ms, 1 skipped]</code></pre>
 </div>
 <p>The target <code>some_data</code> was skipped, even though the
 contents of the file changed.</p>
@@ -3068,10 +3094,10 @@ this will be detected by <code>targets</code>.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ data_file dispatched
-✔ data_file completed [1ms, 26 B]
+✔ data_file completed [0ms, 26 B]
 + some_data dispatched
 ✔ some_data completed [0ms, 78 B]
-✔ ended pipeline [430ms, 2 completed, 0 skipped]</code></pre>
+✔ ended pipeline [385ms, 2 completed, 0 skipped]</code></pre>
 </div>
 <p>This time we see that <code>targets</code> does successfully re-build
 <code>some_data</code> as expected.</p>
@@ -3137,12 +3163,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [2ms, 53.10 kB]
+✔ penguins_csv_file completed [1ms, 53.10 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [96ms, 10.40 kB]
+✔ penguins_data_raw completed [97ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [461ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [22ms, 1.49 kB]
+✔ ended pipeline [431ms, 3 completed, 0 skipped]</code></pre>
 </div>
 </div>
 </div>
@@ -3224,14 +3250,14 @@ to upper case then write it out again:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ hello_file dispatched
-✔ hello_file completed [0ms, 26 B]
+✔ hello_file completed [1ms, 26 B]
 + hello dispatched
-✔ hello completed [0ms, 78 B]
+✔ hello completed [1ms, 78 B]
 + hello_caps dispatched
 ✔ hello_caps completed [0ms, 78 B]
 + hello_caps_out dispatched
-✔ hello_caps_out completed [0ms, 26 B]
-✔ ended pipeline [466ms, 4 completed, 0 skipped]</code></pre>
+✔ hello_caps_out completed [1ms, 26 B]
+✔ ended pipeline [428ms, 4 completed, 0 skipped]</code></pre>
 </div>
 <p>Take a look at <code>hello_caps.txt</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
@@ -3332,7 +3358,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching</p>
 </div>
@@ -3420,8 +3446,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_model dispatched
-✔ combined_model completed [48ms, 11.20 kB]
-✔ ended pipeline [255ms, 1 completed, 3 skipped]</code></pre>
+✔ combined_model completed [30ms, 11.20 kB]
+✔ ended pipeline [237ms, 1 completed, 3 skipped]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -3524,19 +3550,20 @@ The following objects are masked from ‘package:datasets’:
 + combined_summary dispatched
 ✔ combined_summary completed [37ms, 350 B]
 + adelie_summary dispatched
-✔ adelie_summary completed [2ms, 351 B]
+✔ adelie_summary completed [3ms, 351 B]
 + gentoo_summary dispatched
 ✔ gentoo_summary completed [3ms, 351 B]
 + chinstrap_summary dispatched
 ✔ chinstrap_summary completed [3ms, 351 B]
-✔ ended pipeline [452ms, 7 completed, 4 skipped]</code></pre>
+✔ ended pipeline [428ms, 7 completed, 4 skipped]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">adelie_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">adelie_summary</span><span class="op">)</span></span>
+<span><span class="va">adelie_summary</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3631,12 +3658,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [39ms, 350 B]
+✔ combined_summary completed [38ms, 350 B]
 + species_name dispatched
-✔ species_name completed [3ms, 76 B]
+✔ species_name completed [4ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [32ms, 1.05 kB]
-✔ ended pipeline [428ms, 5 completed, 3 skipped]</code></pre>
+✔ species_summary completed [30ms, 1.05 kB]
+✔ ended pipeline [406ms, 5 completed, 3 skipped]</code></pre>
 </div>
 <p>The messages say that <code>species_summary</code> was “declared”
 with 3 branches, then completed. That is the result of specifying
@@ -3692,7 +3719,8 @@ let’s inspect the output:</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span>
+<span><span class="va">species_summary</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3764,8 +3792,8 @@ The following objects are masked from ‘package:datasets’:
 + combined_summary dispatched
 ✔ combined_summary completed [67ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [116ms, 1.11 kB]
-✔ ended pipeline [450ms, 4 completed, 4 skipped]</code></pre>
+✔ species_summary completed [94ms, 1.11 kB]
+✔ ended pipeline [427ms, 4 completed, 4 skipped]</code></pre>
 </div>
 <p>And this time, when we load <code>species_summary</code>, we can tell
 which species corresponds to which row (the <code>.before = 1</code> in
@@ -3775,7 +3803,8 @@ columns).</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_read</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_load</span><span class="op">(</span><span class="va">species_summary</span><span class="op">)</span></span>
+<span><span class="va">species_summary</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3813,7 +3842,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -3917,7 +3946,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -4283,7 +4312,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to write reports with Quarto</p>
 </div>
@@ -4495,7 +4524,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
@@ -4534,7 +4563,7 @@ workflow using your own data and generate a report. Good luck!</p>
 <code>tarchetypes::tar_quarto()</code> is used to render Quarto
 documents</li>
 <li>You should load targets within the Quarto document using
-<code>tar_load()</code> and <code>tar_read()</code>
+<code>tar_load()</code>
 </li>
 <li>It is recommended to do heavy computations in the main targets
 workflow, and lighter formatting and plot generation in the Quarto
