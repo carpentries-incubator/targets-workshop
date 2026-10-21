@@ -175,11 +175,20 @@ In this case, install it first with `install.packages("visNetwork")`.
 Modify the workflow in `_targets.R`, then run `tar_visnetwork()` again **without** running `tar_make()`.
 What color indicates that a target is out of date?
 
+For example, you could change the `penguins_csv_file` target so that it wraps the path in `paste0()`:
+
+```r
+tar_target(penguins_csv_file, paste0(path_to_file("penguins_raw.csv")))
+```
+
+This changes the code but not the result (it is still the same file path), so it won't break anything.
+
 :::::::::::::::::::::::::::::::::: solution
 
 Light blue indicates the target is out of date.
 
-Depending on how you modified the code, any or all of the targets may now be light blue.
+With the modification above, all three targets are light blue: `penguins_csv_file` because its code changed, and `penguins_data_raw` and `penguins_data` because they depend on it.
+If you modify the code a different way, a different set of targets may be light blue.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -189,7 +198,7 @@ Depending on how you modified the code, any or all of the targets may now be lig
 
 ## 'Outdated' does not always mean 'will be run'
 
-Just because a target appears as light blue (is "outdated") in the network visualization, this does not guarantee that it will be re-built during the next run. Rather, it means that **at least of one the targets that it depends on has changed**.
+Just because a target appears as light blue (is "outdated") in the network visualization, this does not guarantee that it will be re-built during the next run. Rather, it means that **at least one of the targets that it depends on has changed**.
 
 For example, if the workflow state looked like this:
 
@@ -201,34 +210,20 @@ But if re-running the workflow results in the exact same value for `C` as before
 
 Most of the time, a single change will cascade to the rest of the downstream targets and cause them to be re-built, but this is not always the case. `targets` has no way of knowing ahead of time what the actual output will be, so it cannot provide a network visualization that completely predicts the future!
 
+We can see this with the modification from Challenge 2. All three targets showed up as outdated, but what happens when we run the workflow?
+
+```{r}
+#| label: targets-modify-2
+#| echo: [3]
+pushd(plan_2_dir)
+write_example_plan("plan_2c.R")
+tar_make()
+popd()
+```
+
+Only `penguins_csv_file` was re-run. Its code changed, so it was re-built, but it produced exactly the same value as before. That means `penguins_data_raw` and `penguins_data`, which looked outdated, were skipped.
+
 :::::::::::::::::::::::::::::::::::::::::::::::
-
-## Other ways to check workflow status
-
-The visualization is very useful, but sometimes you may be working on a server that doesn't provide graphical output, or you just want a quick textual summary of the workflow.
-There are some other useful functions that can do that.
-
-`tar_outdated()` lists only the outdated targets; that is, targets that will be built during the next run, or depend on such a target.
-If everything is up to date, it will return a zero-length character vector (`character(0)`).
-
-```{r}
-#| label: targets-outdated
-#| echo: [2]
-pushd(plan_2_dir)
-tar_outdated()
-popd()
-```
-
-`tar_progress()` shows the current status of the workflow as a dataframe.
-You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
-
-```{r}
-#| label: targets-progress
-#| echo: [2]
-pushd(plan_2_dir)
-tar_progress()
-popd()
-```
 
 ## Granular control of targets
 
@@ -250,7 +245,21 @@ tar_make()
 popd()
 ```
 
-Let's invalidate `penguins_data` and run it again:
+Now let's invalidate `penguins_data_raw` and build only that target:
+
+```{r}
+#| label: targets-specific-show
+#| eval: true
+#| echo: [2, 3]
+pushd(plan_2_dir)
+tar_invalidate(penguins_data_raw)
+tar_make(penguins_data_raw)
+popd()
+```
+
+Only `penguins_data_raw` was built. `penguins_data` was not part of this run, and `penguins_csv_file` (which `penguins_data_raw` depends on) was skipped because it was already up to date.
+
+Next, let's invalidate `penguins_data` and run the whole workflow again:
 
 ```{r}
 #| label: targets-progress-show-3
@@ -274,8 +283,6 @@ In practice, you will likely be switching between running the workflow with `tar
 
 - `targets` only runs the steps that have been affected by a change to the code
 - `tar_visnetwork()` shows the current state of the workflow as a network
-- `tar_progress()` shows the current state of the workflow as a data frame
-- `tar_outdated()` lists outdated targets
 - `tar_invalidate()` can be used to invalidate (re-run) specific targets
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
