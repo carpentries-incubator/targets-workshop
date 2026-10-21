@@ -97,7 +97,7 @@ Then, add one more target to the pipeline using the `tar_quarto()` function like
 ```{r}
 #| label = "example-penguins-show-1",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_11.R")[2:40]
+#| code = readLines("files/plans/plan_11.R")[2:38]
 ```
 
 ```{r}
@@ -114,7 +114,7 @@ tar_dir({
   readr::read_lines("https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd") |>
     readr::write_lines("penguin_report.qmd")
   # Run it
-  write_example_plan("plan_8.R")
+  write_example_plan("plan_7.R")
   tar_make(reporter = "silent")
   write_example_plan("plan_11.R")
   tar_make()

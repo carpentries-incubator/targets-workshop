@@ -11,18 +11,14 @@ tar_plan(
   ),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
-  # Group data
-  tar_group_by(
-    penguins_data_grouped,
-    penguins_data,
-    species
-  ),
+  # Get species names
+  species_name = penguins_data |> dplyr::pull(species) |> unique(),
   # Build combined model with all species together
   combined_summary = model_glance(penguins_data),
   # Build one model per species
   tar_target(
     species_summary,
-    model_glance(penguins_data_grouped),
-    pattern = map(penguins_data_grouped)
+    penguins_data |> dplyr::filter(species == species_name) |> model_glance(),
+    pattern = map(species_name)
   )
 )
