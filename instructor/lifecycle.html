@@ -476,7 +476,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [135ms, 3 skipped]</code></pre>
+✔ skipped pipeline [126ms, 3 skipped]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -535,8 +535,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [36ms, 1.49 kB]
-✔ ended pipeline [229ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [35ms, 1.49 kB]
+✔ ended pipeline [222ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -734,8 +734,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [216ms, 10.40 kB]
-✔ ended pipeline [411ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data_raw completed [200ms, 10.40 kB]
+✔ ended pipeline [385ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was re-run (the extra message is
 from <code>read_csv()</code>, which now reports the column types because
@@ -777,7 +777,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [155ms, 3 skipped]</code></pre>
+✔ skipped pipeline [147ms, 3 skipped]</code></pre>
 </div>
 <p>Now let’s invalidate <code>penguins_data_raw</code> and build only
 that target:</p>
@@ -808,8 +808,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [212ms, 10.40 kB]
-✔ ended pipeline [426ms, 1 completed, 1 skipped]</code></pre>
+✔ penguins_data_raw completed [193ms, 10.40 kB]
+✔ ended pipeline [392ms, 1 completed, 1 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was built (you will see the same
 <code>read_csv()</code> message again, since we are still not using
@@ -837,8 +837,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [36ms, 1.49 kB]
-✔ ended pipeline [232ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [32ms, 1.49 kB]
+✔ ended pipeline [215ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
