@@ -175,19 +175,14 @@ In this case, install it first with `install.packages("visNetwork")`.
 Modify the workflow in `_targets.R`, then run `tar_visnetwork()` again **without** running `tar_make()`.
 What color indicates that a target is out of date?
 
-For example, you could change the `penguins_csv_file` target so that it wraps the path in `paste0()`:
-
-```r
-tar_target(penguins_csv_file, paste0(path_to_file("penguins_raw.csv")))
-```
-
-This changes the code but not the result (it is still the same file path), so it won't break anything.
+For example, you could delete the argument `show_col_types = FALSE` from the `read_csv()` call in the `penguins_data_raw` target.
+This changes the code but not the data, so it won't break anything.
 
 :::::::::::::::::::::::::::::::::: solution
 
 Light blue indicates the target is out of date.
 
-With the modification above, all three targets are light blue: `penguins_csv_file` because its code changed, and `penguins_data_raw` and `penguins_data` because they depend on it.
+With the modification above, `penguins_data_raw` and `penguins_data` are light blue: `penguins_data_raw` because its code changed, and `penguins_data` because it depends on `penguins_data_raw`. `penguins_csv_file` stays green because nothing it depends on changed.
 If you modify the code a different way, a different set of targets may be light blue.
 
 ::::::::::::::::::::::::::::::::::::::::::::
@@ -210,7 +205,7 @@ But if re-running the workflow results in the exact same value for `C` as before
 
 Most of the time, a single change will cascade to the rest of the downstream targets and cause them to be re-built, but this is not always the case. `targets` has no way of knowing ahead of time what the actual output will be, so it cannot provide a network visualization that completely predicts the future!
 
-We can see this with the modification from Challenge 2. All three targets showed up as outdated, but what happens when we run the workflow?
+We can see this with the modification from Challenge 2. Both `penguins_data_raw` and `penguins_data` showed up as outdated, but what happens when we run the workflow?
 
 ```{r}
 #| label: targets-modify-2
@@ -221,7 +216,7 @@ tar_make()
 popd()
 ```
 
-Only `penguins_csv_file` was re-run. Its code changed, so it was re-built, but it produced exactly the same value as before. That means `penguins_data_raw` and `penguins_data`, which looked outdated, were skipped.
+Only `penguins_data_raw` was re-run (the extra message is from `read_csv()`, which now reports the column types because we removed `show_col_types = FALSE`). Its code changed, so it was re-built, but it produced exactly the same data as before. That means `penguins_data`, which looked outdated, was skipped.
 
 :::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -257,7 +252,7 @@ tar_make(penguins_data_raw)
 popd()
 ```
 
-Only `penguins_data_raw` was built. `penguins_data` was not part of this run, and `penguins_csv_file` (which `penguins_data_raw` depends on) was skipped because it was already up to date.
+Only `penguins_data_raw` was built (you will see the same `read_csv()` message again, since we are still not using `show_col_types = FALSE`). `penguins_data` was not part of this run, and `penguins_csv_file` (which `penguins_data_raw` depends on) was skipped because it was already up to date.
 
 Next, let's invalidate `penguins_data` and run the whole workflow again:
 
