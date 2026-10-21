@@ -434,7 +434,7 @@ reproducibility</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Introduce the idea of reproducibility and why / who
 would want to use <code>targets</code></p>
@@ -476,7 +476,32 @@ you were doing</li>
 affected by the change</li>
 <li>massively scale up the workflow without changing individual
 functions</li>
-</ul><p>… and of course, it will help others reproduce your analysis.</p>
+</ul><div id="reproducibility-in-targets" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="reproducibility-in-targets" class="callout-inner">
+<h3 class="callout-title">Reproducibility in <code>targets</code>
+</h3>
+<div class="callout-content">
+<p>Q: How do the above features result in better reproducibility?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>Because the whole workflow is automated, there are no user-dependent
+steps. Thus, a future user will be able to get the same results.</p>
+</div>
+</div>
+</div>
+</div>
 </section><section><h2 class="section-heading" id="who-should-use-targets">Who should use <code>targets</code>?<a class="anchor" aria-label="anchor" href="#who-should-use-targets"></a></h2>
 <hr class="half-width"><p><code>targets</code> is by no means the only workflow management
 software. There is a large number of similar tools, each with varying
