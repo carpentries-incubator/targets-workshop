@@ -190,14 +190,11 @@ tar_make(reporter = "silent")
 # names in output)
 write_example_plan("plan_6b.R")
 tar_make()
-example_branch_name <- tar_branch_names(species_summary, 1)
 popd()
 ```
 
 The messages say that `species_summary` was "declared" with 3 branches, then completed.
 That is the result of specifying targets using branching: `species_summary` is one overall target made up of a series of smaller targets (branches), here one for each species.
-`tar_make()` groups the branches together in its messages, but each branch is a target in its own right, with a name like `r example_branch_name`.
-Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
 `targets` builds each branch one at a time, then combines them into the overall target.
 
 Next, let's look in more detail about how the workflow is set up, starting with how we set up the data:
