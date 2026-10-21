@@ -13,7 +13,6 @@ Follow these instructions to install the required software on your computer.
 ```r
 install.packages(
   c(
-    "conflicted",
     "crew",
     "palmerpenguins",
     "quarto",
