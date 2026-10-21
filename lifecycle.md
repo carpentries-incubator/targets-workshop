@@ -55,7 +55,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [109ms, 3 skipped]
+✔ skipped pipeline [126ms, 3 skipped]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -113,8 +113,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [30ms, 1.49 kB]
-✔ ended pipeline [186ms, 1 completed, 2 skipped]
+✔ penguins_data completed [35ms, 1.49 kB]
+✔ ended pipeline [222ms, 1 completed, 2 skipped]
 ```
 
 What happened?
@@ -133,7 +133,7 @@ How can you inspect the contents of `penguins_data`?
 
 :::::::::::::::::::::::::::::::::: solution
 
-With `tar_read(penguins_data)` or by running `tar_load(penguins_data)` followed by `penguins_data`.
+By running `tar_load(penguins_data)` followed by `penguins_data`.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -252,8 +252,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [186ms, 10.40 kB]
-✔ ended pipeline [343ms, 1 completed, 2 skipped]
+✔ penguins_data_raw completed [200ms, 10.40 kB]
+✔ ended pipeline [385ms, 1 completed, 2 skipped]
 ```
 
 Only `penguins_data_raw` was re-run (the extra message is from `read_csv()`, which now reports the column types because we removed `show_col_types = FALSE`). Its code changed, so it was re-built, but it produced exactly the same data as before. That means `penguins_data`, which looked outdated, was skipped.
@@ -284,7 +284,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [124ms, 3 skipped]
+✔ skipped pipeline [147ms, 3 skipped]
 ```
 
 Now let's invalidate `penguins_data_raw` and build only that target:
@@ -313,8 +313,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [177ms, 10.40 kB]
-✔ ended pipeline [346ms, 1 completed, 1 skipped]
+✔ penguins_data_raw completed [193ms, 10.40 kB]
+✔ ended pipeline [392ms, 1 completed, 1 skipped]
 ```
 
 Only `penguins_data_raw` was built (you will see the same `read_csv()` message again, since we are still not using `show_col_types = FALSE`). `penguins_data` was not part of this run, and `penguins_csv_file` (which `penguins_data_raw` depends on) was skipped because it was already up to date.
@@ -336,8 +336,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [30ms, 1.49 kB]
-✔ ended pipeline [185ms, 1 completed, 2 skipped]
+✔ penguins_data completed [32ms, 1.49 kB]
+✔ ended pipeline [215ms, 1 completed, 2 skipped]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).

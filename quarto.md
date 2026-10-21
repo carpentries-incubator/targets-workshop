@@ -195,7 +195,7 @@ So your final Challenge is to construct a `targets` workflow using your own data
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `tarchetypes::tar_quarto()` is used to render Quarto documents
-- You should load targets within the Quarto document using `tar_load()` and `tar_read()`
+- You should load targets within the Quarto document using `tar_load()`
 - It is recommended to do heavy computations in the main targets workflow, and lighter formatting and plot generation in the Quarto document
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

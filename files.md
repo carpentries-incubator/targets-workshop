@@ -57,10 +57,10 @@ tar_plan(
 ``` output
 + some_data dispatched
 ✔ some_data completed [1ms, 64 B]
-✔ ended pipeline [389ms, 1 completed, 0 skipped]
+✔ ended pipeline [296ms, 1 completed, 0 skipped]
 ```
 
-If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
+If we load `some_data` with `tar_load(some_data)` and inspect it, it will contain the string `"Hello World"` as expected.
 
 Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?". Edit this in the RStudio text editor and save it. Now run the pipeline again.
 
@@ -76,7 +76,7 @@ tar_plan(
 
 
 ``` output
-✔ skipped pipeline [336ms, 1 skipped]
+✔ skipped pipeline [241ms, 1 skipped]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -99,8 +99,8 @@ tar_plan(
 + data_file dispatched
 ✔ data_file completed [1ms, 26 B]
 + some_data dispatched
-✔ some_data completed [0ms, 78 B]
-✔ ended pipeline [430ms, 2 completed, 0 skipped]
+✔ some_data completed [1ms, 78 B]
+✔ ended pipeline [351ms, 2 completed, 0 skipped]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -145,12 +145,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [2ms, 53.10 kB]
+✔ penguins_csv_file completed [1ms, 53.10 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [96ms, 10.40 kB]
+✔ penguins_data_raw completed [94ms, 10.40 kB]
 + penguins_data dispatched
 ✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [461ms, 3 completed, 0 skipped]
+✔ ended pipeline [409ms, 3 completed, 0 skipped]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -220,14 +220,14 @@ tar_plan(
 
 ``` output
 + hello_file dispatched
-✔ hello_file completed [0ms, 26 B]
+✔ hello_file completed [1ms, 26 B]
 + hello dispatched
-✔ hello completed [0ms, 78 B]
+✔ hello completed [1ms, 78 B]
 + hello_caps dispatched
 ✔ hello_caps completed [0ms, 78 B]
 + hello_caps_out dispatched
 ✔ hello_caps_out completed [0ms, 26 B]
-✔ ended pipeline [466ms, 4 completed, 0 skipped]
+✔ ended pipeline [397ms, 4 completed, 0 skipped]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.

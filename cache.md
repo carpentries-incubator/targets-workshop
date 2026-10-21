@@ -52,8 +52,8 @@ Where are the results of our workflow?
 We don't see the workflow results because `targets` **runs the workflow in a separate R session** that we can't interact with.
 This is for reproducibility---the objects built by the workflow should only depend on the code in your project, not any commands you may have interactively given to R.
 
-Fortunately, `targets` has two functions that can be used to load objects built by the workflow into our current session, `tar_load()` and `tar_read()`.
-Let's see how these work.
+Fortunately, `targets` has a function that can be used to load objects built by the workflow into our current session, `tar_load()`.
+Let's see how it works.
 
 ## tar_load()
 
@@ -90,43 +90,9 @@ summary(penguins_data)
 Note that `tar_load()` is used for its **side-effect**---loading the desired object into the current R session.
 It doesn't actually return a value.
 
-## tar_read()
-
-`tar_read()` is similar to `tar_load()` in that it is used to retrieve objects built by the workflow, but unlike `tar_load()`, it returns them directly as output.
-
-Let's try it with `penguins_csv_file`.
-
-
-``` r
-tar_read(penguins_csv_file)
-```
-
-``` output
-[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
-```
-
-We immediately see the contents of `penguins_csv_file`.
-But it has not been loaded into the environment.
-If you try to run `penguins_csv_file` now, you will get an error:
-
-
-``` r
-penguins_csv_file
-```
-
-``` error
-Error:
-! object 'penguins_csv_file' not found
-```
-
-## When to use which function
-
-`tar_load()` tends to be more useful when you want to load objects and do things with them.
-`tar_read()` is more useful when you just want to immediately inspect an object.
-
 ## The targets cache
 
-If you close your R session, then re-start it and use `tar_load()` or `tar_read()`, you will notice that it can still load the workflow objects.
+If you close your R session, then re-start it and use `tar_load()`, you will notice that it can still load the workflow objects.
 In other words, the workflow output is **saved across R sessions**.
 How is this possible?
 
@@ -145,11 +111,59 @@ Generally, `_targets/user` is a good place to store files that are not code, lik
 
 Note that if you don't have anything in `_targets/user` that you need to keep around, it is possible to "reset" your workflow by simply deleting the entire `_targets` folder. Of course, this means you will need to run everything over again, so don't do this lightly!
 
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Optional challenge: `tar_read()`
+
+*This challenge is optional.*
+
+If you look at the comment at the top of the `_targets.R` file that `tar_script()` created for you, you will see that it mentions another function, `tar_read()`.
+Like `tar_load()`, it retrieves an object built by the workflow.
+
+Try `tar_read(penguins_csv_file)`, and then try running `penguins_csv_file`.
+What do you see?
+What is the difference between **loading** the contents of a target into your R session as an object, and **reading** them?
+When might you want to use one rather than the other?
+
+:::::::::::::::::::::::::::::::::: solution
+
+`tar_read()` returns the value of the target, so we immediately see it (the exact path will vary depending on your machine):
+
+
+``` r
+tar_read(penguins_csv_file)
+```
+
+``` output
+[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+```
+
+But it has not been loaded into the environment, so if we try to run `penguins_csv_file`, we get an error:
+
+
+``` r
+penguins_csv_file
+```
+
+``` error
+Error:
+! object 'penguins_csv_file' not found
+```
+
+In contrast, `tar_load()` creates an object in your R session with the same name as the target, and returns nothing visible.
+Afterwards, you can use that object as many times as you like.
+
+`tar_load()` tends to be more useful when you want to load objects and do things with them.
+`tar_read()` is more useful when you just want to immediately inspect a target, or to store its value in an object with a different name (for example, `my_data <- tar_read(penguins_data)`).
+
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `targets` workflows are run in a separate, non-interactive R session
 - `tar_load()` loads a workflow object into the current R session
-- `tar_read()` reads a workflow object and returns its value
 - The `_targets` folder is the cache and generally should not be edited by hand
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
