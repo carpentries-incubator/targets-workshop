@@ -203,7 +203,7 @@ cat("```")
 ```
 
 Don't worry about the details of this file.
-The comments at the top of your file may differ slightly from the version shown here; they are not important.
+The comments at the top of your file may differ slightly from the version shown here.
 Instead, notice that that it includes three main parts:
 
 - Loading packages with `library()`
