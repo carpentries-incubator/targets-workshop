@@ -36,7 +36,7 @@ This is the method you are almost certainly more familiar with, and is the metho
 
 Like any other R script, include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the <!-- FIXME ADD LINK -->recommended best practice for project organization), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
 
-The potential downside to this approach is that if you have a long list of packages to load, certain functions like `tar_visnetwork()`, `tar_outdated()`, etc., may take an unnecessarily long time to run because they have to load all the packages, even though they don't necessarily use them.
+The potential downside to this approach is that if you have a long list of packages to load, certain functions like `tar_visnetwork()` may take an unnecessarily long time to run because they have to load all the packages, even though they don't necessarily use them.
 
 ### Method 2: `tar_option_set()` {#method-2}
 
@@ -71,8 +71,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [48ms, 1.54 kB]
-✔ ended pipeline [449ms, 1 completed, 0 skipped]
+✔ adelie_data completed [31ms, 1.54 kB]
+✔ ended pipeline [320ms, 1 completed, 0 skipped]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -100,8 +100,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [36ms, 1.54 kB]
-✔ ended pipeline [427ms, 1 completed, 0 skipped]
+✔ adelie_data completed [31ms, 1.54 kB]
+✔ ended pipeline [320ms, 1 completed, 0 skipped]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -127,8 +127,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [23ms, 1.54 kB]
-✔ ended pipeline [416ms, 1 completed, 0 skipped]
+✔ adelie_data completed [20ms, 1.54 kB]
+✔ ended pipeline [310ms, 1 completed, 0 skipped]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.

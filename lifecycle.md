@@ -55,7 +55,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [133ms, 3 skipped]
+✔ skipped pipeline [109ms, 3 skipped]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -113,8 +113,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [36ms, 1.49 kB]
-✔ ended pipeline [229ms, 1 completed, 2 skipped]
+✔ penguins_data completed [30ms, 1.49 kB]
+✔ ended pipeline [186ms, 1 completed, 2 skipped]
 ```
 
 What happened?
@@ -197,11 +197,15 @@ In this case, install it first with `install.packages("visNetwork")`.
 Modify the workflow in `_targets.R`, then run `tar_visnetwork()` again **without** running `tar_make()`.
 What color indicates that a target is out of date?
 
+For example, you could delete the argument `show_col_types = FALSE` from the `read_csv()` call in the `penguins_data_raw` target.
+This changes the code but not the data, so it won't break anything.
+
 :::::::::::::::::::::::::::::::::: solution
 
 Light blue indicates the target is out of date.
 
-Depending on how you modified the code, any or all of the targets may now be light blue.
+With the modification above, `penguins_data_raw` and `penguins_data` are light blue: `penguins_data_raw` because its code changed, and `penguins_data` because it depends on `penguins_data_raw`. `penguins_csv_file` stays green because nothing it depends on changed.
+If you modify the code a different way, a different set of targets may be light blue.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -211,7 +215,7 @@ Depending on how you modified the code, any or all of the targets may now be lig
 
 ## 'Outdated' does not always mean 'will be run'
 
-Just because a target appears as light blue (is "outdated") in the network visualization, this does not guarantee that it will be re-built during the next run. Rather, it means that **at least of one the targets that it depends on has changed**.
+Just because a target appears as light blue (is "outdated") in the network visualization, this does not guarantee that it will be re-built during the next run. Rather, it means that **at least one of the targets that it depends on has changed**.
 
 For example, if the workflow state looked like this:
 
@@ -223,19 +227,11 @@ But if re-running the workflow results in the exact same value for `C` as before
 
 Most of the time, a single change will cascade to the rest of the downstream targets and cause them to be re-built, but this is not always the case. `targets` has no way of knowing ahead of time what the actual output will be, so it cannot provide a network visualization that completely predicts the future!
 
-:::::::::::::::::::::::::::::::::::::::::::::::
-
-## Other ways to check workflow status
-
-The visualization is very useful, but sometimes you may be working on a server that doesn't provide graphical output, or you just want a quick textual summary of the workflow.
-There are some other useful functions that can do that.
-
-`tar_outdated()` lists only the outdated targets; that is, targets that will be built during the next run, or depend on such a target.
-If everything is up to date, it will return a zero-length character vector (`character(0)`).
+We can see this with the modification from Challenge 2. Both `penguins_data_raw` and `penguins_data` showed up as outdated, but what happens when we run the workflow?
 
 
 ``` r
-tar_outdated()
+tar_make()
 ```
 
 ``` output
@@ -245,28 +241,24 @@ Attaching package: ‘palmerpenguins’
 The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
+
++ penguins_data_raw dispatched
+Rows: 344 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (9): studyName, Species, Region, Island, Stage, Individual ID, Clutch C...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+date (1): Date Egg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+✔ penguins_data_raw completed [186ms, 10.40 kB]
+✔ ended pipeline [343ms, 1 completed, 2 skipped]
 ```
 
-``` output
-character(0)
-```
+Only `penguins_data_raw` was re-run (the extra message is from `read_csv()`, which now reports the column types because we removed `show_col_types = FALSE`). Its code changed, so it was re-built, but it produced exactly the same data as before. That means `penguins_data`, which looked outdated, was skipped.
 
-`tar_progress()` shows the current status of the workflow as a dataframe.
-You may find it helpful to further manipulate the dataframe to obtain useful summaries of the workflow, for example using `dplyr` (such data manipulation is beyond the scope of this lesson but the instructor may demonstrate its use).
-
-
-``` r
-tar_progress()
-```
-
-``` output
-# A tibble: 3 × 2
-  name              progress 
-  <chr>             <chr>    
-1 penguins_csv_file skipped  
-2 penguins_data_raw skipped  
-3 penguins_data     completed
-```
+:::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Granular control of targets
 
@@ -292,10 +284,42 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [150ms, 3 skipped]
+✔ skipped pipeline [124ms, 3 skipped]
 ```
 
-Let's invalidate `penguins_data` and run it again:
+Now let's invalidate `penguins_data_raw` and build only that target:
+
+
+``` r
+tar_invalidate(penguins_data_raw)
+tar_make(penguins_data_raw)
+```
+
+``` output
+
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
++ penguins_data_raw dispatched
+Rows: 344 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (9): studyName, Species, Region, Island, Stage, Individual ID, Clutch C...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+date (1): Date Egg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+✔ penguins_data_raw completed [177ms, 10.40 kB]
+✔ ended pipeline [346ms, 1 completed, 1 skipped]
+```
+
+Only `penguins_data_raw` was built (you will see the same `read_csv()` message again, since we are still not using `show_col_types = FALSE`). `penguins_data` was not part of this run, and `penguins_csv_file` (which `penguins_data_raw` depends on) was skipped because it was already up to date.
+
+Next, let's invalidate `penguins_data` and run the whole workflow again:
 
 
 ``` r
@@ -312,13 +336,27 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [24ms, 1.49 kB]
-✔ ended pipeline [229ms, 1 completed, 2 skipped]
+✔ penguins_data completed [30ms, 1.49 kB]
+✔ ended pipeline [185ms, 1 completed, 2 skipped]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
 
 **Caution should be exercised** when using granular methods like this, though, since you may end up with your workflow in an unexpected state. The surest way to maintain an up-to-date workflow is to run `tar_make()` frequently.
+
+## Restoring your workflow
+
+In Challenge 2 we removed `show_col_types = FALSE` from the `read_csv()` call in `penguins_data_raw`.
+Before moving on, put it back in your `_targets.R`, so that your workflow matches the one we will use in the following episodes.
+The `penguins_data_raw` target should look like this again:
+
+```r
+tar_target(penguins_data_raw, read_csv(
+  penguins_csv_file, show_col_types = FALSE))
+```
+
+Then run `tar_make()` to bring everything up to date.
+`penguins_data_raw` will be re-built because its code changed, but `penguins_data` will be skipped because the data is the same.
 
 ## How this all works in practice
 
@@ -328,8 +366,6 @@ In practice, you will likely be switching between running the workflow with `tar
 
 - `targets` only runs the steps that have been affected by a change to the code
 - `tar_visnetwork()` shows the current state of the workflow as a network
-- `tar_progress()` shows the current state of the workflow as a data frame
-- `tar_outdated()` lists outdated targets
 - `tar_invalidate()` can be used to invalidate (re-run) specific targets
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
