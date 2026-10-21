@@ -94,8 +94,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_model dispatched
-✔ combined_model completed [26ms, 11.20 kB]
-✔ ended pipeline [228ms, 1 completed, 3 skipped]
+✔ combined_model completed [2ms, 11.20 kB]
+✔ ended pipeline [148ms, 1 completed, 3 skipped]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -181,20 +181,20 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + adelie_model dispatched
-✔ adelie_model completed [19ms, 6.48 kB]
+✔ adelie_model completed [14ms, 6.48 kB]
 + gentoo_model dispatched
 ✔ gentoo_model completed [2ms, 5.88 kB]
 + chinstrap_model dispatched
 ✔ chinstrap_model completed [2ms, 4.54 kB]
 + combined_summary dispatched
-✔ combined_summary completed [37ms, 350 B]
+✔ combined_summary completed [27ms, 350 B]
 + adelie_summary dispatched
 ✔ adelie_summary completed [2ms, 351 B]
 + gentoo_summary dispatched
-✔ gentoo_summary completed [3ms, 351 B]
+✔ gentoo_summary completed [2ms, 351 B]
 + chinstrap_summary dispatched
-✔ chinstrap_summary completed [3ms, 351 B]
-✔ ended pipeline [428ms, 7 completed, 4 skipped]
+✔ chinstrap_summary completed [2ms, 351 B]
+✔ ended pipeline [335ms, 7 completed, 4 skipped]
 ```
 
 Let's look at the summary of one of the models:
@@ -252,19 +252,15 @@ tar_plan(
   ),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
-  # Group data
-  tar_group_by(
-    penguins_data_grouped,
-    penguins_data,
-    species
-  ),
+  # Get species names
+  species_name = penguins_data |> dplyr::pull(species) |> unique(),
   # Build combined model with all species together
   combined_summary = model_glance(penguins_data),
   # Build one model per species
   tar_target(
     species_summary,
-    model_glance(penguins_data_grouped),
-    pattern = map(penguins_data_grouped)
+    penguins_data |> dplyr::filter(species == species_name) |> model_glance(),
+    pattern = map(species_name)
   )
 )
 ```
@@ -292,15 +288,15 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [39ms, 350 B]
-+ penguins_data_grouped dispatched
-✔ penguins_data_grouped completed [14ms, 1.53 kB]
+✔ combined_summary completed [29ms, 350 B]
++ species_name dispatched
+✔ species_name completed [2ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [11ms, 1.05 kB]
-✔ ended pipeline [389ms, 5 completed, 3 skipped]
+✔ species_summary completed [23ms, 1.05 kB]
+✔ ended pipeline [328ms, 5 completed, 3 skipped]
 ```
 
-There is a series of smaller targets (branches) that are each named like species_summary_7fe6634f7c7f6a77, then one overall `species_summary` target.
+There is a series of smaller targets (branches) that are each named like species_summary_d1cd1c48ee275e35, then one overall `species_summary` target.
 That is the result of specifying targets using branching: each of the smaller targets are the "branches" that comprise the overall target.
 Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
 `targets` builds each branch one at a time, then combines them into the overall target.
@@ -309,36 +305,32 @@ Next, let's look in more detail about how the workflow is set up, starting with 
 
 
 ``` r
-  # Group data
-  tar_group_by(
-    penguins_data_grouped,
-    penguins_data,
-    species
-  ),
+  # Get species names
+  species_name = penguins_data |> dplyr::pull(species) |> unique(),
 ```
 
-Unlike the non-branching version, we added a step that **groups the data**.
-This is because dynamic branching is similar to the [`tidyverse` approach](https://dplyr.tidyverse.org/articles/grouping.html) of applying the same function to a grouped dataframe.
-So we use the `tar_group_by()` function to specify the groups in our input data: one group per species.
+Unlike the non-branching version, we added a step that gets the species names.
+We need this in order to tell targets how to branch the `species_summary` target.
+In this case, we want one branch per unique species.
 
 Next, take a look at the command to build the target `species_summary`.
 
 
 ``` r
-  # Build one model per species
   tar_target(
     species_summary,
-    model_glance(penguins_data_grouped),
-    pattern = map(penguins_data_grouped)
+    penguins_data |> dplyr::filter(species == species_name) |> model_glance(),
+    pattern = map(species_name)
   )
 ```
 
 As before, the first argument to `tar_target()` is the name of the target to build, and the second is the command to build it.
 
-Here, we apply our custom `model_glance()` function to each group (in other words, each species) in `penguins_data_grouped`.
+Next, we filter `penguins_data` to the rows for a single species (`species == species_name`), then apply our custom `model_glance()` function to the result.
+So far this is just a regular target.
 
 Finally, there is an argument we haven't seen before, `pattern`, which indicates that this target should be built using dynamic branching.
-`map` means to apply the function to each group of the input data (`penguins_data_grouped`) sequentially.
+`map(species_name)` means to build one branch for each element of `species_name` (in other words, each species) sequentially, with `species_name` taking the value of that element in each branch.
 
 Now that we understand how the branching workflow is constructed, let's inspect the output:
 
@@ -353,8 +345,8 @@ tar_read(species_summary)
   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC deviance df.residual  nobs
       <dbl>         <dbl> <dbl>     <dbl>    <dbl> <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int> <int>
 1     0.153         0.148 1.12       27.0 6.67e- 7     1 -231.   468.  477.    188.          149   151
-2     0.427         0.418 0.866      49.2 1.53e- 9     1  -85.7  177.  184.     49.5          66    68
-3     0.414         0.409 0.754      85.5 1.02e-15     1 -139.   284.  292.     68.8         121   123
+2     0.414         0.409 0.754      85.5 1.02e-15     1 -139.   284.  292.     68.8         121   123
+3     0.427         0.418 0.866      49.2 1.53e- 9     1  -85.7  177.  184.     49.5          66    68
 ```
 
 The model summary statistics are all included in a single dataframe.
@@ -406,10 +398,10 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [67ms, 371 B]
+✔ combined_summary completed [50ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [83ms, 1.11 kB]
-✔ ended pipeline [410ms, 4 completed, 4 skipped]
+✔ species_summary completed [101ms, 1.11 kB]
+✔ ended pipeline [345ms, 4 completed, 4 skipped]
 ```
 
 And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (the `.before = 1` in `mutate()` ensures that it shows up before the other columns).
@@ -424,8 +416,8 @@ tar_read(species_summary)
   species   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC deviance df.residual  nobs
   <chr>         <dbl>         <dbl> <dbl>     <dbl>    <dbl> <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int> <int>
 1 Adelie        0.153         0.148 1.12       27.0 6.67e- 7     1 -231.   468.  477.    188.          149   151
-2 Chinstrap     0.427         0.418 0.866      49.2 1.53e- 9     1  -85.7  177.  184.     49.5          66    68
-3 Gentoo        0.414         0.409 0.754      85.5 1.02e-15     1 -139.   284.  292.     68.8         121   123
+2 Gentoo        0.414         0.409 0.754      85.5 1.02e-15     1 -139.   284.  292.     68.8         121   123
+3 Chinstrap     0.427         0.418 0.866      49.2 1.53e- 9     1  -85.7  177.  184.     49.5          66    68
 ```
 
 Next we will add one more target, a prediction of bill depth based on each model. These will be needed for plotting the models in the report.
@@ -478,27 +470,23 @@ tar_plan(
   ),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
-  # Group data
-  tar_group_by(
-    penguins_data_grouped,
-    penguins_data,
-    species
-  ),
+  # Get species names
+  species_name = penguins_data |> dplyr::pull(species) |> unique(),
   # Get summary of combined model with all species together
   combined_summary = model_glance(penguins_data),
   # Get summary of one model per species
   tar_target(
     species_summary,
-    model_glance(penguins_data_grouped),
-    pattern = map(penguins_data_grouped)
+    penguins_data |> dplyr::filter(species == species_name) |> model_glance(),
+    pattern = map(species_name)
   ),
   # Get predictions of combined model with all species together
-  combined_predictions = model_augment(penguins_data_grouped),
+  combined_predictions = model_augment(penguins_data),
   # Get predictions of one model per species
   tar_target(
     species_predictions,
-    model_augment(penguins_data_grouped),
-    pattern = map(penguins_data_grouped)
+    penguins_data |> dplyr::filter(species == species_name) |> model_augment(),
+    pattern = map(species_name)
   )
 )
 ```
@@ -506,82 +494,6 @@ tar_plan(
 ::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::
-
-### Further simplify the workflow
-
-You may have noticed that we can further simplify the workflow: there is no need to have separate `penguins_data` and `penguins_data_grouped` dataframes.
-In general it is best to keep the number of named objects as small as possible to make it easier to reason about your code.
-Let's combine the cleaning and grouping step into a single command:
-
-
-``` r
-source("R/functions.R")
-source("R/packages.R")
-
-tar_plan(
-  # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
-  # Clean and group data
-  tar_group_by(
-    penguins_data,
-    clean_penguin_data(penguins_data_raw),
-    species
-  ),
-  # Get summary of combined model with all species together
-  combined_summary = model_glance(penguins_data),
-  # Get summary of one model per species
-  tar_target(
-    species_summary,
-    model_glance(penguins_data),
-    pattern = map(penguins_data)
-  ),
-  # Get predictions of combined model with all species together
-  combined_predictions = model_augment(penguins_data),
-  # Get predictions of one model per species
-  tar_target(
-    species_predictions,
-    model_augment(penguins_data),
-    pattern = map(penguins_data)
-  )
-)
-```
-
-And run it once more:
-
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
-+ penguins_data dispatched
-✔ penguins_data completed [38ms, 1.53 kB]
-+ combined_summary dispatched
-✔ combined_summary completed [110ms, 371 B]
-+ species_summary declared [3 branches]
-✔ species_summary completed [21ms, 1.11 kB]
-+ combined_predictions dispatched
-✔ combined_predictions completed [9ms, 24.80 kB]
-+ species_predictions declared [3 branches]
-✔ species_predictions completed [19ms, 26.48 kB]
-✔ ended pipeline [506ms, 9 completed, 2 skipped]
-```
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
