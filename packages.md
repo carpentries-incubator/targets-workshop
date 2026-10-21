@@ -71,8 +71,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [60ms, 1.54 kB]
-✔ ended pipeline [413ms, 1 completed, 0 skipped]
+✔ adelie_data completed [68ms, 1.54 kB]
+✔ ended pipeline [383ms, 1 completed, 0 skipped]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -100,8 +100,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [44ms, 1.54 kB]
-✔ ended pipeline [395ms, 1 completed, 0 skipped]
+✔ adelie_data completed [36ms, 1.54 kB]
+✔ ended pipeline [349ms, 1 completed, 0 skipped]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -127,8 +127,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [25ms, 1.54 kB]
-✔ ended pipeline [369ms, 1 completed, 0 skipped]
+✔ adelie_data completed [23ms, 1.54 kB]
+✔ ended pipeline [344ms, 1 completed, 0 skipped]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
@@ -154,7 +154,9 @@ Therefore, it is a good idea to track package versions.
 
 Fortunately, you don't have to do this by hand: there are R packages available that can help automate this process. We recommend [renv](https://rstudio.github.io/renv/index.html), but there are others available as well (e.g., [groundhog](https://groundhogr.com/)). We don't have the time to cover detailed usage of `renv` in this lesson. To get started with `renv`, see the ["Introduction to renv" vignette](https://rstudio.github.io/renv/articles/renv.html).
 
-You can generally use `renv` the same way you would for a `targets` project as any other R project. However, there is one exception: if you load packages using `tar_option_set()` or the `packages` argument of `tar_target()` ([Method 2](#method-2) or [Method 3](#method-3), respectively), `renv` will not detect them (because it expects packages to be loaded with `library()`, `require()`, etc.).
+You can generally use `renv` the same way you would for a `targets` project as any other R project. `renv` detects packages loaded with `library()`, `require()`, etc., and also packages listed in the `packages` argument of `tar_option_set()` in `_targets.R` ([Method 2](#method-2)).
+
+However, there is one exception: if you load packages using the `packages` argument of `tar_target()` ([Method 3](#method-3)), `renv` will not detect them.
 
 The solution in this case is to use the [`tar_renv()` function](https://docs.ropensci.org/targets/reference/tar_renv.html). This will write a separate file with `library()` calls for each package used in the workflow so that `renv` will properly detect them.
 
