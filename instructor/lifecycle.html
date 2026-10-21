@@ -258,8 +258,8 @@
 <li><a href="#re-running-the-workflow-after-modification">Re-running the workflow after modification</a></li>
 <li><a href="#under-the-hood">Under the hood</a></li>
 <li><a href="#visualizing-the-workflow">Visualizing the workflow</a></li>
-<li><a href="#other-ways-to-check-workflow-status">Other ways to check workflow status</a></li>
 <li><a href="#granular-control-of-targets">Granular control of targets</a></li>
+<li><a href="#restoring-your-workflow">Restoring your workflow</a></li>
 <li><a href="#how-this-all-works-in-practice">How this all works in practice</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -476,7 +476,7 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [133ms, 3 skipped]</code></pre>
+✔ skipped pipeline [109ms, 3 skipped]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -535,8 +535,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [36ms, 1.49 kB]
-✔ ended pipeline [229ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [30ms, 1.49 kB]
+✔ ended pipeline [186ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -653,6 +653,10 @@ tell us?</h3>
 <code>tar_visnetwork()</code> again <strong>without</strong> running
 <code>tar_make()</code>. What color indicates that a target is out of
 date?</p>
+<p>For example, you could delete the argument
+<code>show_col_types = FALSE</code> from the <code>read_csv()</code>
+call in the <code>penguins_data_raw</code> target. This changes the code
+but not the data, so it won’t break anything.</p>
 </div>
 </div>
 </div>
@@ -664,8 +668,13 @@ date?</p>
 <div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
-<p>Depending on how you modified the code, any or all of the targets may
-now be light blue.</p>
+<p>With the modification above, <code>penguins_data_raw</code> and
+<code>penguins_data</code> are light blue:
+<code>penguins_data_raw</code> because its code changed, and
+<code>penguins_data</code> because it depends on
+<code>penguins_data_raw</code>. <code>penguins_csv_file</code> stays
+green because nothing it depends on changed. If you modify the code a
+different way, a different set of targets may be light blue.</p>
 </div>
 </div>
 </div>
@@ -681,7 +690,7 @@ run’</h3>
 <div class="callout-content">
 <p>Just because a target appears as light blue (is “outdated”) in the
 network visualization, this does not guarantee that it will be re-built
-during the next run. Rather, it means that <strong>at least of one the
+during the next run. Rather, it means that <strong>at least one of the
 targets that it depends on has changed</strong>.</p>
 <p>For example, if the workflow state looked like this:</p>
 <p><code>A -&gt; B* -&gt; C -&gt; D</code></p>
@@ -697,23 +706,14 @@ downstream targets and cause them to be re-built, but this is not always
 the case. <code>targets</code> has no way of knowing ahead of time what
 the actual output will be, so it cannot provide a network visualization
 that completely predicts the future!</p>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="other-ways-to-check-workflow-status">Other ways to check workflow status<a class="anchor" aria-label="anchor" href="#other-ways-to-check-workflow-status"></a></h2>
-<hr class="half-width"><p>The visualization is very useful, but sometimes you may be working on
-a server that doesn’t provide graphical output, or you just want a quick
-textual summary of the workflow. There are some other useful functions
-that can do that.</p>
-<p><code>tar_outdated()</code> lists only the outdated targets; that is,
-targets that will be built during the next run, or depend on such a
-target. If everything is up to date, it will return a zero-length
-character vector (<code>character(0)</code>).</p>
+<p>We can see this with the modification from Challenge 2. Both
+<code>penguins_data_raw</code> and <code>penguins_data</code> showed up
+as outdated, but what happens when we run the workflow?</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_outdated</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">tar_make</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -723,33 +723,29 @@ Attaching package: ‘palmerpenguins’
 
 The following objects are masked from ‘package:datasets’:
 
-    penguins, penguins_raw</code></pre>
+    penguins, penguins_raw
+
++ penguins_data_raw dispatched
+Rows: 344 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (9): studyName, Species, Region, Island, Stage, Individual ID, Clutch C...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+date (1): Date Egg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+✔ penguins_data_raw completed [186ms, 10.40 kB]
+✔ ended pipeline [343ms, 1 completed, 2 skipped]</code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code><span><span class="fu">character</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span></code></pre>
+<p>Only <code>penguins_data_raw</code> was re-run (the extra message is
+from <code>read_csv()</code>, which now reports the column types because
+we removed <code>show_col_types = FALSE</code>). Its code changed, so it
+was re-built, but it produced exactly the same data as before. That
+means <code>penguins_data</code>, which looked outdated, was
+skipped.</p>
 </div>
-<p><code>tar_progress()</code> shows the current status of the workflow
-as a dataframe. You may find it helpful to further manipulate the
-dataframe to obtain useful summaries of the workflow, for example using
-<code>dplyr</code> (such data manipulation is beyond the scope of this
-lesson but the instructor may demonstrate its use).</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tar_progress</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code># A tibble: 3 × 2
-  name              progress
-  &lt;chr&gt;             &lt;chr&gt;
-1 penguins_csv_file skipped
-2 penguins_data_raw skipped
-3 penguins_data     completed</code></pre>
 </div>
 </section><section><h2 class="section-heading" id="granular-control-of-targets">Granular control of targets<a class="anchor" aria-label="anchor" href="#granular-control-of-targets"></a></h2>
 <hr class="half-width"><p>It is possible to only make a particular target instead of running
@@ -766,7 +762,7 @@ This means that target (and any that depend on it) will be re-run next
 time.</p>
 <p>Let’s give this a try. Remember that our pipeline is currently up to
 date, so <code>tar_make()</code> will skip everything:</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -782,10 +778,49 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-✔ skipped pipeline [150ms, 3 skipped]</code></pre>
+✔ skipped pipeline [124ms, 3 skipped]</code></pre>
 </div>
-<p>Let’s invalidate <code>penguins_data</code> and run it again:</p>
-<div class="codewrapper sourceCode" id="cb16">
+<p>Now let’s invalidate <code>penguins_data_raw</code> and build only
+that target:</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_invalidate</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span></span>
+<span><span class="fu">tar_make</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>
+Attaching package: ‘palmerpenguins’
+
+The following objects are masked from ‘package:datasets’:
+
+    penguins, penguins_raw
+
++ penguins_data_raw dispatched
+Rows: 344 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (9): studyName, Species, Region, Island, Stage, Individual ID, Clutch C...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+date (1): Date Egg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+✔ penguins_data_raw completed [177ms, 10.40 kB]
+✔ ended pipeline [346ms, 1 completed, 1 skipped]</code></pre>
+</div>
+<p>Only <code>penguins_data_raw</code> was built (you will see the same
+<code>read_csv()</code> message again, since we are still not using
+<code>show_col_types = FALSE</code>). <code>penguins_data</code> was not
+part of this run, and <code>penguins_csv_file</code> (which
+<code>penguins_data_raw</code> depends on) was skipped because it was
+already up to date.</p>
+<p>Next, let’s invalidate <code>penguins_data</code> and run the whole
+workflow again:</p>
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -803,8 +838,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_data dispatched
-✔ penguins_data completed [24ms, 1.49 kB]
-✔ ended pipeline [229ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [30ms, 1.49 kB]
+✔ ended pipeline [185ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -814,6 +849,23 @@ can use <code>tar_invalidate(everything())</code>
 methods like this, though, since you may end up with your workflow in an
 unexpected state. The surest way to maintain an up-to-date workflow is
 to run <code>tar_make()</code> frequently.</p>
+</section><section><h2 class="section-heading" id="restoring-your-workflow">Restoring your workflow<a class="anchor" aria-label="anchor" href="#restoring-your-workflow"></a></h2>
+<hr class="half-width"><p>In Challenge 2 we removed <code>show_col_types = FALSE</code> from
+the <code>read_csv()</code> call in <code>penguins_data_raw</code>.
+Before moving on, put it back in your <code>_targets.R</code>, so that
+your workflow matches the one we will use in the following episodes. The
+<code>penguins_data_raw</code> target should look like this again:</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tar_target</span><span class="op">(</span><span class="va">penguins_data_raw</span>, <span class="fu">read_csv</span><span class="op">(</span></span>
+<span>  <span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+<p>Then run <code>tar_make()</code> to bring everything up to date.
+<code>penguins_data_raw</code> will be re-built because its code
+changed, but <code>penguins_data</code> will be skipped because the data
+is the same.</p>
 </section><section><h2 class="section-heading" id="how-this-all-works-in-practice">How this all works in practice<a class="anchor" aria-label="anchor" href="#how-this-all-works-in-practice"></a></h2>
 <hr class="half-width"><p>In practice, you will likely be switching between running the
 workflow with <code>tar_make()</code>, loading the targets you built
@@ -834,11 +886,6 @@ a change to the code</li>
 <li>
 <code>tar_visnetwork()</code> shows the current state of the
 workflow as a network</li>
-<li>
-<code>tar_progress()</code> shows the current state of the workflow
-as a data frame</li>
-<li>
-<code>tar_outdated()</code> lists outdated targets</li>
 <li>
 <code>tar_invalidate()</code> can be used to invalidate (re-run)
 specific targets</li>
