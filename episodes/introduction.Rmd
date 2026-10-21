@@ -63,7 +63,7 @@ For example, [snakemake](https://snakemake.readthedocs.io/en/stable/) is a popul
 `targets` is designed to work specifically with R, so it makes the most sense to use it if you primarily use R, or intend to.
 If you mostly code with other tools, you may want to consider an alternative.
 
-The **goal** of this workshop is to **learn how to use `targets` to reproducible data analysis in R**.
+The **goal** of this workshop is to **learn how to use `targets` for reproducible data analysis in R**.
 
 ## Where to get more information
 
