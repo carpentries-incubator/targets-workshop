@@ -138,9 +138,10 @@ Let's look at the summary of one of the models:
 ```{r}
 #| label: example-model-show-2
 #| eval: true
-#| echo: [2]
+#| echo: [2, 3]
 pushd(plan_5_dir)
-tar_read(adelie_summary)
+tar_load(adelie_summary)
+adelie_summary
 popd()
 ```
 
@@ -232,14 +233,16 @@ Now that we understand how the branching workflow is constructed, let's inspect 
 ```{r}
 #| label: example-model-show-4
 #| eval: FALSE
-tar_read(species_summary)
+tar_load(species_summary)
+species_summary
 ```
 
 ```{r}
 #| label: example-model-hide-4
 #| echo: FALSE
 pushd(plan_6_dir)
-tar_read(species_summary)
+tar_load(species_summary)
+species_summary
 popd()
 ```
 
@@ -281,10 +284,11 @@ And this time, when we load `species_summary`, we can tell which species corresp
 
 ```{r}
 #| label: example-model-7
-#| echo: [2]
+#| echo: [2, 3]
 #| warning: false
 pushd(plan_6_dir)
-tar_read(species_summary)
+tar_load(species_summary)
+species_summary
 popd()
 ```
 

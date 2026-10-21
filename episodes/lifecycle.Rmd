@@ -103,7 +103,7 @@ How can you inspect the contents of `penguins_data`?
 
 :::::::::::::::::::::::::::::::::: solution
 
-With `tar_read(penguins_data)` or by running `tar_load(penguins_data)` followed by `penguins_data`.
+By running `tar_load(penguins_data)` followed by `penguins_data`.
 
 ::::::::::::::::::::::::::::::::::::::::::::
 
