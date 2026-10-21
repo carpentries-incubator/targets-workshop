@@ -71,8 +71,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [35ms, 1.54 kB]
-✔ ended pipeline [348ms, 1 completed, 0 skipped]
+✔ adelie_data completed [60ms, 1.54 kB]
+✔ ended pipeline [413ms, 1 completed, 0 skipped]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -100,8 +100,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [35ms, 1.54 kB]
-✔ ended pipeline [361ms, 1 completed, 0 skipped]
+✔ adelie_data completed [44ms, 1.54 kB]
+✔ ended pipeline [395ms, 1 completed, 0 skipped]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -127,8 +127,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [23ms, 1.54 kB]
-✔ ended pipeline [353ms, 1 completed, 0 skipped]
+✔ adelie_data completed [25ms, 1.54 kB]
+✔ ended pipeline [369ms, 1 completed, 0 skipped]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
@@ -197,7 +197,9 @@ As you may imagine, this can cause confusion.
 For example, the `filter()` function appears in both the `stats` package and the `dplyr` package, but does completely different things in each.
 This is a **namespace conflict**: how do we know which `filter()` we are talking about?
 
-The `conflicted` package can help prevent such confusion by stopping you if you try to use an ambiguous function, and help you be explicit about which package to use.
+One solution we have covered already is using the `::` notation when calling functions. This is because writing `dplyr::filter()` specifies that you are using `filter()` from the `dplyr` namespace. The tradeoff to this approach is verbosity, meaning more typing and reading. 
+
+An alternative to `::` is to use the `conflicted` package. It can help prevent confusion by stopping you if you try to use an ambiguous function, and help you be explicit about which package to use.
 We don't have time to cover the details here, but you can read more about how to use `conflicted` at its [website](https://conflicted.r-lib.org/).
 
 When you use `conflicted`, you will typically run a series of commands to explicitly resolve namespace conflicts, like `conflicts_prefer(dplyr::filter)` (this would tell R that we want to use `filter` from `dplyr`, not `stats`).
