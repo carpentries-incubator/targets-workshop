@@ -430,7 +430,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use branching</p>
 </div>
@@ -480,11 +480,8 @@ without distinction:</p>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
-<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
-<span>    <span class="va">penguins_data_raw</span>,</span>
-<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
-<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  penguins_data_raw <span class="op">=</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Build model</span></span>
@@ -515,8 +512,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_model dispatched
-✔ combined_model completed [20ms, 11.20 kB]
-✔ ended pipeline [225ms, 1 completed, 3 skipped]</code></pre>
+✔ combined_model completed [27ms, 11.20 kB]
+✔ ended pipeline [237ms, 1 completed, 3 skipped]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package. Unlike base R
@@ -562,11 +559,8 @@ for such an analysis might look like <strong>without branching</strong>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
-<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
-<span>    <span class="va">penguins_data_raw</span>,</span>
-<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
-<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  penguins_data_raw <span class="op">=</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Build models</span></span>
@@ -624,10 +618,10 @@ The following objects are masked from ‘package:datasets’:
 + adelie_summary dispatched
 ✔ adelie_summary completed [3ms, 351 B]
 + gentoo_summary dispatched
-✔ gentoo_summary completed [4ms, 351 B]
+✔ gentoo_summary completed [3ms, 351 B]
 + chinstrap_summary dispatched
 ✔ chinstrap_summary completed [3ms, 351 B]
-✔ ended pipeline [437ms, 7 completed, 4 skipped]</code></pre>
+✔ ended pipeline [436ms, 7 completed, 4 skipped]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb10">
@@ -686,11 +680,8 @@ in detail to understand each step):</p>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
-<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
-<span>    <span class="va">penguins_data_raw</span>,</span>
-<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
-<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  penguins_data_raw <span class="op">=</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Get species names</span></span>
@@ -729,12 +720,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [39ms, 350 B]
+✔ combined_summary completed [38ms, 350 B]
 + species_name dispatched
 ✔ species_name completed [3ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [33ms, 1.05 kB]
-✔ ended pipeline [410ms, 5 completed, 3 skipped]</code></pre>
+✔ species_summary completed [32ms, 1.05 kB]
+✔ ended pipeline [404ms, 5 completed, 3 skipped]</code></pre>
 </div>
 <p>The messages say that <code>species_summary</code> was “declared”
 with 3 branches, then completed. That is the result of specifying
@@ -859,10 +850,10 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [66ms, 371 B]
+✔ combined_summary completed [73ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [92ms, 1.11 kB]
-✔ ended pipeline [419ms, 4 completed, 4 skipped]</code></pre>
+✔ species_summary completed [106ms, 1.11 kB]
+✔ ended pipeline [467ms, 4 completed, 4 skipped]</code></pre>
 </div>
 <p>And this time, when we load <code>species_summary</code>, we can tell
 which species corresponds to which row (the <code>.before = 1</code> in
@@ -910,7 +901,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -946,11 +937,8 @@ instead of <code>glance()</code>:</p>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
 <span>  <span class="co"># Load raw data</span></span>
-<span>  <span class="fu">tar_file_read</span><span class="op">(</span></span>
-<span>    <span class="va">penguins_data_raw</span>,</span>
-<span>    <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span>,</span>
-<span>    <span class="fu">read_csv</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  penguins_data_raw <span class="op">=</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Clean data</span></span>
 <span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Get species names</span></span>
@@ -1017,7 +1005,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul><li>crossing: one branch per combination of elements
