@@ -73,7 +73,7 @@ tar_dir({
 })
 ```
 
-If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
+If we load `some_data` with `tar_load(some_data)` and inspect it, it will contain the string `"Hello World"` as expected.
 
 Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?". Edit this in the RStudio text editor and save it. Now run the pipeline again.
 

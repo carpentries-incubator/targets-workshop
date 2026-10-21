@@ -54,8 +54,8 @@ Where are the results of our workflow?
 We don't see the workflow results because `targets` **runs the workflow in a separate R session** that we can't interact with.
 This is for reproducibility---the objects built by the workflow should only depend on the code in your project, not any commands you may have interactively given to R.
 
-Fortunately, `targets` has two functions that can be used to load objects built by the workflow into our current session, `tar_load()` and `tar_read()`.
-Let's see how these work.
+Fortunately, `targets` has a function that can be used to load objects built by the workflow into our current session, `tar_load()`.
+Let's see how it works.
 
 ## tar_load()
 
@@ -72,8 +72,6 @@ plan_1_dir <- make_tempdir()
 pushd(plan_1_dir)
 write_example_plan("plan_1.R")
 tar_make(reporter = "silent")
-penguins_csv_file_hide <- tar_read(penguins_csv_file)
-penguins_data_hide <- tar_read(penguins_data)
 popd()
 ```
 
@@ -89,37 +87,9 @@ popd()
 Note that `tar_load()` is used for its **side-effect**---loading the desired object into the current R session.
 It doesn't actually return a value.
 
-## tar_read()
-
-`tar_read()` is similar to `tar_load()` in that it is used to retrieve objects built by the workflow, but unlike `tar_load()`, it returns them directly as output.
-
-Let's try it with `penguins_csv_file`.
-
-```{r}
-#| label: targets-read-show
-#| echo: [2]
-pushd(plan_1_dir)
-tar_read(penguins_csv_file)
-popd()
-```
-
-We immediately see the contents of `penguins_csv_file`.
-But it has not been loaded into the environment.
-If you try to run `penguins_csv_file` now, you will get an error:
-
-```{r}
-#| label: error-2
-penguins_csv_file
-```
-
-## When to use which function
-
-`tar_load()` tends to be more useful when you want to load objects and do things with them.
-`tar_read()` is more useful when you just want to immediately inspect an object.
-
 ## The targets cache
 
-If you close your R session, then re-start it and use `tar_load()` or `tar_read()`, you will notice that it can still load the workflow objects.
+If you close your R session, then re-start it and use `tar_load()`, you will notice that it can still load the workflow objects.
 In other words, the workflow output is **saved across R sessions**.
 How is this possible?
 
@@ -142,7 +112,6 @@ Note that if you don't have anything in `_targets/user` that you need to keep ar
 
 - `targets` workflows are run in a separate, non-interactive R session
 - `tar_load()` loads a workflow object into the current R session
-- `tar_read()` reads a workflow object and returns its value
 - The `_targets` folder is the cache and generally should not be edited by hand
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
