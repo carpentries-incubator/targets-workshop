@@ -77,7 +77,7 @@ We can add this to our pipeline. We will call it the `combined_model` because it
 ```{r}
 #| label = "example-lm-pipeline-show",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_4.R")[2:19]
+#| code = readLines("files/plans/plan_4.R")[2:16]
 ```
 
 ```{r}
@@ -117,7 +117,7 @@ Now our workflow is getting more complicated. This is what a workflow for such a
 ```{r}
 #| label = "example-model-show-1",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_5.R")[2:36]
+#| code = readLines("files/plans/plan_5.R")[2:33]
 ```
 
 ```{r}
@@ -170,7 +170,7 @@ Let's see how to write the same plan using **dynamic branching** (after running 
 ```{r}
 #| label = "example-model-show-3",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_6.R")[2:24]
+#| code = readLines("files/plans/plan_6.R")[2:21]
 ```
 
 What is going on here?
@@ -203,7 +203,7 @@ Next, let's look in more detail about how the workflow is set up, starting with 
 
 ```{r}
 #| label = "model-def",
-#| code = readLines("files/plans/plan_6.R")[14:15],
+#| code = readLines("files/plans/plan_6.R")[11:12],
 #| eval = FALSE
 ```
 
@@ -215,7 +215,7 @@ Next, take a look at the command to build the target `species_summary`.
 
 ```{r}
 #| label = "model-summaries",
-#| code = readLines("files/plans/plan_6.R")[19:23],
+#| code = readLines("files/plans/plan_6.R")[16:20],
 #| eval = FALSE
 ```
 
@@ -312,7 +312,7 @@ Add the step to the workflow:
 
 ```{r}
 #| label = "example-model-augment-show",
-#| code = readLines("files/plans/plan_7.R")[2:32],
+#| code = readLines("files/plans/plan_7.R")[2:29],
 #| eval = FALSE
 ```
 
