@@ -37,7 +37,8 @@ penguins_data
 ```
 
 ``` error
-Error: object 'penguins_data' not found
+Error:
+! object 'penguins_data' not found
 ```
 
 Where are the results of our workflow?
@@ -77,13 +78,13 @@ summary(penguins_data)
 ```
 
 ``` output
-   species          bill_length_mm  bill_depth_mm  
- Length:342         Min.   :32.10   Min.   :13.10  
- Class :character   1st Qu.:39.23   1st Qu.:15.60  
- Mode  :character   Median :44.45   Median :17.30  
-                    Mean   :43.92   Mean   :17.15  
-                    3rd Qu.:48.50   3rd Qu.:18.70  
-                    Max.   :59.60   Max.   :21.50  
+      species    bill_length_mm  bill_depth_mm  
+ Length   :342   Min.   :32.10   Min.   :13.10  
+ N.unique :  3   1st Qu.:39.23   1st Qu.:15.60  
+ N.blank  :  0   Median :44.45   Median :17.30  
+ Min.nchar: 33   Mean   :43.92   Mean   :17.15  
+ Max.nchar: 41   3rd Qu.:48.50   3rd Qu.:18.70  
+                 Max.   :59.60   Max.   :21.50  
 ```
 
 Note that `tar_load()` is used for its **side-effect**---loading the desired object into the current R session.
@@ -101,7 +102,7 @@ tar_read(penguins_csv_file)
 ```
 
 ``` output
-[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.5/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
 ```
 
 We immediately see the contents of `penguins_csv_file`.
@@ -114,7 +115,8 @@ penguins_csv_file
 ```
 
 ``` error
-Error: object 'penguins_csv_file' not found
+Error:
+! object 'penguins_csv_file' not found
 ```
 
 ## When to use which function

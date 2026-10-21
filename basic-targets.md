@@ -105,7 +105,7 @@ penguins_csv_file
 ```
 
 ``` output
-[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.5/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
 ```
 
 We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html), or the Carpentry incubator lesson [R and the tidyverse for working with datasets](https://carpentries-incubator.github.io/r-tidyverse-4-datasets/).
@@ -376,12 +376,12 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [1ms, 190 B]
+✔ penguins_csv_file completed [2ms, 191 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [102ms, 10.40 kB]
+✔ penguins_data_raw completed [100ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [14ms, 1.61 kB]
-✔ ended pipeline [342ms, 3 completed, 0 skipped]
+✔ penguins_data completed [15ms, 1.61 kB]
+✔ ended pipeline [356ms, 3 completed, 0 skipped]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
