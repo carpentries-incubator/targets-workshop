@@ -430,7 +430,7 @@ project?</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to load packages and maintain package
 versions</p>
@@ -507,8 +507,8 @@ like:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ adelie_data dispatched
-✔ adelie_data completed [68ms, 1.54 kB]
-✔ ended pipeline [383ms, 1 completed, 0 skipped]</code></pre>
+✔ adelie_data completed [48ms, 1.54 kB]
+✔ ended pipeline [449ms, 1 completed, 0 skipped]</code></pre>
 </div>
 <p>This method gets around the slow-downs that may sometimes be
 experienced with Method 1.</p>
@@ -542,7 +542,7 @@ as above.</p>
 </h3>
 <pre class="output" tabindex="0"><code>+ adelie_data dispatched
 ✔ adelie_data completed [36ms, 1.54 kB]
-✔ ended pipeline [349ms, 1 completed, 0 skipped]</code></pre>
+✔ ended pipeline [427ms, 1 completed, 0 skipped]</code></pre>
 </div>
 <p>This can be more memory efficient in some cases than loading all
 packages, since not every target is always made during a typical run of
@@ -573,7 +573,7 @@ altogether</strong>.</p>
 </h3>
 <pre class="output" tabindex="0"><code>+ adelie_data dispatched
 ✔ adelie_data completed [23ms, 1.54 kB]
-✔ ended pipeline [344ms, 1 completed, 0 skipped]</code></pre>
+✔ ended pipeline [416ms, 1 completed, 0 skipped]</code></pre>
 </div>
 <p>The benefits of this approach are that the origins of all functions
 is explicit, so you could browse your code (for example, by looking at
@@ -682,37 +682,6 @@ notation when calling functions. This is because writing
 <code>filter()</code> from the <code>dplyr</code> namespace. The
 tradeoff to this approach is verbosity, meaning more typing and
 reading.</p>
-<p>An alternative to <code>::</code> is to use the
-<code>conflicted</code> package. It can help prevent confusion by
-stopping you if you try to use an ambiguous function, and help you be
-explicit about which package to use. We don’t have time to cover the
-details here, but you can read more about how to use
-<code>conflicted</code> at its <a href="https://conflicted.r-lib.org/" class="external-link">website</a>.</p>
-<p>When you use <code>conflicted</code>, you will typically run a series
-of commands to explicitly resolve namespace conflicts, like
-<code>conflicts_prefer(dplyr::filter)</code> (this would tell R that we
-want to use <code>filter</code> from <code>dplyr</code>, not
-<code>stats</code>).</p>
-<p>To use this in a <code>targets</code> workflow, you should put all
-calls to <code>conflicts_prefer</code> in a special file called
-<code>.Rprofile</code> that is located in the main folder of your
-project. This will ensure that the conflicts are always resolved for
-each target.</p>
-<p>The recommended way to edit your <code>.Rprofile</code> is to use
-<code>usethis::edit_r_profile("project")</code>. This will open
-<code>.Rprofile</code> in your editor, where you can edit it and save
-it.</p>
-<p>For example, your <code>.Rprofile</code> could include this:</p>
-<div class="codewrapper sourceCode" id="cb8">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">conflicted</span><span class="op">)</span></span>
-<span><span class="fu">conflicts_prefer</span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va">filter</span><span class="op">)</span></span></code></pre>
-</div>
-<p>Note that you don’t need to run <code>source()</code> to run the code
-in <code>.Rprofile</code>. It will always get run at the start of each R
-session automatically.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -727,8 +696,9 @@ session automatically.</p>
 <code>targets</code> only tracks user-defined functions, not
 packages</li>
 <li>Use <code>renv</code> to manage package versions</li>
-<li>Use the <code>conflicted</code> package to manage namespace
-conflicts</li>
+<li>Use the <code>::</code> notation (for example,
+<code>dplyr::filter()</code>) to be explicit about which package a
+function comes from and avoid namespace conflicts</li>
 </ul></div>
 </div>
 </div>
