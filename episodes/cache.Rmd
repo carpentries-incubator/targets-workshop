@@ -124,7 +124,7 @@ When might you want to use one rather than the other?
 
 :::::::::::::::::::::::::::::::::: solution
 
-`tar_read()` returns the value of the target, so we immediately see it:
+`tar_read()` returns the value of the target, so we immediately see it (the exact path will vary depending on your machine):
 
 ```{r}
 #| label: targets-read-show
