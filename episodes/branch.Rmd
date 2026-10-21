@@ -193,8 +193,9 @@ example_branch_name <- tar_branch_names(species_summary, 1)
 popd()
 ```
 
-There is a series of smaller targets (branches) that are each named like `r example_branch_name`, then one overall `species_summary` target.
-That is the result of specifying targets using branching: each of the smaller targets are the "branches" that comprise the overall target.
+The messages say that `species_summary` was "declared" with 3 branches, then completed.
+That is the result of specifying targets using branching: `species_summary` is one overall target made up of a series of smaller targets (branches), here one for each species.
+`tar_make()` groups the branches together in its messages, but each branch is a target in its own right, with a name like `r example_branch_name`.
 Since `targets` has no way of knowing ahead of time how many branches there will be or what they represent, it names each one using this series of numbers and letters (the "hash").
 `targets` builds each branch one at a time, then combines them into the overall target.
 
@@ -276,7 +277,7 @@ tar_make()
 popd()
 ```
 
-And this time, when we load the `model_summaries`, we can tell which model corresponds to which row (the `.before = 1` in `mutate()` ensures that it shows up before the other columns).
+And this time, when we load `species_summary`, we can tell which species corresponds to which row (the `.before = 1` in `mutate()` ensures that it shows up before the other columns).
 
 ```{r}
 #| label: example-model-7
