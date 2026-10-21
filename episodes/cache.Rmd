@@ -108,6 +108,49 @@ Generally, `_targets/user` is a good place to store files that are not code, lik
 
 Note that if you don't have anything in `_targets/user` that you need to keep around, it is possible to "reset" your workflow by simply deleting the entire `_targets` folder. Of course, this means you will need to run everything over again, so don't do this lightly!
 
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Optional challenge: `tar_read()`
+
+*This challenge is optional.*
+
+If you look at the comment at the top of the `_targets.R` file that `tar_script()` created for you, you will see that it mentions another function, `tar_read()`.
+Like `tar_load()`, it retrieves an object built by the workflow.
+
+Try `tar_read(penguins_csv_file)`, and then try running `penguins_csv_file`.
+What do you see?
+What is the difference between **loading** the contents of a target into your R session as an object, and **reading** them?
+When might you want to use one rather than the other?
+
+:::::::::::::::::::::::::::::::::: solution
+
+`tar_read()` returns the value of the target, so we immediately see it:
+
+```{r}
+#| label: targets-read-show
+#| echo: [2]
+pushd(plan_1_dir)
+tar_read(penguins_csv_file)
+popd()
+```
+
+But it has not been loaded into the environment, so if we try to run `penguins_csv_file`, we get an error:
+
+```{r}
+#| label: error-2
+penguins_csv_file
+```
+
+In contrast, `tar_load()` creates an object in your R session with the same name as the target, and returns nothing visible.
+Afterwards, you can use that object as many times as you like.
+
+`tar_load()` tends to be more useful when you want to load objects and do things with them.
+`tar_read()` is more useful when you just want to immediately inspect a target, or to store its value in an object with a different name (for example, `my_data <- tar_read(penguins_data)`).
+
+::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `targets` workflows are run in a separate, non-interactive R session

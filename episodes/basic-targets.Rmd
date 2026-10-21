@@ -194,16 +194,12 @@ tar_script()
 default_script <- readr::read_lines("_targets.R")
 popd()
 
-# The default template mentions tar_read(), which this lesson doesn't teach
-default_script <- default_script[!grepl("tar_read", default_script)]
-
 cat("```{.r}\n")
 cat(default_script, sep = "\n")
 cat("```")
 ```
 
 Don't worry about the details of this file.
-The comments at the top of your file may differ slightly from the version shown here.
 Instead, notice that that it includes three main parts:
 
 - Loading packages with `library()`
