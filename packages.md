@@ -71,8 +71,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [68ms, 1.54 kB]
-✔ ended pipeline [383ms, 1 completed, 0 skipped]
+✔ adelie_data completed [48ms, 1.54 kB]
+✔ ended pipeline [449ms, 1 completed, 0 skipped]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -101,7 +101,7 @@ tar_plan(
 ``` output
 + adelie_data dispatched
 ✔ adelie_data completed [36ms, 1.54 kB]
-✔ ended pipeline [349ms, 1 completed, 0 skipped]
+✔ ended pipeline [427ms, 1 completed, 0 skipped]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -128,7 +128,7 @@ tar_plan(
 ``` output
 + adelie_data dispatched
 ✔ adelie_data completed [23ms, 1.54 kB]
-✔ ended pipeline [344ms, 1 completed, 0 skipped]
+✔ ended pipeline [416ms, 1 completed, 0 skipped]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
@@ -201,32 +201,11 @@ This is a **namespace conflict**: how do we know which `filter()` we are talking
 
 One solution we have covered already is using the `::` notation when calling functions. This is because writing `dplyr::filter()` specifies that you are using `filter()` from the `dplyr` namespace. The tradeoff to this approach is verbosity, meaning more typing and reading. 
 
-An alternative to `::` is to use the `conflicted` package. It can help prevent confusion by stopping you if you try to use an ambiguous function, and help you be explicit about which package to use.
-We don't have time to cover the details here, but you can read more about how to use `conflicted` at its [website](https://conflicted.r-lib.org/).
-
-When you use `conflicted`, you will typically run a series of commands to explicitly resolve namespace conflicts, like `conflicts_prefer(dplyr::filter)` (this would tell R that we want to use `filter` from `dplyr`, not `stats`).
-
-To use this in a `targets` workflow, you should put all calls to `conflicts_prefer` in a special file called `.Rprofile` that is located in the main folder of your project. This will ensure that the conflicts are always resolved for each target.
-
-The recommended way to edit your `.Rprofile` is to use `usethis::edit_r_profile("project")`.
-This will open `.Rprofile` in your editor, where you can edit it and save it.
-
-For example, your `.Rprofile` could include this:
-
-
-``` r
-library(conflicted)
-conflicts_prefer(dplyr::filter)
-```
-
-Note that you don't need to run `source()` to run the code in `.Rprofile`.
-It will always get run at the start of each R session automatically.
-
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - There are multiple ways to load packages with `targets`
 - `targets` only tracks user-defined functions, not packages
 - Use `renv` to manage package versions
-- Use the `conflicted` package to manage namespace conflicts
+- Use the `::` notation (for example, `dplyr::filter()`) to be explicit about which package a function comes from and avoid namespace conflicts
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

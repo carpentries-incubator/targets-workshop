@@ -60,11 +60,8 @@ source("R/functions.R")
 
 tar_plan(
   # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Build model
@@ -94,8 +91,8 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_model dispatched
-✔ combined_model completed [20ms, 11.20 kB]
-✔ ended pipeline [225ms, 1 completed, 3 skipped]
+✔ combined_model completed [48ms, 11.20 kB]
+✔ ended pipeline [255ms, 1 completed, 3 skipped]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -130,11 +127,8 @@ source("R/functions.R")
 
 tar_plan(
   # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models
@@ -189,12 +183,12 @@ The following objects are masked from ‘package:datasets’:
 + combined_summary dispatched
 ✔ combined_summary completed [37ms, 350 B]
 + adelie_summary dispatched
-✔ adelie_summary completed [3ms, 351 B]
+✔ adelie_summary completed [2ms, 351 B]
 + gentoo_summary dispatched
-✔ gentoo_summary completed [4ms, 351 B]
+✔ gentoo_summary completed [3ms, 351 B]
 + chinstrap_summary dispatched
 ✔ chinstrap_summary completed [3ms, 351 B]
-✔ ended pipeline [437ms, 7 completed, 4 skipped]
+✔ ended pipeline [452ms, 7 completed, 4 skipped]
 ```
 
 Let's look at the summary of one of the models:
@@ -245,11 +239,8 @@ source("R/functions.R")
 
 tar_plan(
   # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Get species names
@@ -292,8 +283,8 @@ The following objects are masked from ‘package:datasets’:
 + species_name dispatched
 ✔ species_name completed [3ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [33ms, 1.05 kB]
-✔ ended pipeline [410ms, 5 completed, 3 skipped]
+✔ species_summary completed [32ms, 1.05 kB]
+✔ ended pipeline [428ms, 5 completed, 3 skipped]
 ```
 
 The messages say that `species_summary` was "declared" with 3 branches, then completed.
@@ -399,10 +390,10 @@ The following objects are masked from ‘package:datasets’:
     penguins, penguins_raw
 
 + combined_summary dispatched
-✔ combined_summary completed [66ms, 371 B]
+✔ combined_summary completed [67ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [92ms, 1.11 kB]
-✔ ended pipeline [419ms, 4 completed, 4 skipped]
+✔ species_summary completed [116ms, 1.11 kB]
+✔ ended pipeline [450ms, 4 completed, 4 skipped]
 ```
 
 And this time, when we load `species_summary`, we can tell which species corresponds to which row (the `.before = 1` in `mutate()` ensures that it shows up before the other columns).
@@ -464,11 +455,8 @@ source("R/packages.R")
 
 tar_plan(
   # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Get species names

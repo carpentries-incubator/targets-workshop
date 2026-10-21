@@ -56,8 +56,8 @@ tar_plan(
 
 ``` output
 + some_data dispatched
-✔ some_data completed [0ms, 64 B]
-✔ ended pipeline [329ms, 1 completed, 0 skipped]
+✔ some_data completed [1ms, 64 B]
+✔ ended pipeline [389ms, 1 completed, 0 skipped]
 ```
 
 If we inspect the contents of `some_data` with `tar_read(some_data)`, it will contain the string `"Hello World"` as expected.
@@ -76,7 +76,7 @@ tar_plan(
 
 
 ``` output
-✔ skipped pipeline [284ms, 1 skipped]
+✔ skipped pipeline [336ms, 1 skipped]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -100,68 +100,26 @@ tar_plan(
 ✔ data_file completed [1ms, 26 B]
 + some_data dispatched
 ✔ some_data completed [0ms, 78 B]
-✔ ended pipeline [381ms, 2 completed, 0 skipped]
+✔ ended pipeline [430ms, 2 completed, 0 skipped]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
 
-## A shortcut (or, About target factories)
-
-However, also notice that this means we need to write two targets instead of one: one target to track the contents of the file (`data_file`), and one target to store what we load from the file (`some_data`).
-
-It turns out that this is a common pattern in `targets` workflows, so `tarchetypes` provides a shortcut to express this more concisely, `tar_file_read()`.
-
-
-``` r
-library(targets)
-library(tarchetypes)
-
-tar_plan(
-  tar_file_read(
-    hello,
-    "_targets/user/data/hello.txt",
-    readLines(!!.x)
-  )
-)
-```
-
-Let's inspect this pipeline with `tar_manifest()`:
-
-
-``` r
-tar_manifest()
-```
-
-
-``` output
-# A tibble: 2 × 2
-  name       command                           
-  <chr>      <chr>                             
-1 hello_file "\"_targets/user/data/hello.txt\""
-2 hello      "readLines(hello_file)"           
-```
-
-Notice that even though we only specified one target in the pipeline (`hello`, with `tar_file_read()`), the pipeline actually includes **two** targets, `hello_file` and `hello`.
-
-That is because `tar_file_read()` is a special function called a **target factory**, so-called because it makes **multiple** targets at once. One of the main purposes of the `tarchetypes` package is to provide target factories to make writing pipelines easier and less error-prone.
-
-## Non-standard evaluation
-
-What is the deal with the `!!.x`? That may look unfamiliar even if you are used to using R. It is known as "non-standard evaluation," and gets used in some special contexts. We don't have time to go into the details now, but just remember that you will need to use this special notation with `tar_file_read()`. If you forget how to write it (this happens frequently!) look at the examples in the help file by running `?tar_file_read`.
-
 ## Other data loading functions
 
-Although we used `readLines()` as an example here, you can use the same pattern for other functions that load data from external files, such as `readr::read_csv()`, `xlsx::read_excel()`, and others (for example, `read_csv(!!.x)`, `read_excel(!!.x)`, etc.).
+Note that this takes two targets: one to track the contents of the file (`data_file`, made with `tar_file()`), and one to store what we load from the file (`some_data`).
+
+Although we used `readLines()` as an example here, you can use the same pattern for other functions that load data from external files, such as `readr::read_csv()`, `readxl::read_excel()`, and others (for example, `tar_file(csv_file, "data.csv")` followed by `my_data = read_csv(csv_file)`).
 
 This is generally recommended so that your pipeline stays up to date with your input data.
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
 
-## Challenge: Use `tar_file_read()` with the penguins example
+## Challenge: Use `tar_file()` with the penguins example
 
-We didn't know about `tar_file_read()` yet when we started on the penguins bill analysis.
+We didn't know about `tar_file()` yet when we started on the penguins bill analysis, so `targets` only tracks the **name** of the CSV file, not its contents.
 
-How can you use `tar_file_read()` to load the CSV file while tracking its contents?
+How can you use `tar_file()` to load the CSV file while tracking its contents?
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
@@ -171,11 +129,8 @@ source("R/packages.R")
 source("R/functions.R")
 
 tar_plan(
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   penguins_data = clean_penguin_data(penguins_data_raw)
 )
 ```
@@ -189,13 +144,13 @@ The following objects are masked from ‘package:datasets’:
 
     penguins, penguins_raw
 
-+ penguins_data_raw_file dispatched
-✔ penguins_data_raw_file completed [2ms, 53.10 kB]
++ penguins_csv_file dispatched
+✔ penguins_csv_file completed [2ms, 53.10 kB]
 + penguins_data_raw dispatched
 ✔ penguins_data_raw completed [96ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [24ms, 1.49 kB]
-✔ ended pipeline [430ms, 3 completed, 0 skipped]
+✔ penguins_data completed [23ms, 1.49 kB]
+✔ ended pipeline [461ms, 3 completed, 0 skipped]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -252,11 +207,8 @@ library(tarchetypes)
 source("R/functions.R")
 
 tar_plan(
-  tar_file_read(
-    hello,
-    "_targets/user/data/hello.txt",
-    readLines(!!.x)
-  ),
+  tar_file(hello_file, "_targets/user/data/hello.txt"),
+  hello = readLines(hello_file),
   hello_caps = toupper(hello),
   tar_file(
     hello_caps_out,
@@ -268,14 +220,14 @@ tar_plan(
 
 ``` output
 + hello_file dispatched
-✔ hello_file completed [1ms, 26 B]
+✔ hello_file completed [0ms, 26 B]
 + hello dispatched
 ✔ hello completed [0ms, 78 B]
 + hello_caps dispatched
 ✔ hello_caps completed [0ms, 78 B]
 + hello_caps_out dispatched
 ✔ hello_caps_out completed [0ms, 26 B]
-✔ ended pipeline [424ms, 4 completed, 0 skipped]
+✔ ended pipeline [466ms, 4 completed, 0 skipped]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
@@ -301,7 +253,7 @@ So this way of writing out results makes your pipeline more robust: we have a gu
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `tarchetypes::tar_file()` tracks the contents of a file
-- Use `tarchetypes::tar_file_read()` in combination with data loading functions like `read_csv()` to keep the pipeline in sync with your input data
+- Use `tarchetypes::tar_file()` in combination with data loading functions like `read_csv()` to keep the pipeline in sync with your input data
 - Use `tarchetypes::tar_file()` in combination with a function that writes to a file and returns its path to write out data
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

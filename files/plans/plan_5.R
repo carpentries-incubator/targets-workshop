@@ -4,11 +4,8 @@ source("R/functions.R")
 
 tar_plan(
   # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Build models

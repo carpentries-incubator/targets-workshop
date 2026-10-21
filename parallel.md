@@ -69,11 +69,8 @@ tar_option_set(
 
 tar_plan(
   # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Get species names
@@ -157,11 +154,8 @@ tar_option_set(
 
 tar_plan(
   # Load raw data
-  tar_file_read(
-    penguins_data_raw,
-    path_to_file("penguins_raw.csv"),
-    read_csv(!!.x, show_col_types = FALSE)
-  ),
+  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
   # Get species names
@@ -213,11 +207,11 @@ The following objects are masked from ‘package:datasets’:
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
+✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ combined_summary completed [4.1s, 371 B]
-✔ combined_predictions completed [4s, 24.77 kB]
 ✔ species_summary completed [12.1s, 1.11 kB]
 ✔ species_predictions completed [12s, 26.53 kB]
-✔ ended pipeline [18.4s, 8 completed, 4 skipped]
+✔ ended pipeline [19s, 8 completed, 4 skipped]
 ```
 
 Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
