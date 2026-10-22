@@ -37,7 +37,7 @@ source("files/lesson_functions.R")
 
 Almost all workflows will start by importing data, which is typically stored as an external file.
 
-As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in `_targets/user/data/`.
+As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
 
 We will read in the contents of this file and store it as `some_data` in the workflow by writing the following plan and running `tar_make()`:
 
@@ -58,7 +58,7 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  some_data = readLines("_targets/user/data/hello.txt")
+  some_data = readLines("data/hello.txt")
 )
 ```
 
@@ -66,8 +66,8 @@ tar_plan(
 #| label: example-file-hide-1
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  writeLines("Hello World", "_targets/user/data/hello.txt")
+  fs::dir_create("data")
+  writeLines("Hello World", "data/hello.txt")
   write_example_plan(chunk = "example-file-show-1")
   tar_make()
 })
@@ -87,11 +87,11 @@ Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?".
 #| label: example-file-hide-2
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  writeLines("Hello World", "_targets/user/data/hello.txt")
+  fs::dir_create("data")
+  writeLines("Hello World", "data/hello.txt")
   write_example_plan(chunk = "example-file-show-1")
   tar_make(reporter = "silent")
-  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
+  writeLines("Hello World. How are you?", "data/hello.txt")
   tar_make()
 })
 ```
@@ -107,7 +107,7 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  tar_file(data_file, "_targets/user/data/hello.txt"),
+  tar_file(data_file, "data/hello.txt"),
   some_data = readLines(data_file)
 )
 ```
@@ -116,11 +116,11 @@ tar_plan(
 #| label: example-file-hide-3
 #| echo: FALSE
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  writeLines("Hello World", "_targets/user/data/hello.txt")
+  fs::dir_create("data")
+  writeLines("Hello World", "data/hello.txt")
   write_example_plan(chunk = "example-file-show-3")
   tar_make(reporter = "silent")
-  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
+  writeLines("Hello World. How are you?", "data/hello.txt")
   tar_make()
 })
 ```
@@ -222,12 +222,12 @@ library(tarchetypes)
 source("R/functions.R")
 
 tar_plan(
-  tar_file(hello_file, "_targets/user/data/hello.txt"),
+  tar_file(hello_file, "data/hello.txt"),
   hello = readLines(hello_file),
   hello_caps = toupper(hello),
   tar_file(
     hello_caps_out,
-    write_lines_file(hello_caps, "_targets/user/results/hello_caps.txt")
+    write_lines_file(hello_caps, "results/hello_caps.txt")
   )
 )
 ```
@@ -236,9 +236,9 @@ tar_plan(
 #| label: example-file-hide-6
 #| echo: false
 tar_dir({
-  fs::dir_create("_targets/user/data")
-  fs::dir_create("_targets/user/results")
-  writeLines("Hello World. How are you?", "_targets/user/data/hello.txt")
+  fs::dir_create("data")
+  fs::dir_create("results")
+  writeLines("Hello World. How are you?", "data/hello.txt")
   write_example_plan(chunk = "example-file-show-6")
   tar_make()
 })
