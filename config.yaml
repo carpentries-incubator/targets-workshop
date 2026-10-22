@@ -66,9 +66,9 @@ episodes:
 - lifecycle.Rmd
 - organization.Rmd
 - packages.Rmd
-- files.Rmd
 - branch.Rmd
 - parallel.Rmd
+- files.Rmd
 - quarto.Rmd
 
 # Information for Learners
