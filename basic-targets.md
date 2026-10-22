@@ -75,38 +75,25 @@ OK, now that our project is set up, we are (almost) ready to start using `target
 
 First though, to get familiar with the functions and packages we'll use, let's run the code like you would in a "normal" R script without using `targets`.
 
-Recall that we are using the `palmerpenguins` R package to obtain the data.
-This package actually includes two variations of the dataset: one is an external CSV file with the raw data, and another is the cleaned data loaded into R.
-In real life you are probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
+Recall that we are using the penguins data that comes with base R (since R version 4.5.0).
+There are actually two variations of the dataset: `penguins` is the cleaned data, and `penguins_raw` is the raw data.
+(If you get an error that `penguins_raw` cannot be found, you need to update R to version 4.5.0 or later; see the Setup instructions.)
+In real life you probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
 
-The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package).
+To mimic this, we will first save the raw data to a CSV file in our project.
+Create a new folder called `data` in your project folder (for example, with the "New Folder" button in the Files pane of RStudio).
+Then run this code in the R console:
 
-
-``` r
-library(palmerpenguins)
-```
-
-``` output
-
-Attaching package: 'palmerpenguins'
-```
-
-``` output
-The following objects are masked from 'package:datasets':
-
-    penguins, penguins_raw
-```
 
 ``` r
-# Get path to CSV file
-penguins_csv_file <- path_to_file("penguins_raw.csv")
+# Save the raw data to a CSV file in the data folder
+write.csv(penguins_raw, "data/penguins_raw.csv", row.names = FALSE)
 
-penguins_csv_file
+# The path to the CSV file
+penguins_csv_file <- "data/penguins_raw.csv"
 ```
 
-``` output
-[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
-```
+
 
 We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html), or the Carpentry incubator lesson [R and the tidyverse for working with datasets](https://carpentries-incubator.github.io/r-tidyverse-4-datasets/).
 
@@ -272,7 +259,7 @@ Note that the name of the target is **unquoted**, that is, it is written without
 ## Modifying `_targets.R` to run the example analysis
 
 First, let's load all of the packages we need for our workflow.
-Add `library(tidyverse)` and `library(palmerpenguins)` to the top of `_targets.R` after `library(targets)`.
+Add `library(tidyverse)` to the top of `_targets.R` after `library(targets)`.
 
 Next, we can delete the `function()` statement since we won't be using that just yet (we will come back to custom functions soon!).
 
@@ -310,7 +297,7 @@ Can you use `tar_target()` to define the first step in the workflow (setting the
 
 
 ``` r
-tar_target(name = penguins_csv_file, command = path_to_file("penguins_raw.csv"))
+tar_target(name = penguins_csv_file, command = "data/penguins_raw.csv")
 ```
 
 The first two arguments of `tar_target()` are the **name** of the target, followed by the **command** to build it.
@@ -319,7 +306,7 @@ These arguments are used so frequently we will typically omit the argument names
 
 
 ``` r
-tar_target(penguins_csv_file, path_to_file("penguins_raw.csv"))
+tar_target(penguins_csv_file, "data/penguins_raw.csv")
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -334,10 +321,9 @@ Once you've done that, this is how `_targets.R` should look:
 ``` r
 library(targets)
 library(tidyverse)
-library(palmerpenguins)
 
 list(
-  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_target(penguins_csv_file, "data/penguins_raw.csv"),
   tar_target(
     penguins_data_raw,
     read_csv(penguins_csv_file, show_col_types = FALSE)
@@ -368,20 +354,13 @@ tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [2ms, 191 B]
+✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [100ms, 10.40 kB]
+✔ penguins_data_raw completed [123ms, 10.40 kB]
 + penguins_data dispatched
 ✔ penguins_data completed [15ms, 1.61 kB]
-✔ ended pipeline [356ms, 3 completed, 0 skipped]
+✔ ended pipeline [404ms, 3 completed, 0 skipped]
 ```
 
 Congratulations, you've run your first workflow with `targets`!

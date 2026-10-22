@@ -34,28 +34,12 @@ One of the features of `targets` is that it maximizes efficiency by only running
 This is easiest to understand by trying it yourself. Let's try running the workflow again:
 
 
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
 ``` r
 tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
-✔ skipped pipeline [126ms, 3 skipped]
+✔ skipped pipeline [143ms, 3 skipped]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -91,30 +75,14 @@ clean_penguin_data <- function(penguins_data_raw) {
 Then run it again.
 
 
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
 ``` r
 tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + penguins_data dispatched
-✔ penguins_data completed [35ms, 1.49 kB]
-✔ ended pipeline [222ms, 1 completed, 2 skipped]
+✔ penguins_data completed [40ms, 1.49 kB]
+✔ ended pipeline [243ms, 1 completed, 2 skipped]
 ```
 
 What happened?
@@ -235,13 +203,6 @@ tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + penguins_data_raw dispatched
 Rows: 344 Columns: 17
 ── Column specification ────────────────────────────────────────────────────────
@@ -252,8 +213,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [200ms, 10.40 kB]
-✔ ended pipeline [385ms, 1 completed, 2 skipped]
+✔ penguins_data_raw completed [233ms, 10.40 kB]
+✔ ended pipeline [439ms, 1 completed, 2 skipped]
 ```
 
 Only `penguins_data_raw` was re-run (the extra message is from `read_csv()`, which now reports the column types because we removed `show_col_types = FALSE`). Its code changed, so it was re-built, but it produced exactly the same data as before. That means `penguins_data`, which looked outdated, was skipped.
@@ -277,14 +238,7 @@ tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
-✔ skipped pipeline [147ms, 3 skipped]
+✔ skipped pipeline [164ms, 3 skipped]
 ```
 
 Now let's invalidate `penguins_data_raw` and build only that target:
@@ -296,13 +250,6 @@ tar_make(penguins_data_raw)
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + penguins_data_raw dispatched
 Rows: 344 Columns: 17
 ── Column specification ────────────────────────────────────────────────────────
@@ -313,8 +260,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [193ms, 10.40 kB]
-✔ ended pipeline [392ms, 1 completed, 1 skipped]
+✔ penguins_data_raw completed [221ms, 10.40 kB]
+✔ ended pipeline [444ms, 1 completed, 1 skipped]
 ```
 
 Only `penguins_data_raw` was built (you will see the same `read_csv()` message again, since we are still not using `show_col_types = FALSE`). `penguins_data` was not part of this run, and `penguins_csv_file` (which `penguins_data_raw` depends on) was skipped because it was already up to date.
@@ -328,16 +275,9 @@ tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + penguins_data dispatched
-✔ penguins_data completed [32ms, 1.49 kB]
-✔ ended pipeline [215ms, 1 completed, 2 skipped]
+✔ penguins_data completed [40ms, 1.49 kB]
+✔ ended pipeline [247ms, 1 completed, 2 skipped]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).

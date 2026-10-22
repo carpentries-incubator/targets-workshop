@@ -94,9 +94,9 @@ Here are some recommended resources for continuing on your `targets` journey:
 
 For this workshop, we will analyze an example dataset of measurements taken on adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago, Antarctica.
 
-The data are available from the `palmerpenguins` R package. You can get more information about the data by running `?palmerpenguins`.
+The data are included in base R (version 4.5.0 and later) as `penguins` and `penguins_raw`. You can get more information about the data by running `?penguins`.
 
-![The three species of penguins in the `palmerpenguins` dataset. Artwork by @allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
+![The three species of penguins in the `penguins` dataset. Artwork by @allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
 
 The goal of the analysis is to determine the relationship between bill length and depth by using linear models.
 

@@ -39,7 +39,7 @@ In this workshop, we will only cover dynamic branching since it is generally eas
 
 ## Example without branching
 
-To see how this works, let's continue our analysis of the `palmerpenguins` dataset.
+To see how this works, let's continue our analysis of the penguins dataset.
 
 **Our hypothesis is that bill depth decreases with bill length.**
 We will test this hypothesis with a linear model.
@@ -60,7 +60,7 @@ source("R/functions.R")
 
 tar_plan(
   # Load raw data
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
@@ -74,25 +74,9 @@ tar_plan(
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + combined_model dispatched
-✔ combined_model completed [2ms, 11.20 kB]
-✔ ended pipeline [170ms, 1 completed, 3 skipped]
+✔ combined_model completed [31ms, 11.20 kB]
+✔ ended pipeline [250ms, 1 completed, 3 skipped]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -127,7 +111,7 @@ source("R/functions.R")
 
 tar_plan(
   # Load raw data
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
@@ -158,37 +142,21 @@ tar_plan(
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + adelie_model dispatched
-✔ adelie_model completed [15ms, 6.48 kB]
+✔ adelie_model completed [21ms, 6.48 kB]
 + gentoo_model dispatched
-✔ gentoo_model completed [2ms, 5.88 kB]
+✔ gentoo_model completed [3ms, 5.88 kB]
 + chinstrap_model dispatched
-✔ chinstrap_model completed [1ms, 4.54 kB]
+✔ chinstrap_model completed [2ms, 4.54 kB]
 + combined_summary dispatched
-✔ combined_summary completed [29ms, 350 B]
+✔ combined_summary completed [41ms, 350 B]
 + adelie_summary dispatched
-✔ adelie_summary completed [2ms, 351 B]
+✔ adelie_summary completed [3ms, 351 B]
 + gentoo_summary dispatched
-✔ gentoo_summary completed [2ms, 351 B]
+✔ gentoo_summary completed [4ms, 351 B]
 + chinstrap_summary dispatched
-✔ chinstrap_summary completed [2ms, 351 B]
-✔ ended pipeline [356ms, 7 completed, 4 skipped]
+✔ chinstrap_summary completed [3ms, 351 B]
+✔ ended pipeline [459ms, 7 completed, 4 skipped]
 ```
 
 Let's look at the summary of one of the models:
@@ -240,7 +208,7 @@ source("R/functions.R")
 
 tar_plan(
   # Load raw data
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
@@ -263,29 +231,13 @@ First, let's look at the messages provided by `tar_make()`.
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + combined_summary dispatched
-✔ combined_summary completed [31ms, 350 B]
+✔ combined_summary completed [54ms, 350 B]
 + species_name dispatched
-✔ species_name completed [3ms, 76 B]
+✔ species_name completed [4ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [24ms, 1.05 kB]
-✔ ended pipeline [347ms, 5 completed, 3 skipped]
+✔ species_summary completed [32ms, 1.05 kB]
+✔ ended pipeline [423ms, 5 completed, 3 skipped]
 ```
 
 The messages say that `species_summary` was "declared" with 3 branches, then completed.
@@ -382,18 +334,11 @@ Since `targets` tracks the contents of each custom function, it realizes that it
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + combined_summary dispatched
-✔ combined_summary completed [54ms, 371 B]
+✔ combined_summary completed [82ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [92ms, 1.11 kB]
-✔ ended pipeline [357ms, 4 completed, 4 skipped]
+✔ species_summary completed [100ms, 1.11 kB]
+✔ ended pipeline [450ms, 4 completed, 4 skipped]
 ```
 
 And this time, when we load `species_summary`, we can tell which species corresponds to which row (the `.before = 1` in `mutate()` ensures that it shows up before the other columns).
@@ -456,7 +401,7 @@ source("R/packages.R")
 
 tar_plan(
   # Load raw data
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),

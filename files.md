@@ -29,12 +29,12 @@ Episode summary: Show how to read and write external files
 
 Almost all workflows will start by importing data, which is typically stored as an external file.
 
-So far, our penguins workflow has read its data from a CSV file that comes with the `palmerpenguins` package.
+So far, our penguins workflow has read its data from a CSV file in the `data/` folder of our project.
 Let's add a second, much smaller data file that we create ourselves: some information about the islands where the penguins were measured.
 Later we will use this in a report.
 
 Create a new text file in RStudio with the "New File" menu option.
-Enter the following lines (copy-and-paste is fine) and save it as "islands.csv" in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
+Enter the following lines (copy-and-paste is fine) and save it as "islands.csv" in the `data/` folder of your project (we created this folder in the [first workflow episode](episodes/basic-targets.Rmd); if you do not have it yet, create it now in your project folder).
 These coordinates are approximate.
 
 ```
@@ -63,27 +63,11 @@ Add a new target to the end of the plan in `_targets.R` (note the comma that is 
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + island_data dispatched
-✔ island_data completed [92ms, 365 B]
+✔ island_data completed [119ms, 365 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [368ms, 1 completed, 12 skipped]
+✔ ended pipeline [419ms, 1 completed, 12 skipped]
 ```
 
 If we load `island_data` with `tar_load(island_data)` and inspect it, it will contain the three islands as expected.
@@ -96,16 +80,9 @@ tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ skipped pipeline [164ms, 13 skipped]
+✔ skipped pipeline [213ms, 13 skipped]
 ```
 
 The target `island_data` was skipped, even though the contents of the file changed.
@@ -132,29 +109,13 @@ Then edit "islands.csv" once more, perhaps changing the longitude of Dream Islan
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + island_file dispatched
 ✔ island_file completed [1ms, 91 B]
 + island_data dispatched
-✔ island_data completed [134ms, 358 B]
+✔ island_data completed [164ms, 358 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [351ms, 2 completed, 12 skipped]
+✔ ended pipeline [442ms, 2 completed, 12 skipped]
 ```
 
 This time we see that `targets` does successfully re-build `island_data` as expected.
@@ -183,26 +144,19 @@ Use `tar_file()` for the `penguins_csv_file` target, at the start of the plan:
 ``` r
 tar_plan(
   # Load raw data
-  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_file(penguins_csv_file, "data/penguins_raw.csv"),
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
 ```
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [1ms, 53.10 kB]
+✔ penguins_csv_file completed [1ms, 57.98 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [140ms, 10.40 kB]
+✔ penguins_data_raw completed [163ms, 10.40 kB]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [359ms, 2 completed, 12 skipped]
+✔ ended pipeline [440ms, 2 completed, 12 skipped]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -217,19 +171,16 @@ Let's do this for `write_csv()`, the `readr` function that writes a data frame t
 
 
 ``` r
-x <- readr::write_csv(head(palmerpenguins::penguins, 3), "test.csv")
+x <- readr::write_csv(head(penguins, 3), "test.csv")
 x
 ```
 
 
 ``` output
-# A tibble: 3 × 8
-  species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-  <fct>   <fct>              <dbl>         <dbl>             <int>       <int>
-1 Adelie  Torgersen           39.1          18.7               181        3750
-2 Adelie  Torgersen           39.5          17.4               186        3800
-3 Adelie  Torgersen           40.3          18                 195        3250
-# ℹ 2 more variables: sex <fct>, year <int>
+  species    island bill_len bill_dep flipper_len body_mass    sex year
+1  Adelie Torgersen     39.1     18.7         181      3750   male 2007
+2  Adelie Torgersen     39.5     17.4         186      3800 female 2007
+3  Adelie Torgersen     40.3     18.0         195      3250 female 2007
 ```
 
 Here is our modified function that writes a data frame to a CSV file and returns the name of the file (the `...` means "pass the rest of these arguments to `write_csv()`"). Add it to `R/functions.R`:
@@ -246,7 +197,7 @@ Let's try it out:
 
 
 ``` r
-x <- write_csv_file(head(palmerpenguins::penguins, 3), "test.csv")
+x <- write_csv_file(head(penguins, 3), "test.csv")
 x
 ```
 
@@ -272,18 +223,11 @@ We can now use this in the workflow. For example, let's write out the results of
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
 + species_summary_file dispatched
-✔ species_summary_file completed [120ms, 664 B]
-✔ ended pipeline [311ms, 1 completed, 14 skipped]
+✔ species_summary_file completed [147ms, 664 B]
+✔ ended pipeline [397ms, 1 completed, 14 skipped]
 ```
 
 Take a look at `species_summary.csv` in the `results` folder and verify it is as you expect.

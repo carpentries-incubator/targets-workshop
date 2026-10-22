@@ -68,7 +68,7 @@ tar_option_set(
 
 tar_plan(
   # Load raw data
-  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
@@ -152,7 +152,7 @@ tar_option_set(
 
 tar_plan(
   # Load raw data
-  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   # Clean data
   penguins_data = clean_penguin_data(penguins_data_raw),
@@ -185,31 +185,15 @@ Finally, run the pipeline with `tar_make()` as normal.
 
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + combined_summary dispatched
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
+✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ combined_summary completed [4.1s, 371 B]
-✔ combined_predictions completed [4s, 24.77 kB]
 ✔ species_summary completed [12.1s, 1.11 kB]
 ✔ species_predictions completed [12s, 26.53 kB]
-✔ ended pipeline [19.2s, 8 completed, 4 skipped]
+✔ ended pipeline [19.4s, 8 completed, 4 skipped]
 ```
 
 Notice that each target (or each branch of a branched target) takes about 4 seconds to build.

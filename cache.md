@@ -62,14 +62,6 @@ Its first argument is the name of the object you want to load.
 Let's use this to load `penguins_data` and get an overview of the data with `summary()`.
 
 
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
 
 
 ``` r
@@ -121,7 +113,7 @@ When might you want to use one rather than the other?
 
 :::::::::::::::::::::::::::::::::: solution
 
-`tar_read()` returns the value of the target, so we immediately see it (the exact path will vary depending on your machine):
+`tar_read()` returns the value of the target, so we immediately see it:
 
 
 ``` r
@@ -129,7 +121,7 @@ tar_read(penguins_csv_file)
 ```
 
 ``` output
-[1] "/home/runner/.local/share/renv/cache/v5/linux-ubuntu-jammy/R-4.6/x86_64-pc-linux-gnu/palmerpenguins/0.1.1/6c6861efbc13c1d543749e9c7be4a592/palmerpenguins/extdata/penguins_raw.csv"
+[1] "data/penguins_raw.csv"
 ```
 
 But it has not been loaded into the environment, so if we try to run `penguins_csv_file`, we get an error:

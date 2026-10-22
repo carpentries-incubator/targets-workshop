@@ -52,7 +52,6 @@ Let's edit the penguins workflow to use the `tar_plan()` syntax:
 ``` r
 library(targets)
 library(tarchetypes)
-library(palmerpenguins)
 library(tidyverse)
 
 clean_penguin_data <- function(penguins_data_raw) {
@@ -68,7 +67,7 @@ clean_penguin_data <- function(penguins_data_raw) {
 }
 
 tar_plan(
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   penguins_data = clean_penguin_data(penguins_data_raw)
 )
@@ -101,7 +100,7 @@ source("R/packages.R")
 source("R/functions.R")
 
 tar_plan(
-  penguins_csv_file = path_to_file("penguins_raw.csv"),
+  penguins_csv_file = "data/penguins_raw.csv",
   penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
   penguins_data = clean_penguin_data(penguins_data_raw)
 )
@@ -110,7 +109,7 @@ tar_plan(
 Now `_targets.R` is much more streamlined: it is focused just on the workflow and immediately tells us what happens in each step.
 
 Finally, let's make some directories for storing data and output---files that are not code.
-Create two new directories in your project folder, called `data` and `results` (if you use version control, you will probably want to ignore these, as well as the `_targets` directory).
+We already created a `data` directory for the raw data file. Create another new directory in your project folder, called `results` (if you use version control, you will probably want to ignore `data` and `results`, as well as the `_targets` directory).
 
 Your project folder should now look something like this:
 

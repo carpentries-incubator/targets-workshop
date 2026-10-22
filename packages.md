@@ -42,7 +42,7 @@ The potential downside to this approach is that if you have a long list of packa
 
 In this method, use the `tar_option_set()` function in `_targets.R` to specify the packages to load when running the workflow.
 
-This will be demonstrated using the pre-cleaned dataset from the `palmerpenguins` package. Let's say we want to filter it down to just data for the Adelie penguin.
+This will be demonstrated using the `penguins` dataset that comes with base R. Let's say we want to remove rows with missing data (using `drop_na()` from the `tidyr` package), then filter it down to just data for the Adelie penguin (using `filter()` from the `dplyr` package).
 
 ::::::::::::::::::::::::::::::::::::: {.callout}
 
@@ -61,18 +61,20 @@ This is what using the `tar_option_set()` method looks like:
 library(targets)
 library(tarchetypes)
 
-tar_option_set(packages = c("dplyr", "palmerpenguins"))
+tar_option_set(packages = c("dplyr", "tidyr"))
 
 tar_plan(
-  adelie_data = filter(penguins, species == "Adelie")
+  adelie_data = penguins |>
+    drop_na() |>
+    filter(species == "Adelie")
 )
 ```
 
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [31ms, 1.54 kB]
-✔ ended pipeline [320ms, 1 completed, 0 skipped]
+✔ adelie_data completed [71ms, 1.46 kB]
+✔ ended pipeline [433ms, 1 completed, 0 skipped]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -91,8 +93,10 @@ library(tarchetypes)
 tar_plan(
   tar_target(
     adelie_data,
-    filter(penguins, species == "Adelie"),
-    packages = c("dplyr", "palmerpenguins")
+    penguins |>
+      drop_na() |>
+      filter(species == "Adelie"),
+    packages = c("dplyr", "tidyr")
   )
 )
 ```
@@ -100,8 +104,8 @@ tar_plan(
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [31ms, 1.54 kB]
-✔ ended pipeline [320ms, 1 completed, 0 skipped]
+✔ adelie_data completed [70ms, 1.46 kB]
+✔ ended pipeline [437ms, 1 completed, 0 skipped]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -120,15 +124,17 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  adelie_data = dplyr::filter(palmerpenguins::penguins, species == "Adelie")
+  adelie_data = penguins |>
+    tidyr::drop_na() |>
+    dplyr::filter(species == "Adelie")
 )
 ```
 
 
 ``` output
 + adelie_data dispatched
-✔ adelie_data completed [20ms, 1.54 kB]
-✔ ended pipeline [310ms, 1 completed, 0 skipped]
+✔ adelie_data completed [56ms, 1.46 kB]
+✔ ended pipeline [427ms, 1 completed, 0 skipped]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
@@ -168,7 +174,7 @@ However, it is possible to change this behavior on a per-package basis.
 This is best done only for a small number of packages, since adding too many would add too much computational overhead to `targets` when it has to calculate dependencies.
 For example, you may want to do this if you are using your own custom package that you update frequently.
 
-The way to do so is by using `tar_option_set()`, specifying the **same** package name in both `packages` and `imports`. Here is a modified version of the earlier code that demonstrates this for `dplyr` and `palmerpenguins`.
+The way to do so is by using `tar_option_set()`, specifying the **same** package name in both `packages` and `imports`. Here is a modified version of the earlier code that demonstrates this for `dplyr` and `tidyr`.
 
 
 ``` r
@@ -176,16 +182,18 @@ library(targets)
 library(tarchetypes)
 
 tar_option_set(
-  packages = c("dplyr", "palmerpenguins"),
-  imports = c("dplyr", "palmerpenguins")
+  packages = c("dplyr", "tidyr"),
+  imports = c("dplyr", "tidyr")
 )
 
 tar_plan(
-  adelie_data = filter(penguins, species == "Adelie")
+  adelie_data = penguins |>
+    drop_na() |>
+    filter(species == "Adelie")
 )
 ```
 
-If we were to re-install either `dplyr` or `palmerpenguins` and one of the functions used from those in the pipeline changes (for example, `filter()`), any target depending on that function will be rebuilt.
+If we were to re-install either `dplyr` or `tidyr` and one of the functions used from those in the pipeline changes (for example, `filter()`), any target depending on that function will be rebuilt.
 
 ## Resolving namespace conflicts
 

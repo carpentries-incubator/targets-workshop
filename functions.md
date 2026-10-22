@@ -44,37 +44,35 @@ Furthermore, `targets` makes extensive use of custom functions, so a basic under
 ### Writing a function
 
 There is not much difference between writing your own function and writing other code in R, you are still coding with R!
-Let's imagine we want to convert the millimeter measurements in the penguins data to centimeters.
+Let's imagine we want to convert the millimeter measurements in the penguins data to centimeters (we use `head()` to only print the first few rows).
 
 
 ``` r
-library(palmerpenguins)
 library(tidyverse)
 
 penguins |>
   mutate(
-    bill_length_cm = bill_length_mm / 10,
-    bill_depth_cm = bill_depth_mm / 10
-  )
+    bill_len_cm = bill_len / 10,
+    bill_dep_cm = bill_dep / 10
+  ) |>
+  head()
 ```
 
 ``` output
-# A tibble: 344 × 10
-   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-   <fct>   <fct>              <dbl>         <dbl>             <int>       <int>
- 1 Adelie  Torgersen           39.1          18.7               181        3750
- 2 Adelie  Torgersen           39.5          17.4               186        3800
- 3 Adelie  Torgersen           40.3          18                 195        3250
- 4 Adelie  Torgersen           NA            NA                  NA          NA
- 5 Adelie  Torgersen           36.7          19.3               193        3450
- 6 Adelie  Torgersen           39.3          20.6               190        3650
- 7 Adelie  Torgersen           38.9          17.8               181        3625
- 8 Adelie  Torgersen           39.2          19.6               195        4675
- 9 Adelie  Torgersen           34.1          18.1               193        3475
-10 Adelie  Torgersen           42            20.2               190        4250
-# ℹ 334 more rows
-# ℹ 4 more variables: sex <fct>, year <int>, bill_length_cm <dbl>,
-#   bill_depth_cm <dbl>
+  species    island bill_len bill_dep flipper_len body_mass    sex year
+1  Adelie Torgersen     39.1     18.7         181      3750   male 2007
+2  Adelie Torgersen     39.5     17.4         186      3800 female 2007
+3  Adelie Torgersen     40.3     18.0         195      3250 female 2007
+4  Adelie Torgersen       NA       NA          NA        NA   <NA> 2007
+5  Adelie Torgersen     36.7     19.3         193      3450 female 2007
+6  Adelie Torgersen     39.3     20.6         190      3650   male 2007
+  bill_len_cm bill_dep_cm
+1        3.91        1.87
+2        3.95        1.74
+3        4.03        1.80
+4          NA          NA
+5        3.67        1.93
+6        3.93        2.06
 ```
 
 This is not a complicated operation, but we might want to make a convenient custom function that can do this conversion for us anyways.
@@ -109,28 +107,27 @@ Let's try it out:
 ``` r
 penguins |>
   mutate(
-    bill_length_cm = mm2cm(bill_length_mm),
-    bill_depth_cm = mm2cm(bill_depth_mm)
-  )
+    bill_len_cm = mm2cm(bill_len),
+    bill_dep_cm = mm2cm(bill_dep)
+  ) |>
+  head()
 ```
 
 ``` output
-# A tibble: 344 × 10
-   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-   <fct>   <fct>              <dbl>         <dbl>             <int>       <int>
- 1 Adelie  Torgersen           39.1          18.7               181        3750
- 2 Adelie  Torgersen           39.5          17.4               186        3800
- 3 Adelie  Torgersen           40.3          18                 195        3250
- 4 Adelie  Torgersen           NA            NA                  NA          NA
- 5 Adelie  Torgersen           36.7          19.3               193        3450
- 6 Adelie  Torgersen           39.3          20.6               190        3650
- 7 Adelie  Torgersen           38.9          17.8               181        3625
- 8 Adelie  Torgersen           39.2          19.6               195        4675
- 9 Adelie  Torgersen           34.1          18.1               193        3475
-10 Adelie  Torgersen           42            20.2               190        4250
-# ℹ 334 more rows
-# ℹ 4 more variables: sex <fct>, year <int>, bill_length_cm <dbl>,
-#   bill_depth_cm <dbl>
+  species    island bill_len bill_dep flipper_len body_mass    sex year
+1  Adelie Torgersen     39.1     18.7         181      3750   male 2007
+2  Adelie Torgersen     39.5     17.4         186      3800 female 2007
+3  Adelie Torgersen     40.3     18.0         195      3250 female 2007
+4  Adelie Torgersen       NA       NA          NA        NA   <NA> 2007
+5  Adelie Torgersen     36.7     19.3         193      3450 female 2007
+6  Adelie Torgersen     39.3     20.6         190      3650   male 2007
+  bill_len_cm bill_dep_cm
+1        3.91        1.87
+2        3.95        1.74
+3        4.03        1.80
+4          NA          NA
+5        3.67        1.93
+6        3.93        2.06
 ```
 
 Congratulations, you've created and used your first custom function!
@@ -222,7 +219,6 @@ Modify the workflow to look like this:
 ``` r
 library(targets)
 library(tidyverse)
-library(palmerpenguins)
 
 clean_penguin_data <- function(penguins_data_raw) {
   penguins_data_raw |>
@@ -235,7 +231,7 @@ clean_penguin_data <- function(penguins_data_raw) {
 }
 
 list(
-  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_target(penguins_csv_file, "data/penguins_raw.csv"),
   tar_target(penguins_data_raw, read_csv(
     penguins_csv_file, show_col_types = FALSE)),
   tar_target(penguins_data, clean_penguin_data(penguins_data_raw))
@@ -245,30 +241,14 @@ list(
 We should run the workflow again with `tar_make()` to make sure it is up-to-date:
 
 
-``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-```
-
 ``` r
 tar_make()
 ```
 
 ``` output
-
-Attaching package: ‘palmerpenguins’
-
-The following objects are masked from ‘package:datasets’:
-
-    penguins, penguins_raw
-
 + penguins_data dispatched
-✔ penguins_data completed [14ms, 1.61 kB]
-✔ ended pipeline [198ms, 1 completed, 2 skipped]
+✔ penguins_data completed [18ms, 1.61 kB]
+✔ ended pipeline [212ms, 1 completed, 2 skipped]
 ```
 
 We will learn more soon about the messages that `targets()` prints out.
