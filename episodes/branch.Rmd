@@ -29,7 +29,6 @@ Episode summary: Show how to use branching
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-library(broom)
 
 # sandpaper renders this lesson from episodes/
 # need to emulate this behavior during interactive development
@@ -92,16 +91,15 @@ tar_make()
 popd()
 ```
 
-Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
+Let's have a look at the model. We will use the `glance()` function from the `broom` package, writing `broom::glance()` so that we do not need to load the whole package (the `::` notation specifies which package a function comes from). Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 ```{r}
 #| label: example-lm-pipeline-inspect-show
 #| eval: true
-#| echo: [2, 3, 4]
+#| echo: [2, 3]
 pushd(plan_4_dir)
-library(broom)
 tar_load(combined_model)
-glance(combined_model)
+broom::glance(combined_model)
 popd()
 ```
 
@@ -112,7 +110,7 @@ But wait a moment... is this really an appropriate model? Recall that there are 
 
 Let's try making one model *per* species (three models total) to see how that does (this is technically not the correct statistical approach, but our focus here is to learn `targets`, not statistics).
 
-Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching** (make sure to add `library(broom)` to `packages.R`):
+Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching**:
 
 ```{r}
 #| label = "example-model-show-1",

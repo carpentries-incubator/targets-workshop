@@ -12,6 +12,6 @@ model_glance_slow <- function(penguins_data) {
     species_name <- "combined"
   }
   # Get model summary and add species name
-  glance(model) |>
+  broom::glance(model) |>
     mutate(species = species_name, .before = 1)
 }

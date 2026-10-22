@@ -11,6 +11,9 @@ The examples gradually build up to a full analysis of the [Palmer Penguins datas
 The penguins datasets were added to base R in **R version 4.5.0**, so this lesson requires R 4.5.0 or later. Check that learners (and any shared server or cloud instance you plan to use) have a recent enough version of R before the workshop.
 
 ## Optional episodes:
+
+The "Managing Packages" episode covers a more advanced topic (different ways to load packages, tracking package versions with `renv`, and namespace conflicts) and could be skipped if you are short on time. The rest of the lesson does not depend on it: the workflow already loads its packages with `library()`.
+
 The "A Brief Introduction to Functions" episode is an optional episode and will depend on the learners coming to your workshop.
 We would recommend having a show of hands (or stickies) who has experience with functions, and if you have learners who do not, run this episode.
 

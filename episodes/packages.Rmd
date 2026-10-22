@@ -32,17 +32,66 @@ library(tarchetypes)
 source("files/lesson_functions.R")
 ```
 
+```{r}
+#| label: example-helper
+#| echo: FALSE
+# Run one of the example workflows in a temporary project.
+# The examples load packages in different ways, so R/packages.R only loads
+# the packages that targets itself needs (and R/functions.R can be replaced
+# by a version that uses ::)
+colon_functions <- normalizePath("files/packages_examples/clean_penguin_data_colons.R")
+
+run_example <- function(plan, use_colons = FALSE) {
+  tar_dir({
+    write_example_plan(plan)
+    writeLines(c("library(targets)", "library(tarchetypes)"), "R/packages.R")
+    if (use_colons) {
+      file.copy(colon_functions, "R/functions.R", overwrite = TRUE)
+    }
+    tar_make()
+  })
+}
+```
+
 ## Loading packages
 
 Almost every R analysis relies on packages for functions beyond those available in base R.
 
-There are three main ways to load packages in `targets` workflows.
+Our workflow already does: `read_csv()` comes from the `readr` package, and `clean_penguin_data()` uses `select()` from `dplyr`, and `drop_na()` and `separate()` from `tidyr`.
+All of these are part of the `tidyverse`.
+
+Here is our workflow so far:
+
+```{r}
+#| label = "workflow-so-far",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_2b.R")[2:9]
+```
+
+What we have done so far works: the `library()` calls in `R/packages.R` make every function we need available, so why would we load packages any other way?
+For a small workflow like ours, there is no need to.
+But as a workflow grows, loading packages with `library()` can start to cause some problems:
+
+- **It can get slow.** All of the packages are loaded every time `targets` reads your `_targets.R` file (for example, with `tar_make()` or `tar_visnetwork()`), whether or not the targets that are about to run actually need them. With a long list of packages, that adds up.
+- **It gets harder to tell where functions come from.** When many packages are loaded, it is not obvious which package a given function belongs to, and two packages may have functions with the same name (we will come back to this at the end of the episode).
+
+`targets` offers some other ways to make packages available that can help with these problems, and you will see them in other people's `targets` projects.
+
+There are three main ways to load packages in `targets` workflows, plus one way to avoid loading them.
+Below we will see what our workflow would look like with each one.
+These are examples to read: you do not need to change your own files (the method you already have is the first one).
 
 ### Method 1: `library()` {#method-1}
 
-This is the method you are almost certainly more familiar with, and is the method we have been using by default so far.
+This is the method you are almost certainly more familiar with, and is the method we have been using by default so far: `R/packages.R` loads the packages with `library()`, and `_targets.R` runs `source("R/packages.R")`.
 
-Like any other R script, include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the <!-- FIXME ADD LINK -->recommended best practice for project organization), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
+```{r}
+#| label = "packages-r",
+#| eval = FALSE,
+#| code = readLines("files/packages.R")[1:3]
+```
+
+Like any other R script, you can include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the recommended best practice for [project organization](episodes/organization.Rmd)), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
 
 The potential downside to this approach is that if you have a long list of packages to load, certain functions like `tar_visnetwork()` may take an unnecessarily long time to run because they have to load all the packages, even though they don't necessarily use them.
 
@@ -50,42 +99,18 @@ The potential downside to this approach is that if you have a long list of packa
 
 In this method, use the `tar_option_set()` function in `_targets.R` to specify the packages to load when running the workflow.
 
-This will be demonstrated using the `penguins` dataset that comes with base R. Let's say we want to remove rows with missing data (using `drop_na()` from the `tidyr` package), then filter it down to just data for the Adelie penguin (using `filter()` from the `dplyr` package).
-
-::::::::::::::::::::::::::::::::::::: {.callout}
-
-## Save your progress
-
-You can only have one active `_targets.R` file at a time in a given project.
-
-We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins bill analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
-
-:::::::::::::::::::::::::::::::::::::
-
-This is what using the `tar_option_set()` method looks like:
+For our workflow, we could remove `library(tidyverse)` from `R/packages.R` (so that it only has `library(targets)` and `library(tarchetypes)`), then list the packages we need in `_targets.R` instead:
 
 ```{r}
-#| eval: FALSE
-#| label: load-pkg-show
-library(targets)
-library(tarchetypes)
-
-tar_option_set(packages = c("dplyr", "tidyr"))
-
-tar_plan(
-  adelie_data = penguins |>
-    drop_na() |>
-    filter(species == "Adelie")
-)
+#| label = "load-pkg-show",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_pkgs_2.R")[2:11]
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide
-tar_dir({
-  write_example_plan(chunk = "load-pkg-show")
-  tar_make()
-})
+run_example("plan_pkgs_2.R")
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -94,32 +119,19 @@ This method gets around the slow-downs that may sometimes be experienced with Me
 
 The main function for defining targets, `tar_target()` includes a `packages` argument that will load the specified packages **only for that target**.
 
-Here is how we could use this method, modified from the same example as above.
+Here is how our workflow could use this method (again with `library(tidyverse)` removed from `R/packages.R`).
+`penguins_data_raw` needs `readr`, and `penguins_data` needs `dplyr` and `tidyr`.
 
 ```{r}
-#| eval: FALSE
-#| label: load-pkg-show-2
-library(targets)
-library(tarchetypes)
-
-tar_plan(
-  tar_target(
-    adelie_data,
-    penguins |>
-      drop_na() |>
-      filter(species == "Adelie"),
-    packages = c("dplyr", "tidyr")
-  )
-)
+#| label = "load-pkg-show-2",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_pkgs_3.R")[2:17]
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide-2
-tar_dir({
-  write_example_plan(chunk="load-pkg-show-2")
-  tar_make()
-})
+run_example("plan_pkgs_3.R")
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -130,28 +142,25 @@ But, it can be tedious to remember and specify packages needed on a per-target b
 Another alternative that does not actually involve loading packages is to specify the package associated with each function by using the `::` notation, for example, `dplyr::mutate()`.
 This means you can **avoid loading packages altogether**.
 
-Here is how to write the plan using this method:
+Here is how to write the plan using this method, along with the custom function `clean_penguin_data()` in `R/functions.R`.
+We no longer need `R/packages.R` at all; the only packages we load are `targets` and `tarchetypes`, which provide `tar_plan()` itself:
 
 ```{r}
-#| eval: FALSE
-#| label: load-pkg-show-3
-library(targets)
-library(tarchetypes)
+#| label = "load-pkg-show-3",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_pkgs_4.R")[2:10]
+```
 
-tar_plan(
-  adelie_data = penguins |>
-    tidyr::drop_na() |>
-    dplyr::filter(species == "Adelie")
-)
+```{r}
+#| label = "load-pkg-show-3-func",
+#| eval = FALSE,
+#| code = readLines("files/packages_examples/clean_penguin_data_colons.R")
 ```
 
 ```{r}
 #| echo: FALSE
 #| label: load-pkg-hide-3
-tar_dir({
-  write_example_plan(chunk = "load-pkg-show-3")
-  tar_make()
-})
+run_example("plan_pkgs_4.R", use_colons = TRUE)
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
@@ -162,6 +171,9 @@ The downside is that it is rather verbose because you need to type the package n
 **There is no "right" answer about how to load packages**---it is a matter of what works best for your particular situation.
 
 Often a reasonable approach is to load your most commonly used packages with `library()` (such as `tidyverse`) in `packages.R`, then use `::` notation for less frequently used functions whose origins you may otherwise forget.
+
+**This is the approach we use in this lesson.**
+The `tidyverse` is loaded with `library()` in `R/packages.R`, and we use `::` for packages we only need in one place, like `broom::glance()` in the branching episode.
 
 ## Maintaining package versions
 
@@ -191,27 +203,25 @@ However, it is possible to change this behavior on a per-package basis.
 This is best done only for a small number of packages, since adding too many would add too much computational overhead to `targets` when it has to calculate dependencies.
 For example, you may want to do this if you are using your own custom package that you update frequently.
 
-The way to do so is by using `tar_option_set()`, specifying the **same** package name in both `packages` and `imports`. Here is a modified version of the earlier code that demonstrates this for `dplyr` and `tidyr`.
+The way to do so is by using `tar_option_set()`, specifying the **same** package name in both `packages` and `imports`. Here is a modified version of the Method 2 example that demonstrates this for `readr` and `tidyr`.
 
 ```{r}
-#| eval: FALSE
-#| label: load-pkg-show-4
-library(targets)
-library(tarchetypes)
-
-tar_option_set(
-  packages = c("dplyr", "tidyr"),
-  imports = c("dplyr", "tidyr")
-)
-
-tar_plan(
-  adelie_data = penguins |>
-    drop_na() |>
-    filter(species == "Adelie")
-)
+#| label = "load-pkg-show-4",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_pkgs_5.R")[5:8]
 ```
 
-If we were to re-install either `dplyr` or `tidyr` and one of the functions used from those in the pipeline changes (for example, `filter()`), any target depending on that function will be rebuilt.
+```{r}
+#| echo: FALSE
+#| label: load-pkg-hide-4
+#| results: hide
+run_example("plan_pkgs_5.R")
+```
+
+If we were to re-install either `readr` or `tidyr` and one of the functions used from those in the pipeline changes (for example, `read_csv()`), any target depending on that function will be rebuilt.
+
+Note that this does not work for every package: for example, asking `targets` to track `dplyr` this way fails with an error about circular dependencies.
+That is why we only track `readr` and `tidyr` here.
 
 ## Resolving namespace conflicts
 
@@ -226,6 +236,8 @@ For example, the `filter()` function appears in both the `stats` package and the
 This is a **namespace conflict**: how do we know which `filter()` we are talking about?
 
 One solution we have covered already is using the `::` notation when calling functions. This is because writing `dplyr::filter()` specifies that you are using `filter()` from the `dplyr` namespace. The tradeoff to this approach is verbosity, meaning more typing and reading. 
+
+Another solution is to use the [`conflicted`](https://conflicted.r-lib.org/) package, which stops you with an error if you use a function whose name is ambiguous, so that you can choose which one you mean. We will not go into the details here.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
