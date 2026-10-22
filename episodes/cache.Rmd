@@ -97,16 +97,10 @@ You may have noticed a new folder has appeared in your project, called `_targets
 This is the **targets cache**.
 It contains all of the workflow output; that is how we can load the targets built by the workflow even after quitting then restarting R.
 
-**You should not edit the contents of the cache by hand** (with one exception).
+**You should not edit the contents of the cache by hand.**
 Doing so would make your analysis non-reproducible.
 
-The one exception to this rule is a special subfolder called `_targets/user`.
-This folder does not exist by default.
-You can create it if you want, and put whatever you want inside.
-
-Generally, `_targets/user` is a good place to store files that are not code, like data and output.
-
-Note that if you don't have anything in `_targets/user` that you need to keep around, it is possible to "reset" your workflow by simply deleting the entire `_targets` folder. Of course, this means you will need to run everything over again, so don't do this lightly!
+Note that it is possible to "reset" your workflow by simply deleting the entire `_targets` folder. Of course, this means you will need to run everything over again, so don't do this lightly!
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
