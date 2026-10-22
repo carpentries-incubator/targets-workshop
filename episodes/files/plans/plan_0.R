@@ -1,10 +1,9 @@
 options(tidyverse.quiet = TRUE)
 library(targets)
 library(tidyverse)
-library(palmerpenguins)
 
 list(
-  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_target(penguins_csv_file, "data/penguins_raw.csv"),
   tar_target(
     penguins_data_raw,
     read_csv(penguins_csv_file, show_col_types = FALSE)

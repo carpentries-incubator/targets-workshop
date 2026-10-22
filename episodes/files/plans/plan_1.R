@@ -1,7 +1,6 @@
 options(tidyverse.quiet = TRUE)
 library(targets)
 library(tidyverse)
-library(palmerpenguins)
 
 clean_penguin_data <- function(penguins_data_raw) {
   penguins_data_raw |>
@@ -14,7 +13,7 @@ clean_penguin_data <- function(penguins_data_raw) {
 }
 
 list(
-  tar_target(penguins_csv_file, path_to_file("penguins_raw.csv")),
+  tar_target(penguins_csv_file, "data/penguins_raw.csv"),
   tar_target(penguins_data_raw, read_csv(
     penguins_csv_file, show_col_types = FALSE)),
   tar_target(penguins_data, clean_penguin_data(penguins_data_raw))

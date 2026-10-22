@@ -87,20 +87,33 @@ OK, now that our project is set up, we are (almost) ready to start using `target
 
 First though, to get familiar with the functions and packages we'll use, let's run the code like you would in a "normal" R script without using `targets`.
 
-Recall that we are using the `palmerpenguins` R package to obtain the data.
-This package actually includes two variations of the dataset: one is an external CSV file with the raw data, and another is the cleaned data loaded into R.
-In real life you are probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
+Recall that we are using the penguins data that comes with base R (since R version 4.5.0).
+There are actually two variations of the dataset: `penguins` is the cleaned data, and `penguins_raw` is the raw data.
+(If you get an error that `penguins_raw` cannot be found, you need to update R to version 4.5.0 or later; see the Setup instructions.)
+In real life you probably have externally stored raw data, so **let's use the raw penguin data** as the starting point for our analysis too.
 
-The `path_to_file()` function in `palmerpenguins` provides the path to the raw data CSV file (it is inside the `palmerpenguins` R package source code that you downloaded to your computer when you installed the package).
+To mimic this, we will first save the raw data to a CSV file in our project.
+Create a new folder called `data` in your project folder (for example, with the "New Folder" button in the Files pane of RStudio).
+Then run this code in the R console:
 
 ```{r}
-#| label: normal-r-path
-library(palmerpenguins)
+#| label: normal-r-path-show
+#| eval: false
+# Save the raw data to a CSV file in the data folder
+write.csv(penguins_raw, "data/penguins_raw.csv", row.names = FALSE)
 
-# Get path to CSV file
-penguins_csv_file <- path_to_file("penguins_raw.csv")
+# The path to the CSV file
+penguins_csv_file <- "data/penguins_raw.csv"
+```
 
-penguins_csv_file
+```{r}
+#| label: normal-r-path-hide
+#| echo: false
+# Do this in a temporary folder so the lesson folder is not changed
+background_dir <- make_tempdir()
+dir.create(file.path(background_dir, "data"))
+penguins_csv_file <- file.path(background_dir, "data", "penguins_raw.csv")
+write.csv(penguins_raw, penguins_csv_file, row.names = FALSE)
 ```
 
 We will use the `tidyverse` set of packages for loading and manipulating the data. We don't have time to cover all the details about using `tidyverse` now, but if you want to learn more about it, please see the ["Manipulating, analyzing and exporting data with tidyverse" lesson](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html), or the Carpentry incubator lesson [R and the tidyverse for working with datasets](https://carpentries-incubator.github.io/r-tidyverse-4-datasets/).
@@ -220,7 +233,7 @@ Note that the name of the target is **unquoted**, that is, it is written without
 ## Modifying `_targets.R` to run the example analysis
 
 First, let's load all of the packages we need for our workflow.
-Add `library(tidyverse)` and `library(palmerpenguins)` to the top of `_targets.R` after `library(targets)`.
+Add `library(tidyverse)` to the top of `_targets.R` after `library(targets)`.
 
 Next, we can delete the `function()` statement since we won't be using that just yet (we will come back to custom functions soon!).
 
@@ -259,7 +272,7 @@ Can you use `tar_target()` to define the first step in the workflow (setting the
 ```{r}
 #| label: challenge-solution-1
 #| eval: false
-tar_target(name = penguins_csv_file, command = path_to_file("penguins_raw.csv"))
+tar_target(name = penguins_csv_file, command = "data/penguins_raw.csv")
 ```
 
 The first two arguments of `tar_target()` are the **name** of the target, followed by the **command** to build it.
@@ -269,7 +282,7 @@ These arguments are used so frequently we will typically omit the argument names
 ```{r}
 #| label: challenge-solution-2
 #| eval: false
-tar_target(penguins_csv_file, path_to_file("penguins_raw.csv"))
+tar_target(penguins_csv_file, "data/penguins_raw.csv")
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -283,7 +296,7 @@ Once you've done that, this is how `_targets.R` should look:
 ```{r}
 #| label = "targets-show-workflow",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_0.R")[2:22]
+#| code = readLines("files/plans/plan_0.R")[2:21]
 ```
 
 I have set `show_col_types = FALSE` in `read_csv()` because we know from the earlier code that the column types were set correctly by default (character for species and numeric for bill length and depth), so we don't need to see the warning it would otherwise issue.

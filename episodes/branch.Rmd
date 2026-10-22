@@ -59,7 +59,7 @@ In this workshop, we will only cover dynamic branching since it is generally eas
 
 ## Example without branching
 
-To see how this works, let's continue our analysis of the `palmerpenguins` dataset.
+To see how this works, let's continue our analysis of the penguins dataset.
 
 **Our hypothesis is that bill depth decreases with bill length.**
 We will test this hypothesis with a linear model.
