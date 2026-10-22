@@ -37,7 +37,7 @@ source("files/lesson_functions.R")
 
 Almost all workflows will start by importing data, which is typically stored as an external file.
 
-As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now next to `_targets.R`).
+As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
 
 We will read in the contents of this file and store it as `some_data` in the workflow by writing the following plan and running `tar_make()`:
 
