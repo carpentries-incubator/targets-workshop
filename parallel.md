@@ -42,19 +42,19 @@ If you are interested in high-performance computing, [see the `targets` manual](
 
 ### Set up workflow
 
-To enable parallel processing with `crew` you only need to load the `crew` package, then tell `targets` to use it using `tar_option_set`.
-Specifically, the following lines enable crew, and tells it to use 2 parallel workers.
+To enable parallel processing with `crew`, first add `library(crew)` to `R/packages.R`, as we did for the other packages.
+Then tell `targets` to use it with `tar_option_set()` in `_targets.R`.
+Specifically, the following lines enable `crew` and tell it to use 2 parallel workers.
 You can increase this number on more powerful machines:
 
 ```r
-library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
 ```
 
 Make these changes to the penguins analysis.
-It should now look like this:
+`_targets.R` should now look like this:
 
 
 ``` r
@@ -62,7 +62,6 @@ source("R/functions.R")
 source("R/packages.R")
 
 # Set up parallelization
-library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
@@ -147,7 +146,6 @@ source("R/functions.R")
 source("R/packages.R")
 
 # Set up parallelization
-library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
@@ -207,14 +205,19 @@ The following objects are masked from ‘package:datasets’:
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ combined_summary completed [4.1s, 371 B]
+✔ combined_predictions completed [4s, 24.77 kB]
 ✔ species_summary completed [12.1s, 1.11 kB]
 ✔ species_predictions completed [12s, 26.53 kB]
-✔ ended pipeline [19s, 8 completed, 4 skipped]
+✔ ended pipeline [19.2s, 8 completed, 4 skipped]
 ```
 
-Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
+Notice that each target (or each branch of a branched target) takes about 4 seconds to build.
+For the branched targets, the time shown is the total across their branches (3 branches × 4 seconds each = 12 seconds).
+Adding everything up, the workflow does about 32 seconds of work (2 × 4 seconds for the targets that are not branched, plus 12 + 12 seconds for the two branched targets).
+But the time that actually passed from start to finish, shown at the end of the output (`ended pipeline`), is only about half of that.
+If the targets had been built one at a time, it would have taken the full 32 seconds.
+That is proof that processes are running in parallel **and saving you time**.
 
 The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
 
