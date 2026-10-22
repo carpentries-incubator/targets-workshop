@@ -116,7 +116,7 @@ model_glance_slow <- function(penguins_data) {
     species_name <- "combined"
   }
   # Get model summary and add species name
-  glance(model) |>
+  broom::glance(model) |>
     mutate(species = species_name, .before = 1)
 }
 model_augment_slow <- function(penguins_data) {
@@ -133,7 +133,7 @@ model_augment_slow <- function(penguins_data) {
     species_name <- "combined"
   }
   # Get model summary and add species name
-  augment(model) |>
+  broom::augment(model) |>
     mutate(species = species_name, .before = 1)
 }
 ```
@@ -189,11 +189,11 @@ Finally, run the pipeline with `tar_make()` as normal.
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ combined_summary completed [4.1s, 371 B]
+✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ species_summary completed [12.1s, 1.11 kB]
-✔ species_predictions completed [12s, 26.53 kB]
-✔ ended pipeline [19.4s, 8 completed, 4 skipped]
+✔ species_predictions completed [12.3s, 26.53 kB]
+✔ ended pipeline [19.3s, 8 completed, 4 skipped]
 ```
 
 Notice that each target (or each branch of a branched target) takes about 4 seconds to build.

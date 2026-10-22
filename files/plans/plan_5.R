@@ -26,8 +26,8 @@ tar_plan(
     data = filter(penguins_data, species == "Gentoo")
   ),
   # Get model summaries
-  combined_summary = glance(combined_model),
-  adelie_summary = glance(adelie_model),
-  chinstrap_summary = glance(chinstrap_model),
-  gentoo_summary = glance(gentoo_model)
+  combined_summary = broom::glance(combined_model),
+  adelie_summary = broom::glance(adelie_model),
+  chinstrap_summary = broom::glance(chinstrap_model),
+  gentoo_summary = broom::glance(gentoo_model)
 )

@@ -75,17 +75,16 @@ tar_plan(
 
 ``` output
 + combined_model dispatched
-✔ combined_model completed [31ms, 11.20 kB]
-✔ ended pipeline [250ms, 1 completed, 3 skipped]
+✔ combined_model completed [56ms, 11.20 kB]
+✔ ended pipeline [267ms, 1 completed, 3 skipped]
 ```
 
-Let's have a look at the model. We will use the `glance()` function from the `broom` package. Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
+Let's have a look at the model. We will use the `glance()` function from the `broom` package, writing `broom::glance()` so that we do not need to load the whole package (the `::` notation specifies which package a function comes from). Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 
 ``` r
-library(broom)
 tar_load(combined_model)
-glance(combined_model)
+broom::glance(combined_model)
 ```
 
 ``` output
@@ -102,7 +101,7 @@ But wait a moment... is this really an appropriate model? Recall that there are 
 
 Let's try making one model *per* species (three models total) to see how that does (this is technically not the correct statistical approach, but our focus here is to learn `targets`, not statistics).
 
-Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching** (make sure to add `library(broom)` to `packages.R`):
+Now our workflow is getting more complicated. This is what a workflow for such an analysis might look like **without branching**:
 
 
 ``` r
@@ -133,30 +132,30 @@ tar_plan(
     data = filter(penguins_data, species == "Gentoo")
   ),
   # Get model summaries
-  combined_summary = glance(combined_model),
-  adelie_summary = glance(adelie_model),
-  chinstrap_summary = glance(chinstrap_model),
-  gentoo_summary = glance(gentoo_model)
+  combined_summary = broom::glance(combined_model),
+  adelie_summary = broom::glance(adelie_model),
+  chinstrap_summary = broom::glance(chinstrap_model),
+  gentoo_summary = broom::glance(gentoo_model)
 )
 ```
 
 
 ``` output
 + adelie_model dispatched
-✔ adelie_model completed [21ms, 6.48 kB]
+✔ adelie_model completed [20ms, 6.48 kB]
 + gentoo_model dispatched
-✔ gentoo_model completed [3ms, 5.88 kB]
+✔ gentoo_model completed [2ms, 5.88 kB]
 + chinstrap_model dispatched
 ✔ chinstrap_model completed [2ms, 4.54 kB]
 + combined_summary dispatched
-✔ combined_summary completed [41ms, 350 B]
+✔ combined_summary completed [114ms, 350 B]
 + adelie_summary dispatched
-✔ adelie_summary completed [3ms, 351 B]
+✔ adelie_summary completed [4ms, 351 B]
 + gentoo_summary dispatched
-✔ gentoo_summary completed [4ms, 351 B]
+✔ gentoo_summary completed [3ms, 351 B]
 + chinstrap_summary dispatched
 ✔ chinstrap_summary completed [3ms, 351 B]
-✔ ended pipeline [459ms, 7 completed, 4 skipped]
+✔ ended pipeline [449ms, 7 completed, 4 skipped]
 ```
 
 Let's look at the summary of one of the models:
@@ -232,12 +231,12 @@ First, let's look at the messages provided by `tar_make()`.
 
 ``` output
 + combined_summary dispatched
-✔ combined_summary completed [54ms, 350 B]
+✔ combined_summary completed [69ms, 350 B]
 + species_name dispatched
 ✔ species_name completed [4ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [32ms, 1.05 kB]
-✔ ended pipeline [423ms, 5 completed, 3 skipped]
+✔ species_summary completed [30ms, 1.05 kB]
+✔ ended pipeline [420ms, 5 completed, 3 skipped]
 ```
 
 The messages say that `species_summary` was "declared" with 3 branches, then completed.
@@ -323,7 +322,7 @@ model_glance <- function(penguins_data) {
     species_name <- "combined"
   }
   # Get model summary and add species name
-  glance(model) |>
+  broom::glance(model) |>
     mutate(species = species_name, .before = 1)
 }
 ```
@@ -335,10 +334,10 @@ Since `targets` tracks the contents of each custom function, it realizes that it
 
 ``` output
 + combined_summary dispatched
-✔ combined_summary completed [82ms, 371 B]
+✔ combined_summary completed [95ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [100ms, 1.11 kB]
-✔ ended pipeline [450ms, 4 completed, 4 skipped]
+✔ species_summary completed [93ms, 1.11 kB]
+✔ ended pipeline [432ms, 4 completed, 4 skipped]
 ```
 
 And this time, when we load `species_summary`, we can tell which species corresponds to which row (the `.before = 1` in `mutate()` ensures that it shows up before the other columns).
@@ -387,7 +386,7 @@ model_augment <- function(penguins_data) {
     species_name <- "combined"
   }
   # Get model summary and add species name
-  augment(model) |>
+  broom::augment(model) |>
     mutate(species = species_name, .before = 1)
 }
 ```
