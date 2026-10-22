@@ -59,7 +59,7 @@ Let's edit the penguins workflow to use the `tar_plan()` syntax:
 ```{r}
 #| label = "tar-plan-show-1",
 #| eval = FALSE,
-#| code = c(readLines("files/packages.R")[1:4], "\n", readLines("files/tar_functions/clean_penguin_data.R"), "\n", readLines("files/plans/plan_2b.R")[5:9])
+#| code = c(readLines("files/packages.R")[1:3], "\n", readLines("files/tar_functions/clean_penguin_data.R"), "\n", readLines("files/plans/plan_2b.R")[5:9])
 ```
 
 I think it is easier to read, do you?
@@ -92,7 +92,7 @@ We will also need to modify our `_targets.R` script to call these scripts with `
 Now `_targets.R` is much more streamlined: it is focused just on the workflow and immediately tells us what happens in each step.
 
 Finally, let's make some directories for storing data and output---files that are not code.
-Create two new directories in your project folder, called `data` and `results` (if you use version control, you will probably want to ignore these, as well as the `_targets` directory).
+We already created a `data` directory for the raw data file. Create another new directory in your project folder, called `results` (if you use version control, you will probably want to ignore `data` and `results`, as well as the `_targets` directory).
 
 Your project folder should now look something like this:
 

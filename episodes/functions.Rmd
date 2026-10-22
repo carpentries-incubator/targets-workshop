@@ -56,19 +56,19 @@ Furthermore, `targets` makes extensive use of custom functions, so a basic under
 ### Writing a function
 
 There is not much difference between writing your own function and writing other code in R, you are still coding with R!
-Let's imagine we want to convert the millimeter measurements in the penguins data to centimeters.
+Let's imagine we want to convert the millimeter measurements in the penguins data to centimeters (we use `head()` to only print the first few rows).
 
 ```{r}
 #| label: targets-functions-problem
 #| message: FALSE
-library(palmerpenguins)
 library(tidyverse)
 
 penguins |>
   mutate(
-    bill_length_cm = bill_length_mm / 10,
-    bill_depth_cm = bill_depth_mm / 10
-  )
+    bill_len_cm = bill_len / 10,
+    bill_dep_cm = bill_dep / 10
+  ) |>
+  head()
 
 ```
 
@@ -105,9 +105,10 @@ Let's try it out:
 #| label: targets-functions-cm-use
 penguins |>
   mutate(
-    bill_length_cm = mm2cm(bill_length_mm),
-    bill_depth_cm = mm2cm(bill_depth_mm)
-  )
+    bill_len_cm = mm2cm(bill_len),
+    bill_dep_cm = mm2cm(bill_dep)
+  ) |>
+  head()
 ```
 
 Congratulations, you've created and used your first custom function!
@@ -199,7 +200,7 @@ Modify the workflow to look like this:
 ```{r}
 #| label = "targets-show-fun-add",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_1.R")[2:21]
+#| code = readLines("files/plans/plan_1.R")[2:20]
 ```
 
 We should run the workflow again with `tar_make()` to make sure it is up-to-date:
