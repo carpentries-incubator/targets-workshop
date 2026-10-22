@@ -68,6 +68,15 @@ Here is our workflow so far:
 #| code = readLines("files/plans/plan_2b.R")[2:9]
 ```
 
+What we have done so far works: the `library()` calls in `R/packages.R` make every function we need available, so why would we load packages any other way?
+For a small workflow like ours, there is no need to.
+But as a workflow grows, loading packages with `library()` can start to cause some problems:
+
+- **It can get slow.** All of the packages are loaded every time `targets` reads your `_targets.R` file (for example, with `tar_make()` or `tar_visnetwork()`), whether or not the targets that are about to run actually need them. With a long list of packages, that adds up.
+- **It gets harder to tell where functions come from.** When many packages are loaded, it is not obvious which package a given function belongs to, and two packages may have functions with the same name (we will come back to this at the end of the episode).
+
+`targets` offers some other ways to make packages available that can help with these problems, and you will see them in other people's `targets` projects.
+
 There are three main ways to load packages in `targets` workflows, plus one way to avoid loading them.
 Below we will see what our workflow would look like with each one.
 These are examples to read: you do not need to change your own files (the method you already have is the first one).
@@ -82,7 +91,7 @@ This is the method you are almost certainly more familiar with, and is the metho
 #| code = readLines("files/packages.R")[1:3]
 ```
 
-Like any other R script, you can include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the <!-- FIXME ADD LINK -->recommended best practice for project organization), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
+Like any other R script, you can include `library()` calls near the top of the `_targets.R` script. Alternatively (and as the recommended best practice for [project organization](episodes/organization.Rmd)), you can put all of the `library()` calls in a separate script---this is typically called `packages.R` and stored in the `R/` directory of your project.
 
 The potential downside to this approach is that if you have a long list of packages to load, certain functions like `tar_visnetwork()` may take an unnecessarily long time to run because they have to load all the packages, even though they don't necessarily use them.
 
