@@ -121,7 +121,12 @@ tar_make()
 popd()
 ```
 
-Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
+Notice that each target (or each branch of a branched target) takes about 4 seconds to build.
+For the branched targets, the time shown is the total across their branches (3 branches × 4 seconds each = 12 seconds).
+Adding everything up, the workflow does about 32 seconds of work (2 × 4 seconds for the targets that are not branched, plus 12 + 12 seconds for the two branched targets).
+But the time that actually passed from start to finish, shown at the end of the output (`ended pipeline`), is only about half of that.
+If the targets had been built one at a time, it would have taken the full 32 seconds.
+That is proof that processes are running in parallel **and saving you time**.
 
 The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
 
