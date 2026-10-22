@@ -29,7 +29,6 @@ Episode summary: Show how to use parallel processing
 #| warning: FALSE
 library(targets)
 library(tarchetypes)
-library(broom)
 
 if (interactive()) {
   setwd("episodes")
