@@ -96,7 +96,7 @@ For this workshop, we will analyze an example dataset of measurements taken on a
 
 The data are included in base R (version 4.5.0 and later) as `penguins` and `penguins_raw`. You can get more information about the data by running `?penguins`.
 
-![The three species of penguins in the `penguins` dataset. Artwork by @allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
+![The three species of penguins in the `penguins` dataset. Artwork by @allison_horst.](fig/lter_penguins.png){alt="Illustration of three penguins side by side, each in front of a splash of color: a Chinstrap penguin seen from the side on the left, a Gentoo penguin with its flippers spread in the middle, and an Adélie penguin on the right."}
 
 The goal of the analysis is to determine the relationship between bill length and depth by using linear models.
 
