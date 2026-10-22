@@ -69,42 +69,20 @@ Our suggested approach is to conduct the vast majority of data analysis (in othe
 
 ## Report on bill size in penguins
 
-Continuing our penguin bill size analysis, let's write a report evaluating each model.
+Continuing our penguin bill size analysis, let's write a report evaluating each model, and including the island data we added earlier.
 
-To save time, the report is already available at <https://github.com/joelnitta/penguins-targets>.
+To save time, the report is already available at <https://github.com/carpentries-incubator/targets-workshop/blob/main/episodes/files/penguin_report.qmd>.
 
-Copy the [raw code from here](https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd) and save it as a new file `penguin_report.qmd` in your project folder (you may also be able to right click in your browser and select "Save As").
+Copy the [raw code from here](https://raw.githubusercontent.com/carpentries-incubator/targets-workshop/main/episodes/files/penguin_report.qmd) and save it as a new file `penguin_report.qmd` in your project folder (you may also be able to right click in your browser and select "Save As").
 
-Then, add one more target to the pipeline using the `tar_quarto()` function like this:
+Then, add one more target to the end of the pipeline using the `tar_quarto()` function like this (note the comma that is now needed after the previous target):
 
 
 ``` r
-source("R/functions.R")
-source("R/packages.R")
-
-tar_plan(
-  # Load raw data
-  tar_file(penguins_csv_file, path_to_file("penguins_raw.csv")),
-  penguins_data_raw = read_csv(penguins_csv_file, show_col_types = FALSE),
-  # Clean data
-  penguins_data = clean_penguin_data(penguins_data_raw),
-  # Get species names
-  species_name = penguins_data |> dplyr::pull(species) |> unique(),
-  # Get summary of combined model with all species together
-  combined_summary = model_glance(penguins_data),
-  # Get summary of one model per species
-  tar_target(
-    species_summary,
-    penguins_data |> dplyr::filter(species == species_name) |> model_glance(),
-    pattern = map(species_name)
-  ),
-  # Get predictions of combined model with all species together
-  combined_predictions = model_augment(penguins_data),
-  # Get predictions of one model per species
-  tar_target(
-    species_predictions,
-    penguins_data |> dplyr::filter(species == species_name) |> model_augment(),
-    pattern = map(species_name)
+  # Write out the summary of one model per species
+  tar_file(
+    species_summary_file,
+    write_csv_file(species_summary, "results/species_summary.csv")
   ),
   # Generate report
   tar_quarto(
@@ -147,14 +125,13 @@ targets::tar_load(
   c(combined_summary,
     species_summary,
     combined_predictions,
-    species_predictions
+    species_predictions,
+    island_data
   )
 )
 
 library(tidyverse)
 ```
-
-The goal of this analysis is to determine how bill length and depth are related in three species of penguins from Antarctica.
 
 ````
 
@@ -164,7 +141,7 @@ The R code to be executed is specified by the lines between `` ```{r}  `` and ``
 
 Take a closer look at the R code chunk. Notice the use of `targets::tar_load()`. Do you remember what that function does? It loads the targets built during the workflow.
 
-Now things should make a bit more sense: `targets` knows that the report depends on the targets built during the workflow like `combined_summary` and `species_summary` **because they are loaded in the report with `tar_load()`.**
+Now things should make a bit more sense: `targets` knows that the report depends on the targets built during the workflow like `combined_summary`, `species_summary` and `island_data` **because they are loaded in the report with `tar_load()`.**
 
 ## Generating dynamic content
 
@@ -179,6 +156,8 @@ Read through `penguin_report.qmd` and try to find instances where the targets bu
 :::::::::::::::::::::::::::::::::: {.solution}
 
 - In the code chunk labeled `results-stats`, statistics from the models like *R* squared are extracted, then inserted into the text with in-line code like `` `r combined_r2` ``.
+
+- In the "Methods" section, the number of islands is inserted into the text with in-line code (`` `r nrow(island_data)` ``), and the table of islands (code chunk labeled `tbl-islands`) is built from `island_data`, which was read from `data/islands.csv`. If you edit that file and run `tar_make()`, the report is updated.
 
 - There are two figures, one for the combined model and one for the separate models (code chunks labeled `fig-combined-plot` and `fig-separate-plot`, respectively). These are built using the points predicted from the model in `combined_predictions` and `species_predictions`.
 

@@ -26,6 +26,14 @@ tar_plan(
     penguins_data |> dplyr::filter(species == species_name) |> model_augment(),
     pattern = map(species_name)
   ),
+  # Read island data
+  tar_file(island_file, "data/islands.csv"),
+  island_data = read_csv(island_file, show_col_types = FALSE),
+  # Write out the summary of one model per species
+  tar_file(
+    species_summary_file,
+    write_csv_file(species_summary, "results/species_summary.csv")
+  ),
   # Generate report
   tar_quarto(
     penguin_report,

@@ -140,9 +140,9 @@ You may be used to writing code that looks like this:
 
 
 ``` r
-# Store a person's height in cm, then convert to inches
-height <- 160
-height <- height / 2.54
+# Store a penguin's body mass in grams, then convert to kilograms
+body_mass <- 3750
+body_mass <- body_mass / 1000
 ```
 
 You would get an error if you tried to run the equivalent targets pipeline:
@@ -150,8 +150,8 @@ You would get an error if you tried to run the equivalent targets pipeline:
 
 ``` r
 tar_plan(
-    height = 160,
-    height = height / 2.54
+    body_mass = 3750,
+    body_mass = body_mass / 1000
 )
 ```
 
@@ -159,7 +159,7 @@ tar_plan(
 ``` error
 Error:
 ! Error in tar_make():
-  duplicated target names: height
+  duplicated target names: body_mass
   See https://books.ropensci.org/targets/debugging.html
 ```
 
