@@ -420,7 +420,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use parallel processing</p>
 </div>
@@ -536,7 +536,7 @@ the original ones, then modify them):</p>
 <span>    <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="st">"combined"</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="co"># Get model summary and add species name</span></span>
-<span>  <span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>species <span class="op">=</span> <span class="va">species_name</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">model_augment_slow</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span> <span class="op">{</span></span>
@@ -553,7 +553,7 @@ the original ones, then modify them):</p>
 <span>    <span class="va">species_name</span> <span class="op">&lt;-</span> <span class="st">"combined"</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="co"># Get model summary and add species name</span></span>
-<span>  <span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">broom</span><span class="fu">::</span><span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>species <span class="op">=</span> <span class="va">species_name</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre>
 </div>
@@ -608,11 +608,11 @@ the original ones, then modify them):</p>
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ combined_summary completed [4.1s, 371 B]
+✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ species_summary completed [12.1s, 1.11 kB]
-✔ species_predictions completed [12s, 26.53 kB]
-✔ ended pipeline [19.4s, 8 completed, 4 skipped]</code></pre>
+✔ species_predictions completed [12.3s, 26.53 kB]
+✔ ended pipeline [19.3s, 8 completed, 4 skipped]</code></pre>
 </div>
 <p>Notice that each target (or each branch of a branched target) takes
 about 4 seconds to build. For the branched targets, the time shown is

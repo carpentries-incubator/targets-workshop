@@ -12,6 +12,6 @@ model_augment_slow <- function(penguins_data) {
     species_name <- "combined"
   }
   # Get model summary and add species name
-  augment(model) |>
+  broom::augment(model) |>
     mutate(species = species_name, .before = 1)
 }
