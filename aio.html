@@ -542,7 +542,7 @@ functions</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Because the whole workflow is automated, there are no user-dependent
 steps. Thus, a future user will be able to get the same results.</p>
@@ -1041,7 +1041,7 @@ workflow (setting the path to the CSV file with the penguins data)?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1436,7 +1436,7 @@ numerical vector and returns its mean divided by 10.</h3>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1565,7 +1565,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p>Last updated on 2026-10-21 |
+<p>Last updated on 2026-10-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1678,18 +1678,10 @@ cache</strong>. It contains all of the workflow output; that is how we
 can load the targets built by the workflow even after quitting then
 restarting R.</p>
 <p><strong>You should not edit the contents of the cache by
-hand</strong> (with one exception). Doing so would make your analysis
-non-reproducible.</p>
-<p>The one exception to this rule is a special subfolder called
-<code>_targets/user</code>. This folder does not exist by default. You
-can create it if you want, and put whatever you want inside.</p>
-<p>Generally, <code>_targets/user</code> is a good place to store files
-that are not code, like data and output.</p>
-<p>Note that if you don’t have anything in <code>_targets/user</code>
-that you need to keep around, it is possible to “reset” your workflow by
-simply deleting the entire <code>_targets</code> folder. Of course, this
-means you will need to run everything over again, so don’t do this
-lightly!</p>
+hand.</strong> Doing so would make your analysis non-reproducible.</p>
+<p>Note that it is possible to “reset” your workflow by simply deleting
+the entire <code>_targets</code> folder. Of course, this means you will
+need to run everything over again, so don’t do this lightly!</p>
 <div id="optional-challenge-tar_read" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -1719,7 +1711,7 @@ want to use one rather than the other?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p><code>tar_read()</code> returns the value of the target, so we
 immediately see it (the exact path will vary depending on your
@@ -1944,7 +1936,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>By running <code>tar_load(penguins_data)</code> followed by
 <code>penguins_data</code>.</p>
@@ -2049,7 +2041,7 @@ but not the data, so it won’t break anything.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>With the modification above, <code>penguins_data_raw</code> and
@@ -2290,7 +2282,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p>Last updated on 2026-10-21 |
+<p>Last updated on 2026-10-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2403,11 +2395,11 @@ start to create more advanced <code>targets</code> workflows.</p>
 <code>_targets.R</code> file. This is OK for a small workflow, but does
 not work very well when the workflow gets bigger. There are better ways
 to organize your code.</p>
-<p>First, let’s create a directory called <code>R</code> to store R code
-<em>other than</em> <code>_targets.R</code> (remember,
+<p>Create a new directory called <code>R</code> in your project folder
+to store R code <em>other than</em> <code>_targets.R</code> (remember,
 <code>_targets.R</code> must be placed in the overall project directory,
-not in a subdirectory). Create a new R file in <code>R/</code> called
-<code>functions.R</code>. This is where we will put our custom
+not in a subdirectory). Inside <code>R/</code>, create a new R file
+called <code>functions.R</code>. This is where we will put our custom
 functions. Let’s go ahead and put <code>clean_penguin_data()</code> in
 there now and save it.</p>
 <p>Similarly, let’s put the <code>library()</code> calls in their own
@@ -2433,11 +2425,19 @@ call these scripts with <code>source</code>:</p>
 just on the workflow and immediately tells us what happens in each
 step.</p>
 <p>Finally, let’s make some directories for storing data and
-output—files that are not code. Create a new directory inside the
-targets cache called <code>user</code>: <code>_targets/user</code>.
-Within <code>user</code>, create two more directories, <code>data</code>
-and <code>results</code>. (If you use version control, you will probably
-want to ignore the <code>_targets</code> directory).</p>
+output—files that are not code. Create two new directories in your
+project folder, called <code>data</code> and <code>results</code> (if
+you use version control, you will probably want to ignore these, as well
+as the <code>_targets</code> directory).</p>
+<p>Your project folder should now look something like this:</p>
+<pre><code>.
+├── _targets/        &lt;- the targets cache (created by targets; do not edit)
+├── _targets.R       &lt;- the workflow
+├── R/
+│   ├── functions.R  &lt;- custom functions
+│   └── packages.R   &lt;- package loading
+├── data/            &lt;- input data files
+└── results/         &lt;- output files</code></pre>
 </section><section><h2 class="section-heading" id="a-word-about-functions">A word about functions<a class="anchor" aria-label="anchor" href="#a-word-about-functions"></a>
 </h2>
 <hr class="half-width">
@@ -2456,7 +2456,7 @@ Carpentry lesson</a> is recommended for reviewing this topic.</p>
 <p>Another major difference is that <strong>each target must have a
 unique name</strong>. You may be used to writing code that looks like
 this:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2466,7 +2466,7 @@ this:</p>
 </div>
 <p>You would get an error if you tried to run the equivalent targets
 pipeline:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2505,7 +2505,8 @@ per target.</p>
 </li>
 <li>Specify packages in <code>R/packages.R</code>
 </li>
-<li>Put other miscellaneous files in <code>_targets/user</code>
+<li>Put data files in <code>data/</code> and output files in
+<code>results/</code>
 </li>
 <li>Writing functions is a key skill for <code>targets</code>
 pipelines</li>
@@ -2837,7 +2838,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p>Last updated on 2026-10-21 |
+<p>Last updated on 2026-10-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2877,8 +2878,9 @@ change</li>
 stored as an external file.</p>
 <p>As a simple example, let’s create an external data file in RStudio
 with the “New File” menu option. Enter a single line of text, “Hello
-World” and save it as “hello.txt” text file in
-<code>_targets/user/data/</code>.</p>
+World” and save it as “hello.txt” text file in the <code>data/</code>
+folder of your project (we created this folder in the <a href="organization.html">project organization episode</a>; if you do not
+have it yet, create it now in your project folder).</p>
 <p>We will read in the contents of this file and store it as
 <code>some_data</code> in the workflow by writing the following plan and
 running <code>tar_make()</code>:</p>
@@ -2909,15 +2911,15 @@ below. Then, rename them when you are ready to work on it again.</p>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  some_data <span class="op">=</span> <span class="fu">readLines</span><span class="op">(</span><span class="st">"_targets/user/data/hello.txt"</span><span class="op">)</span></span>
+<span>  some_data <span class="op">=</span> <span class="fu">readLines</span><span class="op">(</span><span class="st">"data/hello.txt"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ some_data dispatched
-✔ some_data completed [1ms, 64 B]
-✔ ended pipeline [296ms, 1 completed, 0 skipped]</code></pre>
+✔ some_data completed [0ms, 64 B]
+✔ ended pipeline [301ms, 1 completed, 0 skipped]</code></pre>
 </div>
 <p>If we load <code>some_data</code> with
 <code>tar_load(some_data)</code> and inspect it, it will contain the
@@ -2933,13 +2935,13 @@ pipeline again.</p>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  some_data <span class="op">=</span> <span class="fu">readLines</span><span class="op">(</span><span class="st">"_targets/user/data/hello.txt"</span><span class="op">)</span></span>
+<span>  some_data <span class="op">=</span> <span class="fu">readLines</span><span class="op">(</span><span class="st">"data/hello.txt"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped pipeline [241ms, 1 skipped]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipped pipeline [277ms, 1 skipped]</code></pre>
 </div>
 <p>The target <code>some_data</code> was skipped, even though the
 contents of the file changed.</p>
@@ -2958,7 +2960,7 @@ this will be detected by <code>targets</code>.</p>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tarchetypes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">data_file</span>, <span class="st">"_targets/user/data/hello.txt"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">data_file</span>, <span class="st">"data/hello.txt"</span><span class="op">)</span>,</span>
 <span>  some_data <span class="op">=</span> <span class="fu">readLines</span><span class="op">(</span><span class="va">data_file</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
@@ -2968,8 +2970,8 @@ this will be detected by <code>targets</code>.</p>
 <pre class="output" tabindex="0"><code>+ data_file dispatched
 ✔ data_file completed [1ms, 26 B]
 + some_data dispatched
-✔ some_data completed [1ms, 78 B]
-✔ ended pipeline [351ms, 2 completed, 0 skipped]</code></pre>
+✔ some_data completed [0ms, 78 B]
+✔ ended pipeline [336ms, 2 completed, 0 skipped]</code></pre>
 </div>
 <p>This time we see that <code>targets</code> does successfully re-build
 <code>some_data</code> as expected.</p>
@@ -3009,7 +3011,7 @@ tracking its contents?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3037,10 +3039,10 @@ The following objects are masked from ‘package:datasets’:
 + penguins_csv_file dispatched
 ✔ penguins_csv_file completed [1ms, 53.10 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [94ms, 10.40 kB]
+✔ penguins_data_raw completed [64ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [409ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [15ms, 1.49 kB]
+✔ ended pipeline [330ms, 3 completed, 0 skipped]</code></pre>
 </div>
 </div>
 </div>
@@ -3109,12 +3111,12 @@ to upper case then write it out again:</p>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">hello_file</span>, <span class="st">"_targets/user/data/hello.txt"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">hello_file</span>, <span class="st">"data/hello.txt"</span><span class="op">)</span>,</span>
 <span>  hello <span class="op">=</span> <span class="fu">readLines</span><span class="op">(</span><span class="va">hello_file</span><span class="op">)</span>,</span>
 <span>  hello_caps <span class="op">=</span> <span class="fu">toupper</span><span class="op">(</span><span class="va">hello</span><span class="op">)</span>,</span>
 <span>  <span class="fu">tar_file</span><span class="op">(</span></span>
 <span>    <span class="va">hello_caps_out</span>,</span>
-<span>    <span class="fu">write_lines_file</span><span class="op">(</span><span class="va">hello_caps</span>, <span class="st">"_targets/user/results/hello_caps.txt"</span><span class="op">)</span></span>
+<span>    <span class="fu">write_lines_file</span><span class="op">(</span><span class="va">hello_caps</span>, <span class="st">"results/hello_caps.txt"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
@@ -3122,14 +3124,14 @@ to upper case then write it out again:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ hello_file dispatched
-✔ hello_file completed [1ms, 26 B]
+✔ hello_file completed [0ms, 26 B]
 + hello dispatched
-✔ hello completed [1ms, 78 B]
+✔ hello completed [0ms, 78 B]
 + hello_caps dispatched
 ✔ hello_caps completed [0ms, 78 B]
 + hello_caps_out dispatched
 ✔ hello_caps_out completed [0ms, 26 B]
-✔ ended pipeline [397ms, 4 completed, 0 skipped]</code></pre>
+✔ ended pipeline [369ms, 4 completed, 0 skipped]</code></pre>
 </div>
 <p>Take a look at <code>hello_caps.txt</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
@@ -3153,7 +3155,7 @@ modified?</h3>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>hello_caps_out</code> has
 changed (is “invalidated”), and re-runs the code to make it, thus
@@ -3696,7 +3698,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -3800,7 +3802,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -4352,7 +4354,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
@@ -4453,9 +4455,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
-  "dateCreated": "2026-10-21",
-  "dateModified": "2026-10-21",
-  "datePublished": "2026-10-21"
+  "dateCreated": "2026-10-22",
+  "dateModified": "2026-10-22",
+  "datePublished": "2026-10-22"
 }
 
   </script><script>
