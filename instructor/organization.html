@@ -284,7 +284,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="files.html">8. Working with External Files</a>
+        <a href="branch.html">8. Branching</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -293,7 +293,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="branch.html">9. Branching</a>
+        <a href="parallel.html">9. Parallel Processing</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -302,7 +302,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="parallel.html">10. Parallel Processing</a>
+        <a href="files.html">10. Working with External Files</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -578,9 +578,9 @@ this:</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Store a person's height in cm, then convert to inches</span></span>
-<span><span class="va">height</span> <span class="op">&lt;-</span> <span class="fl">160</span></span>
-<span><span class="va">height</span> <span class="op">&lt;-</span> <span class="va">height</span> <span class="op">/</span> <span class="fl">2.54</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Store a penguin's body mass in grams, then convert to kilograms</span></span>
+<span><span class="va">body_mass</span> <span class="op">&lt;-</span> <span class="fl">3750</span></span>
+<span><span class="va">body_mass</span> <span class="op">&lt;-</span> <span class="va">body_mass</span> <span class="op">/</span> <span class="fl">1000</span></span></code></pre>
 </div>
 <p>You would get an error if you tried to run the equivalent targets
 pipeline:</p>
@@ -589,8 +589,8 @@ pipeline:</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>    height <span class="op">=</span> <span class="fl">160</span>,</span>
-<span>    height <span class="op">=</span> <span class="va">height</span> <span class="op">/</span> <span class="fl">2.54</span></span>
+<span>    body_mass <span class="op">=</span> <span class="fl">3750</span>,</span>
+<span>    body_mass <span class="op">=</span> <span class="va">body_mass</span> <span class="op">/</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -598,7 +598,7 @@ pipeline:</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error:
 ! Error in tar_make():
-  duplicated target names: height
+  duplicated target names: body_mass
   See https://books.ropensci.org/targets/debugging.html</code></pre>
 </div>
 <p><strong>A major part of working with <code>targets</code> pipelines

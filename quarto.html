@@ -271,7 +271,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="files.html">8. Working with External Files</a>
+        <a href="branch.html">8. Branching</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -280,7 +280,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="branch.html">9. Branching</a>
+        <a href="parallel.html">9. Parallel Processing</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -289,7 +289,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="parallel.html">10. Parallel Processing</a>
+        <a href="files.html">10. Working with External Files</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -376,14 +376,14 @@
         <!-- START: inst/pkgdown/templates/content-instructor.html -->
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter Top"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="parallel.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link" href="files.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="index.html" rel="next">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="parallel.html" rel="prev">
+        <a class="chapter-link" href="files.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: Parallel Processing...
+          Previous: Working with External Files...
         </a>
         <a class="chapter-link float-end" href="index.html" rel="next">
           Home
@@ -392,7 +392,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Reproducible Reports with Quarto</h1>
-        <p>Last updated on 2026-10-21 |
+        <p>Last updated on 2026-10-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -488,52 +488,31 @@ analysis (in other words, the “heavy lifting”) in the
 <strong>summarize</strong> and <strong>plot</strong> the results.</p>
 </section><section><h2 class="section-heading" id="report-on-bill-size-in-penguins">Report on bill size in penguins<a class="anchor" aria-label="anchor" href="#report-on-bill-size-in-penguins"></a></h2>
 <hr class="half-width"><p>Continuing our penguin bill size analysis, let’s write a report
-evaluating each model.</p>
-<p>To save time, the report is already available at <a href="https://github.com/joelnitta/penguins-targets" class="external-link uri">https://github.com/joelnitta/penguins-targets</a>.</p>
-<p>Copy the <a href="https://raw.githubusercontent.com/joelnitta/penguins-targets/main/penguin_report.qmd" class="external-link">raw
+evaluating each model, and including the island data we added
+earlier.</p>
+<p>To save time, the report is already available at <a href="https://github.com/carpentries-incubator/targets-workshop/blob/main/episodes/files/penguin_report.qmd" class="external-link uri">https://github.com/carpentries-incubator/targets-workshop/blob/main/episodes/files/penguin_report.qmd</a>.</p>
+<p>Copy the <a href="https://raw.githubusercontent.com/carpentries-incubator/targets-workshop/main/episodes/files/penguin_report.qmd" class="external-link">raw
 code from here</a> and save it as a new file
 <code>penguin_report.qmd</code> in your project folder (you may also be
 able to right click in your browser and select “Save As”).</p>
-<p>Then, add one more target to the pipeline using the
-<code>tar_quarto()</code> function like this:</p>
+<p>Then, add one more target to the end of the pipeline using the
+<code>tar_quarto()</code> function like this (note the comma that is now
+needed after the previous target):</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">source</span><span class="op">(</span><span class="st">"R/functions.R"</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">tar_plan</span><span class="op">(</span></span>
-<span>  <span class="co"># Load raw data</span></span>
-<span>  <span class="fu">tar_file</span><span class="op">(</span><span class="va">penguins_csv_file</span>, <span class="fu">path_to_file</span><span class="op">(</span><span class="st">"penguins_raw.csv"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  penguins_data_raw <span class="op">=</span> <span class="fu">read_csv</span><span class="op">(</span><span class="va">penguins_csv_file</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Clean data</span></span>
-<span>  penguins_data <span class="op">=</span> <span class="fu">clean_penguin_data</span><span class="op">(</span><span class="va">penguins_data_raw</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Get species names</span></span>
-<span>  species_name <span class="op">=</span> <span class="va">penguins_data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">pull</span><span class="op">(</span><span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">unique</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Get summary of combined model with all species together</span></span>
-<span>  combined_summary <span class="op">=</span> <span class="fu">model_glance</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Get summary of one model per species</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">species_summary</span>,</span>
-<span>    <span class="va">penguins_data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">filter</span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="va">species_name</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">model_glance</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">species_name</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Get predictions of combined model with all species together</span></span>
-<span>  combined_predictions <span class="op">=</span> <span class="fu">model_augment</span><span class="op">(</span><span class="va">penguins_data</span><span class="op">)</span>,</span>
-<span>  <span class="co"># Get predictions of one model per species</span></span>
-<span>  <span class="fu">tar_target</span><span class="op">(</span></span>
-<span>    <span class="va">species_predictions</span>,</span>
-<span>    <span class="va">penguins_data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">filter</span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="va">species_name</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">model_augment</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">species_name</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Generate report</span></span>
-<span>  <span class="fu">tar_quarto</span><span class="op">(</span></span>
-<span>    <span class="va">penguin_report</span>,</span>
-<span>    path <span class="op">=</span> <span class="st">"penguin_report.qmd"</span>,</span>
-<span>    quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<pre class="sourceCode r" tabindex="0"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a>  <span class="co"># Write out the summary of one model per species</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1" aria-label="code-block-1-2"></a>  <span class="fu">tar_file</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1" aria-label="code-block-1-3"></a>    species_summary_file,</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1" aria-label="code-block-1-4"></a>    <span class="fu">write_csv_file</span>(species_summary, <span class="st">"results/species_summary.csv"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1" aria-label="code-block-1-5"></a>  ),</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1" aria-label="code-block-1-6"></a>  <span class="co"># Generate report</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1" aria-label="code-block-1-7"></a>  <span class="fu">tar_quarto</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1" aria-label="code-block-1-8"></a>    penguin_report,</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1" aria-label="code-block-1-9"></a>    <span class="at">path =</span> <span class="st">"penguin_report.qmd"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1" aria-label="code-block-1-10"></a>    <span class="at">quiet =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1" aria-label="code-block-1-11"></a>  )</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1" aria-label="code-block-1-12"></a><span class="er">)</span></span></code></pre>
 </div>
 <p>The function to generate the report is <code>tar_quarto()</code>,
 from the <code>tarchetypes</code> package.</p>
@@ -571,14 +550,13 @@ file:</p>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1" aria-label="code-block-2-14"></a><span class="in">  c(combined_summary,</span></span>
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1" aria-label="code-block-2-15"></a><span class="in">    species_summary,</span></span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1" aria-label="code-block-2-16"></a><span class="in">    combined_predictions,</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1" aria-label="code-block-2-17"></a><span class="in">    species_predictions</span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1" aria-label="code-block-2-18"></a><span class="in">  )</span></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1" aria-label="code-block-2-19"></a><span class="in">)</span></span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1" aria-label="code-block-2-20"></a></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1" aria-label="code-block-2-21"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1" aria-label="code-block-2-22"></a><span class="in">```</span></span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1" aria-label="code-block-2-23"></a></span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1" aria-label="code-block-2-24"></a>The goal of this analysis is to determine how bill length and depth are related in three species of penguins from Antarctica.</span></code></pre>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1" aria-label="code-block-2-17"></a><span class="in">    species_predictions,</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1" aria-label="code-block-2-18"></a><span class="in">    island_data</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1" aria-label="code-block-2-19"></a><span class="in">  )</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1" aria-label="code-block-2-20"></a><span class="in">)</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1" aria-label="code-block-2-21"></a></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1" aria-label="code-block-2-22"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1" aria-label="code-block-2-23"></a><span class="in">```</span></span></code></pre>
 </div>
 <p>The lines in between <code>---</code> and <code>---</code> at the
 very beginning are called the “YAML header”, and contain directions
@@ -591,9 +569,9 @@ since it is a portion of code interspersed within prose text.</p>
 does? It loads the targets built during the workflow.</p>
 <p>Now things should make a bit more sense: <code>targets</code> knows
 that the report depends on the targets built during the workflow like
-<code>combined_summary</code> and <code>species_summary</code>
-<strong>because they are loaded in the report with
-<code>tar_load()</code>.</strong></p>
+<code>combined_summary</code>, <code>species_summary</code> and
+<code>island_data</code> <strong>because they are loaded in the report
+with <code>tar_load()</code>.</strong></p>
 </section><section><h2 class="section-heading" id="generating-dynamic-content">Generating dynamic content<a class="anchor" aria-label="anchor" href="#generating-dynamic-content"></a></h2>
 <hr class="half-width"><p>The call to <code>tar_load()</code> at the start of
 <code>penguin_report.qmd</code> is really the key to generating an
@@ -626,6 +604,12 @@ text and plots.</p>
 from the models like <em>R</em> squared are extracted, then inserted
 into the text with in-line code like
 <code>`r combined_r2`</code>.</p></li>
+<li><p>In the “Methods” section, the number of islands is inserted into
+the text with in-line code (<code>`r nrow(island_data)`</code>), and the
+table of islands (code chunk labeled <code>tbl-islands</code>) is built
+from <code>island_data</code>, which was read from
+<code>data/islands.csv</code>. If you edit that file and run
+<code>tar_make()</code>, the report is updated.</p></li>
 <li><p>There are two figures, one for the combined model and one for the
 separate models (code chunks labeled <code>fig-combined-plot</code> and
 <code>fig-separate-plot</code>, respectively). These are built using the
@@ -670,14 +654,14 @@ any links that you are not going to use.
  -->
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter Bottom"><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="parallel.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link" href="files.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="index.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="parallel.html" rel="prev">
+        <a class="chapter-link" href="files.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: Parallel Processing...
+          Previous: Working with External Files...
         </a>
         <a class="chapter-link float-end" href="index.html" rel="next">
           Home
@@ -728,7 +712,7 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/quarto.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/quarto.html",
   "dateCreated": "2026-10-22",
-  "dateModified": "2026-10-21",
+  "dateModified": "2026-10-22",
   "datePublished": "2026-10-22"
 }
 

@@ -329,7 +329,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="files.html">8. Working with External Files</a>
+        <a href="branch.html">8. Branching</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -341,7 +341,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="branch.html">9. Branching</a>
+        <a href="parallel.html">9. Parallel Processing</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -353,7 +353,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="parallel.html">10. Parallel Processing</a>
+        <a href="files.html">10. Working with External Files</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -531,18 +531,6 @@ packages</li>
 <li>Use the <code>::</code> notation (for example,
 <code>dplyr::filter()</code>) to be explicit about which package a
 function comes from and avoid namespace conflicts</li>
-</ul></section><section id="files"><h2 class="section-heading"><a href="files.html">Working with External Files</a></h2>
-<hr class="half-width">
-<ul>
-<li>
-<code>tarchetypes::tar_file()</code> tracks the contents of a
-file</li>
-<li>Use <code>tarchetypes::tar_file()</code> in combination with data
-loading functions like <code>read_csv()</code> to keep the pipeline in
-sync with your input data</li>
-<li>Use <code>tarchetypes::tar_file()</code> in combination with a
-function that writes to a file and returns its path to write out
-data</li>
 </ul></section><section id="branch"><h2 class="section-heading"><a href="branch.html">Branching</a></h2>
 <hr class="half-width">
 <ul>
@@ -559,6 +547,18 @@ command</li>
 branches includes necessary metadata</li>
 <li>Parallel computing works at the level of the workflow, not the
 function</li>
+</ul></section><section id="files"><h2 class="section-heading"><a href="files.html">Working with External Files</a></h2>
+<hr class="half-width">
+<ul>
+<li>
+<code>tarchetypes::tar_file()</code> tracks the contents of a
+file</li>
+<li>Use <code>tarchetypes::tar_file()</code> in combination with data
+loading functions like <code>read_csv()</code> to keep the pipeline in
+sync with your input data</li>
+<li>Use <code>tarchetypes::tar_file()</code> in combination with a
+function that writes to a file and returns its path to write out
+data</li>
 </ul></section><section id="quarto"><h2 class="section-heading"><a href="quarto.html">Reproducible Reports with Quarto</a></h2>
 <hr class="half-width">
 <ul>
