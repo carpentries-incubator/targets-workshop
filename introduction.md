@@ -100,7 +100,7 @@ The data are available from the `palmerpenguins` R package. You can get more inf
 
 The goal of the analysis is to determine the relationship between bill length and depth by using linear models.
 
-We will gradually build up the analysis through this lesson, but you can see the final version at <https://github.com/joelnitta/penguins-targets>.
+We will gradually build up the analysis through this lesson.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
