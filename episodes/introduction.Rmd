@@ -100,7 +100,7 @@ The data are available from the `palmerpenguins` R package. You can get more inf
 
 The goal of the analysis is to determine the relationship between bill length and depth by using linear models.
 
-We will gradually build up the analysis through this lesson, but you can see the final version of the workflow (`_targets.R`) in [`plan_11.R`](https://github.com/carpentries-incubator/targets-workshop/blob/main/episodes/files/plans/plan_11.R), the custom functions it uses in [`tar_functions`](https://github.com/carpentries-incubator/targets-workshop/tree/main/episodes/files/tar_functions), and the report in [`penguin_report.qmd`](https://github.com/carpentries-incubator/targets-workshop/blob/main/episodes/files/penguin_report.qmd).
+We will gradually build up the analysis through this lesson.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
