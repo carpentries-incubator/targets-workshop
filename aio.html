@@ -542,7 +542,7 @@ functions</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Because the whole workflow is automated, there are no user-dependent
 steps. Thus, a future user will be able to get the same results.</p>
@@ -611,7 +611,7 @@ on islands in the Palmer Archipelago, Antarctica.</p>
 <p>The data are included in base R (version 4.5.0 and later) as
 <code>penguins</code> and <code>penguins_raw</code>. You can get more
 information about the data by running <code>?penguins</code>.</p>
-<figure><img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png" alt="The three species of penguins in the penguins dataset. Artwork by @allison_horst." class="figure mx-auto d-block"><div class="figcaption">The three species of penguins in the
+<figure><img src="fig/lter_penguins.png" alt="Illustration of three penguins side by side, each in front of a splash of color: a Chinstrap penguin seen from the side on the left, a Gentoo penguin with its flippers spread in the middle, and an Adélie penguin on the right." class="figure mx-auto d-block"><div class="figcaption">The three species of penguins in the
 <code>penguins</code> dataset. Artwork by <span class="citation">@allison_horst</span>.</div>
 </figure><p>The goal of the analysis is to determine the relationship between
 bill length and depth by using linear models.</p>
@@ -826,7 +826,7 @@ are hard to type out and can easily lead to mistakes in the code), and
 far more columns than we need. For the purposes of this analysis, we
 only need species name, bill length, and bill depth. In the raw data,
 the rather technical term “culmen” is used to refer to the bill.</p>
-<figure><img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png" alt="Illustration of bill (culmen) length and depth. Artwork by @allison_horst." class="figure mx-auto d-block"><div class="figcaption">Illustration of bill (culmen) length and depth.
+<figure><img src="fig/culmen_depth.png" alt="Illustration of a penguin's head from the side. Arrows show that bill length is measured along the top of the bill from its base to its tip, and bill depth is the thickness of the bill. A note says that in the raw data these are recorded as culmen length and culmen depth, and that the culmen is the dorsal ridge atop the bill." class="figure mx-auto d-block"><div class="figcaption">Illustration of bill (culmen) length and depth.
 Artwork by <span class="citation">@allison_horst</span>.</div>
 </figure><p>Let’s clean up the data to make it easier to use for downstream
 analyses. We will also remove any rows with missing data, because this
@@ -1018,7 +1018,7 @@ workflow (setting the path to the CSV file with the penguins data)?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1093,10 +1093,10 @@ something like this:</p>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
 ✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [123ms, 10.40 kB]
+✔ penguins_data_raw completed [105ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [15ms, 1.61 kB]
-✔ ended pipeline [404ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [19ms, 1.61 kB]
+✔ ended pipeline [388ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
@@ -1403,7 +1403,7 @@ numerical vector and returns its mean divided by 10.</h3>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1840,7 +1840,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>By running <code>tar_load(penguins_data)</code> followed by
 <code>penguins_data</code>.</p>
@@ -1945,7 +1945,7 @@ but not the data, so it won’t break anything.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>With the modification above, <code>penguins_data_raw</code> and
@@ -3249,7 +3249,7 @@ will need to define a custom function just like we did for
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Define the new function as <code>model_augment()</code>. It is the
 same as <code>model_glance()</code>, but use <code>augment()</code>
@@ -3353,7 +3353,7 @@ pattern?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Some other ways of applying branching patterns include:</p>
 <ul>
@@ -3834,7 +3834,7 @@ tracking its contents?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Use <code>tar_file()</code> for the <code>penguins_csv_file</code>
 target, at the start of the plan:</p>
@@ -3963,7 +3963,7 @@ run <code>tar_make()</code> again? Try it and see.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p><code>targets</code> detects that <code>species_summary_file</code>
 has changed (is “invalidated”), and re-runs the code to make it, thus
@@ -4218,7 +4218,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics

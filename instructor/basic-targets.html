@@ -437,7 +437,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Episode summary: First chance to get hands dirty by writing a very
 simple workflow</p>
@@ -584,7 +584,7 @@ are hard to type out and can easily lead to mistakes in the code), and
 far more columns than we need. For the purposes of this analysis, we
 only need species name, bill length, and bill depth. In the raw data,
 the rather technical term “culmen” is used to refer to the bill.</p>
-<figure><img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png" alt="Illustration of bill (culmen) length and depth. Artwork by @allison_horst." class="figure mx-auto d-block"><div class="figcaption">Illustration of bill (culmen) length and depth.
+<figure><img src="../fig/culmen_depth.png" alt="Illustration of a penguin's head from the side. Arrows show that bill length is measured along the top of the bill from its base to its tip, and bill depth is the thickness of the bill. A note says that in the raw data these are recorded as culmen length and culmen depth, and that the culmen is the dorsal ridge atop the bill." class="figure mx-auto d-block"><div class="figcaption">Illustration of bill (culmen) length and depth.
 Artwork by <span class="citation">@allison_horst</span>.</div>
 </figure><p>Let’s clean up the data to make it easier to use for downstream
 analyses. We will also remove any rows with missing data, because this
@@ -766,7 +766,7 @@ workflow (setting the path to the CSV file with the penguins data)?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -839,10 +839,10 @@ something like this:</p>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
 ✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [123ms, 10.40 kB]
+✔ penguins_data_raw completed [105ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [15ms, 1.61 kB]
-✔ ended pipeline [404ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [19ms, 1.61 kB]
+✔ ended pipeline [388ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
