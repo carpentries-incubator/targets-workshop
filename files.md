@@ -29,7 +29,7 @@ Episode summary: Show how to read and write external files
 
 Almost all workflows will start by importing data, which is typically stored as an external file.
 
-As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in `_targets/user/data/`.
+As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
 
 We will read in the contents of this file and store it as `some_data` in the workflow by writing the following plan and running `tar_make()`:
 
@@ -49,15 +49,15 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  some_data = readLines("_targets/user/data/hello.txt")
+  some_data = readLines("data/hello.txt")
 )
 ```
 
 
 ``` output
 + some_data dispatched
-✔ some_data completed [1ms, 64 B]
-✔ ended pipeline [296ms, 1 completed, 0 skipped]
+✔ some_data completed [0ms, 64 B]
+✔ ended pipeline [301ms, 1 completed, 0 skipped]
 ```
 
 If we load `some_data` with `tar_load(some_data)` and inspect it, it will contain the string `"Hello World"` as expected.
@@ -70,13 +70,13 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  some_data = readLines("_targets/user/data/hello.txt")
+  some_data = readLines("data/hello.txt")
 )
 ```
 
 
 ``` output
-✔ skipped pipeline [241ms, 1 skipped]
+✔ skipped pipeline [277ms, 1 skipped]
 ```
 
 The target `some_data` was skipped, even though the contents of the file changed.
@@ -89,7 +89,7 @@ library(targets)
 library(tarchetypes)
 
 tar_plan(
-  tar_file(data_file, "_targets/user/data/hello.txt"),
+  tar_file(data_file, "data/hello.txt"),
   some_data = readLines(data_file)
 )
 ```
@@ -99,8 +99,8 @@ tar_plan(
 + data_file dispatched
 ✔ data_file completed [1ms, 26 B]
 + some_data dispatched
-✔ some_data completed [1ms, 78 B]
-✔ ended pipeline [351ms, 2 completed, 0 skipped]
+✔ some_data completed [0ms, 78 B]
+✔ ended pipeline [336ms, 2 completed, 0 skipped]
 ```
 
 This time we see that `targets` does successfully re-build `some_data` as expected.
@@ -147,10 +147,10 @@ The following objects are masked from ‘package:datasets’:
 + penguins_csv_file dispatched
 ✔ penguins_csv_file completed [1ms, 53.10 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [94ms, 10.40 kB]
+✔ penguins_data_raw completed [64ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [409ms, 3 completed, 0 skipped]
+✔ penguins_data completed [15ms, 1.49 kB]
+✔ ended pipeline [330ms, 3 completed, 0 skipped]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -207,12 +207,12 @@ library(tarchetypes)
 source("R/functions.R")
 
 tar_plan(
-  tar_file(hello_file, "_targets/user/data/hello.txt"),
+  tar_file(hello_file, "data/hello.txt"),
   hello = readLines(hello_file),
   hello_caps = toupper(hello),
   tar_file(
     hello_caps_out,
-    write_lines_file(hello_caps, "_targets/user/results/hello_caps.txt")
+    write_lines_file(hello_caps, "results/hello_caps.txt")
   )
 )
 ```
@@ -220,14 +220,14 @@ tar_plan(
 
 ``` output
 + hello_file dispatched
-✔ hello_file completed [1ms, 26 B]
+✔ hello_file completed [0ms, 26 B]
 + hello dispatched
-✔ hello completed [1ms, 78 B]
+✔ hello completed [0ms, 78 B]
 + hello_caps dispatched
 ✔ hello_caps completed [0ms, 78 B]
 + hello_caps_out dispatched
 ✔ hello_caps_out completed [0ms, 26 B]
-✔ ended pipeline [397ms, 4 completed, 0 skipped]
+✔ ended pipeline [369ms, 4 completed, 0 skipped]
 ```
 
 Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
