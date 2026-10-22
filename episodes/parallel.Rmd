@@ -59,24 +59,24 @@ If you are interested in high-performance computing, [see the `targets` manual](
 
 ### Set up workflow
 
-To enable parallel processing with `crew` you only need to load the `crew` package, then tell `targets` to use it using `tar_option_set`.
-Specifically, the following lines enable crew, and tells it to use 2 parallel workers.
+To enable parallel processing with `crew`, first add `library(crew)` to `R/packages.R`, as we did for the other packages.
+Then tell `targets` to use it with `tar_option_set()` in `_targets.R`.
+Specifically, the following lines enable `crew` and tell it to use 2 parallel workers.
 You can increase this number on more powerful machines:
 
 ```r
-library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
 ```
 
 Make these changes to the penguins analysis.
-It should now look like this:
+`_targets.R` should now look like this:
 
 ```{r}
 #| label = "example-model-show-setup",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_9.R")[3:36]
+#| code = readLines("files/plans/plan_9.R")[3:35]
 ```
 
 There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
@@ -99,7 +99,7 @@ Then, change the plan to use the "slow" version of the functions:
 ```{r}
 #| label = "example-model-show-9",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_10.R")[3:40]
+#| code = readLines("files/plans/plan_10.R")[3:39]
 ```
 
 Finally, run the pipeline with `tar_make()` as normal.
@@ -113,13 +113,20 @@ Finally, run the pipeline with `tar_make()` as normal.
 plan_10_dir <- make_tempdir()
 pushd(plan_10_dir)
 write_example_plan("plan_9.R")
+# emulate adding library(crew) to packages.R
+write("library(crew)", file = "R/packages.R", append = TRUE)
 tar_make(reporter = "silent")
 write_example_plan("plan_10.R")
 tar_make()
 popd()
 ```
 
-Notice that although the time required to build each individual target is about 4 seconds, the total time to run the entire workflow is less than the sum of the individual target times! That is proof that processes are running in parallel **and saving you time**.
+Notice that each target (or each branch of a branched target) takes about 4 seconds to build.
+For the branched targets, the time shown is the total across their branches (3 branches × 4 seconds each = 12 seconds).
+Adding everything up, the workflow does about 32 seconds of work (2 × 4 seconds for the targets that are not branched, plus 12 + 12 seconds for the two branched targets).
+But the time that actually passed from start to finish, shown at the end of the output (`ended pipeline`), is only about half of that.
+If the targets had been built one at a time, it would have taken the full 32 seconds.
+That is proof that processes are running in parallel **and saving you time**.
 
 The unique and powerful thing about targets is that **we did not need to change our custom function to run it in parallel**. We only adjusted *the workflow*. This means it is relatively easy to refactor (modify) a workflow for running sequentially locally or running in parallel in a high-performance context.
 
