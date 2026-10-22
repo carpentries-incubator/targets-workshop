@@ -37,99 +37,75 @@ source("files/lesson_functions.R")
 
 Almost all workflows will start by importing data, which is typically stored as an external file.
 
-As a simple example, let's create an external data file in RStudio with the "New File" menu option. Enter a single line of text, "Hello World" and save it as "hello.txt" text file in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
+As a simple example, let's add a small external text file to the penguins project. Create a new text file in RStudio with the "New File" menu option. Enter a single line of text, "Adelie, Chinstrap, and Gentoo penguins" and save it as "species_note.txt" in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
 
-We will read in the contents of this file and store it as `some_data` in the workflow by writing the following plan and running `tar_make()`:
-
-::::::::::::::::::::::::::::::::::::: {.callout}
-
-## Save your progress
-
-You can only have one active `_targets.R` file at a time in a given project.
-
-We are about to create a new `_targets.R` file, but you probably don't want to lose your progress in the one we have been working on so far (the penguins bill analysis). You can temporarily rename that one to something like `_targets_old.R` so that you don't overwrite it with the new example `_targets.R` file below. Then, rename them when you are ready to work on it again.
-
-:::::::::::::::::::::::::::::::::::::
+We will read in the contents of this file and store it as `species_note` in the workflow. Add a new target to the end of the plan in `_targets.R`, then run `tar_make()`:
 
 ```{r}
-#| label: example-file-show-1
-#| eval: FALSE
-library(targets)
-library(tarchetypes)
-
-tar_plan(
-  some_data = readLines("data/hello.txt")
-)
+#| label = "example-file-show-1",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_files_1.R")[2:10]
 ```
 
 ```{r}
 #| label: example-file-hide-1
 #| echo: FALSE
-tar_dir({
-  fs::dir_create("data")
-  writeLines("Hello World", "data/hello.txt")
-  write_example_plan(chunk = "example-file-show-1")
-  tar_make()
-})
+files_dir <- make_tempdir()
+pushd(files_dir)
+fs::dir_create("data")
+writeLines("Adelie, Chinstrap, and Gentoo penguins", "data/species_note.txt")
+# simulate the workflow from the previous episode
+write_example_plan("plan_2b.R")
+tar_make(reporter = "silent")
+# add the new target
+write_example_plan("plan_files_1.R")
+tar_make()
+popd()
 ```
 
-If we load `some_data` with `tar_load(some_data)` and inspect it, it will contain the string `"Hello World"` as expected.
+If we load `species_note` with `tar_load(species_note)` and inspect it, it will contain the string `"Adelie, Chinstrap, and Gentoo penguins"` as expected.
 
-Now say we edit "hello.txt", perhaps add some text: "Hello World. How are you?". Edit this in the RStudio text editor and save it. Now run the pipeline again.
-
-```{r}
-#| label = "example-file-show-2",
-#| eval = FALSE,
-#| code = knitr::knit_code$get("example-file-show-1")
-```
+Now say we edit "species_note.txt", perhaps adding a second line: "Measured at Palmer Station, Antarctica". Edit this in the RStudio text editor and save it. Now run the pipeline again.
 
 ```{r}
 #| label: example-file-hide-2
-#| echo: FALSE
-tar_dir({
-  fs::dir_create("data")
-  writeLines("Hello World", "data/hello.txt")
-  write_example_plan(chunk = "example-file-show-1")
-  tar_make(reporter = "silent")
-  writeLines("Hello World. How are you?", "data/hello.txt")
-  tar_make()
-})
+#| echo: [3]
+pushd(files_dir)
+writeLines(c("Adelie, Chinstrap, and Gentoo penguins", "Measured at Palmer Station, Antarctica"), "data/species_note.txt")
+tar_make()
+popd()
 ```
 
-The target `some_data` was skipped, even though the contents of the file changed.
+The target `species_note` was skipped, even though the contents of the file changed.
 
 That is because right now, targets is only tracking the **name** of the file, not its contents. We need to use a special function for that, `tar_file()` from the `tarchetypes` package. `tar_file()` will calculate the "hash" of a file---a unique digital signature that is determined by the file's contents. If the contents change, the hash will change, and this will be detected by `targets`.
 
-```{r}
-#| label: example-file-show-3
-#| eval: FALSE
-library(targets)
-library(tarchetypes)
+Change the plan in `_targets.R` to use `tar_file()` for the note, and run `tar_make()`:
 
-tar_plan(
-  tar_file(data_file, "data/hello.txt"),
-  some_data = readLines(data_file)
-)
+```{r}
+#| label = "example-file-show-3",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_files_2.R")[2:11]
 ```
+
+Then edit "species_note.txt" once more, perhaps adding a third line: "Data collected from 2007 to 2009". Save it, and run the pipeline again.
 
 ```{r}
 #| label: example-file-hide-3
 #| echo: FALSE
-tar_dir({
-  fs::dir_create("data")
-  writeLines("Hello World", "data/hello.txt")
-  write_example_plan(chunk = "example-file-show-3")
-  tar_make(reporter = "silent")
-  writeLines("Hello World. How are you?", "data/hello.txt")
-  tar_make()
-})
+pushd(files_dir)
+write_example_plan("plan_files_2.R")
+tar_make(reporter = "silent")
+writeLines(c("Adelie, Chinstrap, and Gentoo penguins", "Measured at Palmer Station, Antarctica", "Data collected from 2007 to 2009"), "data/species_note.txt")
+tar_make()
+popd()
 ```
 
-This time we see that `targets` does successfully re-build `some_data` as expected.
+This time we see that `targets` does successfully re-build `species_note` as expected.
 
 ## Other data loading functions
 
-Note that this takes two targets: one to track the contents of the file (`data_file`, made with `tar_file()`), and one to store what we load from the file (`some_data`).
+Note that this takes two targets: one to track the contents of the file (`species_note_file`, made with `tar_file()`), and one to store what we load from the file (`species_note`).
 
 Although we used `readLines()` as an example here, you can use the same pattern for other functions that load data from external files, such as `readr::read_csv()`, `readxl::read_excel()`, and others (for example, `tar_file(csv_file, "data.csv")` followed by `my_data = read_csv(csv_file)`).
 
@@ -148,18 +124,18 @@ How can you use `tar_file()` to load the CSV file while tracking its contents?
 ```{r}
 #| label = "tar-file-answer-show",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_3.R")[2:9]
+#| code = readLines("files/plans/plan_files_3.R")[2:11]
 ```
 
 ```{r}
 #| label: tar-file-answer-hide
 #| echo: FALSE
-tar_dir({
-  # New workflow
-  write_example_plan("plan_3.R")
-  # Run it
-  tar_make()
-})
+pushd(files_dir)
+# New workflow
+write_example_plan("plan_files_3.R")
+# Run it
+tar_make()
+popd()
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -168,30 +144,30 @@ tar_dir({
 
 ## Writing out data
 
-Writing to files is similar to loading in files: we will use the `tar_file()` function. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return nothing; these treat the output file is a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
+Writing to files is similar to loading in files: we will use the `tar_file()` function. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return the data that was written, or nothing at all; these treat the output file as a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
 
-Let's do this for `writeLines()`, the R function that writes character data to a file. Normally, its output would be `NULL` (nothing), as we can see here:
+Let's do this for `write_csv()`, the `readr` function that writes a data frame to a CSV file. Its output is the data that was written, not the path to the file, as we can see here:
 
 ```{r}
 #| label: write-data-show-1
 #| eval: false
-x <- writeLines("some text", "test.txt")
+x <- readr::write_csv(head(palmerpenguins::penguins, 3), "test.csv")
 x
 ```
 
 ```{r}
 #| label: write-data-hide-1
 #| echo: false
-x <- writeLines("some text", "test.txt")
+x <- readr::write_csv(head(palmerpenguins::penguins, 3), "test.csv")
 x
-fs::file_delete("test.txt")
+fs::file_delete("test.csv")
 ```
 
-Here is our modified function that writes character data to a file and returns the name of the file (the `...` means "pass the rest of these arguments to `writeLines()`"):
+Here is our modified function that writes a data frame to a CSV file and returns the name of the file (the `...` means "pass the rest of these arguments to `write_csv()`"). Add it to `R/functions.R`:
 
 ```{r}
 #| label: write-data-func
-#| file: files/tar_functions/write_lines_file.R
+#| file: files/tar_functions/write_csv_file.R
 ```
 
 Let's try it out:
@@ -199,68 +175,62 @@ Let's try it out:
 ```{r}
 #| label: write-data-show-2
 #| eval: false
-x <- write_lines_file("some text", "test.txt")
+x <- write_csv_file(head(palmerpenguins::penguins, 3), "test.csv")
 x
 ```
 
 ```{r}
 #| label: write-data-hide-2
 #| echo: false
-x <- write_lines_file("some text", "test.txt")
+x <- write_csv_file(head(palmerpenguins::penguins, 3), "test.csv")
 x
-fs::file_delete("test.txt")
+fs::file_delete("test.csv")
 ```
 
-We can now use this in a pipeline. For example let's change the text to upper case then write it out again:
+We can now use this in the workflow. For example, let's write out the cleaned penguins data by adding one more target to the end of the plan:
 
 ```{r}
-#| label: example-file-show-6
-#| eval: false
-library(targets)
-library(tarchetypes)
-
-source("R/functions.R")
-
-tar_plan(
-  tar_file(hello_file, "data/hello.txt"),
-  hello = readLines(hello_file),
-  hello_caps = toupper(hello),
-  tar_file(
-    hello_caps_out,
-    write_lines_file(hello_caps, "results/hello_caps.txt")
-  )
-)
+#| label = "example-file-show-6",
+#| eval = FALSE,
+#| code = readLines("files/plans/plan_files_4.R")[2:15]
 ```
 
 ```{r}
 #| label: example-file-hide-6
 #| echo: false
-tar_dir({
-  fs::dir_create("data")
-  fs::dir_create("results")
-  writeLines("Hello World. How are you?", "data/hello.txt")
-  write_example_plan(chunk = "example-file-show-6")
-  tar_make()
-})
+pushd(files_dir)
+fs::dir_create("results")
+write_example_plan("plan_files_4.R")
+tar_make()
+popd()
 ```
 
-Take a look at `hello_caps.txt` in the `results` folder and verify it is as you expect.
+Take a look at `penguins_data.csv` in the `results` folder and verify it is as you expect.
 
 ::::::::::::::::::::::::::::::::::::: {.challenge}
 
 ## Challenge: What happens to file output if its modified?
 
-Delete or change the contents of `hello_caps.txt` in the `results` folder.
+Delete or change the contents of `penguins_data.csv` in the `results` folder.
 What do you think will happen when you run `tar_make()` again?
 Try it and see.
 
 :::::::::::::::::::::::::::::::::: {.solution}
 
-`targets` detects that `hello_caps_out` has changed (is "invalidated"), and re-runs the code to make it, thus writing out `hello_caps.txt` to `results` again.
+`targets` detects that `penguins_data_file` has changed (is "invalidated"), and re-runs the code to make it, thus writing out `penguins_data.csv` to `results` again.
 
 So this way of writing out results makes your pipeline more robust: we have a guarantee that the contents of the file in `results` are generated solely by the code in your plan.
 
 ::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: {.callout}
+
+## Your workflow in the next episodes
+
+The `species_note` and `penguins_data_file` targets (and the files they use) were examples for this episode.
+They are not included in the code listings in the following episodes, so you can delete them from your `_targets.R` to match, or leave them in; they will not affect the rest of the analysis.
 
 :::::::::::::::::::::::::::::::::::::
 

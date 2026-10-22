@@ -124,9 +124,9 @@ You may be used to writing code that looks like this:
 #| eval: FALSE
 #| label: example-script
 
-# Store a person's height in cm, then convert to inches
-height <- 160
-height <- height / 2.54
+# Store a penguin's body mass in grams, then convert to kilograms
+body_mass <- 3750
+body_mass <- body_mass / 1000
 ```
 
 You would get an error if you tried to run the equivalent targets pipeline:
@@ -138,8 +138,8 @@ You would get an error if you tried to run the equivalent targets pipeline:
 library(targets)
 library(tarchetypes)
 tar_plan(
-    height = 160,
-    height = height / 2.54
+    body_mass = 3750,
+    body_mass = body_mass / 1000
 )
 ```
 
