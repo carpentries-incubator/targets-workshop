@@ -32,6 +32,17 @@ write_example_plan <- function(file = NULL, chunk = NULL) {
       file.copy(from = package_script, to = _)
   }
 
+  # Write the raw penguins data to a CSV file, as learners do in the
+  # first episode
+  if (!file.exists(file.path("data", "penguins_raw.csv"))) {
+    dir.create("data", showWarnings = FALSE)
+    write.csv(
+      datasets::penguins_raw,
+      file.path("data", "penguins_raw.csv"),
+      row.names = FALSE
+    )
+  }
+
   # Write the workflow
   if (!is.null(file)) {
     file.path(plan_root, file) |>
