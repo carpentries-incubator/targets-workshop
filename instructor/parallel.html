@@ -380,7 +380,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Parallel Processing</h1>
-        <p>Last updated on 2026-10-21 |
+        <p>Last updated on 2026-10-22 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/parallel.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -420,7 +420,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to use parallel processing</p>
 </div>
@@ -452,22 +452,23 @@ backend. If you are interested in high-performance computing, <a href="https://b
 <code>targets</code> manual</a>.</p>
 <div class="section level3">
 <h3 id="set-up-workflow">Set up workflow<a class="anchor" aria-label="anchor" href="#set-up-workflow"></a></h3>
-<p>To enable parallel processing with <code>crew</code> you only need to
-load the <code>crew</code> package, then tell <code>targets</code> to
-use it using <code>tar_option_set</code>. Specifically, the following
-lines enable crew, and tells it to use 2 parallel workers. You can
-increase this number on more powerful machines:</p>
+<p>To enable parallel processing with <code>crew</code>, first add
+<code><a href="https://wlandau.github.io/crew/" class="external-link">library(crew)</a></code> to <code>R/packages.R</code>, as we did for
+the other packages. Then tell <code>targets</code> to use it with
+<code>tar_option_set()</code> in <code>_targets.R</code>. Specifically,
+the following lines enable <code>crew</code> and tell it to use 2
+parallel workers. You can increase this number on more powerful
+machines:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">crew</span><span class="op">)</span></span>
-<span><span class="fu">tar_option_set</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">tar_option_set</span><span class="op">(</span></span>
 <span>  controller <span class="op">=</span> <span class="fu">crew_controller_local</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<p>Make these changes to the penguins analysis. It should now look like
-this:</p>
+<p>Make these changes to the penguins analysis. <code>_targets.R</code>
+should now look like this:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -476,7 +477,6 @@ this:</p>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up parallelization</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">crew</span><span class="op">)</span></span>
 <span><span class="fu">tar_option_set</span><span class="op">(</span></span>
 <span>  controller <span class="op">=</span> <span class="fu">crew_controller_local</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -566,7 +566,6 @@ the original ones, then modify them):</p>
 <span><span class="kw">source</span><span class="op">(</span><span class="st">"R/packages.R"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up parallelization</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">crew</span><span class="op">)</span></span>
 <span><span class="fu">tar_option_set</span><span class="op">(</span></span>
 <span>  controller <span class="op">=</span> <span class="fu">crew_controller_local</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -626,17 +625,23 @@ The following objects are masked from ‘package:datasets’:
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ combined_summary completed [4.1s, 371 B]
+✔ combined_predictions completed [4s, 24.77 kB]
 ✔ species_summary completed [12.1s, 1.11 kB]
 ✔ species_predictions completed [12s, 26.53 kB]
-✔ ended pipeline [19s, 8 completed, 4 skipped]</code></pre>
+✔ ended pipeline [19.2s, 8 completed, 4 skipped]</code></pre>
 </div>
-<p>Notice that although the time required to build each individual
-target is about 4 seconds, the total time to run the entire workflow is
-less than the sum of the individual target times! That is proof that
-processes are running in parallel <strong>and saving you
-time</strong>.</p>
+<p>Notice that each target (or each branch of a branched target) takes
+about 4 seconds to build. For the branched targets, the time shown is
+the total across their branches (3 branches × 4 seconds each = 12
+seconds). Adding everything up, the workflow does about 32 seconds of
+work (2 × 4 seconds for the targets that are not branched, plus 12 + 12
+seconds for the two branched targets). But the time that actually passed
+from start to finish, shown at the end of the output
+(<code>ended pipeline</code>), is only about half of that. If the
+targets had been built one at a time, it would have taken the full 32
+seconds. That is proof that processes are running in parallel
+<strong>and saving you time</strong>.</p>
 <p>The unique and powerful thing about targets is that <strong>we did
 not need to change our custom function to run it in parallel</strong>.
 We only adjusted <em>the workflow</em>. This means it is relatively easy
@@ -729,7 +734,7 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/parallel.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/parallel.html",
   "dateCreated": "2026-10-22",
-  "dateModified": "2026-10-21",
+  "dateModified": "2026-10-22",
   "datePublished": "2026-10-22"
 }
 
