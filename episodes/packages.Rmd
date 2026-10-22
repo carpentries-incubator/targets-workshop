@@ -237,6 +237,8 @@ This is a **namespace conflict**: how do we know which `filter()` we are talking
 
 One solution we have covered already is using the `::` notation when calling functions. This is because writing `dplyr::filter()` specifies that you are using `filter()` from the `dplyr` namespace. The tradeoff to this approach is verbosity, meaning more typing and reading. 
 
+Another solution is to use the [`conflicted`](https://conflicted.r-lib.org/) package, which stops you with an error if you use a function whose name is ambiguous, so that you can choose which one you mean. We will not go into the details here.
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - There are multiple ways to load packages with `targets`

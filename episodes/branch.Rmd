@@ -91,7 +91,7 @@ tar_make()
 popd()
 ```
 
-Let's have a look at the model. We will use the `glance()` function from the `broom` package, writing `broom::glance()` so that we do not need to load the whole package (we saw this `::` notation in the previous episode). Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
+Let's have a look at the model. We will use the `glance()` function from the `broom` package, writing `broom::glance()` so that we do not need to load the whole package (the `::` notation specifies which package a function comes from). Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
 
 ```{r}
 #| label: example-lm-pipeline-inspect-show
