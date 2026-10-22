@@ -1,5 +1,6 @@
 options(tidyverse.quiet = TRUE)
-source("R/packages.R")
+library(targets)
+library(tarchetypes)
 source("R/functions.R")
 
 tar_plan(

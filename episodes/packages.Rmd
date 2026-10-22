@@ -142,12 +142,13 @@ But, it can be tedious to remember and specify packages needed on a per-target b
 Another alternative that does not actually involve loading packages is to specify the package associated with each function by using the `::` notation, for example, `dplyr::mutate()`.
 This means you can **avoid loading packages altogether**.
 
-Here is how to write the plan using this method (with `library(tidyverse)` removed from `R/packages.R`), along with the custom function `clean_penguin_data()` in `R/functions.R`:
+Here is how to write the plan using this method, along with the custom function `clean_penguin_data()` in `R/functions.R`.
+We no longer need `R/packages.R` at all; the only packages we load are `targets` and `tarchetypes`, which provide `tar_plan()` itself:
 
 ```{r}
 #| label = "load-pkg-show-3",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_pkgs_4.R")[2:9]
+#| code = readLines("files/plans/plan_pkgs_4.R")[2:10]
 ```
 
 ```{r}
