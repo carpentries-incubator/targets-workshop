@@ -147,7 +147,7 @@ We see the raw data has some awkward column names with spaces (these are hard to
 For the purposes of this analysis, we only need species name, bill length, and bill depth.
 In the raw data, the rather technical term "culmen" is used to refer to the bill.
 
-![Illustration of bill (culmen) length and depth. Artwork by @allison_horst.](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png)
+![Illustration of bill (culmen) length and depth. Artwork by @allison_horst.](fig/culmen_depth.png){alt="Illustration of a penguin's head from the side. Arrows show that bill length is measured along the top of the bill from its base to its tip, and bill depth is the thickness of the bill. A note says that in the raw data these are recorded as culmen length and culmen depth, and that the culmen is the dorsal ridge atop the bill."}
 
 Let's clean up the data to make it easier to use for downstream analyses.
 We will also remove any rows with missing data, because this could cause errors for some functions later.
@@ -357,10 +357,10 @@ tar_make()
 + penguins_csv_file dispatched
 ✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [123ms, 10.40 kB]
+✔ penguins_data_raw completed [105ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [15ms, 1.61 kB]
-✔ ended pipeline [404ms, 3 completed, 0 skipped]
+✔ penguins_data completed [19ms, 1.61 kB]
+✔ ended pipeline [388ms, 3 completed, 0 skipped]
 ```
 
 Congratulations, you've run your first workflow with `targets`!
