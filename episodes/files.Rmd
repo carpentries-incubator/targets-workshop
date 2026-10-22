@@ -42,7 +42,7 @@ Let's add a second, much smaller data file that we create ourselves: some inform
 Later we will use this in a report.
 
 Create a new text file in RStudio with the "New File" menu option.
-Enter the following lines and save it as "islands.csv" in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
+Enter the following lines (copy-and-paste is fine) and save it as "islands.csv" in the `data/` folder of your project (we created this folder in the [project organization episode](episodes/organization.Rmd); if you do not have it yet, create it now in your project folder).
 These coordinates are approximate.
 
 ```{r}
