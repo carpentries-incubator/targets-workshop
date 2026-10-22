@@ -74,8 +74,8 @@ So far, we have been doing everything with a single `_targets.R` file.
 This is OK for a small workflow, but does not work very well when the workflow gets bigger.
 There are better ways to organize your code.
 
-First, let's create a directory called `R` to store R code *other than* `_targets.R` (remember, `_targets.R` must be placed in the overall project directory, not in a subdirectory).
-Create a new R file in `R/` called `functions.R`.
+Create a new directory called `R` in your project folder to store R code *other than* `_targets.R` (remember, `_targets.R` must be placed in the overall project directory, not in a subdirectory).
+Inside `R/`, create a new R file called `functions.R`.
 This is where we will put our custom functions.
 Let's go ahead and put `clean_penguin_data()` in there now and save it.
 
@@ -93,6 +93,19 @@ Now `_targets.R` is much more streamlined: it is focused just on the workflow an
 
 Finally, let's make some directories for storing data and output---files that are not code.
 Create two new directories in your project folder, called `data` and `results` (if you use version control, you will probably want to ignore these, as well as the `_targets` directory).
+
+Your project folder should now look something like this:
+
+```
+.
+├── _targets/        <- the targets cache (created by targets; do not edit)
+├── _targets.R       <- the workflow
+├── R/
+│   ├── functions.R  <- custom functions
+│   └── packages.R   <- package loading
+├── data/            <- input data files
+└── results/         <- output files
+```
 
 ## A word about functions
 
