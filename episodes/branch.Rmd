@@ -85,7 +85,7 @@ We can add this to our pipeline. We will call it the `combined_model` because it
 #| echo: false
 plan_4_dir <- make_tempdir()
 pushd(plan_4_dir)
-write_example_plan("plan_3.R")
+write_example_plan("plan_2b.R")
 tar_make(reporter = "silent")
 write_example_plan("plan_4.R")
 tar_make()
