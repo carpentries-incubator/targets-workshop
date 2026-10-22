@@ -4,7 +4,6 @@ source("R/functions.R")
 source("R/packages.R")
 
 # Set up parallelization
-library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
 )

@@ -59,24 +59,24 @@ If you are interested in high-performance computing, [see the `targets` manual](
 
 ### Set up workflow
 
-To enable parallel processing with `crew` you only need to load the `crew` package, then tell `targets` to use it using `tar_option_set`.
-Specifically, the following lines enable crew, and tells it to use 2 parallel workers.
+To enable parallel processing with `crew`, first add `library(crew)` to `R/packages.R`, as we did for the other packages.
+Then tell `targets` to use it with `tar_option_set()` in `_targets.R`.
+Specifically, the following lines enable `crew` and tell it to use 2 parallel workers.
 You can increase this number on more powerful machines:
 
 ```r
-library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 2)
 )
 ```
 
 Make these changes to the penguins analysis.
-It should now look like this:
+`_targets.R` should now look like this:
 
 ```{r}
 #| label = "example-model-show-setup",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_9.R")[3:36]
+#| code = readLines("files/plans/plan_9.R")[3:35]
 ```
 
 There is still one more thing we need to modify only for the purposes of this demo: if we ran the analysis in parallel now, you wouldn't notice any difference in compute time because the functions are so fast.
@@ -99,7 +99,7 @@ Then, change the plan to use the "slow" version of the functions:
 ```{r}
 #| label = "example-model-show-9",
 #| eval = FALSE,
-#| code = readLines("files/plans/plan_10.R")[3:40]
+#| code = readLines("files/plans/plan_10.R")[3:39]
 ```
 
 Finally, run the pipeline with `tar_make()` as normal.
@@ -113,6 +113,8 @@ Finally, run the pipeline with `tar_make()` as normal.
 plan_10_dir <- make_tempdir()
 pushd(plan_10_dir)
 write_example_plan("plan_9.R")
+# emulate adding library(crew) to packages.R
+write("library(crew)", file = "R/packages.R", append = TRUE)
 tar_make(reporter = "silent")
 write_example_plan("plan_10.R")
 tar_make()
