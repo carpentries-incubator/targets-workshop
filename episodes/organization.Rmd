@@ -79,7 +79,7 @@ Inside `R/`, create a new R file called `functions.R`.
 This is where we will put our custom functions.
 Let's go ahead and put `clean_penguin_data()` in there now and save it.
 
-Similarly, let's put the `library()` calls in their own script in `R/` called `packages.R` (this isn't the only way to do it though; see the ["Managing Packages" episode](https://joelnitta.github.io/targets-workshop/packages.html) for alternative approaches).
+Similarly, let's put the `library()` calls in their own script in `R/` called `packages.R` (this isn't the only way to do it though; see the ["Managing Packages" episode](episodes/packages.Rmd) for alternative approaches).
 
 We will also need to modify our `_targets.R` script to call these scripts with `source`:
 
