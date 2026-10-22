@@ -92,8 +92,7 @@ We will also need to modify our `_targets.R` script to call these scripts with `
 Now `_targets.R` is much more streamlined: it is focused just on the workflow and immediately tells us what happens in each step.
 
 Finally, let's make some directories for storing data and output---files that are not code.
-Create two new directories in your project folder, called `data` and `results`.
-(If you use version control, you will probably want to ignore the `_targets` directory).
+Create two new directories in your project folder, called `data` and `results` (if you use version control, you will probably want to ignore these, as well as the `_targets` directory).
 
 ## A word about functions
 
