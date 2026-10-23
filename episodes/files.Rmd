@@ -163,7 +163,7 @@ popd()
 
 ## Writing out data
 
-Writing to files is similar to loading in files: we will use the `tar_file()` function. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return the data that was written, or nothing at all; these treat the output file as a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
+Writing to files is similar to loading in files: we will use the `tar_file()` function. This works because `tar_file()` does not care whether a file is an input or an output. In both cases the value of the target is the **path** to a file, and `targets` tracks the file's contents (its hash) as well as its name. It does not matter whether the file was already there (like "islands.csv") or is created by the command that builds the target. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return the data that was written, or nothing at all; these treat the output file as a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
 
 Let's do this for `write_csv()`, the `readr` function that writes a data frame to a CSV file. Its output is the data that was written, not the path to the file, as we can see here:
 
