@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 teaching: 10
-exercises: 2
+exercises: 3
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 

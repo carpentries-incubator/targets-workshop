@@ -1,7 +1,7 @@
 ---
 title: 'Managing Packages'
-teaching: 10
-exercises: 2
+teaching: 20
+exercises: 0
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -98,12 +98,12 @@ tar_plan(
 
 ``` output
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [108ms, 74 B]
+✔ penguins_csv_file completed [104ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [114ms, 10.40 kB]
+✔ penguins_data_raw completed [113ms, 10.40 kB]
 + penguins_data dispatched
 ✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [644ms, 3 completed, 0 skipped]
+✔ ended pipeline [666ms, 3 completed, 0 skipped]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -138,12 +138,12 @@ tar_plan(
 
 ``` output
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [0ms, 74 B]
+✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [180ms, 10.40 kB]
+✔ penguins_data_raw completed [178ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [68ms, 1.49 kB]
-✔ ended pipeline [651ms, 3 completed, 0 skipped]
+✔ penguins_data completed [60ms, 1.49 kB]
+✔ ended pipeline [675ms, 3 completed, 0 skipped]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -188,12 +188,12 @@ clean_penguin_data <- function(penguins_data_raw) {
 
 ``` output
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [0ms, 74 B]
+✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [186ms, 10.40 kB]
+✔ penguins_data_raw completed [177ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [50ms, 1.49 kB]
-✔ ended pipeline [636ms, 3 completed, 0 skipped]
+✔ penguins_data completed [49ms, 1.49 kB]
+✔ ended pipeline [645ms, 3 completed, 0 skipped]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.

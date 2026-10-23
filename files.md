@@ -1,7 +1,7 @@
 ---
 title: 'Working with External Files'
-teaching: 10
-exercises: 2
+teaching: 25
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -64,10 +64,10 @@ Add a new target to the end of the plan in `_targets.R` (note the comma that is 
 
 ``` output
 + island_data dispatched
-✔ island_data completed [119ms, 365 B]
+✔ island_data completed [115ms, 365 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [419ms, 1 completed, 12 skipped]
+✔ ended pipeline [405ms, 1 completed, 12 skipped]
 ```
 
 If we load `island_data` with `tar_load(island_data)` and inspect it, it will contain the three islands as expected.
@@ -82,7 +82,7 @@ tar_make()
 ``` output
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ skipped pipeline [213ms, 13 skipped]
+✔ skipped pipeline [202ms, 13 skipped]
 ```
 
 The target `island_data` was skipped, even though the contents of the file changed.
@@ -112,10 +112,10 @@ Then edit "islands.csv" once more, perhaps changing the longitude of Dream Islan
 + island_file dispatched
 ✔ island_file completed [1ms, 91 B]
 + island_data dispatched
-✔ island_data completed [164ms, 358 B]
+✔ island_data completed [98ms, 358 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [442ms, 2 completed, 12 skipped]
+✔ ended pipeline [439ms, 2 completed, 12 skipped]
 ```
 
 This time we see that `targets` does successfully re-build `island_data` as expected.
@@ -151,9 +151,9 @@ tar_plan(
 
 ``` output
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [1ms, 57.98 kB]
+✔ penguins_csv_file completed [0ms, 57.98 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [163ms, 10.40 kB]
+✔ penguins_data_raw completed [100ms, 10.40 kB]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
 ✔ ended pipeline [440ms, 2 completed, 12 skipped]
@@ -226,8 +226,8 @@ We can now use this in the workflow. For example, let's write out the results of
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
 + species_summary_file dispatched
-✔ species_summary_file completed [147ms, 664 B]
-✔ ended pipeline [397ms, 1 completed, 14 skipped]
+✔ species_summary_file completed [77ms, 664 B]
+✔ ended pipeline [379ms, 1 completed, 14 skipped]
 ```
 
 Take a look at `species_summary.csv` in the `results` folder and verify it is as you expect.

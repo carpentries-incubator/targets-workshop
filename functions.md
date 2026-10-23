@@ -1,6 +1,6 @@
 ---
 title: 'A Brief Introduction to Functions'
-teaching: 30
+teaching: 20
 exercises: 10
 ---
 
@@ -247,7 +247,7 @@ tar_make()
 
 ``` output
 + penguins_data dispatched
-✔ penguins_data completed [18ms, 1.61 kB]
+✔ penguins_data completed [17ms, 1.61 kB]
 ✔ ended pipeline [212ms, 1 completed, 2 skipped]
 ```
 

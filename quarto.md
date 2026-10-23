@@ -1,7 +1,7 @@
 ---
 title: 'Reproducible Reports with Quarto'
-teaching: 10
-exercises: 2
+teaching: 25
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
