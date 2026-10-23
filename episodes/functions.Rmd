@@ -1,6 +1,6 @@
 ---
 title: 'A Brief Introduction to Functions'
-teaching: 30
+teaching: 20
 exercises: 10
 ---
 

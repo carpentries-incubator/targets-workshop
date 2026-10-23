@@ -1,7 +1,7 @@
 ---
 title: 'Best Practices for targets Project Organization'
-teaching: 10
-exercises: 2
+teaching: 20
+exercises: 0
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
