@@ -70,6 +70,7 @@ episodes:
 - parallel.Rmd
 - files.Rmd
 - quarto.Rmd
+- hpc.Rmd
 
 # Information for Learners
 learners: 
