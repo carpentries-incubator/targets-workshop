@@ -64,10 +64,10 @@ Add a new target to the end of the plan in `_targets.R` (note the comma that is 
 
 ``` output
 + island_data dispatched
-✔ island_data completed [115ms, 365 B]
+✔ island_data completed [107ms, 365 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [405ms, 1 completed, 12 skipped]
+✔ ended pipeline [375ms, 1 completed, 12 skipped]
 ```
 
 If we load `island_data` with `tar_load(island_data)` and inspect it, it will contain the three islands as expected.
@@ -82,7 +82,7 @@ tar_make()
 ``` output
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ skipped pipeline [202ms, 13 skipped]
+✔ skipped pipeline [199ms, 13 skipped]
 ```
 
 The target `island_data` was skipped, even though the contents of the file changed.
@@ -112,10 +112,10 @@ Then edit "islands.csv" once more, perhaps changing the longitude of Dream Islan
 + island_file dispatched
 ✔ island_file completed [1ms, 91 B]
 + island_data dispatched
-✔ island_data completed [98ms, 358 B]
+✔ island_data completed [95ms, 358 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [439ms, 2 completed, 12 skipped]
+✔ ended pipeline [415ms, 2 completed, 12 skipped]
 ```
 
 This time we see that `targets` does successfully re-build `island_data` as expected.
@@ -151,12 +151,12 @@ tar_plan(
 
 ``` output
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [0ms, 57.98 kB]
+✔ penguins_csv_file completed [1ms, 57.98 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [100ms, 10.40 kB]
+✔ penguins_data_raw completed [97ms, 10.40 kB]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [440ms, 2 completed, 12 skipped]
+✔ ended pipeline [417ms, 2 completed, 12 skipped]
 ```
 
 ::::::::::::::::::::::::::::::::::
@@ -165,7 +165,7 @@ tar_plan(
 
 ## Writing out data
 
-Writing to files is similar to loading in files: we will use the `tar_file()` function. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return the data that was written, or nothing at all; these treat the output file as a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
+Writing to files is similar to loading in files: we will use the `tar_file()` function. This works because `tar_file()` does not care whether a file is an input or an output. In both cases the value of the target is the **path** to a file, and `targets` tracks the file's contents (its hash) as well as its name. It does not matter whether the file was already there (like "islands.csv") or is created by the command that builds the target. There is one important caveat: in this case, the second argument of `tar_file()` (the command to build the target) **must return the path to the file**. Not all functions that write files do this (some return the data that was written, or nothing at all; these treat the output file as a side-effect of running the function), so you may need to define a custom function that writes out the file and then returns its path.
 
 Let's do this for `write_csv()`, the `readr` function that writes a data frame to a CSV file. Its output is the data that was written, not the path to the file, as we can see here:
 
@@ -226,8 +226,8 @@ We can now use this in the workflow. For example, let's write out the results of
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
 + species_summary_file dispatched
-✔ species_summary_file completed [77ms, 664 B]
-✔ ended pipeline [379ms, 1 completed, 14 skipped]
+✔ species_summary_file completed [75ms, 664 B]
+✔ ended pipeline [367ms, 1 completed, 14 skipped]
 ```
 
 Take a look at `species_summary.csv` in the `results` folder and verify it is as you expect.
