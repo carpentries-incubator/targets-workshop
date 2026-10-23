@@ -44,7 +44,7 @@ The major features of `targets` include:
 
 - **Automation** of workflow
 - **Caching** of workflow steps
-- **Batch creation** of workflow steps
+- **Batch creation** of workflow steps (defining many similar steps at once)
 - **Parallelization** at the level of the workflow
 
 This allows you to do the following:
