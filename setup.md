@@ -2,8 +2,6 @@
 title: Setup
 ---
 
-## Local setup
-
 Follow these instructions to install the required software on your computer.
 
 - [Download and install the latest version of R](https://www.r-project.org/). This lesson requires **R version 4.5.0 or later**, because the penguins data we use is included in base R starting with that version.
@@ -22,9 +20,3 @@ install.packages(
   )
 )
 ```
-
-## Alternative: In the cloud
-
-There is a [Posit Cloud](https://posit.cloud/) instance with RStudio and all necessary packages pre-installed available, so you don't need to install anything on your own computer. You may need to create an account (free).
-
-Click this link to open: <https://posit.cloud/content/6064275>

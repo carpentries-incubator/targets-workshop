@@ -10,6 +10,8 @@ The examples gradually build up to a full analysis of the [Palmer Penguins datas
 
 The penguins datasets were added to base R in **R version 4.5.0**, so this lesson requires R 4.5.0 or later. Check that learners (and any shared server or cloud instance you plan to use) have a recent enough version of R before the workshop.
 
+This lesson does not provide a hosted environment. If you want to run the workshop on a cloud service such as Posit Cloud, you will need to set one up yourself with R 4.5.0 or later and the packages listed in the [setup instructions](../learners/setup.md).
+
 ## Optional episodes:
 
 The "Managing Packages" episode covers a more advanced topic (different ways to load packages, tracking package versions with `renv`, and namespace conflicts) and could be skipped if you are short on time. The rest of the lesson does not depend on it: the workflow already loads its packages with `library()`.
