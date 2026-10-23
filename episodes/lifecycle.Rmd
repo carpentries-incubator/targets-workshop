@@ -1,7 +1,7 @@
 ---
 title: 'The Workflow Lifecycle'
-teaching: 10
-exercises: 2
+teaching: 20
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
