@@ -2,8 +2,6 @@
 title: Setup
 ---
 
-## Local setup
-
 Follow these instructions to install the required software on your computer.
 
 - [Download and install the latest version of R](https://www.r-project.org/). This lesson requires **R version 4.5.0 or later**, because the penguins data we use is included in base R starting with that version.
