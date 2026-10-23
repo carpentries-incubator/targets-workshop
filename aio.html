@@ -448,7 +448,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Introduction</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -542,7 +542,7 @@ functions</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Because the whole workflow is automated, there are no user-dependent
 steps. Thus, a future user will be able to get the same results.</p>
@@ -644,7 +644,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-basic-targets"><p>Content from <a href="basic-targets.html">First targets Workflow</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/basic-targets.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1093,10 +1093,10 @@ something like this:</p>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
 ✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [105ms, 10.40 kB]
+✔ penguins_data_raw completed [102ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [19ms, 1.61 kB]
-✔ ended pipeline [388ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [15ms, 1.61 kB]
+✔ ended pipeline [357ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>Congratulations, you’ve run your first workflow with
 <code>targets</code>!</p>
@@ -1158,7 +1158,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-functions"><p>Content from <a href="functions.html">A Brief Introduction to Functions</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/functions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1403,7 +1403,7 @@ numerical vector and returns its mean divided by 10.</h3>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1464,7 +1464,7 @@ sure it is up-to-date:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_data dispatched
-✔ penguins_data completed [18ms, 1.61 kB]
+✔ penguins_data completed [17ms, 1.61 kB]
 ✔ ended pipeline [212ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>We will learn more soon about the messages that
@@ -1514,7 +1514,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-cache"><p>Content from <a href="cache.html">Loading Workflow Objects</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/cache.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1650,7 +1650,7 @@ want to use one rather than the other?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p><code>tar_read()</code> returns the value of the target, so we
 immediately see it:</p>
@@ -1717,7 +1717,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-lifecycle"><p>Content from <a href="lifecycle.html">The Workflow Lifecycle</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1768,7 +1768,7 @@ running the workflow again:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped pipeline [143ms, 3 skipped]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipped pipeline [140ms, 3 skipped]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -1812,8 +1812,8 @@ need the first part of the common name to distinguish them.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_data dispatched
-✔ penguins_data completed [40ms, 1.49 kB]
-✔ ended pipeline [243ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [28ms, 1.49 kB]
+✔ ended pipeline [247ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -1840,7 +1840,7 @@ skip steps results in a massive increase in efficiency.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>By running <code>tar_load(penguins_data)</code> followed by
 <code>penguins_data</code>.</p>
@@ -1945,7 +1945,7 @@ but not the data, so it won’t break anything.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Light blue indicates the target is out of date.</p>
 <p>With the modification above, <code>penguins_data_raw</code> and
@@ -2008,8 +2008,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [233ms, 10.40 kB]
-✔ ended pipeline [439ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data_raw completed [162ms, 10.40 kB]
+✔ ended pipeline [432ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was re-run (the extra message is
 from <code>read_csv()</code>, which now reports the column types because
@@ -2046,7 +2046,7 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped pipeline [164ms, 3 skipped]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipped pipeline [163ms, 3 skipped]</code></pre>
 </div>
 <p>Now let’s invalidate <code>penguins_data_raw</code> and build only
 that target:</p>
@@ -2070,8 +2070,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [221ms, 10.40 kB]
-✔ ended pipeline [444ms, 1 completed, 1 skipped]</code></pre>
+✔ penguins_data_raw completed [236ms, 10.40 kB]
+✔ ended pipeline [442ms, 1 completed, 1 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was built (you will see the same
 <code>read_csv()</code> message again, since we are still not using
@@ -2092,8 +2092,8 @@ workflow again:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_data dispatched
-✔ penguins_data completed [40ms, 1.49 kB]
-✔ ended pipeline [247ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [28ms, 1.49 kB]
+✔ ended pipeline [243ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -2158,7 +2158,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-organization"><p>Content from <a href="organization.html">Best Practices for targets Project Organization</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/organization.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2397,7 +2397,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-packages"><p>Content from <a href="packages.html">Managing Packages</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/packages.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2540,12 +2540,12 @@ then list the packages we need in <code>_targets.R</code> instead:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
-✔ penguins_csv_file completed [108ms, 74 B]
+✔ penguins_csv_file completed [104ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [114ms, 10.40 kB]
+✔ penguins_data_raw completed [113ms, 10.40 kB]
 + penguins_data dispatched
 ✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [644ms, 3 completed, 0 skipped]</code></pre>
+✔ ended pipeline [666ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>This method gets around the slow-downs that may sometimes be
 experienced with Method 1.</p>
@@ -2588,12 +2588,12 @@ packages <strong>only for that target</strong>.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
-✔ penguins_csv_file completed [0ms, 74 B]
+✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [180ms, 10.40 kB]
+✔ penguins_data_raw completed [178ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [68ms, 1.49 kB]
-✔ ended pipeline [651ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [60ms, 1.49 kB]
+✔ ended pipeline [675ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>This can be more memory efficient in some cases than loading all
 packages, since not every target is always made during a typical run of
@@ -2648,12 +2648,12 @@ itself:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
-✔ penguins_csv_file completed [0ms, 74 B]
+✔ penguins_csv_file completed [1ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [186ms, 10.40 kB]
+✔ penguins_data_raw completed [177ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [50ms, 1.49 kB]
-✔ ended pipeline [636ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [49ms, 1.49 kB]
+✔ ended pipeline [645ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>The benefits of this approach are that the origins of all functions
 is explicit, so you could browse your code (for example, by looking at
@@ -2804,7 +2804,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-branch"><p>Content from <a href="branch.html">Branching</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/branch.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2899,8 +2899,8 @@ without distinction:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ combined_model dispatched
-✔ combined_model completed [56ms, 11.20 kB]
-✔ ended pipeline [267ms, 1 completed, 3 skipped]</code></pre>
+✔ combined_model completed [20ms, 11.20 kB]
+✔ ended pipeline [236ms, 1 completed, 3 skipped]</code></pre>
 </div>
 <p>Let’s have a look at the model. We will use the <code>glance()</code>
 function from the <code>broom</code> package, writing
@@ -2984,14 +2984,14 @@ branching</strong>:</p>
 + chinstrap_model dispatched
 ✔ chinstrap_model completed [2ms, 4.54 kB]
 + combined_summary dispatched
-✔ combined_summary completed [114ms, 350 B]
+✔ combined_summary completed [122ms, 350 B]
 + adelie_summary dispatched
-✔ adelie_summary completed [4ms, 351 B]
+✔ adelie_summary completed [3ms, 351 B]
 + gentoo_summary dispatched
-✔ gentoo_summary completed [3ms, 351 B]
+✔ gentoo_summary completed [2ms, 351 B]
 + chinstrap_summary dispatched
-✔ chinstrap_summary completed [3ms, 351 B]
-✔ ended pipeline [449ms, 7 completed, 4 skipped]</code></pre>
+✔ chinstrap_summary completed [2ms, 351 B]
+✔ ended pipeline [454ms, 7 completed, 4 skipped]</code></pre>
 </div>
 <p>Let’s look at the summary of one of the models:</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -3077,12 +3077,12 @@ in detail to understand each step):</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ combined_summary dispatched
-✔ combined_summary completed [69ms, 350 B]
+✔ combined_summary completed [72ms, 350 B]
 + species_name dispatched
-✔ species_name completed [4ms, 76 B]
+✔ species_name completed [3ms, 76 B]
 + species_summary declared [3 branches]
 ✔ species_summary completed [30ms, 1.05 kB]
-✔ ended pipeline [420ms, 5 completed, 3 skipped]</code></pre>
+✔ ended pipeline [436ms, 5 completed, 3 skipped]</code></pre>
 </div>
 <p>The messages say that <code>species_summary</code> was “declared”
 with 3 branches, then completed. That is the result of specifying
@@ -3197,10 +3197,10 @@ modified function.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ combined_summary dispatched
-✔ combined_summary completed [95ms, 371 B]
+✔ combined_summary completed [99ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [93ms, 1.11 kB]
-✔ ended pipeline [432ms, 4 completed, 4 skipped]</code></pre>
+✔ species_summary completed [104ms, 1.11 kB]
+✔ ended pipeline [452ms, 4 completed, 4 skipped]</code></pre>
 </div>
 <p>And this time, when we load <code>species_summary</code>, we can tell
 which species corresponds to which row (the <code>.before = 1</code> in
@@ -3394,7 +3394,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-parallel"><p>Content from <a href="parallel.html">Parallel Processing</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/parallel.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3607,11 +3607,11 @@ the original ones, then modify them):</p>
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ combined_summary completed [4.1s, 371 B]
+✔ combined_summary completed [4.2s, 371 B]
 ✔ combined_predictions completed [4.1s, 24.77 kB]
 ✔ species_summary completed [12.1s, 1.11 kB]
-✔ species_predictions completed [12.3s, 26.53 kB]
-✔ ended pipeline [19.3s, 8 completed, 4 skipped]</code></pre>
+✔ species_predictions completed [12.4s, 26.53 kB]
+✔ ended pipeline [19.5s, 8 completed, 4 skipped]</code></pre>
 </div>
 <p>Notice that each target (or each branch of a branched target) takes
 about 4 seconds to build. For the branched targets, the time shown is
@@ -3656,7 +3656,7 @@ any links that you are not going to use.
  -->
 </div></section><section id="aio-files"><p>Content from <a href="files.html">Working with External Files</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/files.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3731,10 +3731,10 @@ after the previous target), then run <code>tar_make()</code>:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ island_data dispatched
-✔ island_data completed [119ms, 365 B]
+✔ island_data completed [115ms, 365 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [419ms, 1 completed, 12 skipped]</code></pre>
+✔ ended pipeline [405ms, 1 completed, 12 skipped]</code></pre>
 </div>
 <p>If we load <code>island_data</code> with
 <code>tar_load(island_data)</code> and inspect it, it will contain the
@@ -3754,7 +3754,7 @@ again.</p>
 </h3>
 <pre class="output" tabindex="0"><code>+ species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ skipped pipeline [213ms, 13 skipped]</code></pre>
+✔ skipped pipeline [202ms, 13 skipped]</code></pre>
 </div>
 <p>The target <code>island_data</code> was skipped, even though the
 contents of the file changed.</p>
@@ -3791,10 +3791,10 @@ and run the pipeline again.</p>
 <pre class="output" tabindex="0"><code>+ island_file dispatched
 ✔ island_file completed [1ms, 91 B]
 + island_data dispatched
-✔ island_data completed [164ms, 358 B]
+✔ island_data completed [98ms, 358 B]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ ended pipeline [442ms, 2 completed, 12 skipped]</code></pre>
+✔ ended pipeline [439ms, 2 completed, 12 skipped]</code></pre>
 </div>
 <p>This time we see that <code>targets</code> does successfully re-build
 <code>island_data</code> as expected.</p>
@@ -3850,9 +3850,9 @@ target, at the start of the plan:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
-✔ penguins_csv_file completed [1ms, 57.98 kB]
+✔ penguins_csv_file completed [0ms, 57.98 kB]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [163ms, 10.40 kB]
+✔ penguins_data_raw completed [100ms, 10.40 kB]
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
 ✔ ended pipeline [440ms, 2 completed, 12 skipped]</code></pre>
@@ -3938,8 +3938,8 @@ adding one more target to the end of the plan:</p>
 <pre class="output" tabindex="0"><code>+ species_summary declared [3 branches]
 + species_predictions declared [3 branches]
 + species_summary_file dispatched
-✔ species_summary_file completed [147ms, 664 B]
-✔ ended pipeline [397ms, 1 completed, 14 skipped]</code></pre>
+✔ species_summary_file completed [77ms, 664 B]
+✔ ended pipeline [379ms, 1 completed, 14 skipped]</code></pre>
 </div>
 <p>Take a look at <code>species_summary.csv</code> in the
 <code>results</code> folder and verify it is as you expect.</p>
@@ -4003,7 +4003,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-quarto"><p>Content from <a href="quarto.html">Reproducible Reports with Quarto</a></p>
 <hr>
-<p>Last updated on 2026-10-22 |
+<p>Last updated on 2026-10-23 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/quarto.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -4218,7 +4218,7 @@ text and plots.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ul>
 <li><p>In the code chunk labeled <code>results-stats</code>, statistics
@@ -4325,9 +4325,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/aio.html",
-  "dateCreated": "2026-10-22",
-  "dateModified": "2026-10-22",
-  "datePublished": "2026-10-22"
+  "dateCreated": "2026-10-23",
+  "dateModified": "2026-10-23",
+  "datePublished": "2026-10-23"
 }
 
   </script><script>
