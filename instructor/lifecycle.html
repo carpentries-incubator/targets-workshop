@@ -393,7 +393,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>The Workflow Lifecycle</h1>
-        <p>Last updated on 2026-10-23 |
+        <p>Last updated on 2026-10-28 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/lifecycle.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -459,7 +459,7 @@ running the workflow again:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped pipeline [140ms, 3 skipped]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipped pipeline [131ms, 3 skipped]</code></pre>
 </div>
 <p>Remember how the first time we ran the pipeline, <code>targets</code>
 printed out a list of each target as it was being built?</p>
@@ -501,8 +501,8 @@ need the first part of the common name to distinguish them.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_data dispatched
-✔ penguins_data completed [28ms, 1.49 kB]
-✔ ended pipeline [247ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [24ms, 1.49 kB]
+✔ ended pipeline [227ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>What happened?</p>
 <p>This time, it skipped <code>penguins_csv_file</code> and
@@ -693,8 +693,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [162ms, 10.40 kB]
-✔ ended pipeline [432ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data_raw completed [165ms, 10.40 kB]
+✔ ended pipeline [415ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was re-run (the extra message is
 from <code>read_csv()</code>, which now reports the column types because
@@ -729,7 +729,7 @@ date, so <code>tar_make()</code> will skip everything:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>✔ skipped pipeline [163ms, 3 skipped]</code></pre>
+<pre class="output" tabindex="0"><code>✔ skipped pipeline [151ms, 3 skipped]</code></pre>
 </div>
 <p>Now let’s invalidate <code>penguins_data_raw</code> and build only
 that target:</p>
@@ -753,8 +753,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [236ms, 10.40 kB]
-✔ ended pipeline [442ms, 1 completed, 1 skipped]</code></pre>
+✔ penguins_data_raw completed [223ms, 10.40 kB]
+✔ ended pipeline [424ms, 1 completed, 1 skipped]</code></pre>
 </div>
 <p>Only <code>penguins_data_raw</code> was built (you will see the same
 <code>read_csv()</code> message again, since we are still not using
@@ -775,8 +775,8 @@ workflow again:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_data dispatched
-✔ penguins_data completed [28ms, 1.49 kB]
-✔ ended pipeline [243ms, 1 completed, 2 skipped]</code></pre>
+✔ penguins_data completed [23ms, 1.49 kB]
+✔ ended pipeline [226ms, 1 completed, 2 skipped]</code></pre>
 </div>
 <p>If you want to reset <strong>everything</strong> and start fresh, you
 can use <code>tar_invalidate(everything())</code>
@@ -871,7 +871,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.21.1" class="external-link">sandpaper (0.21.1)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.1.3" class="external-link">varnish (1.1.3)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.21.1)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/" class="external-link">varnish (1.1.3)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -892,9 +892,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/lifecycle.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/lifecycle.html",
-  "dateCreated": "2026-10-23",
-  "dateModified": "2026-10-23",
-  "datePublished": "2026-10-27"
+  "dateCreated": "2026-10-28",
+  "dateModified": "2026-10-28",
+  "datePublished": "2026-10-28"
 }
 
   </script><script>
