@@ -1,0 +1,20 @@
+options(tidyverse.quiet = TRUE)
+library(targets)
+library(tidyverse)
+
+clean_penguin_data <- function(penguins_data_raw) {
+  penguins_data_raw |>
+    select(
+      species = Species,
+      bill_length_mm = `Culmen Length (mm)`,
+      bill_depth_mm = `Culmen Depth (mm)`
+    ) |>
+    drop_na()
+}
+
+list(
+  tar_target(penguins_csv_file, "data/penguins_raw.csv"),
+  tar_target(penguins_data_raw, read_csv(
+    penguins_csv_file, show_col_types = FALSE)),
+  tar_target(penguins_data, clean_penguin_data(penguins_data_raw))
+)
