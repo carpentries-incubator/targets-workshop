@@ -75,8 +75,8 @@ tar_plan(
 
 ``` output
 + combined_model dispatched
-✔ combined_model completed [20ms, 11.20 kB]
-✔ ended pipeline [236ms, 1 completed, 3 skipped]
+✔ combined_model completed [2ms, 11.22 kB]
+✔ ended pipeline [138ms, 1 completed, 3 skipped]
 ```
 
 Let's have a look at the model. We will use the `glance()` function from the `broom` package, writing `broom::glance()` so that we do not need to load the whole package (the `::` notation specifies which package a function comes from). Unlike base R `summary()`, this function returns output as a tibble (the tidyverse equivalent of a dataframe), which as we will see later is quite useful for downstream analyses.
@@ -142,20 +142,20 @@ tar_plan(
 
 ``` output
 + adelie_model dispatched
-✔ adelie_model completed [20ms, 6.48 kB]
+✔ adelie_model completed [8ms, 6.48 kB]
 + gentoo_model dispatched
-✔ gentoo_model completed [2ms, 5.88 kB]
+✔ gentoo_model completed [2ms, 5.90 kB]
 + chinstrap_model dispatched
-✔ chinstrap_model completed [2ms, 4.54 kB]
+✔ chinstrap_model completed [3ms, 4.54 kB]
 + combined_summary dispatched
-✔ combined_summary completed [122ms, 350 B]
+✔ combined_summary completed [55ms, 350 B]
 + adelie_summary dispatched
-✔ adelie_summary completed [3ms, 351 B]
+✔ adelie_summary completed [3ms, 350 B]
 + gentoo_summary dispatched
-✔ gentoo_summary completed [2ms, 351 B]
+✔ gentoo_summary completed [3ms, 350 B]
 + chinstrap_summary dispatched
-✔ chinstrap_summary completed [2ms, 351 B]
-✔ ended pipeline [454ms, 7 completed, 4 skipped]
+✔ chinstrap_summary completed [3ms, 351 B]
+✔ ended pipeline [313ms, 7 completed, 4 skipped]
 ```
 
 Let's look at the summary of one of the models:
@@ -231,12 +231,12 @@ First, let's look at the messages provided by `tar_make()`.
 
 ``` output
 + combined_summary dispatched
-✔ combined_summary completed [72ms, 350 B]
+✔ combined_summary completed [63ms, 350 B]
 + species_name dispatched
-✔ species_name completed [3ms, 76 B]
+✔ species_name completed [2ms, 76 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [30ms, 1.05 kB]
-✔ ended pipeline [436ms, 5 completed, 3 skipped]
+✔ species_summary completed [19ms, 1.05 kB]
+✔ ended pipeline [285ms, 5 completed, 3 skipped]
 ```
 
 The messages say that `species_summary` was "declared" with 3 branches, then completed.
@@ -334,10 +334,10 @@ Since `targets` tracks the contents of each custom function, it realizes that it
 
 ``` output
 + combined_summary dispatched
-✔ combined_summary completed [99ms, 371 B]
+✔ combined_summary completed [72ms, 371 B]
 + species_summary declared [3 branches]
-✔ species_summary completed [104ms, 1.11 kB]
-✔ ended pipeline [452ms, 4 completed, 4 skipped]
+✔ species_summary completed [32ms, 1.11 kB]
+✔ ended pipeline [286ms, 4 completed, 4 skipped]
 ```
 
 And this time, when we load `species_summary`, we can tell which species corresponds to which row (the `.before = 1` in `mutate()` ensures that it shows up before the other columns).

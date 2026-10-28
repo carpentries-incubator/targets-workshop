@@ -39,7 +39,7 @@ tar_make()
 ```
 
 ``` output
-✔ skipped pipeline [140ms, 3 skipped]
+✔ skipped pipeline [72ms, 3 skipped]
 ```
 
 Remember how the first time we ran the pipeline, `targets` printed out a list of each target as it was being built?
@@ -81,8 +81,8 @@ tar_make()
 
 ``` output
 + penguins_data dispatched
-✔ penguins_data completed [28ms, 1.49 kB]
-✔ ended pipeline [247ms, 1 completed, 2 skipped]
+✔ penguins_data completed [13ms, 1.49 kB]
+✔ ended pipeline [150ms, 1 completed, 2 skipped]
 ```
 
 What happened?
@@ -213,8 +213,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [162ms, 10.40 kB]
-✔ ended pipeline [432ms, 1 completed, 2 skipped]
+✔ penguins_data_raw completed [149ms, 10.40 kB]
+✔ ended pipeline [285ms, 1 completed, 2 skipped]
 ```
 
 Only `penguins_data_raw` was re-run (the extra message is from `read_csv()`, which now reports the column types because we removed `show_col_types = FALSE`). Its code changed, so it was re-built, but it produced exactly the same data as before. That means `penguins_data`, which looked outdated, was skipped.
@@ -238,7 +238,7 @@ tar_make()
 ```
 
 ``` output
-✔ skipped pipeline [163ms, 3 skipped]
+✔ skipped pipeline [89ms, 3 skipped]
 ```
 
 Now let's invalidate `penguins_data_raw` and build only that target:
@@ -260,8 +260,8 @@ date (1): Date Egg
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-✔ penguins_data_raw completed [236ms, 10.40 kB]
-✔ ended pipeline [442ms, 1 completed, 1 skipped]
+✔ penguins_data_raw completed [143ms, 10.40 kB]
+✔ ended pipeline [279ms, 1 completed, 1 skipped]
 ```
 
 Only `penguins_data_raw` was built (you will see the same `read_csv()` message again, since we are still not using `show_col_types = FALSE`). `penguins_data` was not part of this run, and `penguins_csv_file` (which `penguins_data_raw` depends on) was skipped because it was already up to date.
@@ -276,8 +276,8 @@ tar_make()
 
 ``` output
 + penguins_data dispatched
-✔ penguins_data completed [28ms, 1.49 kB]
-✔ ended pipeline [243ms, 1 completed, 2 skipped]
+✔ penguins_data completed [13ms, 1.49 kB]
+✔ ended pipeline [155ms, 1 completed, 2 skipped]
 ```
 
 If you want to reset **everything** and start fresh, you can use `tar_invalidate(everything())` (`tar_invalidate()` [accepts `tidyselect` expressions](https://docs.ropensci.org/targets/reference/tar_invalidate.html) to specify target names).
