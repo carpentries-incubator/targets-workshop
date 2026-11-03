@@ -1,0 +1,99 @@
+---
+title: "Simpson's Paradox in Palmer Penguins"
+format:
+  html:
+    toc: true
+execute: 
+  echo: false
+---
+
+```{r}
+#| label: load
+#| message: false
+targets::tar_load(
+  c(combined_summary,
+    species_summary,
+    combined_predictions,
+    species_predictions,
+    island_data
+  )
+)
+
+library(tidyverse)
+```
+
+The goal of this analysis is to determine how bill length and depth are related in three species of penguins from Antarctica.
+
+## Methods
+
+The penguins were measured on `r nrow(island_data)` islands in Antarctica (@tbl-islands).
+
+We analyzed the relationship between bill length and depth using linear models. One model did not take into account species, while the others did.
+
+## Results
+
+```{r}
+#| label: results-stats
+combined_r2 <- combined_summary |>
+  pull(r.squared) |>
+  round(2)
+
+species_mean_r2 <- species_summary |>
+  pull(r.squared) |>
+  mean() |>
+  round(2)
+```
+
+The model that did not account for species ("combined model") shows a negative relationship between bill length and depth overall (@fig-combined-plot).
+
+The models that accounted for species showed the opposite result: a positive relationship between bill length and depth for each species (@fig-separate-plot).
+
+Furthermore, the combined model explained less of the variation in the data (*R* squared = `r combined_r2`) than the models for each species (mean *R* squared = `r species_mean_r2`).
+
+## Conclusion
+
+The penguins data is an example of "Simpson's Paradox," whereby aggregation of data can hide trends that are happening at more nested levels. We need to be careful of this when analyzing data.
+
+## Tables
+
+```{r}
+#| label: tbl-islands
+#| tbl-cap: "Islands where the penguins were measured (approximate coordinates)"
+knitr::kable(
+  island_data,
+  col.names = c("Island", "Latitude", "Longitude")
+)
+```
+
+## Figures
+
+```{r}
+#| label: fig-combined-plot
+#| fig-cap: "Combined model"
+ggplot(
+  combined_predictions,
+  aes(x = bill_length_mm)
+) +
+  geom_point(aes(y = bill_depth_mm)) +
+  geom_line(aes(y = .fitted)) +
+  labs(
+    y = "Bill length (mm)",
+    x = "Bill depth (mm)"
+  )
+```
+
+```{r}
+#| label: fig-separate-plot
+#| fig-cap: "Separate models"
+ggplot(
+  species_predictions,
+  aes(x = bill_length_mm, color = species)
+) +
+  geom_point(aes(y = bill_depth_mm)) +
+  geom_line(aes(y = .fitted)) +
+  labs(
+    y = "Bill length (mm)",
+    x = "Bill depth (mm)"
+  ) +
+  theme(legend.position = "bottom")
+```
