@@ -389,7 +389,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Managing Packages</h1>
-        <p>Last updated on 2026-11-03 |
+        <p>Last updated on 2026-11-10 |
 
         <a href="https://github.com/carpentries-incubator/targets-workshop/edit/main/episodes/packages.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -430,7 +430,7 @@ project?</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Episode summary: Show how to load packages and maintain package
 versions</p>
@@ -543,12 +543,12 @@ then list the packages we need in <code>_targets.R</code> instead:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
-✔ penguins_csv_file completed [112ms, 74 B]
+✔ penguins_csv_file completed [87ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [123ms, 10.40 kB]
+✔ penguins_data_raw completed [97ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [23ms, 1.49 kB]
-✔ ended pipeline [689ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [19ms, 1.49 kB]
+✔ ended pipeline [575ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>This method gets around the slow-downs that may sometimes be
 experienced with Method 1.</p>
@@ -590,12 +590,12 @@ packages <strong>only for that target</strong>.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
-✔ penguins_csv_file completed [1ms, 74 B]
+✔ penguins_csv_file completed [0ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [187ms, 10.40 kB]
+✔ penguins_data_raw completed [161ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [67ms, 1.49 kB]
-✔ ended pipeline [679ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [50ms, 1.49 kB]
+✔ ended pipeline [596ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>This can be more memory efficient in some cases than loading all
 packages, since not every target is always made during a typical run of
@@ -651,10 +651,10 @@ itself:</p>
 <pre class="output" tabindex="0"><code>+ penguins_csv_file dispatched
 ✔ penguins_csv_file completed [0ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [190ms, 10.40 kB]
+✔ penguins_data_raw completed [152ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [65ms, 1.49 kB]
-✔ ended pipeline [666ms, 3 completed, 0 skipped]</code></pre>
+✔ penguins_data completed [44ms, 1.49 kB]
+✔ ended pipeline [571ms, 3 completed, 0 skipped]</code></pre>
 </div>
 <p>The benefits of this approach are that the origins of all functions
 is explicit, so you could browse your code (for example, by looking at
@@ -853,8 +853,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/targets-workshop/instructor/packages.html",
   "identifier": "https://carpentries-incubator.github.io/targets-workshop/instructor/packages.html",
   "dateCreated": "2026-10-28",
-  "dateModified": "2026-11-03",
-  "datePublished": "2026-11-03"
+  "dateModified": "2026-11-10",
+  "datePublished": "2026-11-10"
 }
 
   </script><script>
