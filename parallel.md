@@ -189,11 +189,11 @@ Finally, run the pipeline with `tar_make()` as normal.
 + combined_predictions dispatched
 + species_summary declared [3 branches]
 + species_predictions declared [3 branches]
-✔ combined_summary completed [4.1s, 371 B]
 ✔ combined_predictions completed [4s, 24.12 kB]
+✔ combined_summary completed [4.1s, 371 B]
 ✔ species_summary completed [12.1s, 1.11 kB]
 ✔ species_predictions completed [12s, 26.08 kB]
-✔ ended pipeline [19.7s, 8 completed, 4 skipped]
+✔ ended pipeline [18.7s, 8 completed, 4 skipped]
 ```
 
 Notice that each target (or each branch of a branched target) takes about 4 seconds to build.
