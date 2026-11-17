@@ -98,12 +98,12 @@ tar_plan(
 
 ``` output
 + penguins_csv_file dispatched
-✔ penguins_csv_file completed [87ms, 74 B]
+✔ penguins_csv_file completed [63ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [97ms, 10.40 kB]
+✔ penguins_data_raw completed [76ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [19ms, 1.49 kB]
-✔ ended pipeline [575ms, 3 completed, 0 skipped]
+✔ penguins_data completed [15ms, 1.49 kB]
+✔ ended pipeline [477ms, 3 completed, 0 skipped]
 ```
 
 This method gets around the slow-downs that may sometimes be experienced with Method 1.
@@ -140,10 +140,10 @@ tar_plan(
 + penguins_csv_file dispatched
 ✔ penguins_csv_file completed [0ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [161ms, 10.40 kB]
+✔ penguins_data_raw completed [114ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [50ms, 1.49 kB]
-✔ ended pipeline [596ms, 3 completed, 0 skipped]
+✔ penguins_data completed [38ms, 1.49 kB]
+✔ ended pipeline [475ms, 3 completed, 0 skipped]
 ```
 
 This can be more memory efficient in some cases than loading all packages, since not every target is always made during a typical run of the workflow.
@@ -190,10 +190,10 @@ clean_penguin_data <- function(penguins_data_raw) {
 + penguins_csv_file dispatched
 ✔ penguins_csv_file completed [0ms, 74 B]
 + penguins_data_raw dispatched
-✔ penguins_data_raw completed [152ms, 10.40 kB]
+✔ penguins_data_raw completed [113ms, 10.40 kB]
 + penguins_data dispatched
-✔ penguins_data completed [44ms, 1.49 kB]
-✔ ended pipeline [571ms, 3 completed, 0 skipped]
+✔ penguins_data completed [34ms, 1.49 kB]
+✔ ended pipeline [448ms, 3 completed, 0 skipped]
 ```
 
 The benefits of this approach are that the origins of all functions is explicit, so you could browse your code (for example, by looking at its source in GitHub), and immediately know where all the functions come from.
