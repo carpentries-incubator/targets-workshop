@@ -247,8 +247,8 @@ tar_make()
 
 ``` output
 + penguins_data dispatched
-✔ penguins_data completed [11ms, 1.61 kB]
-✔ ended pipeline [132ms, 1 completed, 2 skipped]
+✔ penguins_data completed [13ms, 1.61 kB]
+✔ ended pipeline [168ms, 1 completed, 2 skipped]
 ```
 
 We will learn more soon about the messages that `targets()` prints out.
